@@ -1,0 +1,6 @@
+<svg class="{{ class }}" xmlns="http://www.w3.org/2000/svg"
+	width="25" height="24" fill="none" viewBox="0 0 25 24">
+	<path fill-rule="evenodd"
+		d="M15.57 0L0 1.015 6.882 23l12-4.616-.13 4.193L24 15.982l-7.484-3.975 1.851 3.835-6.668.393L15.569 0z"
+		clip-rule="evenodd"></path>
+</svg>

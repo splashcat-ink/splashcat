@@ -1,0 +1,40 @@
+{% load static %}
+{% load django_htmx %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %} | Splashcat</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <script src="{% static 'js/hyperscript.min.js' %}" defer></script>
+    <script src="{% static 'js/htmx.min.js' %}" defer></script>
+    {% django_htmx_script %}
+</head>
+<body hx-headers="{'X-CSRFToken': '{{ csrf_token }}'}">
+    <header>
+        {% include 'includes/navbar.html' %}
+    </header>
+
+    <div class="container">
+        {% if messages %}
+            <div class="flex flex-col gap-2 py-2">
+                {% for message in messages %}
+                    <div class="p-2 bg-purple-800 rounded {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <main role="main" class="pb-3">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            Splashcat
+        </div>
+    </footer>
+</body>
+</html>
