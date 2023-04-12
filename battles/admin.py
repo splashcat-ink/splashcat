@@ -1,8 +1,7 @@
 from django.contrib import admin
 
-from .models import Battle, UnprocessedBattle
+from .models import Battle
 
 # Register your models here.
 
 admin.site.register(Battle)
-admin.site.register(UnprocessedBattle)

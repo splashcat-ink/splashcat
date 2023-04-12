@@ -12,12 +12,3 @@ class Battle(models.Model):
 
     def __str__(self):
         return f'Battle {self.id} ({self.splatnet_id}) - @{self.uploader.username}'
-
-
-class UnprocessedBattle(models.Model):
-    uploader = models.ForeignKey('users.User', on_delete=models.CASCADE)
-    json = models.JSONField()
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'Battle {self.battle_id}'
