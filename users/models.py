@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
@@ -9,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 
 class User(AbstractUser):
     is_splashcat_sponsor = models.BooleanField(default=False)
+    is_sponsor_public = models.BooleanField(default=False)
     username = models.CharField(
         _("username"),
         max_length=30,
@@ -32,6 +34,9 @@ class User(AbstractUser):
 
     def get_short_name(self):
         return self.display_name.strip()
+
+    def get_absolute_url(self):
+        return reverse("profile", kwargs={"username": self.username})
 
 
 def generate_key():

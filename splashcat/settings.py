@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'battles',
     'users',
+    'splatnet_assets',
 ]
 
 MIDDLEWARE = [
