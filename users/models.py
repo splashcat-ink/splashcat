@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
 
@@ -24,8 +25,23 @@ class User(AbstractUser):
     first_name = None
     last_name = None
 
+    profile_picture = models.ImageField(_("profile picture"), upload_to='profile_pictures', blank=True, null=True)
+
     def get_full_name(self):
         return self.display_name.strip()
 
     def get_short_name(self):
         return self.display_name.strip()
+
+
+def generate_key():
+    return get_random_string(20)
+
+
+class ApiKey(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    key = models.CharField(max_length=40, primary_key=True, unique=True, default=generate_key)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'API Key {self.key} (@{self.user.username})'

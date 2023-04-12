@@ -1,9 +1,26 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}
-@{{ user.username }}
+    @{{ user.username }}
 {% endblock %}
 
 {% block content %}
-meow
+    <div class="flex flex-col md:flex-row">
+        <div class="basis-2/5 lg:basis-1/4 card-mask bg-splatoon-battle-league p-4 pt-12 rounded-lg rotate-1">
+            <img src="{{ profile_user.profile_picture.url }}" alt="{{ profile_user.display_name }}'s profile picture"
+                 class="aspect-square max-w-full object-contain rounded-sm bg-gray-500/50">
+            <h1 class="text-2xl">
+                {{ profile_user.display_name }}
+                {% if profile_user.is_splashcat_sponsor %}
+                    <a href="{% url 'sponsor' %}">
+                        <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                             class="h-6 inline-block">
+                    </a>
+                {% endif %}
+            </h1>
+            <p class="text-lg text-gray-300">@{{ profile_user.username }}</p>
+        </div>
+    </div>
 {% endblock %}

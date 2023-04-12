@@ -5,6 +5,8 @@ from .models import User
 
 
 class UserAdmin(AbstractUserAdmin):
+    fieldsets = AbstractUserAdmin.fieldsets + ((None, {"fields": ["profile_picture", "is_splashcat_sponsor"]}),)
+
     def __init__(self, model, admin_site):
         super().__init__(model, admin_site)
         self.fieldsets[1][1]["fields"] = ("display_name", "email")

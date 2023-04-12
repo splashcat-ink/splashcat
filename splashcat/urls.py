@@ -14,11 +14,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
 import users.views as users_views
+from splashcat import settings
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='splashcat/home.html'), name='home'),
@@ -27,4 +29,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('users/', include('users.urls')),
     path('@<str:username>/', users_views.profile, name='profile'),
+    path('sponsor/', TemplateView.as_view(template_name='splashcat/sponsor.html'), name='sponsor'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

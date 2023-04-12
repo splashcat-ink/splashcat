@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Sponsor
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-2xl">
+        Heya!
+    </h1>
+
+    <p class="prose-xl max-w-prose prose-a:text-blue-500 prose-a:underline">
+        Splashcat is developed primarily by <a href="{% url 'profile' 'catgirl' %}">Kitt</a> (that's me!) with help from
+        <a href="https://github.com/splashcat-ink">friends</a>. Please consider supporting my work by becoming a
+        sponsor!
+        It would mean a lot to me!! You also get this cool little badge on your profile page when you link your GitHub
+        account!
+    </p>
+
+    <div class="text-lg py-2">
+        <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+             class="h-12 w-12 inline-block">
+        <-- that's the cool badge!
+    </div>
+
+    <iframe src="https://github.com/sponsors/catgirlinspace/card" title="Sponsor catgirlinspace" height="225"
+            width="600" style="border: 0;"></iframe>
+{% endblock %}

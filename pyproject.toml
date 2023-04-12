@@ -11,9 +11,11 @@ Django = "^4.2"
 django-htmx = "^1.14"
 django-allauth = "^0.54"
 django-debug-toolbar = "^4.0"
-djangorestframework = "^3.14"
 channels = "^4.0"
 daphne = "^4.0"
+pillow = "^9.5.0"
+msgpack = "^1.0.5"
+jsonschema = "^4.17.3"
 
 
 [build-system]

@@ -131,6 +131,12 @@
                                 <br/>
                                 Your Profile
                             </a>
+                            {% if user.is_staff %}
+                                <a class="block px-4 py-2 text-sm text-gray-700" href="{% url 'admin:index' %}"
+                                   title="Manage">
+                                    Admin
+                                </a>
+                            {% endif %}
                             <form class="form-inline" action="{% url 'account_logout' %}" method="post">
                                 {% csrf_token %}
                                 <button type="submit" class="block px-4 py-2 text-sm text-gray-700">Logout</button>
