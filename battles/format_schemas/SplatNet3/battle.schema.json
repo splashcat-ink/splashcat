@@ -1,0 +1,731 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://splashcat.ink/api/schemas/SplatNet3/battle.schema.json",
+  "title": "SplatNet 3 Battle",
+  "description": "A VsHistoryDetail from SplatNet 3",
+  "type": "object",
+  "properties": {
+    "__typename": {
+      "const": "VsHistoryDetail"
+    },
+    "id": {
+      "type": "string"
+    },
+    "vsMode": {
+      "type": "object",
+      "properties": {
+        "__typename": {
+          "const": "VsMode"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "BANKARA",
+            "X_MATCH",
+            "REGULAR",
+            "FEST"
+          ]
+        }
+      }
+    },
+    "vsRule": {
+      "type": "object",
+      "properties": {
+        "__typename": {
+          "const": "VsRule"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "rule": {
+          "enum": [
+            "AREA",
+            "TURF_WAR",
+            "LOFT",
+            "CLAM",
+            "GOAL"
+          ]
+        }
+      }
+    },
+    "vsStage": {
+      "type": "object",
+      "properties": {
+        "__typename": {
+          "const": "VsStage"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "vsStageId": {
+          "type": "integer"
+        },
+        "image": {
+          "$ref": "#/$defs/simpleImage"
+        }
+      }
+    },
+    "playedTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "duration": {
+      "type": "integer"
+    },
+    "judgement": {
+      "enum": [
+        "WIN",
+        "LOSE",
+        "DRAW",
+        "EXEMPTED_LOSE",
+        "DEEMED_LOSE"
+      ]
+    },
+    "player": {
+      "title": "BasePlayer",
+      "description": "The player object in VsHistoryDetail.player and the elements in team.players extend this",
+      "type": "object",
+      "properties": {
+        "__isPlayer": {
+          "const": "VsPlayer"
+        },
+        "byname": {
+          "type": "string"
+        },
+        "headGear": {
+          "$ref": "#/$defs/baseGear"
+        },
+        "clothingGear": {
+          "$ref": "#/$defs/baseGear"
+        },
+        "shoesGear": {
+          "$ref": "#/$defs/baseGear"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameId": {
+          "type": "string"
+        },
+        "nameplate": {
+          "$ref": "#/$defs/nameplate"
+        },
+        "paint": {
+          "type": "integer"
+        }
+      }
+    },
+    "knockout": {
+      "oneOf": [
+        {
+          "enum": [
+            "NEITHER",
+            "WIN",
+            "LOSE"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "myTeam": {
+      "$ref": "#/$defs/team"
+    },
+    "otherTeams": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/team"
+      }
+    },
+    "awards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "rank": {
+            "enum": [
+              "GOLD",
+              "SILVER"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "$comment": "TODO: ADD AS CONDITIONALS: udemae, bankaraMatch, leagueMatch, xMatch, festMatch",
+  "$defs": {
+    "image": {
+      "title": "Image",
+      "description": "The `url` is optional. See <wiki link> for details. TODO: write wiki page",
+      "type": "object",
+      "properties": {
+        "__typename": {
+          "const": "Image"
+        },
+        "url": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width",
+        "height"
+      ],
+      "$comment": "// the url is optional"
+    },
+    "simpleImage": {
+      "title": "SimpleImage",
+      "description": "Like `Image` but with only a `url` property. The `url` is optional. See `Image` and WIKILINK for more details.",
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "color": {
+      "title": "Color",
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "number"
+        },
+        "r": {
+          "type": "number"
+        },
+        "g": {
+          "type": "number"
+        },
+        "b": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "a",
+        "r",
+        "g",
+        "b"
+      ]
+    },
+    "team": {
+      "title": "Team",
+      "type": "object",
+      "properties": {
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "festStreakWinCount": {
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "festTeamName": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "festUniformBonusRate": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "festUniformName": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "judgement": {
+          "enum": [
+            "WIN",
+            "LOSE",
+            "DRAW"
+          ]
+        },
+        "order": {
+          "type": "integer"
+        },
+        "players": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/player"
+          }
+        },
+        "result": {
+          "type": "object",
+          "properties": {
+            "noroshi": {
+              "oneOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "paintRatio": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "score": {
+              "oneOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "noroshi",
+            "paintRatio",
+            "score"
+          ]
+        },
+        "tricolorRole": {
+          "oneOf": [
+            {
+              "enum": [
+                "ATTACK1",
+                "ATTACK2",
+                "DEFENSE"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "color",
+        "festStreakWinCount",
+        "festTeamName",
+        "festUniformBonusRate",
+        "festUniformName",
+        "judgement",
+        "order",
+        "players",
+        "result",
+        "tricolorRole"
+      ]
+    },
+    "nameplate": {
+      "title": "Nameplate",
+      "type": "object",
+      "properties": {
+        "badges": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "__typename": {
+                    "const": "Badge"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "$ref": "#/$defs/simpleImage"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "image"
+                ]
+              }
+            ]
+          }
+        },
+        "background": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "image": {
+              "$ref": "#/$defs/simpleImage"
+            },
+            "textColor": {
+              "$ref": "#/$defs/color"
+            }
+          },
+          "required": [
+            "id",
+            "textColor"
+          ]
+        }
+      },
+      "required": [
+        "badges",
+        "background"
+      ]
+    },
+    "player": {
+      "$comment": "inherits from the player in VsHistoryDetail.player adding the data found in the leaderboard",
+      "allOf": [
+        {
+          "$ref": "#/properties/player"
+        },
+        {
+          "title": "TeamPlayer",
+          "type": "object",
+          "properties": {
+            "isMyself": {
+              "type": "boolean"
+            },
+            "weapon": {
+              "$ref": "#/$defs/weapon"
+            },
+            "species": {
+              "enum": [
+                "INKLING",
+                "OCTOLING"
+              ]
+            },
+            "result": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "kill": {
+                      "type": "integer"
+                    },
+                    "death": {
+                      "type": "integer"
+                    },
+                    "assist": {
+                      "type": "integer"
+                    },
+                    "special": {
+                      "type": "integer"
+                    },
+                    "noroshiTry": {
+                      "oneOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "kill",
+                    "death",
+                    "assist",
+                    "special",
+                    "noroshiTry"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "crown": {
+              "type": "boolean"
+            },
+            "festDragonCert": {
+              "enum": [
+                "NONE",
+                "DRAGON",
+                "DOUBLE_DRAGON"
+              ]
+            },
+            "festGrade": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "isMyself",
+            "weapon",
+            "species",
+            "result",
+            "crown",
+            "festDragonCert"
+          ]
+        }
+      ]
+    },
+    "baseGear": {
+      "title": "BaseGear",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "image": {
+          "$ref": "#/$defs/simpleImage",
+          "$comment": ""
+        },
+        "thumbnailImage": {
+          "$ref": "#/$defs/simpleImage"
+        },
+        "originalImage": {
+          "$ref": "#/$defs/simpleImage"
+        },
+        "brand": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "image": {
+              "$ref": "#/$defs/simpleImage"
+            },
+            "usualGearPower": {
+              "$ref": "#/$defs/gearPower"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "image",
+            "usualGearPower"
+          ]
+        },
+        "primaryGearPower": {
+          "$ref": "#/$defs/gearPower"
+        },
+        "additionalGearPowers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/gearPower"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "thumbnailImage",
+        "originalImage",
+        "brand",
+        "primaryGearPower",
+        "additionalGearPowers"
+      ]
+    },
+    "gearPower": {
+      "title": "GearPower",
+      "type": "object",
+      "properties": {
+        "gearPowerId": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "desc": {
+          "type": "string"
+        },
+        "image": {
+          "$ref": "#/$defs/simpleImage"
+        },
+        "power": {
+          "type": "integer"
+        },
+        "isEmptySlot": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "image"
+      ]
+    },
+    "weapon": {
+      "title": "Weapon",
+      "type": "object",
+      "properties": {
+        "__typename": {
+          "const": "Weapon"
+        },
+        "id": {
+          "type": "string"
+        },
+        "weaponId": {
+          "type": "integer"
+        },
+        "weaponCategory": {
+          "type": "object",
+          "properties": {
+            "__typename": {
+              "const": "WeaponCategory"
+            },
+            "id": {
+              "type": "string"
+            },
+            "weaponCategoryId": {
+              "type": "integer"
+            },
+            "category": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "image": {
+              "$ref": "#/$defs/image"
+            }
+          },
+          "required": [
+            "id",
+            "weaponCategoryId",
+            "category",
+            "name",
+            "image"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "image": {
+          "$ref": "#/$defs/simpleImage"
+        },
+        "subWeapon": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "subWeaponId": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "image": {
+              "$ref": "#/$defs/simpleImage"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "image"
+          ]
+        },
+        "specialWeapon": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "specialWeaponId": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "image": {
+              "$ref": "#/$defs/simpleImage"
+            },
+            "maskingImage": {
+              "description": "Like in `Image`, `maskImageUrl` and `overlayImageUrl` are optional.",
+              "type": "object",
+              "properties": {
+                "width": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "maskImageUrl": {
+                  "type": "string"
+                },
+                "overlayImageUrl": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "width",
+                "height"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "image",
+            "maskingImage"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "image",
+        "subWeapon",
+        "specialWeapon"
+      ]
+    }
+  }
+}
