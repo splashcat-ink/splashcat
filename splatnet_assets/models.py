@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import get_language
 
 
 # Create your models here.
@@ -15,3 +16,66 @@ class Image(models.Model):
 
     def __str__(self):
         return self.image.name
+
+
+class LocalizationString(models.Model):
+    class Type(models.TextChoices):
+        OTHER = 'OTHER', 'Other'
+        WEAPON_NAME = 'WEAPON_NAME', 'Weapon Name'
+        SUB_WEAPON_NAME = 'SUB_WEAPON_NAME', 'Sub Weapon Name'
+        SPECIAL_WEAPON_NAME = 'SPECIAL_WEAPON_NAME', 'Special Weapon Name'
+        TITLE_ADJECTIVE = 'TITLE_ADJECTIVE', 'Title Adjective'
+        TITLE_SUBJECT = 'TITLE_SUBJECT', 'Title Subject'
+        HEAD_GEAR = 'HEAD_GEAR', 'Head Gear'
+        CLOTHING_GEAR = 'CLOTHING_GEAR', 'Clothing Gear'
+        SHOES_GEAR = 'SHOES_GEAR', 'Shoes Gear'
+        ABILITY = 'ABILITY', 'Ability'
+        STAGE = 'STAGE', 'Stage'
+
+    internal_id = models.CharField(max_length=100)
+    type = models.CharField(max_length=50, choices=Type.choices)
+    string_de_de = models.TextField(blank=True)
+    string_en_gb = models.TextField(blank=True)
+    string_en_us = models.TextField(blank=True)
+    string_es_es = models.TextField(blank=True)
+    string_es_mx = models.TextField(blank=True)
+    string_fr_ca = models.TextField(blank=True)
+    string_fr_fr = models.TextField(blank=True)
+    string_it_it = models.TextField(blank=True)
+    string_ja_jp = models.TextField(blank=True)
+    string_ko_kr = models.TextField(blank=True)
+    string_nl_nl = models.TextField(blank=True)
+    string_ru_ru = models.TextField(blank=True)
+    string_zh_cn = models.TextField(blank=True)
+    string_zh_tw = models.TextField(blank=True)
+
+    def get_localized(self, locale: str = None):
+        if locale is None:
+            locale = get_language()
+        string = getattr(self, f'string_{locale.lower().replace("-", "_")}')
+        if string is None or string == '':
+            string = self.string_en_us
+        return string
+
+    def __str__(self):
+        return f'{self.type} {self.internal_id} "{self.string_en_us}"'
+
+
+class Gear(models.Model):
+    pass
+
+
+class NameplateBackground(models.Model):
+    pass
+
+
+class NameplateBadge(models.Model):
+    pass
+
+
+class Stage(models.Model):
+    pass
+
+
+class Award(models.Model):
+    pass
