@@ -24,6 +24,7 @@ from splashcat import settings
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='splashcat/home.html'), name='home'),
+    path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
     path('accounts/', include('allauth.urls')),
@@ -34,3 +35,5 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # let web server handle this in production
+    urlpatterns += static('api/schemas/', document_root=settings.BASE_DIR / 'battles/format_schemas/')

@@ -12,7 +12,7 @@ class Image(models.Model):
     image = models.ImageField(upload_to='splatnet_assets/')
     type = models.CharField(max_length=50)  # e.g. "weapon", "stage", "headgear", etc.
     asset_name = models.CharField(max_length=100)  # weapon id, stage id, etc.
-    original_file_name = models.CharField(max_length=100)
+    original_file_name = models.CharField(max_length=500, blank=True)
 
     def __str__(self):
         return self.image.name
@@ -30,6 +30,8 @@ class LocalizationString(models.Model):
         CLOTHING_GEAR = 'CLOTHING_GEAR', 'Clothing Gear'
         SHOES_GEAR = 'SHOES_GEAR', 'Shoes Gear'
         ABILITY = 'ABILITY', 'Ability'
+        ABILITY_DESCRIPTION = 'ABILITY_DESCRIPTION', 'Ability Description'
+        BRAND = 'BRAND', 'Brand'
         STAGE = 'STAGE', 'Stage'
 
     internal_id = models.CharField(max_length=100)
@@ -62,7 +64,45 @@ class LocalizationString(models.Model):
 
 
 class Gear(models.Model):
-    pass
+    class GearType(models.TextChoices):
+        HEAD = 'HEAD', 'Head'
+        CLOTHING = 'CLOTHING', 'Clothing'
+        SHOES = 'SHOES', 'Shoes'
+
+    internal_id = models.CharField(max_length=100)
+    name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
+    type = models.CharField(max_length=50, choices=GearType.choices)
+    brand = models.ForeignKey('Brand', on_delete=models.PROTECT)
+    rarity = models.IntegerField()
+    main_ability = models.ForeignKey('Ability', on_delete=models.PROTECT)
+    image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+
+    def __str__(self):
+        return f'{self.name.string_en_us} ({self.type})'
+
+
+class Ability(models.Model):
+    class Meta:
+        verbose_name_plural = 'abilities'
+
+    internal_id = models.CharField(max_length=100)
+    name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
+    image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    description = models.OneToOneField('LocalizationString', on_delete=models.PROTECT, related_name='+')
+
+    def __str__(self):
+        return f'{self.internal_id} - {self.name.string_en_us}'
+
+
+class Brand(models.Model):
+    internal_id = models.CharField(max_length=100)
+    name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
+    image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='brand')
+    favored_ability = models.ForeignKey('Ability', on_delete=models.PROTECT, related_name='+')
+    unfavored_ability = models.ForeignKey('Ability', on_delete=models.PROTECT, related_name='+')
+
+    def __str__(self):
+        return f'{self.internal_id} - {self.name.string_en_us}'
 
 
 class NameplateBackground(models.Model):
@@ -78,4 +118,16 @@ class Stage(models.Model):
 
 
 class Award(models.Model):
+    pass
+
+
+class Weapon(models.Model):
+    pass
+
+
+class SubWeapon(models.Model):
+    pass
+
+
+class SpecialWeapon(models.Model):
     pass

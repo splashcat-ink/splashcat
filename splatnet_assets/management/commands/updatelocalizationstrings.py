@@ -27,6 +27,8 @@ types_to_store = {
     'CommonMsg/Gear/GearName_Clothes': LocalizationString.Type.CLOTHING_GEAR,
     'CommonMsg/Gear/GearName_Shoes': LocalizationString.Type.SHOES_GEAR,
     'CommonMsg/Gear/GearPowerName': LocalizationString.Type.ABILITY,
+    'CommonMsg/Gear/GearPowerExp': LocalizationString.Type.ABILITY_DESCRIPTION,
+    'CommonMsg/Gear/GearBrandName': LocalizationString.Type.BRAND,
     'CommonMsg/VS/VSStageName': LocalizationString.Type.STAGE,
     'CommonMsg/Weapon/WeaponName_Main': LocalizationString.Type.WEAPON_NAME,
     'CommonMsg/Weapon/WeaponName_Sub': LocalizationString.Type.SUB_WEAPON_NAME,

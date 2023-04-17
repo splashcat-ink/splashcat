@@ -16,6 +16,8 @@ daphne = "^4.0"
 pillow = "^9.5.0"
 msgpack = "^1.0.5"
 jsonschema = "^4.17.3"
+docutils = "^0.19"
+requests = "^2.28.2"
 
 
 [build-system]
