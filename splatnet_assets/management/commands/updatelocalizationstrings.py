@@ -4,25 +4,23 @@ from django.core.management import BaseCommand
 from splatnet_assets.models import LocalizationString
 
 locale_json_url = dict(
-    string_de_de='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/EUde_full.json',
-    string_en_gb='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/EUen_full.json',
-    string_en_us='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/USen_full.json',
-    string_es_es='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/EUes_full.json',
-    string_es_mx='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/USes_full.json',
-    string_fr_ca='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/USfr_full.json',
-    string_fr_fr='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/EUfr_full.json',
-    string_it_it='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/EUit_full.json',
-    string_ja_jp='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/JPja_full.json',
-    string_ko_kr='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/KRko_full.json',
-    string_nl_nl='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/EUnl_full.json',
-    string_ru_ru='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/EUru_full.json',
-    string_zh_cn='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/CNzh_full.json',
-    string_zh_tw='https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/language/TWzh_full.json',
+    string_de_de='https://leanny.github.io/splat3/data/language/EUde_full.json',
+    string_en_gb='https://leanny.github.io/splat3/data/language/EUen_full.json',
+    string_en_us='https://leanny.github.io/splat3/data/language/USen_full.json',
+    string_es_es='https://leanny.github.io/splat3/data/language/EUes_full.json',
+    string_es_mx='https://leanny.github.io/splat3/data/language/USes_full.json',
+    string_fr_ca='https://leanny.github.io/splat3/data/language/USfr_full.json',
+    string_fr_fr='https://leanny.github.io/splat3/data/language/EUfr_full.json',
+    string_it_it='https://leanny.github.io/splat3/data/language/EUit_full.json',
+    string_ja_jp='https://leanny.github.io/splat3/data/language/JPja_full.json',
+    string_ko_kr='https://leanny.github.io/splat3/data/language/KRko_full.json',
+    string_nl_nl='https://leanny.github.io/splat3/data/language/EUnl_full.json',
+    string_ru_ru='https://leanny.github.io/splat3/data/language/EUru_full.json',
+    string_zh_cn='https://leanny.github.io/splat3/data/language/CNzh_full.json',
+    string_zh_tw='https://leanny.github.io/splat3/data/language/TWzh_full.json',
 )
 
 types_to_store = {
-    'CommonMsg/Byname/BynameAdjective': LocalizationString.Type.TITLE_ADJECTIVE,
-    'CommonMsg/Byname/BynameSubject': LocalizationString.Type.TITLE_SUBJECT,
     'CommonMsg/Gear/GearName_Head': LocalizationString.Type.HEAD_GEAR,
     'CommonMsg/Gear/GearName_Clothes': LocalizationString.Type.CLOTHING_GEAR,
     'CommonMsg/Gear/GearName_Shoes': LocalizationString.Type.SHOES_GEAR,
@@ -33,6 +31,8 @@ types_to_store = {
     'CommonMsg/Weapon/WeaponName_Main': LocalizationString.Type.WEAPON_NAME,
     'CommonMsg/Weapon/WeaponName_Sub': LocalizationString.Type.SUB_WEAPON_NAME,
     'CommonMsg/Weapon/WeaponName_Special': LocalizationString.Type.SPECIAL_WEAPON_NAME,
+    'CommonMsg/Badge/BadgeMsg': LocalizationString.Type.BADGE_DESCRIPTION,
+    'CommonMsg/VS/VSAwardName': LocalizationString.Type.AWARD,
 }
 
 

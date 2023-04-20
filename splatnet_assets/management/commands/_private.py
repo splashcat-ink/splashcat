@@ -7,7 +7,7 @@ from splatnet_assets.models import Image
 
 
 def get_latest_version():
-    version_data_url = 'https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/versions.json'
+    version_data_url = 'https://leanny.github.io/splat3/versions.json'
     return requests.get(version_data_url).json()[-1]
 
 
@@ -27,5 +27,5 @@ def download_image(asset_type: str, asset_name: str, asset_url: str) -> Image:
 
 
 def download_image_from_path(asset_type: str, asset_name: str, asset_path: str) -> Image:
-    prefix = 'https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/images/'
+    prefix = 'https://leanny.github.io/splat3/images/'
     return download_image(asset_type, asset_name, f'{prefix}{asset_path}')

@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import get_language
 
+from splatnet_assets.fields import ColorField
+
 
 # Create your models here.
 
@@ -31,6 +33,8 @@ class LocalizationString(models.Model):
         SHOES_GEAR = 'SHOES_GEAR', 'Shoes Gear'
         ABILITY = 'ABILITY', 'Ability'
         ABILITY_DESCRIPTION = 'ABILITY_DESCRIPTION', 'Ability Description'
+        BADGE_DESCRIPTION = 'BADGE_DESCRIPTION', 'Badge Description'
+        AWARD = 'AWARD', 'Award'
         BRAND = 'BRAND', 'Brand'
         STAGE = 'STAGE', 'Stage'
 
@@ -106,28 +110,73 @@ class Brand(models.Model):
 
 
 class NameplateBackground(models.Model):
-    pass
+    internal_id = models.CharField(max_length=100)
+    splatnet_id = models.IntegerField()
+    image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    text_color = ColorField()
 
 
 class NameplateBadge(models.Model):
-    pass
+    internal_id = models.CharField(max_length=100)
+    splatnet_id = models.IntegerField()
+    image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    description = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
 
 
 class Stage(models.Model):
-    pass
+    internal_id = models.CharField(max_length=100)
+    splatnet_id = models.IntegerField()
+    name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
+    image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    image_banner = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+
+    def __str__(self):
+        return f'{self.internal_id} - {self.name.string_en_us}'
 
 
 class Award(models.Model):
-    pass
+    internal_id = models.CharField(max_length=100)
+    name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
+    gold = models.BooleanField()
+
+
+class TitleAdjective(models.Model):
+    internal_id = models.CharField(max_length=100)
+    string = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.string.string_en_us
+
+
+class TitleSubject(models.Model):
+    internal_id = models.CharField(max_length=100)
+    string = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.string.string_en_us
 
 
 class Weapon(models.Model):
-    pass
+    internal_id = models.CharField(max_length=100)
+    splatnet_id = models.IntegerField()
+    name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
+    sub = models.ForeignKey('SubWeapon', on_delete=models.PROTECT)
+    special = models.ForeignKey('SpecialWeapon', on_delete=models.PROTECT)
+    flat_image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    image_3d = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
 
 
 class SubWeapon(models.Model):
-    pass
+    internal_id = models.CharField(max_length=100)
+    splatnet_id = models.IntegerField()
+    name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
+    image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
 
 
 class SpecialWeapon(models.Model):
-    pass
+    internal_id = models.CharField(max_length=100)
+    splatnet_id = models.IntegerField()
+    name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
+    image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    mask_image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    overlay_image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')

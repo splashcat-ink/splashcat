@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-    @{{ user.username }}
+    {{ profile_user.display_name }} (@{{ profile_user.username }})
 {% endblock %}
 
 {% block content %}

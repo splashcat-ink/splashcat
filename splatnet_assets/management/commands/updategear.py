@@ -6,7 +6,7 @@ from ._private import get_latest_version, download_image_from_path
 
 
 def get_gear_urls(version: str):
-    prefix = f'https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/mush/{version}'
+    prefix = f'https://leanny.github.io/splat3/data/mush/{version}'
     return {
         Gear.GearType.HEAD: f'{prefix}/GearInfoHead.json',
         Gear.GearType.CLOTHING: f'{prefix}/GearInfoClothes.json',

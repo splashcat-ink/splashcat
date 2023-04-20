@@ -17,6 +17,22 @@ class Color:
             int(hex_string[6:8], 16),
         )
 
+    @staticmethod
+    def from_floating_point_dict(obj):
+        # lowercase keys because lean's data uses capital letters while splatnet uses lowercase
+
+        obj = {k.lower(): v for k, v in obj.items()}
+
+        return Color(
+            int(obj['r'] * 255),
+            int(obj['g'] * 255),
+            int(obj['b'] * 255),
+            int(obj['a'] * 255),
+        )
+
+    def to_css(self):
+        return f'rgba({self.r}, {self.g}, {self.b}, {self.a / 255})'
+
     def to_hex(self):
         return f'{self.r:02x}{self.g:02x}{self.b:02x}{self.a:02x}'
 
