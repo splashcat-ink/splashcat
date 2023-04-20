@@ -150,7 +150,9 @@
       "type": "array",
       "items": {
         "$ref": "#/$defs/team"
-      }
+      },
+      "minItems": 1,
+      "maxItems": 2
     },
     "awards": {
       "type": "array",
@@ -167,7 +169,8 @@
             ]
           }
         }
-      }
+      },
+      "maxItems": 3
     }
   },
   "$comment": "TODO: ADD AS CONDITIONALS: udemae, bankaraMatch, leagueMatch, xMatch, festMatch",
@@ -291,7 +294,9 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/player"
-          }
+          },
+          "minItems": 1,
+          "maxItems": 4
         },
         "result": {
           "type": "object",
@@ -394,7 +399,8 @@
                 ]
               }
             ]
-          }
+          },
+          "maxItems": 3
         },
         "background": {
           "type": "object",
@@ -562,7 +568,8 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/gearPower"
-          }
+          },
+          "maxItems": 3
         }
       },
       "required": [
