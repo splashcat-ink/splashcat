@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}{{ battle.uploader.display_name }}'s battle on {{ battle.played_time }}{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-splatoon1">
+        {{ battle.uploader.display_name }}'s battle on
+        <time datetime="{{ battle.played_time }}">{{ battle.played_time }}</time>
+    </h1>
+
+    <div class="flex flex-wrap gap-4 py-2">
+    <span class="text-2xl">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+             class="w-8 h-8 inline">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+
+        {{ battle.duration }}
+    </span>
+    </div>
+
+    <div class="text-lg">
+        {% if battle.vs_mode == "BANKARA" %}
+            Anarchy Battle
+        {% elif battle.vs_mode == "X_MATCH" %}
+            X Battle
+        {% elif battle.vs_mode == "FEST" %}
+            Splatfest Battle
+        {% else %}
+            Regular Battle
+        {% endif %}
+    </div>
+
+    <div class="text-lg">
+        {{ battle.get_vs_rule_display }}
+    </div>
+
+    {% if battle.judgement == "EXEMPTED_LOSE" %}
+        <span class="bg-gray-700/60 text-xl p-4 rounded inline-block my-4">
+    Some players disconnected early on, so the match was a draw.
+</span>
+    {% elif battle.judgement == "DEEMED_LOSE" %}
+        <span class="bg-gray-700/60 text-xl p-4 rounded inline-block my-4">
+    The match was not fully completed.
+</span>
+    {% elif battle.judgement == "DRAW" %}
+        <span class="bg-gray-700/60 text-xl p-4 rounded inline-block my-4">
+    No contest.
+</span>
+    {% endif %}
+
+    <div class="grid grid-cols-1 {% if battle.teams.count >= 3 %}lg:grid-cols-3{% else %}md:grid-cols-2{% endif %} gap-4 py-4 px-1">
+        {% for team in battle.teams.all %}
+            <div
+                    class="rounded-lg bg-[color:var(--team-color)] p-2 card-mask -rotate-1 odd:rotate-1"
+                    style="--team-color: {{ team.color.css }};"
+            >
+                <div class="font-splatoon1 text-2xl">
+                    {% if team.judgement == "WIN" %}
+                        VICTORY
+                    {% elif team.judgement == "DRAW" %}
+                        DRAW
+                    {% elif team.judgement == "LOSE" %}
+                        DEFEAT
+                    {% else %}
+                        --
+                    {% endif %}
+                </div>
+
+                {% if team.festTeamName %}
+                    <div class="text-xl">Team {{ team.festTeamName }}</div>
+                {% endif %}
+
+                <div class="flex flex-col gap-2">
+                    {% for player in team.players.all %}
+                        <div class="flex flex-nowrap gap-2 rounded-full bg-gray-900/50 p-1">
+                            <img src="{{ player.weapon.flat_image.url }}"
+                                 class="inline-block h-10 w-10" alt="">
+                            <div class="shrink min-w-0 flex flex-col whitespace-nowrap">
+                                <div class="text-xs text-gray-300 truncate">{{ player.byname }}</div>
+                                <div class="text-lg">{{ player.name }}</div>
+                            </div>
+                            <div class="grow"></div>
+                            <div class="flex-none flex flex-row gap-1 px-4 justify-end rounded-full min-w-fit bg-black/50">
+                                <span class="text-xl w-min whitespace-nowrap pt-1">{{ player.paint }}p</span>
+                                <span class="text-lg w-min whitespace-nowrap pt-[2px]">
+                                        x{{ player.result.kill|default_if_none:"--" }}
+                                    {% if player.result and player.result.assist != 0 %}
+                                        <sub class="text-xs text-gray-300">
+                                                ({{ player.result.assist }})
+                                            </sub>
+                                    {% endif %}
+                        </span>
+                                <span class="text-lg w-min whitespace-nowrap pt-[2px]">
+                            x{{ player.result.death|default_if_none:"--" }}
+                        </span>
+                                <span class="text-lg w-min whitespace-nowrap">
+                            <svg width="24" class="h-4 w-4 relative top-0" viewBox="0 0 100 100" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 role="img" aria-label="Special-Weapon Uses" preserveAspectRatio="xMidYMid slice">
+                                <mask id="__{{ maskingId }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
+                                    <image x="0" y="0" width="{{ player.weapon.specialWeapon.maskingImage.width }}"
+                                           height="{{ player.weapon.specialWeapon.maskingImage.height }}"
+                                           href="{{ player.weapon.specialWeapon.maskingImage.maskImageUrl }}">
+                                    </image>
+                                </mask>
+                                <rect x="0" y="0" width="{{ player.weapon.specialWeapon.maskingImage.width }}"
+                                      height="{{ player.weapon.specialWeapon.maskingImage.height }}"
+                                      fill="{{ team.color }}"
+                                      mask="url(#__{{ maskingId }})"></rect>
+                                <image x="0" y="0" width="{{ player.weapon.specialWeapon.maskingImage.width }}"
+                                       height="{{ player.weapon.specialWeapon.maskingImage.height }}"
+                                       href="{{ player.weapon.specialWeapon.maskingImage.overlayImageUrl }}">
+                                </image>
+                            </svg>
+                            x{{ player.result.special|default_if_none:"--" }}
+                        </span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if battle.awards.count > 0 %}
+        <h2 class="text-xl font-splatoon1">Medals Earned</h2>
+        <div class="-rotate-2 -pt-1 pb-6 w-fit">
+            {% for award in battle.awards.all %}
+                <div class="bg-[url('/images/medal-bg.png')] bg-no-repeat bg-contain bg-top w-[220px] h-[39px] pr-[21px] pl-[47px] text-gray-900 font-splatoon1 text-[13px] relative flex align-middle items-center justify-center whitespace-nowrap box-border my-2 ml-0 [&:nth-child(2)]:ml-5 [&:nth-child(3)]:ml-10">
+                    <span>{{ award.name }}</span>
+
+                    {% if award.rank == "GOLD" %}
+                        <img class="h-[52px] w-[48px] absolute left-px -top-px rotate-2" src="/images/gold-medal.png"
+                             alt="Gold">
+                    {% else %}
+                        <img class="h-[36px] w-[34px] absolute left-[4px] top-[5px] rotate-2"
+                             src="/images/silver-medal.png" alt="Silver">
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h2 class="text-xl font-splatoon1">Splashtag</h2>
+
+    <div class="sticky left-0 bottom-0 w-full flex gap-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-2 mt-6 -mb-8 sm:rounded-t-xl bg-gray-700 whitespace-nowrap text-xs sm:text-sm md:text-base">
+        <a href="{{ pagination.href.first }}" class="py-2 px-4 rounded-full bg-gray-600">Latest Battle</a>
+        <div class="grow"></div>
+        <a href="{{ pagination.href.previous }}"
+           class="py-2 px-4 rounded-full {% if pagination.href.previous %}bg-gray-600{% else %}bg-gray-600/50 text-gray-400{% endif %}">Next</a>
+        <a href="{{ pagination.href.next }}"
+           class="py-2 px-4 rounded-full {% if pagination.href.next %}bg-gray-600{% else %}bg-gray-800 text-gray-400{% endif %}">Previous</a>
+    </div>
+{% endblock %}

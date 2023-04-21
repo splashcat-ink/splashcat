@@ -19,6 +19,10 @@ class Image(models.Model):
     def __str__(self):
         return self.image.name
 
+    @property
+    def url(self):
+        return self.image.url
+
 
 class LocalizationString(models.Model):
     class Type(models.TextChoices):

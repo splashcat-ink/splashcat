@@ -3,6 +3,7 @@ import json
 
 import jsonschema
 from django.http import HttpResponseBadRequest, JsonResponse
+from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from jsonschema import validate
@@ -17,6 +18,13 @@ from splatnet_assets.models import *
 
 
 # Create your views here.
+
+def view_battle(request, battle_id):
+    battle = get_object_or_404(Battle, id=battle_id)
+    return render(request, 'battles/view_battle.html', {
+        'battle': battle,
+    })
+
 
 @csrf_exempt
 @require_http_methods(['POST'])
@@ -104,16 +112,6 @@ def upload_battle(request):
 
     battle.knockout = vs_history_detail.knockout.value
 
-    battle.save()
-
-    for i, award in enumerate(vs_history_detail.awards):
-        battle.awards.add(
-            Award.objects.filter(name__string_en_us=award.name).first(),
-            through_defaults={
-                'order': i,
-            },
-        )
-
     teams = [vs_history_detail.my_team] + vs_history_detail.other_teams
 
     for i, team in enumerate(teams):
@@ -158,6 +156,16 @@ def upload_battle(request):
                 paint=player.paint,
                 noroshi_try=player.result.noroshi_try if isinstance(player.result, PlayerResult) else None,
             )
+
+    battle.save()
+
+    for i, award in enumerate(vs_history_detail.awards):
+        battle.awards.add(
+            Award.objects.filter(name__string_en_us=award.name).first(),
+            through_defaults={
+                'order': i,
+            },
+        )
 
     battle.save()
 

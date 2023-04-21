@@ -30,7 +30,7 @@ class Color:
             int(obj['a'] * 255),
         )
 
-    def to_css(self):
+    def css(self):
         return f'rgba({self.r}, {self.g}, {self.b}, {self.a / 255})'
 
     def to_hex(self):
