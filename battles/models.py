@@ -42,7 +42,7 @@ class Battle(models.Model):
         EXEMPTED_LOSE = 'EXEMPTED_LOSE', _('Lose (Exempted)')
         DEEMED_LOSE = 'DEEMED_LOSE', _('Deemed Lose')
 
-    uploader = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    uploader = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='battles')
     splatnet_id = models.CharField(max_length=32)
     raw_data = models.JSONField()
     data_type = models.CharField(max_length=32)  # e.g. "splatnet3"
@@ -55,19 +55,22 @@ class Battle(models.Model):
     duration = models.IntegerField()
     judgement = models.CharField(max_length=32, choices=BattleJudgement.choices)
 
-    player_byname = models.CharField(max_length=50)
-    player_head_gear = models.ForeignKey('splatnet_assets.Gear', on_delete=models.PROTECT,
-                                         related_name='player_head_gear')
-    player_clothing_gear = models.ForeignKey('splatnet_assets.Gear', on_delete=models.PROTECT,
-                                             related_name='player_clothing_gear')
-    player_shoes_gear = models.ForeignKey('splatnet_assets.Gear', on_delete=models.PROTECT,
-                                          related_name='player_shoes_gear')
-    player_id = models.CharField(max_length=50)
+    player_title_adjective = models.ForeignKey('splatnet_assets.TitleAdjective', on_delete=models.PROTECT)
+    player_title_subject = models.ForeignKey('splatnet_assets.TitleSubject', on_delete=models.PROTECT)
+    player_head_gear = models.OneToOneField('PlayerGear', on_delete=models.PROTECT, related_name='+')
+    player_clothing_gear = models.OneToOneField('PlayerGear', on_delete=models.PROTECT, related_name='+')
+    player_shoes_gear = models.OneToOneField('PlayerGear', on_delete=models.PROTECT, related_name='+')
+    player_npln_id = models.CharField(max_length=50)
     player_name = models.CharField(max_length=50)
     player_name_id = models.CharField(max_length=10)
     player_nameplate_background = models.ForeignKey('splatnet_assets.NameplateBackground', on_delete=models.PROTECT)
-    player_nameplate_badge_1 = models.ForeignKey('splatnet_assets.NameplateBadge', on_delete=models.PROTECT, null=True)
-    player_paint = models.IntegerField(validators=[MinValueValidator(0)])
+    player_nameplate_badge_1 = models.ForeignKey('splatnet_assets.NameplateBadge', on_delete=models.PROTECT, null=True,
+                                                 related_name='+')
+    player_nameplate_badge_2 = models.ForeignKey('splatnet_assets.NameplateBadge', on_delete=models.PROTECT, null=True,
+                                                 related_name='+')
+    player_nameplate_badge_3 = models.ForeignKey('splatnet_assets.NameplateBadge', on_delete=models.PROTECT, null=True,
+                                                 related_name='+')
+    player_paint = models.IntegerField(validators=[MinValueValidator(0)], null=True)
     knockout = models.CharField(max_length=32, choices=KnockoutJudgement.choices, blank=True, null=True)
 
     # teams comes from related_name='teams' on Team.battle
@@ -105,3 +108,46 @@ class Team(models.Model):
         DEFENSE = 'DEFENSE', _('Defense')
 
     tricolor_role = models.CharField(max_length=32, choices=TricolorRole.choices, blank=True, null=True)
+
+
+class Player(models.Model):
+    team = models.ForeignKey('Team', on_delete=models.CASCADE, related_name='players')
+    is_self = models.BooleanField()
+    npln_id = models.CharField(max_length=100)
+    name = models.CharField(max_length=50)
+    name_id = models.CharField(max_length=10)
+    title_adjective = models.ForeignKey('splatnet_assets.TitleAdjective', on_delete=models.PROTECT)
+    title_subject = models.ForeignKey('splatnet_assets.TitleSubject', on_delete=models.PROTECT)
+    nameplate_background = models.ForeignKey('splatnet_assets.NameplateBackground', on_delete=models.PROTECT)
+    nameplate_badge_1 = models.ForeignKey('splatnet_assets.NameplateBadge', on_delete=models.PROTECT, null=True,
+                                          related_name='+')
+    nameplate_badge_2 = models.ForeignKey('splatnet_assets.NameplateBadge', on_delete=models.PROTECT, null=True,
+                                          related_name='+')
+    nameplate_badge_3 = models.ForeignKey('splatnet_assets.NameplateBadge', on_delete=models.PROTECT, null=True,
+                                          related_name='+')
+    weapon = models.ForeignKey('splatnet_assets.Weapon', on_delete=models.PROTECT, related_name='+')
+    head_gear = models.OneToOneField('PlayerGear', on_delete=models.PROTECT, related_name='+')
+    clothing_gear = models.OneToOneField('PlayerGear', on_delete=models.PROTECT, related_name='+')
+    shoes_gear = models.OneToOneField('PlayerGear', on_delete=models.PROTECT, related_name='+')
+    disconnect = models.BooleanField()
+    kills = models.IntegerField(blank=True, null=True)
+    assists = models.IntegerField(blank=True, null=True)
+    deaths = models.IntegerField(blank=True, null=True)
+    specials = models.IntegerField(blank=True, null=True)
+    paint = models.IntegerField(blank=True, null=True)
+    noroshi_try = models.IntegerField(blank=True, null=True)
+
+
+class PlayerGear(models.Model):
+    gear = models.ForeignKey('splatnet_assets.Gear', on_delete=models.PROTECT)
+    primary_ability = models.ForeignKey('splatnet_assets.Ability', on_delete=models.PROTECT, related_name='+')
+    secondary_ability_1 = models.ForeignKey('splatnet_assets.Ability', on_delete=models.PROTECT, related_name='+',
+                                            null=True)
+    secondary_ability_2 = models.ForeignKey('splatnet_assets.Ability', on_delete=models.PROTECT, related_name='+',
+                                            null=True)
+    secondary_ability_3 = models.ForeignKey('splatnet_assets.Ability', on_delete=models.PROTECT, related_name='+',
+                                            null=True)
+
+    @property
+    def secondary_abilities(self):
+        return [self.secondary_ability_1, self.secondary_ability_2, self.secondary_ability_3]

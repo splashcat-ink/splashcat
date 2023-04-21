@@ -45,7 +45,7 @@ class ColorField(models.CharField):
         super().__init__(*args, **kwargs)
 
     @staticmethod
-    def from_db_value(value):
+    def from_db_value(value, _expression, _connection):
         if value is None:
             return value
         return Color.from_hex(value)

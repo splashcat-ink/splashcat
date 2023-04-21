@@ -79,7 +79,7 @@ class Gear(models.Model):
     brand = models.ForeignKey('Brand', on_delete=models.PROTECT)
     rarity = models.IntegerField()
     main_ability = models.ForeignKey('Ability', on_delete=models.PROTECT)
-    image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    image = models.ForeignKey('Image', on_delete=models.PROTECT, related_name='+')
 
     def __str__(self):
         return f'{self.name.string_en_us} ({self.type})'
@@ -138,6 +138,9 @@ class Award(models.Model):
     internal_id = models.CharField(max_length=100)
     name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
     gold = models.BooleanField()
+
+    def __str__(self):
+        return f'{self.internal_id} - {self.name.string_en_us}'
 
 
 class TitleAdjective(models.Model):

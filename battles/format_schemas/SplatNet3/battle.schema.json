@@ -173,6 +173,20 @@
       "maxItems": 3
     }
   },
+  "required": [
+    "id",
+    "vsMode",
+    "vsRule",
+    "vsStage",
+    "playedTime",
+    "duration",
+    "judgement",
+    "player",
+    "knockout",
+    "myTeam",
+    "otherTeams",
+    "awards"
+  ],
   "$comment": "TODO: ADD AS CONDITIONALS: udemae, bankaraMatch, leagueMatch, xMatch, festMatch",
   "$defs": {
     "image": {
@@ -355,10 +369,6 @@
       },
       "required": [
         "color",
-        "festStreakWinCount",
-        "festTeamName",
-        "festUniformBonusRate",
-        "festUniformName",
         "judgement",
         "order",
         "players",
@@ -574,7 +584,6 @@
       },
       "required": [
         "name",
-        "thumbnailImage",
         "originalImage",
         "brand",
         "primaryGearPower",

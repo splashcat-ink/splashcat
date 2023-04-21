@@ -225,8 +225,8 @@ class BaseGear:
     name: str
     original_image: SimpleImage
     primary_gear_power: GearPower
-    thumbnail_image: SimpleImage
     image: Optional[SimpleImage] = None
+    thumbnail_image: Optional[SimpleImage] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'BaseGear':
@@ -236,9 +236,9 @@ class BaseGear:
         name = from_str(obj.get("name"))
         original_image = SimpleImage.from_dict(obj.get("originalImage"))
         primary_gear_power = GearPower.from_dict(obj.get("primaryGearPower"))
-        thumbnail_image = SimpleImage.from_dict(obj.get("thumbnailImage"))
         image = from_union([SimpleImage.from_dict, from_none], obj.get("image"))
-        return BaseGear(additional_gear_powers, brand, name, original_image, primary_gear_power, thumbnail_image, image)
+        thumbnail_image = from_union([SimpleImage.from_dict, from_none], obj.get("thumbnailImage"))
+        return BaseGear(additional_gear_powers, brand, name, original_image, primary_gear_power, image, thumbnail_image)
 
     def to_dict(self) -> dict:
         result: dict = {}
@@ -247,9 +247,10 @@ class BaseGear:
         result["name"] = from_str(self.name)
         result["originalImage"] = to_class(SimpleImage, self.original_image)
         result["primaryGearPower"] = to_class(GearPower, self.primary_gear_power)
-        result["thumbnailImage"] = to_class(SimpleImage, self.thumbnail_image)
         if self.image is not None:
             result["image"] = from_union([lambda x: to_class(SimpleImage, x), from_none], self.image)
+        if self.thumbnail_image is not None:
+            result["thumbnailImage"] = from_union([lambda x: to_class(SimpleImage, x), from_none], self.thumbnail_image)
         return result
 
 
@@ -687,10 +688,14 @@ class Team:
         result["order"] = from_int(self.order)
         result["players"] = from_list(lambda x: to_class(VsHistoryDetai, x), self.players)
         result["result"] = to_class(MyTeamResult, self.result)
-        result["festStreakWinCount"] = from_union([from_int, from_none], self.fest_streak_win_count)
-        result["festTeamName"] = from_union([from_none, from_str], self.fest_team_name)
-        result["festUniformBonusRate"] = from_union([to_float, from_none], self.fest_uniform_bonus_rate)
-        result["festUniformName"] = from_union([from_none, from_str], self.fest_uniform_name)
+        if self.fest_streak_win_count is not None:
+            result["festStreakWinCount"] = from_union([from_int, from_none], self.fest_streak_win_count)
+        if self.fest_team_name is not None:
+            result["festTeamName"] = from_union([from_none, from_str], self.fest_team_name)
+        if self.fest_uniform_bonus_rate is not None:
+            result["festUniformBonusRate"] = from_union([to_float, from_none], self.fest_uniform_bonus_rate)
+        if self.fest_uniform_name is not None:
+            result["festUniformName"] = from_union([from_none, from_str], self.fest_uniform_name)
         result["tricolorRole"] = from_union([from_none, lambda x: to_enum(TricolorRole, x)], self.tricolor_role)
         return result
 
@@ -859,70 +864,55 @@ class VsStage:
 class VsHistoryDetail:
     """A VsHistoryDetail from SplatNet 3"""
     typename: Any
-    awards: Optional[List[Award]] = None
-    duration: Optional[int] = None
-    id: Optional[str] = None
-    judgement: Optional[VsHistoryDetailJudgement] = None
-    knockout: Optional[Knockout] = None
-    my_team: Optional[Team] = None
-    other_team: Optional[List[Team]] = None
-    played_time: Optional[datetime] = None
+    awards: List[Award]
+    duration: int
+    id: str
+    judgement: VsHistoryDetailJudgement
+    my_team: Team
+    other_teams: List[Team]
+    played_time: datetime
     """The player object in VsHistoryDetail.player and the elements in team.players extend this"""
-    player: Optional[BasePlayer] = None
-    vs_mode: Optional[VsMode] = None
-    vs_rule: Optional[VsRule] = None
-    vs_stage: Optional[VsStage] = None
+    player: BasePlayer
+    vs_mode: VsMode
+    vs_rule: VsRule
+    vs_stage: VsStage
+    knockout: Optional[Knockout] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'VsHistoryDetail':
         assert isinstance(obj, dict)
         typename = obj.get("__typename")
-        awards = from_union([lambda x: from_list(Award.from_dict, x), from_none], obj.get("awards"))
-        duration = from_union([from_int, from_none], obj.get("duration"))
-        id = from_union([from_str, from_none], obj.get("id"))
-        judgement = from_union([VsHistoryDetailJudgement, from_none], obj.get("judgement"))
+        awards = from_list(Award.from_dict, obj.get("awards"))
+        duration = from_int(obj.get("duration"))
+        id = from_str(obj.get("id"))
+        judgement = VsHistoryDetailJudgement(obj.get("judgement"))
+        my_team = Team.from_dict(obj.get("myTeam"))
+        other_teams = from_list(Team.from_dict, obj.get("otherTeams"))
+        played_time = from_datetime(obj.get("playedTime"))
+        player = BasePlayer.from_dict(obj.get("player"))
+        vs_mode = VsMode.from_dict(obj.get("vsMode"))
+        vs_rule = VsRule.from_dict(obj.get("vsRule"))
+        vs_stage = VsStage.from_dict(obj.get("vsStage"))
         knockout = from_union([from_none, Knockout], obj.get("knockout"))
-        my_team = from_union([Team.from_dict, from_none], obj.get("myTeam"))
-        other_team = from_union([lambda x: from_list(Team.from_dict, x), from_none], obj.get("otherTeam"))
-        played_time = from_union([from_datetime, from_none], obj.get("playedTime"))
-        player = from_union([BasePlayer.from_dict, from_none], obj.get("player"))
-        vs_mode = from_union([VsMode.from_dict, from_none], obj.get("vsMode"))
-        vs_rule = from_union([VsRule.from_dict, from_none], obj.get("vsRule"))
-        vs_stage = from_union([VsStage.from_dict, from_none], obj.get("vsStage"))
-        return VsHistoryDetail(typename, awards, duration, id, judgement, knockout, my_team, other_team, played_time,
-                               player, vs_mode, vs_rule, vs_stage)
+        return VsHistoryDetail(typename, awards, duration, id, judgement, my_team, other_teams, played_time, player,
+                               vs_mode, vs_rule, vs_stage, knockout)
 
     def to_dict(self) -> dict:
         result: dict = {}
         if self.typename is not None:
             result["__typename"] = self.typename
-        if self.awards is not None:
-            result["awards"] = from_union([lambda x: from_list(lambda x: to_class(Award, x), x), from_none],
-                                          self.awards)
-        if self.duration is not None:
-            result["duration"] = from_union([from_int, from_none], self.duration)
-        if self.id is not None:
-            result["id"] = from_union([from_str, from_none], self.id)
-        if self.judgement is not None:
-            result["judgement"] = from_union([lambda x: to_enum(VsHistoryDetailJudgement, x), from_none],
-                                             self.judgement)
-        if self.knockout is not None:
-            result["knockout"] = from_union([from_none, lambda x: to_enum(Knockout, x)], self.knockout)
-        if self.my_team is not None:
-            result["myTeam"] = from_union([lambda x: to_class(Team, x), from_none], self.my_team)
-        if self.other_team is not None:
-            result["otherTeam"] = from_union([lambda x: from_list(lambda x: to_class(Team, x), x), from_none],
-                                             self.other_team)
-        if self.played_time is not None:
-            result["playedTime"] = from_union([lambda x: x.isoformat(), from_none], self.played_time)
-        if self.player is not None:
-            result["player"] = from_union([lambda x: to_class(BasePlayer, x), from_none], self.player)
-        if self.vs_mode is not None:
-            result["vsMode"] = from_union([lambda x: to_class(VsMode, x), from_none], self.vs_mode)
-        if self.vs_rule is not None:
-            result["vsRule"] = from_union([lambda x: to_class(VsRule, x), from_none], self.vs_rule)
-        if self.vs_stage is not None:
-            result["vsStage"] = from_union([lambda x: to_class(VsStage, x), from_none], self.vs_stage)
+        result["awards"] = from_list(lambda x: to_class(Award, x), self.awards)
+        result["duration"] = from_int(self.duration)
+        result["id"] = from_str(self.id)
+        result["judgement"] = to_enum(VsHistoryDetailJudgement, self.judgement)
+        result["myTeam"] = to_class(Team, self.my_team)
+        result["otherTeams"] = from_list(lambda x: to_class(Team, x), self.other_teams)
+        result["playedTime"] = self.played_time.isoformat()
+        result["player"] = to_class(BasePlayer, self.player)
+        result["vsMode"] = to_class(VsMode, self.vs_mode)
+        result["vsRule"] = to_class(VsRule, self.vs_rule)
+        result["vsStage"] = to_class(VsStage, self.vs_stage)
+        result["knockout"] = from_union([from_none, lambda x: to_enum(Knockout, x)], self.knockout)
         return result
 
 

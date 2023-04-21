@@ -86,8 +86,8 @@ class Command(BaseCommand):
 
                 Gear.objects.update_or_create(
                     internal_id=gear['Id'],
+                    type=gear_type,
                     defaults={
-                        'type': gear_type,
                         'brand': brand,
                         'name': localization_string,
                         'rarity': gear['Rarity'],

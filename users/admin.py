@@ -17,7 +17,7 @@ class ApiKeyInline(TabularInline):
 
 class UserAdmin(AbstractUserAdmin):
     fieldsets = AbstractUserAdmin.fieldsets + (
-        (None, {"fields": ["profile_picture", "is_splashcat_sponsor", "is_sponsor_public"]}),)
+        (None, {"fields": ["profile_picture", "is_splashcat_sponsor", "is_sponsor_public", "battles"]}),)
     inlines = [ApiKeyInline]
 
     def __init__(self, model, admin_site):

@@ -29,6 +29,7 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     path('accounts/', include('allauth.urls')),
     path('users/', include('users.urls')),
+    path('battles/', include('battles.urls')),
     path('@<str:username>/', users_views.profile, name='profile'),
     path('sponsor/', TemplateView.as_view(template_name='splashcat/sponsor.html'), name='sponsor'),
 ]

@@ -18,6 +18,7 @@ def api_auth_required(func):
         except ObjectDoesNotExist:
             return HttpResponseForbidden()
         request.user = api_key.user
+        return func(request, *args, **kwargs)
 
     return wrapper
 
