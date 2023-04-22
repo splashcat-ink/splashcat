@@ -1,0 +1,21 @@
+<div class="h-24 relative w-fit text-[color:var(--text-color)]"
+     style="--text-color: {{ splashtag.background.text_color.css }}">
+    <img src="{{ splashtag.background.image.url }}" class="h-full">
+    <div class="absolute top-0 left-0 h-full w-full flex flex-col justify-center items-center">
+        <div class="text-3xl font-splatoon1">{{ splashtag.name }}</div>
+    </div>
+    <div class="text-base absolute top-0.5 left-1 -skew-x-[5deg]">
+        {{ splashtag.title_adjective.string.string }} {{ splashtag.title_subject.string.string }}
+    </div>
+    <div class="text-sm absolute bottom-1 left-1">#{{ splashtag.name_id }}</div>
+    <div class="absolute bottom-0 right-0 flex flex-row gap-2">
+        {% for badge in splashtag.badges %}
+            {% if badge is not None %}
+                <img src="{{ badge.image.url }}" class="h-8 w-8" alt="{{ badge.description.string }}"
+                     title="{{ badge.description.string }}">
+            {% else %}
+                <span class="h-8 w-8"></span>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

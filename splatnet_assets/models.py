@@ -59,9 +59,14 @@ class LocalizationString(models.Model):
     string_zh_cn = models.TextField(blank=True)
     string_zh_tw = models.TextField(blank=True)
 
-    def get_localized(self, locale: str = None):
+    @property
+    def string(self, locale: str = None):
         if locale is None:
             locale = get_language()
+        # Handle locales that don't exist
+        exists = hasattr(self, f'string_{locale.lower().replace("-", "_")}')
+        if not exists:
+            locale = 'en-us'
         string = getattr(self, f'string_{locale.lower().replace("-", "_")}')
         if string is None or string == '':
             string = self.string_en_us
@@ -86,7 +91,7 @@ class Gear(models.Model):
     image = models.ForeignKey('Image', on_delete=models.PROTECT, related_name='+')
 
     def __str__(self):
-        return f'{self.name.string_en_us} ({self.type})'
+        return f'{self.name.internal_id} ({self.type})'
 
 
 class Ability(models.Model):

@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% load static %}
 
 {% block title %}{{ battle.uploader.display_name }}'s battle on {{ battle.played_time }}{% endblock %}
 
@@ -20,20 +22,14 @@
     </div>
 
     <div class="text-lg">
-        {% if battle.vs_mode == "BANKARA" %}
-            Anarchy Battle
-        {% elif battle.vs_mode == "X_MATCH" %}
-            X Battle
-        {% elif battle.vs_mode == "FEST" %}
-            Splatfest Battle
-        {% else %}
-            Regular Battle
-        {% endif %}
+        {{ battle.get_vs_mode_display }}
     </div>
 
     <div class="text-lg">
         {{ battle.get_vs_rule_display }}
     </div>
+
+    <img src="{{ battle.vs_stage.image.url }}" alt="{{ battle.vs_stage.name.string }}" class="md:max-w-6xl">
 
     {% if battle.judgement == "EXEMPTED_LOSE" %}
         <span class="bg-gray-700/60 text-xl p-4 rounded inline-block my-4">
@@ -49,7 +45,7 @@
 </span>
     {% endif %}
 
-    <div class="grid grid-cols-1 {% if battle.teams.count >= 3 %}lg:grid-cols-3{% else %}md:grid-cols-2{% endif %} gap-4 py-4 px-1">
+    <div class="grid grid-cols-1 lg:grid-cols-3 {% if battle.teams.count == 2 %}md:grid-cols-2{% endif %} gap-4 py-4 px-1">
         {% for team in battle.teams.all %}
             <div
                     class="rounded-lg bg-[color:var(--team-color)] p-2 card-mask -rotate-1 odd:rotate-1"
@@ -67,8 +63,8 @@
                     {% endif %}
                 </div>
 
-                {% if team.festTeamName %}
-                    <div class="text-xl">Team {{ team.festTeamName }}</div>
+                {% if team.fest_team_name %}
+                    <div class="text-xl">Team {{ team.fest_team_name }}</div>
                 {% endif %}
 
                 <div class="flex flex-col gap-2">
@@ -84,36 +80,51 @@
                             <div class="flex-none flex flex-row gap-1 px-4 justify-end rounded-full min-w-fit bg-black/50">
                                 <span class="text-xl w-min whitespace-nowrap pt-1">{{ player.paint }}p</span>
                                 <span class="text-lg w-min whitespace-nowrap pt-[2px]">
-                                        x{{ player.result.kill|default_if_none:"--" }}
-                                    {% if player.result and player.result.assist != 0 %}
+                                {% if player.species == "OCTOLING" %}
+                                    {% include "battles/svg/octoling_splat.html" with color=team.color %}
+                                {% else %}
+                                    {% include "battles/svg/inkling_splat.html" with color=team.color %}
+                                {% endif %}
+                                    x{{ player.kills|default:"--" }}
+                                    {% if player.assists != 0 %}
                                         <sub class="text-xs text-gray-300">
-                                                ({{ player.result.assist }})
+                                                ({{ player.assists }})
                                             </sub>
                                     {% endif %}
                         </span>
                                 <span class="text-lg w-min whitespace-nowrap pt-[2px]">
-                            x{{ player.result.death|default_if_none:"--" }}
+                                {% comment %}get the next team's color, going to the first team if this is the last one{% endcomment %}
+
+                                    {% if player.species == "OCTOLING" %}
+                                        {% include "battles/svg/octoling_splatted.html" with color=team.next_team.color %}
+                                    {% else %}
+                                        {% include "battles/svg/inkling_splatted.html" with color=team.next_team.color %}
+                                    {% endif %}
+                                    x{{ player.deaths|default:"--" }}
                         </span>
                                 <span class="text-lg w-min whitespace-nowrap">
-                            <svg width="24" class="h-4 w-4 relative top-0" viewBox="0 0 100 100" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 role="img" aria-label="Special-Weapon Uses" preserveAspectRatio="xMidYMid slice">
+                                    {% with maskingId=player.npln_id %}
+                                        <svg width="24" class="h-4 w-4 relative top-0" viewBox="0 0 128 128" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             role="img" aria-label="Special-Weapon Uses"
+                                             preserveAspectRatio="xMidYMid slice">
                                 <mask id="__{{ maskingId }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
-                                    <image x="0" y="0" width="{{ player.weapon.specialWeapon.maskingImage.width }}"
-                                           height="{{ player.weapon.specialWeapon.maskingImage.height }}"
-                                           href="{{ player.weapon.specialWeapon.maskingImage.maskImageUrl }}">
+                                    <image x="0" y="0" width="{{ player.weapon.special.mask_image.image.width }}"
+                                           height="{{ player.weapon.special.mask_image.image.height }}"
+                                           href="{{ player.weapon.special.mask_image.url }}">
                                     </image>
                                 </mask>
-                                <rect x="0" y="0" width="{{ player.weapon.specialWeapon.maskingImage.width }}"
-                                      height="{{ player.weapon.specialWeapon.maskingImage.height }}"
-                                      fill="{{ team.color }}"
+                                <rect x="0" y="0" width="{{ player.weapon.special.mask_image.image.width }}"
+                                      height="{{ player.weapon.special.mask_image.image.height }}"
+                                      fill="{{ team.color.css }}"
                                       mask="url(#__{{ maskingId }})"></rect>
-                                <image x="0" y="0" width="{{ player.weapon.specialWeapon.maskingImage.width }}"
-                                       height="{{ player.weapon.specialWeapon.maskingImage.height }}"
-                                       href="{{ player.weapon.specialWeapon.maskingImage.overlayImageUrl }}">
+                                <image x="0" y="0" width="{{ player.weapon.special.overlay_image.image.width }}"
+                                       height="{{ player.weapon.special.overlay_image.image.height }}"
+                                       href="{{ player.weapon.special.overlay_image.url }}">
                                 </image>
                             </svg>
-                            x{{ player.result.special|default_if_none:"--" }}
+                                    {% endwith %}
+                                    x{{ player.specials|default:"--" }}
                         </span>
                             </div>
                         </div>
@@ -124,18 +135,22 @@
     </div>
 
     {% if battle.awards.count > 0 %}
-        <h2 class="text-xl font-splatoon1">Medals Earned</h2>
+        <h2 class="text-xl font-splatoon1">{% translate "Medals Earned" %}</h2>
         <div class="-rotate-2 -pt-1 pb-6 w-fit">
             {% for award in battle.awards.all %}
-                <div class="bg-[url('/images/medal-bg.png')] bg-no-repeat bg-contain bg-top w-[220px] h-[39px] pr-[21px] pl-[47px] text-gray-900 font-splatoon1 text-[13px] relative flex align-middle items-center justify-center whitespace-nowrap box-border my-2 ml-0 [&:nth-child(2)]:ml-5 [&:nth-child(3)]:ml-10">
-                    <span>{{ award.name }}</span>
+                <div
+                        class="bg-no-repeat bg-contain bg-top w-[220px] h-[39px] pr-[21px] pl-[47px] text-gray-900 font-splatoon1 text-[13px] relative flex align-middle items-center justify-center whitespace-nowrap box-border my-2 ml-0 [&:nth-child(2)]:ml-5 [&:nth-child(3)]:ml-10"
+                        style="background-image: url('{% static 'images/medal-bg.png' %}')"
+                >
+                    <span>{{ award.name.string }}</span>
 
                     {% if award.rank == "GOLD" %}
-                        <img class="h-[52px] w-[48px] absolute left-px -top-px rotate-2" src="/images/gold-medal.png"
+                        <img class="h-[52px] w-[48px] absolute left-px -top-px rotate-2"
+                             src="{% static 'images/gold-medal.png' %}"
                              alt="Gold">
                     {% else %}
                         <img class="h-[36px] w-[34px] absolute left-[4px] top-[5px] rotate-2"
-                             src="/images/silver-medal.png" alt="Silver">
+                             src="{% static 'images/silver-medal.png' %}" alt="Silver">
                     {% endif %}
                 </div>
             {% endfor %}
@@ -144,7 +159,9 @@
 
     <h2 class="text-xl font-splatoon1">Splashtag</h2>
 
-    <div class="sticky left-0 bottom-0 w-full flex gap-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-2 mt-6 -mb-8 sm:rounded-t-xl bg-gray-700 whitespace-nowrap text-xs sm:text-sm md:text-base">
+    {% include 'includes/splashtag.html' with splashtag=battle.splashtag only %}
+
+    <div class="sticky left-0 bottom-0 w-full flex gap-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-2 mt-4 -mb-3 sm:rounded-t-xl bg-gray-700 whitespace-nowrap text-xs sm:text-sm md:text-base">
         <a href="{{ pagination.href.first }}" class="py-2 px-4 rounded-full bg-gray-600">Latest Battle</a>
         <div class="grow"></div>
         <a href="{{ pagination.href.previous }}"

@@ -32,6 +32,7 @@ urlpatterns = [
     path('battles/', include('battles.urls')),
     path('@<str:username>/', users_views.profile, name='profile'),
     path('sponsor/', TemplateView.as_view(template_name='splashcat/sponsor.html'), name='sponsor'),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
 
 if settings.DEBUG:

@@ -65,12 +65,14 @@ class Command(BaseCommand):
                                 internal_id=weapon['__RowId'], type=LocalizationString.Type.SPECIAL_WEAPON_NAME)[0],
                             'image': download_image_from_path('special', weapon['Id'], f'subspe/Wsp_{weapon["__RowId"]}'
                                                                                        f'00.png'),
-                            'mask_image': download_image('special_mask', weapon['Id'], f'https://uploads.catgirlin'
-                                                                                       f'.space/specialsmasks/Wsp_'
+                            'mask_image': download_image('special_mask', weapon['Id'], f'https://uploads.catgirl'
+                                                                                       f'in.space/specialsmasks/Wsp_'
                                                                                        f'{weapon["__RowId"]}00.png'),
-                            'overlay_image': download_image('special_mask', weapon['Id'], f'https://uploads.catgirlin'
-                                                                                          f'.space/specialsmasks/Wsp_'
-                                                                                          f'{weapon["__RowId"]}01.png'),
+                            'overlay_image': download_image('special_overlay', weapon['Id'], f'https://uploads.catgirl'
+                                                                                             f'in.space/specialsmasks'
+                                                                                             f'/Wsp_'
+                                                                                             f'{weapon["__RowId"]}'
+                                                                                             '01.png'),
                         }
                     )
 

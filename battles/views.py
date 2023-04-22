@@ -134,6 +134,7 @@ def upload_battle(request):
 
             team_object.players.create(
                 is_self=player.is_myself,
+                species=player.species.value,
                 npln_id=get_npln_id(player.id),
                 name=player.name,
                 name_id=player.name_id,
