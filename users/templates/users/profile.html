@@ -7,20 +7,67 @@
 {% endblock %}
 
 {% block content %}
-    <div class="flex flex-col md:flex-row">
-        <div class="basis-2/5 lg:basis-1/4 card-mask bg-splatoon-battle-league p-4 pt-12 rounded-lg rotate-1">
-            <img src="{{ profile_user.profile_picture.url }}" alt="{{ profile_user.display_name }}'s profile picture"
-                 class="aspect-square max-w-full object-contain rounded-sm bg-gray-500/50">
-            <h1 class="text-2xl">
-                {{ profile_user.display_name }}
-                {% if profile_user.is_splashcat_sponsor and profile_user.is_sponsor_public %}
-                    <a href="{% url 'sponsor' %}">
-                        <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
-                             class="h-6 inline-block">
-                    </a>
-                {% endif %}
-            </h1>
-            <p class="text-lg text-gray-300">@{{ profile_user.username }}</p>
+    <div class="flex flex-col md:flex-row gap-4">
+        <div class="basis-2/5 lg:basis-1/4 flex flex-col gap-2">
+            <div class="card-mask bg-splatoon-battle-league p-4 pt-12 rounded-lg rotate-1">
+                <img src="{{ profile_user.profile_picture.url }}"
+                     alt="{{ profile_user.display_name }}'s profile picture"
+                     class="aspect-square max-w-full object-contain rounded-sm bg-gray-500/50">
+                <h1 class="text-2xl">
+                    {{ profile_user.display_name }}
+                    {% if profile_user.is_splashcat_sponsor and profile_user.is_sponsor_public %}
+                        <a href="{% url 'sponsor' %}">
+                            <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                                 class="h-6 inline-block">
+                        </a>
+                    {% endif %}
+                </h1>
+                <p class="text-lg text-gray-300">@{{ profile_user.username }}</p>
+            </div>
+            <div class="-rotate-[0.5deg] shadow-lg w-fit">
+                {% include "includes/splashtag.html" with splashtag=splashtag only %}
+            </div>
+        </div>
+
+        <div class="flex grow flex-col gap-2">
+            <div class="flex flex-row flex-wrap divide-x-2 divide-gray-500 gap-y-2">
+                <div class="px-4">
+                    <div class="text-lg">Victories</div>
+                    <div class="text-2xl">{{ win_count }}</div>
+                </div>
+                <div class="px-4">
+                    <div class="text-lg">Defeats</div>
+                    <div class="text-2xl">{{ lose_count }}</div>
+                </div>
+                <div class="px-4">
+                    <div class="text-lg">Win Rate</div>
+                    <div class="text-2xl">{{ win_rate|floatformat:1 }}%</div>
+                </div>
+                <div class="px-4">
+                    <div class="text-lg">Average Kills</div>
+                    <div class="text-2xl">99.99</div>
+                </div>
+                <div class="px-4">
+                    <div class="text-lg">Average Deaths</div>
+                    <div class="text-2xl">99.99</div>
+                </div>
+                <div class="px-4">
+                    <div class="text-lg">Average Turfed</div>
+                    <div class="text-2xl">9999.9p</div>
+                </div>
+                <div class="px-4">
+                    <div class="text-lg">Favorite Weapon</div>
+                    <div class="text-2xl">E-Liter 4K Scope</div>
+                </div>
+            </div>
+
+            <h2 class="text-3xl font-splatoon1">Latest Battles</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {% for battle in latest_battles %}
+                    {% include "users/includes/battle-card.html" with battle=battle only %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
