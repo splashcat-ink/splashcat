@@ -7,35 +7,59 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} | Splashcat</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <script
+            src="https://js.sentry-cdn.com/656fdd98ff1a4c389b37c00a96e33513.min.js"
+            crossorigin="anonymous"
+    ></script>
     <script src="{% static 'js/hyperscript.min.js' %}" defer></script>
     <script src="{% static 'js/htmx.min.js' %}" defer></script>
     {% django_htmx_script %}
+    <!-- Matomo -->
+    <script>
+        let _paq = window._paq = window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['setCustomDimension', 1, '{% if user.is_authenticated %}{% if user.is_splashcat_sponsor %}sponsor{% else %}user{% endif %}{% else %}guest{% endif %}']);
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            let u = "//matomo.catgirlin.space/";
+            _paq.push(['setTrackerUrl', u + 'matomo.php']);
+            _paq.push(['setSiteId', '5']);
+            let d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.async = true;
+            g.src = u + 'matomo.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+    <!-- End Matomo Code -->
 </head>
 <body hx-headers="{'X-CSRFToken': '{{ csrf_token }}'}">
-    <header>
-        {% include 'includes/navbar.html' %}
-    </header>
+<header>
+    {% include 'includes/navbar.html' %}
+</header>
 
-    <div class="container">
-        {% if messages %}
-            <div class="flex flex-col gap-2 py-2">
-                {% for message in messages %}
-                    <div class="p-2 bg-purple-800 rounded {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        <main role="main" class="py-3">
-            {% block content %}{% endblock %}
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted bg-gray-800/70 py-4">
-        <div class="container">
-            <div class="text-lg">Splashcat</div>
-            <a href="https://github.com/splashcat-ink/splashcat">GitHub</a>
+<div class="container">
+    {% if messages %}
+        <div class="flex flex-col gap-2 py-2">
+            {% for message in messages %}
+                <div class="p-2 bg-purple-800 rounded
+                        {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+            {% endfor %}
         </div>
-    </footer>
+    {% endif %}
+
+    <main role="main" class="py-3">
+        {% block content %}{% endblock %}
+    </main>
+</div>
+
+<footer class="border-top footer text-muted bg-gray-800/70 py-4">
+    <div class="container">
+        <div class="text-lg">Splashcat</div>
+        <a href="https://github.com/splashcat-ink/splashcat">GitHub</a>
+    </div>
+</footer>
 </body>
 </html>

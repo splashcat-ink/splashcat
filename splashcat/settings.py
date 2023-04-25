@@ -9,12 +9,16 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
+import dj_database_url
 import sentry_sdk
 from django.conf import global_settings
+from dotenv import load_dotenv
 from sentry_sdk.integrations.django import DjangoIntegration
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,14 +27,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#dcv8nkxcu-9mheo*vecxde%l$!do!9(3@rx4u%n9dht_81akn'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-GITHUB_SPONSORS_WEBHOOK_TOKEN = 'silly-kitty-meow-meow'
+GITHUB_SPONSORS_WEBHOOK_TOKEN = os.environ.get('GITHUB_SPONSORS_WEBHOOK_TOKEN')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 SITE_ID = 1
 
@@ -99,12 +103,19 @@ WSGI_APPLICATION = 'splashcat.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+database_url = os.environ.get("DATABASE_URL")
+
+if database_url is None:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": dj_database_url.parse(database_url),
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -199,3 +210,6 @@ sentry_sdk.init(
     # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True
 )
+
+if DEBUG:
+    sentry_sdk.init()  # when debugging locally don't send to sentry

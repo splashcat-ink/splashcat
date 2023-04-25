@@ -6,15 +6,31 @@
 
 {% block content %}
     <h1 class="text-3xl font-splatoon1">
-        {{ battle.uploader.display_name }}'s battle on
+        <a href="{% url 'profile' battle.uploader.username %}">{{ battle.uploader.display_name }}</a>'s battle on
         <time datetime="{{ battle.played_time }}">{{ battle.played_time }}</time>
     </h1>
+
+    <a class="flex flex-row gap-2 items-center my-3 w-fit" href="{% url 'profile' battle.uploader.username %}">
+        <img src="{{ battle.uploader.profile_picture.url }}" alt="{{ battle.uploader.display_name }}"
+             class="h-12 w-12 object-cover rounded-lg">
+        <div class="flex flex-col">
+            <div class="text-xl">
+                {{ battle.uploader.display_name }}
+                {% if battle.uploader.is_splashcat_sponsor and battle.uploader.is_sponsor_public %}
+                    <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                         class="h-6 inline-block">
+                {% endif %}
+            </div>
+            <div class="text-sm text-gray-400">@{{ battle.uploader.username }}</div>
+        </div>
+    </a>
 
     <div class="flex flex-wrap gap-4 py-2">
     <span class="text-2xl">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
              class="w-8 h-8 inline">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
 
         {{ battle.duration }}

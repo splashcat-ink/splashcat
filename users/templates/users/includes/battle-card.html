@@ -1,0 +1,27 @@
+<a class="card-mask rounded-2xl {% if battle.vs_mode == "BANKARA" %}bg-splatoon-battle-ranked{% elif battle.vs_mode == "X_MATCH" %}bg-splatoon-battle-xmatch{% else %}bg-splatoon-battle-regular{% endif %} battle-card-background transition duration-200 hover:rotate-2 drop-shadow-lg hover:drop-shadow-2xl"
+   href="{% url 'battles:view_battle' battle.id %}">
+    <div class="text-xl float-right p-1">{{ battle.played_time|date:"SHORT_DATE_FORMAT" }}</div>
+    <div class="bg-black/50 mt-8 p-2">
+        <div class="text-lg float-right">{{ battle.vs_stage.name.string }}</div>
+        <div class="font-splatoon1 text-2xl {% if battle.judgement == "WIN" %}text-yellow-200{% else %}text-gray-300{% endif %}">
+            {{ battle.get_judgement_display }}
+        </div>
+        <div>
+            {{ battle.get_vs_mode_display }}
+        </div>
+        <div class="text-lg">
+            <img src="/static/images/rule-icons/{{ battle.vs_rule }}" class="inline-block h-8 w-8" alt="">
+            {{ battle.get_vs_rule_display }}
+        </div>
+        <div class="text-lg">
+            <img src="{{ battle.player.weapon.flat_image.url }}" class="inline-block h-10 w-10" alt="">
+            {{ battle.player.weapon.name.string }}
+            <img src="{{ battle.player.weapon.sub.image.url }}"
+                 alt="{{ battle.player.weapon.sub.name.string }}" title="{{ battle.player.weapon.sub.name.string }}"
+                 class="inline h-6 w-6">
+            <img src="{{ battle.player.weapon.special.image.url }}"
+                 alt="{{ battle.player.weapon.special.name.string }}"
+                 title="{{ battle.player.weapon.special.name.string }}" class="inline h-6 w-6">
+        </div>
+    </div>
+</a>

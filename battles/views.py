@@ -20,7 +20,7 @@ from splatnet_assets.models import *
 # Create your views here.
 
 def view_battle(request, battle_id):
-    battle = get_object_or_404(Battle, id=battle_id)
+    battle = get_object_or_404(Battle.objects.with_prefetch(), id=battle_id)
     return render(request, 'battles/view_battle.html', {
         'battle': battle,
     })
@@ -79,13 +79,22 @@ def upload_battle(request):
 
     print("yay we passed that")
 
-    battle = Battle(data_type="splatnet3", raw_data=data['battle'], uploader=request.user)
-
     vs_history_detail = VsHistoryDetail.from_dict(data['battle'])
 
     splatnet_id = vs_history_detail.id
     splatnet_id = base64.b64decode(splatnet_id).decode('utf-8')
-    battle.splatnet_id = splatnet_id.split(':')[-1]
+    splatnet_id = splatnet_id.split(':')[-1]
+
+    if Battle.objects.filter(splatnet_id=splatnet_id).exists():
+        return HttpResponseBadRequest(
+            json.dumps({
+                'error': 'battle already exists',
+            })
+        )
+
+    battle = Battle(data_type="splatnet3", raw_data=data['battle'], uploader=request.user)
+
+    battle.splatnet_id = splatnet_id
 
     battle.vs_mode = vs_history_detail.vs_mode.mode.value
     battle.vs_rule = vs_history_detail.vs_rule.rule.value

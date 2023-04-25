@@ -14,7 +14,31 @@ from .models import User
 
 def profile(request, username: str):
     user = get_object_or_404(User, username=username)
-    return render(request, 'users/profile.html', {'profile_user': user})
+    # get their latest battles and splashtag
+    latest_battles = user.battles.order_by('-uploaded_at') \
+                         .prefetch_related('teams__players') \
+                         .prefetch_related('teams__players__weapon__name') \
+                         .prefetch_related('teams__players__weapon__flat_image') \
+                         .prefetch_related('teams__players__weapon__sub__name') \
+                         .prefetch_related('teams__players__weapon__sub__image') \
+                         .prefetch_related('teams__players__weapon__special__name') \
+                         .prefetch_related('teams__players__weapon__special__image') \
+                         .prefetch_related('vs_stage__name')[:12]
+    splashtag = latest_battles[0].splashtag if latest_battles else None
+
+    win_count = user.battles.filter(judgement='WIN').count()
+    lose_count = user.battles.exclude(judgement='WIN').exclude(judgement='DRAW').count()
+    win_rate = win_count / (win_count + lose_count) * 100
+
+    return render(request, 'users/profile.html',
+                  {
+                      'profile_user': user,
+                      'splashtag': splashtag,
+                      'latest_battles': latest_battles,
+                      'win_count': win_count,
+                      'lose_count': lose_count,
+                      'win_rate': win_rate,
+                  })
 
 
 @csrf_exempt

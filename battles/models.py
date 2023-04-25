@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.db.models import Prefetch
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -10,15 +11,49 @@ from splatnet_assets.fields import ColorField
 
 
 class Judgement(models.TextChoices):
-    WIN = 'WIN', _('Win')
-    LOSE = 'LOSE', _('Lose')
+    WIN = 'WIN', _('Victory')
+    LOSE = 'LOSE', _('Defeat')
     DRAW = 'DRAW', _('Draw')
 
 
 class KnockoutJudgement(models.TextChoices):
     NEITHER = 'NEITHER', _('Neither')
-    WIN = 'WIN', _('Win')
-    LOSE = 'LOSE', _('Lose')
+    WIN = 'WIN', _('Victory')
+    LOSE = 'LOSE', _('Defeat')
+
+
+class BattleManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().defer("raw_data")
+
+    def with_prefetch(self):
+        return self.select_related('uploader', 'vs_stage__name',
+                                   'vs_stage__image',
+                                   'player_title_adjective__string',
+                                   'player_title_subject__string',
+                                   'player_head_gear',
+                                   'player_clothing_gear',
+                                   'player_shoes_gear',
+                                   'player_nameplate_background',
+                                   'player_nameplate_badge_3__image',
+                                   'player_nameplate_badge_3__image',
+                                   'player_nameplate_badge_3__image', ) \
+            .prefetch_related(
+            'awards',
+            'teams__players__head_gear__gear__name', 'teams__players__head_gear__gear__brand',
+            'teams__players__head_gear__gear__image',
+            'teams__players__clothing_gear__gear__name', 'teams__players__clothing_gear__gear__brand',
+            'teams__players__clothing_gear__gear__image',
+            'teams__players__shoes_gear__gear__name', 'teams__players__shoes_gear__gear__brand',
+            'teams__players__shoes_gear__gear__image',
+            'teams__players__weapon__name', 'teams__players__weapon__flat_image',
+            'teams__players__weapon__sub__name', 'teams__players__weapon__sub__image',
+            'teams__players__weapon__special__name',
+            'teams__players__weapon__special__mask_image',
+            'teams__players__weapon__special__overlay_image',
+            'teams__players__nameplate_background',
+            'teams__players__title_adjective__string', 'teams__players__title_subject__string',
+        )
 
 
 class Battle(models.Model):
@@ -37,11 +72,13 @@ class Battle(models.Model):
         GOAL = 'GOAL', _('Rainmaker')
 
     class BattleJudgement(models.TextChoices):
-        WIN = 'WIN', _('Win')
-        LOSE = 'LOSE', _('Lose')
+        WIN = 'WIN', _('Victory')
+        LOSE = 'LOSE', _('Defeat')
         DRAW = 'DRAW', _('Draw')
-        EXEMPTED_LOSE = 'EXEMPTED_LOSE', _('Lose (Exempted)')
+        EXEMPTED_LOSE = 'EXEMPTED_LOSE', _('Defeat (Exempted)')
         DEEMED_LOSE = 'DEEMED_LOSE', _('Deemed Lose')
+
+    objects = BattleManager()
 
     uploader = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='battles')
     splatnet_id = models.CharField(max_length=32)
@@ -95,6 +132,13 @@ class Battle(models.Model):
             'background': self.player_nameplate_background,
         }
 
+    @property
+    def player(self):
+        for team in self.teams.all():
+            for player in team.players.all():
+                if player.is_self:
+                    return player
+
 
 class BattleAward(models.Model):
     battle = models.ForeignKey('Battle', on_delete=models.CASCADE)
@@ -102,7 +146,14 @@ class BattleAward(models.Model):
     order = models.IntegerField()
 
 
+class TeamManager(models.Manager):
+    def with_prefetch(self):
+        return self.prefetch_related(Prefetch('players', queryset=Player.objects.with_prefetch()))
+
+
 class Team(models.Model):
+    objects = TeamManager()
+
     battle = models.ForeignKey('Battle', on_delete=models.CASCADE, related_name='teams')
     is_my_team = models.BooleanField()
     color = ColorField()
@@ -130,10 +181,27 @@ class Team(models.Model):
         return self.battle.teams.get(order=(self.order % self.battle.teams.count()) + 1)
 
 
+class PlayerManager(models.Manager):
+    def with_prefetch(self):
+        return self.prefetch_related(
+            'title_adjective__string', 'title_subject__string',
+            'nameplate_background__image',
+            'nameplate_badge_1__image', 'nameplate_badge_2__image', 'nameplate_badge_3__image',
+            'weapon__name', 'weapon__flat_image', 'weapon__sub__name', 'weapon__sub__image',
+            'weapon__special__name',
+            'weapon__special__mask_image', 'weapon__special__overlay_image',
+            'head_gear__gear__name', 'head_gear__gear__image',
+            'clothing_gear__gear__name', 'clothing_gear__gear__image',
+            'shoes_gear__gear__name', 'shoes_gear__gear__image',
+        )
+
+
 class Player(models.Model):
     class Species(models.TextChoices):
         INKLING = 'INKLING', _('Inkling')
         OCTOLING = 'OCTOLING', _('Octoling')
+
+    objects = PlayerManager()
 
     team = models.ForeignKey('Team', on_delete=models.CASCADE, related_name='players')
     is_self = models.BooleanField()
