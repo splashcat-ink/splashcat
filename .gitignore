@@ -3,3 +3,4 @@
 node_modules/
 /media/
 /static/css/styles.css
+.env
