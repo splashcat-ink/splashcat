@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 import sys
 from pathlib import Path
+from socket import gethostname, gethostbyname
 
 import dj_database_url
 import sentry_sdk
@@ -36,6 +37,7 @@ GITHUB_SPONSORS_WEBHOOK_TOKEN = os.environ.get('GITHUB_SPONSORS_WEBHOOK_TOKEN')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS += [gethostname(), gethostbyname(gethostname()), ]
 
 SITE_ID = 1
 
@@ -146,7 +148,6 @@ AUTHENTICATION_BACKENDS = [
 
 AUTH_USER_MODEL = 'users.User'
 
-
 ACCOUNT_FORMS = {
     'add_email': 'splashcat.allauth_forms.SplashcatAddEmailForm',
     'change_password': 'splashcat.allauth_forms.SplashcatChangePasswordForm',
@@ -156,7 +157,6 @@ ACCOUNT_FORMS = {
     'set_password': 'splashcat.allauth_forms.SplashcatSetPasswordForm',
     'signup': 'splashcat.allauth_forms.SplashcatSignupForm',
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
