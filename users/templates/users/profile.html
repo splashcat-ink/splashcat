@@ -27,6 +27,10 @@
             <div class="-rotate-[0.5deg] shadow-lg w-fit">
                 {% include "includes/splashtag.html" with splashtag=splashtag only %}
             </div>
+            {% if user.is_staff %}
+                <a href="{% url 'admin:users_user_change' profile_user.id %}"
+                   class="bg-red-700 p-2 rounded w-fit">Admin</a>
+            {% endif %}
         </div>
 
         <div class="flex grow flex-col gap-2">

@@ -123,6 +123,8 @@ def upload_battle(request):
 
     teams = [vs_history_detail.my_team] + vs_history_detail.other_teams
 
+    battle.save()
+
     for i, team in enumerate(teams):
         team_object = battle.teams.create(
             is_my_team=i == 0,

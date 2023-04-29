@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'battles',
     'users',
     'splatnet_assets',
+    'notifications',
 ]
 
 MIDDLEWARE = [

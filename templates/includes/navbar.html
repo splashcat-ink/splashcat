@@ -48,11 +48,8 @@
                         <a href="#"
                            class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Team</a>
 
-                        <a href="#"
-                           class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Projects</a>
-
-                        <a href="#"
-                           class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Calendar</a>
+                        <a href="https://splatoon3.ink/" target="_blank"
+                           class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Schedule</a>
                     </div>
                 </div>
             </div>
@@ -137,7 +134,7 @@
                                     Admin
                                 </a>
                             {% endif %}
-                            <form class="form-inline" action="{% url 'account_logout' %}" method="post">
+                            <form class="form-inline" action="{% url 'users:logout' %}" method="post">
                                 {% csrf_token %}
                                 <button type="submit" class="block px-4 py-2 text-sm text-gray-700">Logout</button>
                             </form>
@@ -145,9 +142,9 @@
                     </div>
                 {% else %}
                     <a class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-                       href="{% url 'account_signup' %}">Register</a>
+                       href="{% url 'users:register' %}">Register</a>
                     <a class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-                       href="{% url 'account_login' %}">Login</a>
+                       href="{% url 'users:login' %}">Login</a>
                 {% endif %}
             </div>
         </div>
@@ -162,11 +159,8 @@
             <a href="#"
                class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Team</a>
 
-            <a href="#"
-               class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Projects</a>
-
-            <a href="#"
-               class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Calendar</a>
+            <a href="https://splatoon3.ink/" target="_blank"
+               class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Schedule</a>
         </div>
     </div>
 </nav>

@@ -80,6 +80,11 @@ class Battle(models.Model):
 
     objects = BattleManager()
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["uploader", "-played_time"]),
+        ]
+
     uploader = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='battles')
     splatnet_id = models.CharField(max_length=32)
     raw_data = models.JSONField()

@@ -3,8 +3,10 @@ import json
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.views.generic import FormView
 
 from splashcat.decorators import github_webhook
+from .forms import RegisterForm
 from .models import User
 
 
@@ -13,7 +15,7 @@ from .models import User
 def profile(request, username: str):
     user = get_object_or_404(User, username=username)
     # get their latest battles and splashtag
-    latest_battles = user.battles.order_by('-uploaded_at') \
+    latest_battles = user.battles.order_by('-played_time') \
                          .prefetch_related('teams__players') \
                          .prefetch_related('teams__players__weapon__name') \
                          .prefetch_related('teams__players__weapon__flat_image') \
@@ -37,6 +39,11 @@ def profile(request, username: str):
                       'lose_count': lose_count,
                       'win_rate': win_rate,
                   })
+
+
+class RegisterView(FormView):
+    template_name = 'users/register.html'
+    form_class = RegisterForm
 
 
 @csrf_exempt
