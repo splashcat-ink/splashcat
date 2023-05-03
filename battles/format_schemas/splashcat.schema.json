@@ -135,7 +135,7 @@
                   "items": {
                     "oneOf": [
                       {
-                        "type": "id"
+                        "type": "integer"
                       },
                       {
                         "type": "null"
