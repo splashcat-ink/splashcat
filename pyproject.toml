@@ -26,6 +26,8 @@ python-dotenv = "^1.0.0"
 dj-database-url = "^2.0.0"
 psycopg2-binary = "^2.9.6"
 celery = { extras = ["redis"], version = "^5.2.7" }
+django-celery-results = "^2.5.0"
+django-celery-beat = "^2.5.0"
 
 
 [build-system]
