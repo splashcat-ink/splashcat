@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_results',
+    'django_celery_beat',
     'debug_toolbar',
     'django_htmx',
     'battles',
@@ -207,3 +209,8 @@ sentry_sdk.init(
 
 if DEBUG:
     sentry_sdk.init()  # when debugging locally don't send to sentry
+
+# Celery
+
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'default'

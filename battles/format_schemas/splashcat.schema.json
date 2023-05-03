@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://splashcat.ink/api/schemas/splashcat.schema.json",
+  "title": "Splsahcat Battle",
+  "description": "A battle to be uploaded to Splashcat. Any SplatNet 3 strings should use en-US locale. Splashcat will translate strings into the user's langauge.",
+  "type": "object",
+  "properties": {
+    "splatnetId": {
+      "description": "base64 decoded and split by `:` to get the last section",
+      "type": "string"
+    },
+    "vsMode": {
+      "enum": [
+        "BANKARA",
+        "X_MATCH",
+        "REGULAR",
+        "FEST"
+      ]
+    },
+    "vsRule": {
+      "enum": [
+        "AREA",
+        "TURF_WAR",
+        "TRI_COLOR",
+        "LOFT",
+        "CLAM",
+        "GOAL"
+      ]
+    },
+    "vsStageId": {
+      "type": "integer"
+    },
+    "playedTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "duration": {
+      "type": "integer"
+    },
+    "judgement": {
+      "enum": [
+        "WIN",
+        "LOSE",
+        "DRAW",
+        "EXEMPTED_LOSE",
+        "DEEMED_LOSE"
+      ]
+    },
+    "teams": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "isMyTeam": {
+            "type": "boolean"
+          },
+          "color": {
+            "$ref": "#/$defs/color"
+          },
+          "festStreakWinCount": {
+            "type": "integer"
+          },
+          "festTeamName": {
+            "type": "string"
+          },
+          "festUniformBonusRate": {
+            "type": "integer"
+          },
+          "festUniformName": {
+            "type": "string"
+          },
+          "judgement": {
+            "enum": [
+              "WIN",
+              "LOSE",
+              "DRAW"
+            ]
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2
+          },
+          "noroshi": {
+            "type": "integer"
+          },
+          "paintRatio": {
+            "type": "number"
+          },
+          "score": {
+            "type": "integer"
+          },
+          "tricolorRole": {
+            "enum": [
+              "ATTACK1",
+              "ATTACK2",
+              "DEFENSE"
+            ]
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "isMe": {
+                  "type": "boolean"
+                },
+                "disconnected": {
+                  "type": "boolean"
+                },
+                "species": {
+                  "enum": [
+                    "INKLING",
+                    "OCTOLING"
+                  ]
+                },
+                "nplnId": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "nameId": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "splashtagBackgroundId": {
+                  "type": "integer"
+                },
+                "badges": {
+                  "description": "Array of badge IDs. Use JSON `null` for empty slots.",
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "id"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "weaponId": {
+                  "type": "integer"
+                },
+                "headGear": {
+                  "$ref": "#/$defs/gear"
+                },
+                "clothingGear": {
+                  "$ref": "#/$defs/gear"
+                },
+                "shoesGear": {
+                  "$ref": "#/$defs/gear"
+                },
+                "kills": {
+                  "type": "integer"
+                },
+                "assists": {
+                  "type": "integer"
+                },
+                "deaths": {
+                  "type": "integer"
+                },
+                "specials": {
+                  "type": "integer"
+                },
+                "paint": {
+                  "type": "integer"
+                },
+                "noroshiTry": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "isMe",
+                "disconnected",
+                "species",
+                "nplnId",
+                "name",
+                "nameId",
+                "title",
+                "splashtagBackgroundId",
+                "badges",
+                "weaponId",
+                "headGear",
+                "clothingGear",
+                "shoesGear",
+                "paint"
+              ],
+              "if": {
+                "properties": {
+                  "disconnected": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "kills",
+                  "assists",
+                  "deaths",
+                  "specials"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "isMyTeam",
+          "color",
+          "judgement",
+          "order"
+        ]
+      }
+    },
+    "awards": {
+      "description": "The en-US string for the award. Splashcat will translate this into the user's language and manage the award's rank.",
+      "type": "array",
+      "maximum": 3,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "splatnetId",
+    "vsMode",
+    "vsRule",
+    "vsStageId",
+    "playedTime",
+    "duration",
+    "judgement",
+    "teams"
+  ],
+  ],
+  "$defs": {
+    "color": {
+      "title": "Color",
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "number"
+        },
+        "r": {
+          "type": "number"
+        },
+        "g": {
+          "type": "number"
+        },
+        "b": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "a",
+        "r",
+        "g",
+        "b"
+      ]
+    },
+    "gear": {
+      "title": "Gear",
+      "description": "A piece of gear. Use en-US locale for name and all abilities.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "primaryAbility": {
+          "type": "string"
+        },
+        "secondaryAbilities": {
+          "type": "array",
+          "maximum": 3,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

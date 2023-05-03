@@ -6,4 +6,5 @@ app_name = "battles"
 urlpatterns = [
     path('api/upload/', upload_battle, name='upload_battle'),
     path('<int:battle_id>/', view_battle, name='view_battle'),
+    path('api/<int:battle_id>/json/', get_battle_json, name='get_battle_json'),
 ]

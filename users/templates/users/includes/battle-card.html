@@ -14,14 +14,16 @@
             {{ battle.get_vs_rule_display }}
         </div>
         <div class="text-lg">
-            <img src="{{ battle.player.weapon.flat_image.url }}" class="inline-block h-10 w-10" alt="">
-            {{ battle.player.weapon.name.string }}
-            <img src="{{ battle.player.weapon.sub.image.url }}"
-                 alt="{{ battle.player.weapon.sub.name.string }}" title="{{ battle.player.weapon.sub.name.string }}"
-                 class="inline h-6 w-6">
-            <img src="{{ battle.player.weapon.special.image.url }}"
-                 alt="{{ battle.player.weapon.special.name.string }}"
-                 title="{{ battle.player.weapon.special.name.string }}" class="inline h-6 w-6">
+            {% with player=battle.player %}
+                <img src="{{ player.weapon.flat_image.url }}" class="inline-block h-10 w-10" alt="">
+                {{ player.weapon.name.string }}
+                <img src="{{ player.weapon.sub.image.url }}"
+                     alt="{{ player.weapon.sub.name.string }}" title="{{ player.weapon.sub.name.string }}"
+                     class="inline h-6 w-6">
+                <img src="{{ player.weapon.special.image.url }}"
+                     alt="{{ player.weapon.special.name.string }}"
+                     title="{{ player.weapon.special.name.string }}" class="inline h-6 w-6">
+            {% endwith %}
         </div>
     </div>
 </a>

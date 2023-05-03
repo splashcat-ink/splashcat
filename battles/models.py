@@ -83,6 +83,7 @@ class Battle(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=["uploader", "-played_time"]),
+            models.Index(fields=["uploader", "judgement"]),
         ]
 
     uploader = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='battles')
@@ -96,7 +97,7 @@ class Battle(models.Model):
     vs_stage = models.ForeignKey('splatnet_assets.Stage', on_delete=models.PROTECT, null=True)
     played_time = models.DateTimeField()
     duration = models.IntegerField()
-    judgement = models.CharField(max_length=32, choices=BattleJudgement.choices)
+    judgement = models.CharField(max_length=32, choices=BattleJudgement.choices, db_index=True)
 
     player_title_adjective = models.ForeignKey('splatnet_assets.TitleAdjective', on_delete=models.PROTECT)
     player_title_subject = models.ForeignKey('splatnet_assets.TitleSubject', on_delete=models.PROTECT)
@@ -124,7 +125,7 @@ class Battle(models.Model):
         return f'Battle {self.id} ({self.splatnet_id}) - @{self.uploader.username}'
 
     def get_absolute_url(self):
-        return reverse('battle_detail', args=[str(self.id)])
+        return reverse('battles:view_battle', args=[str(self.id)])
 
     @property
     def splashtag(self):
@@ -139,10 +140,15 @@ class Battle(models.Model):
 
     @property
     def player(self):
-        for team in self.teams.all():
-            for player in team.players.all():
-                if player.is_self:
-                    return player
+        print("player called!!")
+        return self.teams.get(is_my_team=True).players \
+            .select_related('weapon__name') \
+            .select_related('weapon__flat_image') \
+            .select_related('weapon__sub__name') \
+            .select_related('weapon__sub__image') \
+            .select_related('weapon__special__name') \
+            .select_related('weapon__special__image') \
+            .get(is_self=True)
 
 
 class BattleAward(models.Model):

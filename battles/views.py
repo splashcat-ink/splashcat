@@ -1,20 +1,18 @@
-import base64
 import json
 
 import jsonschema
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.core import serializers
+from django.db import transaction
+from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from jsonschema import validate
 
-from battles.formats.vs_history_detail import VsHistoryDetail, PlayerResult
 from battles.models import *
-from battles.utils import get_splatnet_int_id, get_title_parts_from_string, get_player_gear, get_npln_id, \
-    get_nameplate_badge
+from battles.parsers.splashcat import parse_splashcat
+from battles.parsers.splatnet3 import parse_splatnet3, BattleAlreadyExistsError
 from splashcat.decorators import api_auth_required
-from splatnet_assets.fields import Color
-from splatnet_assets.models import *
 
 
 # Create your views here.
@@ -26,9 +24,16 @@ def view_battle(request, battle_id):
     })
 
 
+def get_battle_json(request, battle_id):
+    battle = get_object_or_404(Battle.objects.with_prefetch(), id=battle_id)
+    data = serializers.serialize('json', [battle])
+    return HttpResponse(data, content_type='application/json')
+
+
 @csrf_exempt
 @require_http_methods(['POST'])
 @api_auth_required
+@transaction.atomic
 def upload_battle(request):
     data = request.body
     if request.content_type == 'application/json':
@@ -53,7 +58,7 @@ def upload_battle(request):
                     'type': 'object',
                 },
                 'data_type': {
-                    'enum': ['splatnet3']
+                    'enum': ['splatnet3', 'splashcat']
                 }
             },
             'required': ['battle', 'data_type'],
@@ -63,123 +68,41 @@ def upload_battle(request):
             json.dumps(e)
         )
 
-    # passed input validation, validate the battle data
-
-    with open('./battles/format_schemas/SplatNet3/battle.schema.json') as f:
-        schema = json.load(f)
-
-    try:
-        validate(data['battle'], schema)
-    except jsonschema.ValidationError as e:
-        return HttpResponseBadRequest(
-            e
-        )
-
-    # passed input validation, save the battle data
-
-    print("yay we passed that")
-
-    vs_history_detail = VsHistoryDetail.from_dict(data['battle'])
-
-    splatnet_id = vs_history_detail.id
-    splatnet_id = base64.b64decode(splatnet_id).decode('utf-8')
-    splatnet_id = splatnet_id.split(':')[-1]
-
-    if Battle.objects.filter(splatnet_id=splatnet_id).exists():
-        return HttpResponseBadRequest(
-            json.dumps({
-                'error': 'battle already exists',
-            })
-        )
-
-    battle = Battle(data_type="splatnet3", raw_data=data['battle'], uploader=request.user)
-
-    battle.splatnet_id = splatnet_id
-
-    battle.vs_mode = vs_history_detail.vs_mode.mode.value
-    battle.vs_rule = vs_history_detail.vs_rule.rule.value
-    battle.vs_stage = Stage.objects.get(splatnet_id=get_splatnet_int_id(vs_history_detail.vs_stage.id))
-    battle.played_time = vs_history_detail.played_time
-    battle.duration = vs_history_detail.duration
-    battle.judgement = vs_history_detail.judgement.value
-
-    title_adjective, title_subject = get_title_parts_from_string(vs_history_detail.player.byname)
-    battle.player_title_adjective = title_adjective
-    battle.player_title_subject = title_subject
-    battle.player_head_gear = get_player_gear(vs_history_detail.player.head_gear)
-    battle.player_clothing_gear = get_player_gear(vs_history_detail.player.clothing_gear)
-    battle.player_shoes_gear = get_player_gear(vs_history_detail.player.shoes_gear)
-    battle.player_npln_id = get_npln_id(vs_history_detail.player.id)
-    battle.player_name = vs_history_detail.player.name
-    battle.player_name_id = vs_history_detail.player.name_id
-    battle.player_nameplate_background = NameplateBackground.objects.get(
-        splatnet_id=get_splatnet_int_id(vs_history_detail.player.nameplate.background.id))
-    battle.player_nameplate_badge_1 = get_nameplate_badge(vs_history_detail.player.nameplate.badges[0])
-    battle.player_nameplate_badge_2 = get_nameplate_badge(vs_history_detail.player.nameplate.badges[1])
-    battle.player_nameplate_badge_3 = get_nameplate_badge(vs_history_detail.player.nameplate.badges[2])
-    battle.player_paint = vs_history_detail.player.paint
-
-    battle.knockout = vs_history_detail.knockout.value
-
-    teams = [vs_history_detail.my_team] + vs_history_detail.other_teams
-
-    battle.save()
-
-    for i, team in enumerate(teams):
-        team_object = battle.teams.create(
-            is_my_team=i == 0,
-            color=Color.from_floating_point_dict(team.color.to_dict()),
-            fest_streak_win_count=team.fest_streak_win_count,
-            fest_team_name=team.fest_team_name,
-            fest_uniform_bonus_rate=team.fest_uniform_bonus_rate,
-            fest_uniform_name=team.fest_uniform_name,
-            judgement=team.judgement.value,
-            order=team.order,
-            noroshi=team.result.noroshi,
-            paint_ratio=team.result.paint_ratio,
-            score=team.result.score,
-            tricolor_role=team.tricolor_role.value if team.tricolor_role else None,
-        )
-        for player in team.players:
-            title_adjective, title_subject = get_title_parts_from_string(player.byname)
-
-            team_object.players.create(
-                is_self=player.is_myself,
-                species=player.species.value,
-                npln_id=get_npln_id(player.id),
-                name=player.name,
-                name_id=player.name_id,
-                title_adjective=title_adjective,
-                title_subject=title_subject,
-                nameplate_background=NameplateBackground.objects.get(
-                    splatnet_id=get_splatnet_int_id(player.nameplate.background.id)),
-                nameplate_badge_1=get_nameplate_badge(player.nameplate.badges[0]),
-                nameplate_badge_2=get_nameplate_badge(player.nameplate.badges[1]),
-                nameplate_badge_3=get_nameplate_badge(player.nameplate.badges[2]),
-                weapon=Weapon.objects.get(splatnet_id=get_splatnet_int_id(player.weapon.id)),
-                head_gear=get_player_gear(player.head_gear),
-                clothing_gear=get_player_gear(player.clothing_gear),
-                shoes_gear=get_player_gear(player.shoes_gear),
-                disconnect=not isinstance(player.result, PlayerResult),
-                kills=player.result.kill if isinstance(player.result, PlayerResult) else None,
-                assists=player.result.assist if isinstance(player.result, PlayerResult) else None,
-                deaths=player.result.death if isinstance(player.result, PlayerResult) else None,
-                specials=player.result.special if isinstance(player.result, PlayerResult) else None,
-                paint=player.paint,
-                noroshi_try=player.result.noroshi_try if isinstance(player.result, PlayerResult) else None,
+    if data['data_type'] == 'splatnet3':
+        try:
+            battle = parse_splatnet3(data, request)
+        except jsonschema.ValidationError as e:
+            return HttpResponseBadRequest(
+                json.dumps(e)
             )
-
-    battle.save()
-
-    for i, award in enumerate(vs_history_detail.awards):
-        battle.awards.add(
-            Award.objects.filter(name__string_en_us=award.name).first(),
-            through_defaults={
-                'order': i,
-            },
-        )
-
-    battle.save()
+        except BattleAlreadyExistsError as e:
+            return HttpResponseBadRequest(
+                json.dumps({
+                    'status': 'error',
+                    'error': 'battle already exists',
+                })
+            )
+        except NotImplementedError as e:
+            return HttpResponseBadRequest(
+                json.dumps({
+                    'status': 'error',
+                    'error': 'not implemented',
+                })
+            )
+    elif data['data_type'] == 'splashcat':
+        try:
+            battle = parse_splashcat(data, request)
+        except jsonschema.ValidationError as e:
+            return HttpResponseBadRequest(
+                json.dumps(e)
+            )
+        except BattleAlreadyExistsError as e:
+            return HttpResponseBadRequest(
+                json.dumps({
+                    'status': 'error',
+                    'error': 'battle already exists',
+                })
+            )
 
     return JsonResponse({
         'status': 'ok',

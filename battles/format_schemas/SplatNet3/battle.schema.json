@@ -49,6 +49,7 @@
           "enum": [
             "AREA",
             "TURF_WAR",
+            "TRI_COLOR",
             "LOFT",
             "CLAM",
             "GOAL"
@@ -369,10 +370,8 @@
       },
       "required": [
         "color",
-        "judgement",
         "order",
         "players",
-        "result",
         "tricolorRole"
       ]
     },
@@ -525,7 +524,6 @@
             "weapon",
             "species",
             "result",
-            "crown",
             "festDragonCert"
           ]
         }
