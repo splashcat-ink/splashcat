@@ -233,8 +233,8 @@
     "playedTime",
     "duration",
     "judgement",
-    "teams"
-  ],
+    "teams",
+    "awards"
   ],
   "$defs": {
     "color": {
