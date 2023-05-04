@@ -25,7 +25,7 @@ def parse_splatnet3(data, request):
     splatnet_id = base64.b64decode(splatnet_id).decode('utf-8')
     splatnet_id = splatnet_id.split(':')[-1]
 
-    if Battle.objects.filter(splatnet_id=splatnet_id).exists():
+    if Battle.objects.filter(splatnet_id=splatnet_id, uploader=request.user).exists():
         raise BattleAlreadyExistsError()
 
     battle = Battle(data_type="splatnet3", raw_data=data['battle'], uploader=request.user)

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import TabularInline
 from django.contrib.auth.admin import UserAdmin as AbstractUserAdmin
 
-from .models import User, ApiKey
+from .models import User, ApiKey, GitHubLink
 
 
 class ApiKeyInline(TabularInline):
@@ -15,10 +15,15 @@ class ApiKeyInline(TabularInline):
     verbose_name_plural = "API Keys"
 
 
+class GitHubLinkInline(TabularInline):
+    model = GitHubLink
+    fields = ("github_id", "is_sponsor", "is_sponsor_public")
+
+
 class UserAdmin(AbstractUserAdmin):
     fieldsets = AbstractUserAdmin.fieldsets + (
-        (None, {"fields": ["profile_picture", "is_splashcat_sponsor", "is_sponsor_public"]}),)
-    inlines = [ApiKeyInline]
+        (None, {"fields": ["profile_picture", "saved_favorite_color"]}),)
+    inlines = [GitHubLinkInline]
 
     def __init__(self, model, admin_site):
         super().__init__(model, admin_site)
@@ -27,3 +32,4 @@ class UserAdmin(AbstractUserAdmin):
 
 admin.site.register(User, UserAdmin)
 admin.site.register(ApiKey)
+admin.site.register(GitHubLink)

@@ -77,7 +77,7 @@ class Battle(models.Model):
         ]
 
     uploader = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='battles')
-    splatnet_id = models.CharField(max_length=32)
+    splatnet_id = models.CharField(max_length=100)
     raw_data = models.JSONField()
     data_type = models.CharField(max_length=32)  # e.g. "splatnet3"
     uploaded_at = models.DateTimeField(auto_now_add=True)

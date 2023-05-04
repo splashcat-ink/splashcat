@@ -21,9 +21,10 @@ from django.views.generic import TemplateView
 
 import users.views as users_views
 from splashcat import settings
+from splashcat.views import home
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='splashcat/home.html'), name='home'),
+    path('', home, name='home'),
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),

@@ -18,7 +18,7 @@ def parse_splashcat(data, request):
 
     splashcat_battle = SplashcatBattle.from_dict(data['battle'])
 
-    if Battle.objects.filter(splatnet_id=splashcat_battle.splatnet_id).exists():
+    if Battle.objects.filter(splatnet_id=splashcat_battle.splatnet_id, uploader=request.user).exists():
         raise BattleAlreadyExistsError()
 
     battle = Battle(data_type="splashcat", raw_data=data['battle'], uploader=request.user)

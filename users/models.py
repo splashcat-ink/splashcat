@@ -4,13 +4,13 @@ from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
+from splatnet_assets.fields import ColorField, Color
+
 
 # Create your models here.
 
 
 class User(AbstractUser):
-    is_splashcat_sponsor = models.BooleanField(default=False)
-    is_sponsor_public = models.BooleanField(default=False)
     username = models.CharField(
         _("username"),
         max_length=30,
@@ -28,6 +28,14 @@ class User(AbstractUser):
     last_name = None
 
     profile_picture = models.ImageField(_("profile picture"), upload_to='profile_pictures', blank=True, null=True)
+    saved_favorite_color = ColorField(default="00000000")
+
+    @property
+    def favorite_color(self):
+        if self.github_link.is_sponsor:
+            return self.saved_favorite_color
+        else:
+            return Color.from_hex("00000000")
 
     def get_full_name(self):
         return self.display_name.strip()
@@ -51,3 +59,15 @@ class ApiKey(models.Model):
 
     def __str__(self):
         return f'API Key {self.key} (@{self.user.username})'
+
+
+class GitHubLink(models.Model):
+    class Meta:
+        verbose_name = "GitHub Link"
+
+    linked_user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='github_link', blank=True,
+                                       null=True)
+    github_id = models.IntegerField(unique=True)
+    is_sponsor = models.BooleanField(default=False)
+    is_sponsor_public = models.BooleanField(default=False)
+    sponsorship_amount_usd = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)

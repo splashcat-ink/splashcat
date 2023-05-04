@@ -1,4 +1,6 @@
+from django import forms
 from django.db import models
+from django.forms import widgets
 
 
 class Color:
@@ -14,7 +16,7 @@ class Color:
             int(hex_string[0:2], 16),
             int(hex_string[2:4], 16),
             int(hex_string[4:6], 16),
-            int(hex_string[6:8], 16),
+            int(hex_string[6:8], 16) if len(hex_string) >= 8 else 0,
         )
 
     @staticmethod
@@ -37,7 +39,31 @@ class Color:
         return f'{self.r:02x}{self.g:02x}{self.b:02x}{self.a:02x}'
 
 
-class ColorField(models.CharField):
+class ColorWidget(widgets.Input):
+    input_type = 'color'
+
+
+class ColorFormField(forms.Field):
+    widget = ColorWidget
+
+    def to_python(self, value):
+        if isinstance(value, Color):
+            return value
+        if value is None:
+            return value
+        if value.startswith('#'):
+            value = value[1:]
+        color = Color.from_hex(value)
+        color.a = 0
+        return color
+
+    def prepare_value(self, value):
+        if isinstance(value, Color):
+            return f'#{value.to_hex()[:6]}'
+        return value
+
+
+class ColorField(models.Field):
     description = "A field that stores a hex string representing RGBA color."
 
     def __init__(self, *args, **kwargs):
@@ -58,6 +84,15 @@ class ColorField(models.CharField):
         return Color.from_hex(value)
 
     def get_prep_value(self, value):
+        if isinstance(value, Color):
+            return value.to_hex()
         if value is None:
             return value
-        return value.to_hex()
+        return value
+
+    def formfield(self, **kwargs):
+        # This is a fairly standard way to set up some defaults
+        # while letting the caller override them.
+        defaults = {"form_class": ColorFormField}
+        defaults.update(kwargs)
+        return super().formfield(**defaults)

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load duration %}
 
 {% block title %}{{ battle.uploader.display_name }}'s battle on {{ battle.played_time }}{% endblock %}
 
@@ -45,7 +46,7 @@
                   d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
 
-        {{ battle.duration }}
+        {{ battle.duration|duration }}
     </span>
     </div>
 

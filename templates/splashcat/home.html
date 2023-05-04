@@ -1,9 +1,27 @@
 {% extends "base.html" %}
 
 {% block title %}
-Splashcat
+    Splashcat
 {% endblock %}
 
 {% block content %}
-Splashcat
+    <h1 class="text-3xl font-splatoon1">
+        Splashcat
+    </h1>
+
+    {% if user.is_authenticated and user_recent_battles|length > 0 %}
+        <h2 class="text-2xl font-splatoon1">Your Recent Battles</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {% for battle in user_recent_battles %}
+                {% include "users/includes/battle-card.html" with battle=battle only %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h2 class="text-2xl font-splatoon1">Recent Battles</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {% for battle in recent_battles %}
+            {% include "users/includes/battle-card.html" with battle=battle display_uploader=True only %}
+        {% endfor %}
+    </div>
 {% endblock %}

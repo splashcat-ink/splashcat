@@ -4,7 +4,7 @@ import jsonschema
 from django.core import serializers
 from django.db import transaction
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from jsonschema import validate
@@ -23,6 +23,11 @@ def view_battle(request, battle_id):
     return render(request, 'battles/view_battle.html', {
         'battle': battle,
     })
+
+
+def redirect_from_splatnet_id(request, uploader_username, splatnet_id):
+    battle = get_object_or_404(Battle, splatnet_id=splatnet_id, uploader__username=uploader_username)
+    return redirect('view_battle', battle_id=battle.id)
 
 
 def get_battle_json(request, battle_id):
@@ -103,3 +108,21 @@ def upload_battle(request):
         'status': 'ok',
         'battle_id': battle.id,
     })
+
+
+@csrf_exempt
+@require_http_methods(['GET'])
+@api_auth_required
+def check_if_battle_exists(request, splatnet_id):
+    try:
+        battle = Battle.objects.get(splatnet_id=splatnet_id, uploader=request.user)
+        return JsonResponse({
+            'status': 'ok',
+            'exists': True,
+            'battle_id': battle.id,
+        }, status=200)
+    except Battle.DoesNotExist:
+        return JsonResponse({
+            'status': 'ok',
+            'exists': False,
+        }, status=200)
