@@ -13,7 +13,7 @@ from splatnet_assets.models import Stage, NameplateBackground, Weapon, Award
 
 def parse_splatnet3(data, request):
     # haven't finished schema validation yet...
-    raise NotImplementedError()
+    # raise NotImplementedError()
 
     with open('./battles/format_schemas/SplatNet3/battle.schema.json') as f:
         schema = json.load(f)

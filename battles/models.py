@@ -27,16 +27,7 @@ class BattleManager(models.Manager):
 
     def with_prefetch(self):
         return self.select_related('uploader', 'vs_stage__name',
-                                   'vs_stage__image',
-                                   'player_title_adjective__string',
-                                   'player_title_subject__string',
-                                   'player_head_gear',
-                                   'player_clothing_gear',
-                                   'player_shoes_gear',
-                                   'player_nameplate_background',
-                                   'player_nameplate_badge_3__image',
-                                   'player_nameplate_badge_3__image',
-                                   'player_nameplate_badge_3__image', ) \
+                                   'vs_stage__image', ) \
             .prefetch_related(
             'awards',
             'teams__players__head_gear__gear__name', 'teams__players__head_gear__gear__brand',

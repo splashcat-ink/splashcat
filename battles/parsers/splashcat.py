@@ -3,11 +3,11 @@ from typing import Optional
 
 from jsonschema.validators import validate
 
-from battles.formats.splashcat_battle import SplashcatBattle, Gear
+from battles.formats.splashcat_battle import SplashcatBattle, Gear as SplashcatJsonGear
 from battles.models import Battle, PlayerGear
 from battles.utils import BattleAlreadyExistsError, get_title_parts_from_string, get_ability
 from splatnet_assets.fields import Color
-from splatnet_assets.models import Stage, NameplateBackground, NameplateBadge, Weapon, Award
+from splatnet_assets.models import Gear, Stage, NameplateBackground, NameplateBadge, Weapon, Award
 
 
 def parse_splashcat(data, request):
@@ -22,13 +22,13 @@ def parse_splashcat(data, request):
 
     battle = Battle(data_type="splashcat", raw_data=data['battle'], uploader=request.user)
     battle.splatnet_id = splashcat_battle.splatnet_id
-    battle.vs_mode = splashcat_battle.vs_mode
-    battle.vs_rule = splashcat_battle.vs_rule
+    battle.vs_mode = splashcat_battle.vs_mode.value
+    battle.vs_rule = splashcat_battle.vs_rule.value
     battle.vs_stage = Stage.objects.get(splatnet_id=splashcat_battle.vs_stage_id)
     battle.played_time = splashcat_battle.played_time
     battle.duration = splashcat_battle.duration
-    battle.judgement = splashcat_battle.judgement
-    battle.knockout = splashcat_battle.knockout
+    battle.judgement = splashcat_battle.judgement.value
+    battle.knockout = splashcat_battle.knockout.value
     battle.save()
     for i, team in enumerate(splashcat_battle.teams):
         team_object = battle.teams.create(
@@ -38,19 +38,19 @@ def parse_splashcat(data, request):
             fest_team_name=team.fest_team_name,
             fest_uniform_bonus_rate=team.fest_uniform_bonus_rate,
             fest_uniform_name=team.fest_uniform_name,
-            judgement=team.judgement,
+            judgement=team.judgement.value,
             order=team.order,
             noroshi=team.noroshi,
             paint_ratio=team.paint_ratio,
             score=team.score,
-            tricolor_role=team.tricolor_role,
+            tricolor_role=team.tricolor_role.value,
         )
         for player in team.players:
             title_adjective, title_subject = get_title_parts_from_string(player.title)
 
             team_object.players.create(
                 is_self=player.is_me,
-                species=player.species,
+                species=player.species.value,
                 npln_id=player.npln_id,
                 name=player.name,
                 name_id=player.name_id,
@@ -86,7 +86,7 @@ def get_nameplate_badge(badge: Optional[int]):
     return NameplateBadge.objects.get(splatnet_id=badge)
 
 
-def get_player_gear(gear: Gear):
+def get_player_gear(gear: SplashcatJsonGear):
     gear = PlayerGear(
         gear=Gear.objects.get(name__string_en_us=gear.name),
         primary_ability=get_ability(gear.primary_ability),

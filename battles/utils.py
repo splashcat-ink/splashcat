@@ -14,6 +14,7 @@ def get_splatnet_int_id(splatnet_id: str):
 
 
 def get_title_parts_from_string(title: str):
+    print(title)
     localization_objects = LocalizationString.objects \
         .filter(type=LocalizationString.Type.TITLE_ADJECTIVE) \
         .order_by(Length('string_en_us').desc()) \
@@ -23,7 +24,7 @@ def get_title_parts_from_string(title: str):
     localization_object: LocalizationString
     for localization_object in localization_objects:
         if localization_object.string_en_us in title:
-            subject_part = title.replace(localization_object.string_en_us, '').strip()
+            subject_part = title.replace(localization_object.string_en_us, '')[1:]
             subject_localization: LocalizationString = LocalizationString.objects \
                 .filter(type=LocalizationString.Type.TITLE_SUBJECT) \
                 .filter(string_en_us__iexact=subject_part) \

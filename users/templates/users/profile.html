@@ -24,9 +24,11 @@
                 </h1>
                 <p class="text-lg text-gray-300">@{{ profile_user.username }}</p>
             </div>
+            {% if splashtag %}
             <div class="-rotate-[0.5deg] shadow-lg w-fit">
                 {% include "includes/splashtag.html" with splashtag=splashtag only %}
             </div>
+            {% endif %}
             {% if user.is_staff %}
                 <a href="{% url 'admin:users_user_change' profile_user.id %}"
                    class="bg-red-700 p-2 rounded w-fit">Admin</a>
