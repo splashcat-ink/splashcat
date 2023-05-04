@@ -65,17 +65,13 @@ def upload_battle(request):
             'required': ['battle', 'data_type'],
         })
     except jsonschema.ValidationError as e:
-        return HttpResponseBadRequest(
-            json.dumps(e)
-        )
+        return HttpResponseBadRequest(e, content_type='text/plain')
 
     if data['data_type'] == 'splatnet3':
         try:
             battle = parse_splatnet3(data, request)
         except jsonschema.ValidationError as e:
-            return HttpResponseBadRequest(
-                json.dumps(e)
-            )
+            return HttpResponseBadRequest(e, content_type='text/plain')
         except BattleAlreadyExistsError as e:
             return HttpResponseBadRequest(
                 json.dumps({
@@ -94,9 +90,7 @@ def upload_battle(request):
         try:
             battle = parse_splashcat(data, request)
         except jsonschema.ValidationError as e:
-            return HttpResponseBadRequest(
-                json.dumps(e)
-            )
+            return HttpResponseBadRequest(e, content_type='text/plain')
         except BattleAlreadyExistsError as e:
             return HttpResponseBadRequest(
                 json.dumps({
