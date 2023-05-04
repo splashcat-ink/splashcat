@@ -14,18 +14,14 @@ from .models import User
 
 def profile(request, username: str):
     user = get_object_or_404(User, username=username)
-    # get their latest battles and splashtag
     latest_battles = user.battles.order_by('-played_time') \
-                         .select_related('player_nameplate_badge_1__image') \
-                         .select_related('player_nameplate_badge_2__image') \
-                         .select_related('player_nameplate_badge_3__image') \
                          .select_related('vs_stage__name')[:12]
     splashtag = latest_battles[0].splashtag if latest_battles else None
 
     battle_count = user.battles.count()
     win_count = user.battles.filter(judgement='WIN').count()
     lose_count = user.battles.exclude(judgement__in=['WIN', 'DRAW']).count()
-    win_rate = win_count / (win_count + lose_count) * 100
+    win_rate = win_count / battle_count * 100 if battle_count else 0
 
     return render(request, 'users/profile.html',
                   {
