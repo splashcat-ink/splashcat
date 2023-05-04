@@ -11,7 +11,8 @@ from jsonschema import validate
 
 from battles.models import *
 from battles.parsers.splashcat import parse_splashcat
-from battles.parsers.splatnet3 import parse_splatnet3, BattleAlreadyExistsError
+from battles.parsers.splatnet3 import parse_splatnet3
+from battles.utils import BattleAlreadyExistsError
 from splashcat.decorators import api_auth_required
 
 

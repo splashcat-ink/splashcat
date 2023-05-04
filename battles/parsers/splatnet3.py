@@ -6,13 +6,9 @@ from jsonschema import validate
 from battles.formats.vs_history_detail import VsHistoryDetail, PlayerResult
 from battles.models import Battle
 from battles.utils import get_splatnet_int_id, get_title_parts_from_string, get_player_gear, get_npln_id, \
-    get_nameplate_badge
+    get_nameplate_badge, BattleAlreadyExistsError
 from splatnet_assets.fields import Color
 from splatnet_assets.models import Stage, NameplateBackground, Weapon, Award
-
-
-class BattleAlreadyExistsError(Exception):
-    pass
 
 
 def parse_splatnet3(data, request):
@@ -39,21 +35,6 @@ def parse_splatnet3(data, request):
     battle.played_time = vs_history_detail.played_time
     battle.duration = vs_history_detail.duration
     battle.judgement = vs_history_detail.judgement.value
-    title_adjective, title_subject = get_title_parts_from_string(vs_history_detail.player.byname)
-    battle.player_title_adjective = title_adjective
-    battle.player_title_subject = title_subject
-    battle.player_head_gear = get_player_gear(vs_history_detail.player.head_gear)
-    battle.player_clothing_gear = get_player_gear(vs_history_detail.player.clothing_gear)
-    battle.player_shoes_gear = get_player_gear(vs_history_detail.player.shoes_gear)
-    battle.player_npln_id = get_npln_id(vs_history_detail.player.id)
-    battle.player_name = vs_history_detail.player.name
-    battle.player_name_id = vs_history_detail.player.name_id
-    battle.player_nameplate_background = NameplateBackground.objects.get(
-        splatnet_id=get_splatnet_int_id(vs_history_detail.player.nameplate.background.id))
-    battle.player_nameplate_badge_1 = get_nameplate_badge(vs_history_detail.player.nameplate.badges[0])
-    battle.player_nameplate_badge_2 = get_nameplate_badge(vs_history_detail.player.nameplate.badges[1])
-    battle.player_nameplate_badge_3 = get_nameplate_badge(vs_history_detail.player.nameplate.badges[2])
-    battle.player_paint = vs_history_detail.player.paint
     battle.knockout = vs_history_detail.knockout.value
     teams = [vs_history_detail.my_team] + vs_history_detail.other_teams
     battle.save()

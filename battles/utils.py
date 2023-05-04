@@ -61,3 +61,7 @@ def get_nameplate_badge(badge: Optional[Badge]):
     if badge is None:
         return None
     return NameplateBadge.objects.get(splatnet_id=get_splatnet_int_id(badge.id))
+
+
+class BattleAlreadyExistsError(Exception):
+    pass

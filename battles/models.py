@@ -1,4 +1,3 @@
-from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Prefetch
 from django.urls import reverse
@@ -98,23 +97,6 @@ class Battle(models.Model):
     played_time = models.DateTimeField()
     duration = models.IntegerField()
     judgement = models.CharField(max_length=32, choices=BattleJudgement.choices, db_index=True)
-
-    player_title_adjective = models.ForeignKey('splatnet_assets.TitleAdjective', on_delete=models.PROTECT)
-    player_title_subject = models.ForeignKey('splatnet_assets.TitleSubject', on_delete=models.PROTECT)
-    player_head_gear = models.OneToOneField('PlayerGear', on_delete=models.PROTECT, related_name='+')
-    player_clothing_gear = models.OneToOneField('PlayerGear', on_delete=models.PROTECT, related_name='+')
-    player_shoes_gear = models.OneToOneField('PlayerGear', on_delete=models.PROTECT, related_name='+')
-    player_npln_id = models.CharField(max_length=50)
-    player_name = models.CharField(max_length=50)
-    player_name_id = models.CharField(max_length=10)
-    player_nameplate_background = models.ForeignKey('splatnet_assets.NameplateBackground', on_delete=models.PROTECT)
-    player_nameplate_badge_1 = models.ForeignKey('splatnet_assets.NameplateBadge', on_delete=models.PROTECT, null=True,
-                                                 related_name='+')
-    player_nameplate_badge_2 = models.ForeignKey('splatnet_assets.NameplateBadge', on_delete=models.PROTECT, null=True,
-                                                 related_name='+')
-    player_nameplate_badge_3 = models.ForeignKey('splatnet_assets.NameplateBadge', on_delete=models.PROTECT, null=True,
-                                                 related_name='+')
-    player_paint = models.IntegerField(validators=[MinValueValidator(0)], null=True)
     knockout = models.CharField(max_length=32, choices=KnockoutJudgement.choices, blank=True, null=True)
 
     # teams comes from related_name='teams' on Team.battle
@@ -129,19 +111,25 @@ class Battle(models.Model):
 
     @property
     def splashtag(self):
+        player = self.player
         return {
-            'name': self.player_name,
-            'name_id': self.player_name_id,
-            'title_adjective': self.player_title_adjective,
-            'title_subject': self.player_title_subject,
-            'badges': [self.player_nameplate_badge_1, self.player_nameplate_badge_2, self.player_nameplate_badge_3],
-            'background': self.player_nameplate_background,
+            'name': player.name,
+            'name_id': player.name_id,
+            'title_adjective': player.title_adjective,
+            'title_subject': player.title_subject,
+            'badges': [player.nameplate_badge_1, player.nameplate_badge_2, player.nameplate_badge_3],
+            'background': player.nameplate_background,
         }
 
     @property
     def player(self):
-        print("player called!!")
         return self.teams.get(is_my_team=True).players \
+            .select_related('title_adjective__string') \
+            .select_related('title_subject__string') \
+            .select_related('nameplate_background__image') \
+            .select_related('nameplate_badge_1__image') \
+            .select_related('nameplate_badge_2__image') \
+            .select_related('nameplate_badge_3__image') \
             .select_related('weapon__name') \
             .select_related('weapon__flat_image') \
             .select_related('weapon__sub__name') \
