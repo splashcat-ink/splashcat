@@ -1,4 +1,5 @@
 import json
+from datetime import timedelta
 from typing import Optional
 
 from jsonschema.validators import validate
@@ -26,7 +27,7 @@ def parse_splashcat(data, request):
     battle.vs_rule = splashcat_battle.vs_rule.value
     battle.vs_stage = Stage.objects.get(splatnet_id=splashcat_battle.vs_stage_id)
     battle.played_time = splashcat_battle.played_time
-    battle.duration = splashcat_battle.duration
+    battle.duration = timedelta(seconds=splashcat_battle.duration)
     battle.judgement = splashcat_battle.judgement.value
     battle.knockout = splashcat_battle.knockout.value
     battle.save()

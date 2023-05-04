@@ -1,5 +1,6 @@
 import base64
 import json
+from datetime import timedelta
 
 from jsonschema import validate
 
@@ -33,7 +34,7 @@ def parse_splatnet3(data, request):
     battle.vs_rule = vs_history_detail.vs_rule.rule.value
     battle.vs_stage = Stage.objects.get(splatnet_id=get_splatnet_int_id(vs_history_detail.vs_stage.id))
     battle.played_time = vs_history_detail.played_time
-    battle.duration = vs_history_detail.duration
+    battle.duration = timedelta(seconds=vs_history_detail.duration)
     battle.judgement = vs_history_detail.judgement.value
     battle.knockout = vs_history_detail.knockout.value
     teams = [vs_history_detail.my_team] + vs_history_detail.other_teams

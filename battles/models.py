@@ -86,7 +86,7 @@ class Battle(models.Model):
     vs_rule = models.CharField(max_length=32, choices=VsRule.choices)
     vs_stage = models.ForeignKey('splatnet_assets.Stage', on_delete=models.PROTECT, null=True)
     played_time = models.DateTimeField()
-    duration = models.IntegerField()
+    duration = models.DurationField()
     judgement = models.CharField(max_length=32, choices=BattleJudgement.choices, db_index=True)
     knockout = models.CharField(max_length=32, choices=KnockoutJudgement.choices, blank=True, null=True)
 
