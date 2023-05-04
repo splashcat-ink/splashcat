@@ -6,6 +6,7 @@ from jsonschema.validators import validate
 from battles.formats.splashcat_battle import SplashcatBattle, Gear
 from battles.models import Battle, PlayerGear
 from battles.utils import BattleAlreadyExistsError, get_title_parts_from_string, get_ability
+from splatnet_assets.fields import Color
 from splatnet_assets.models import Stage, NameplateBackground, NameplateBadge, Weapon, Award
 
 
@@ -32,7 +33,7 @@ def parse_splashcat(data, request):
     for i, team in enumerate(splashcat_battle.teams):
         team_object = battle.teams.create(
             is_my_team=team.is_my_team,
-            color=team.color,
+            color=Color.from_floating_point_dict(team.color.to_dict()),
             fest_streak_win_count=team.fest_streak_win_count,
             fest_team_name=team.fest_team_name,
             fest_uniform_bonus_rate=team.fest_uniform_bonus_rate,
