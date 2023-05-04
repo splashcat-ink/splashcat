@@ -49,7 +49,7 @@ def parse_splashcat(data, request):
             title_adjective, title_subject = get_title_parts_from_string(player.title)
 
             team_object.players.create(
-                is_self=player.is_self,
+                is_self=player.is_me,
                 species=player.species,
                 npln_id=player.npln_id,
                 name=player.name,
