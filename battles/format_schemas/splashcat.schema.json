@@ -46,6 +46,13 @@
         "DEEMED_LOSE"
       ]
     },
+    "knockout": {
+      "enum": [
+        "NEITHER",
+        "WIN",
+        "LOSE"
+      ]
+    },
     "teams": {
       "type": "array",
       "items": {
