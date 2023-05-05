@@ -23,7 +23,7 @@ class User(AbstractUser):
             "unique": _("A user with that username already exists."),
         },
     )
-    display_name = models.CharField(_("display name"), max_length=150, blank=True)
+    display_name = models.CharField(_("display name"), max_length=30, blank=True)
     first_name = None
     last_name = None
 
@@ -36,6 +36,10 @@ class User(AbstractUser):
             return self.saved_favorite_color
         else:
             return Color.from_hex("00000000")
+
+    @property
+    def display_sponsor_badge(self):
+        return self.github_link.is_sponsor and self.github_link.is_sponsor_public
 
     def get_full_name(self):
         return self.display_name.strip()

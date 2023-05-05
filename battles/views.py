@@ -14,6 +14,7 @@ from battles.parsers.splashcat import parse_splashcat
 from battles.parsers.splatnet3 import parse_splatnet3
 from battles.utils import BattleAlreadyExistsError
 from splashcat.decorators import api_auth_required
+from users.forms import AccountSettingsForm
 
 
 # Create your views here.

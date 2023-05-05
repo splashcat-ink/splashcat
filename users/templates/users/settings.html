@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Settings
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-splatoon1 mb-2">
+        Settings
+    </h1>
+
+    {{ form.non_field_errors }}
+
+    <form class="form-css form-div-cards" method="post" action="{% url "users:settings" %}">
+        {% csrf_token %}
+
+        <div>
+            {{ form.display_name.errors }}
+            <label class="text-xl" for="{{ form.display_name.id_for_label }}">Display Name</label>
+            {{ form.display_name }}
+        </div>
+
+
+        <div>
+            {{ form.profile_picture.errors }}
+            <label class="text-xl" for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
+            {{ form.profile_picture }}
+        </div>
+
+
+        <div>
+            {{ form.saved_favorite_color.errors }}
+            <label class="text-xl" for="{{ form.saved_favorite_color.id_for_label }}">Favorite Color</label>
+            {{ form.saved_favorite_color }}
+            {% if not user.github_link.is_sponsor %}
+                <div class="w-72"></div>
+                <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/50 pt-10 p-6">
+                    <a class="text-center text-gray-200 text-lg" href="{% url 'sponsor' %}">
+                        Become a sponsor to change your favorite color.
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        <input type="submit" value="Update">
+    </form>
+{% endblock %}

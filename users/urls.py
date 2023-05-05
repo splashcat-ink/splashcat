@@ -26,4 +26,9 @@ urlpatterns = [
         RegisterView.as_view(),
         name="register",
     ),
+    path(
+        "settings/",
+        user_settings,
+        name="settings",
+    ),
 ]

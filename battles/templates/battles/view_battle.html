@@ -29,7 +29,7 @@
         <div class="flex flex-col">
             <div class="text-xl">
                 {{ battle.uploader.display_name }}
-                {% if battle.uploader.is_splashcat_sponsor and battle.uploader.is_sponsor_public %}
+                {% if battle.uploader.display_sponsor_badge %}
                     <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
                          class="h-6 inline-block">
                 {% endif %}
@@ -115,7 +115,7 @@
                                     {% include "battles/svg/inkling_splat.html" with color=team.color %}
                                 {% endif %}
                                     x{{ player.kills|default:"--" }}
-                                    {% if player.assists != 0 %}
+                                    {% if player.assists and player.assists != 0 %}
                                         <sub class="text-xs text-gray-300">
                                                 ({{ player.assists }})
                                             </sub>

@@ -126,15 +126,16 @@
                                    remove .ease-in .duration-75 .opacity-0 .scale-95 .absolute
                                    add .hidden
                                end">
-                            <a class="block px-4 py-2 text-sm text-gray-700" href="{% url 'profile' user.username %}"
-                               title="Manage">
-                                {{ user.username }}
+                            <a class="block px-4 py-2 text-sm text-gray-700" href="{% url 'profile' user.username %}">
+                                <span class="text-xs">@{{ user.username }}</span>
                                 <br/>
                                 Your Profile
                             </a>
+                            <a class="block px-4 py-2 text-sm text-gray-700" href="{% url 'users:settings' %}">
+                                Settings
+                            </a>
                             {% if user.is_staff %}
-                                <a class="block px-4 py-2 text-sm text-gray-700" href="{% url 'admin:index' %}"
-                                   title="Manage">
+                                <a class="block px-4 py-2 text-sm text-gray-700" href="{% url 'admin:index' %}">
                                     Admin
                                 </a>
                             {% endif %}

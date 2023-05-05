@@ -1,0 +1,5 @@
+<a href="{{ widget.value.url }}">
+    <img src="{{ widget.value.url }}" alt="Profile Picture"
+         class="max-h-48 aspect-square object-contain rounded-sm bg-gray-500/50">
+</a>
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
