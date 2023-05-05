@@ -20,7 +20,7 @@
     <script>
         let _paq = window._paq = window._paq || [];
         /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['setCustomDimension', 1, '{% if user.is_authenticated %}{% if user.is_splashcat_sponsor %}sponsor{% else %}user{% endif %}{% else %}guest{% endif %}']);
+        _paq.push(['setCustomDimension', 1, '{% if user.is_authenticated %}{% if user.github_link.is_sponsor %}sponsor{% else %}user{% endif %}{% else %}guest{% endif %}']);
         _paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);
         (function () {
@@ -66,9 +66,9 @@
         </div>
         <a
                 href="https://www.digitalocean.com/?refcode=ceb59ddf8864&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"
-                class="w-fit">
+                class="block">
             <img
-                    src="https://web-platforms.sfo2.digitaloceanspaces.com/WWW/Badge%203.svg"
+                    src="https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg"
                     alt="DigitalOcean Referral Badge"/>
         </a>
     </div>
