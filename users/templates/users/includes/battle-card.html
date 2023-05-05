@@ -18,12 +18,8 @@
             {% with player=battle.player %}
                 <img src="{{ player.weapon.flat_image.url }}" class="inline-block h-10 w-10" alt="">
                 {{ player.weapon.name.string }}
-                <img src="{{ player.weapon.sub.image.url }}"
-                     alt="{{ player.weapon.sub.name.string }}" title="{{ player.weapon.sub.name.string }}"
-                     class="inline h-6 w-6">
-                <img src="{{ player.weapon.special.image.url }}"
-                     alt="{{ player.weapon.special.name.string }}"
-                     title="{{ player.weapon.special.name.string }}" class="inline h-6 w-6">
+                {% include "splatnet_assets/mask_image.html" with object=player.weapon.sub class="inline h-6 w-6" color=battle.uploader.favorite_color only %}
+                {% include "splatnet_assets/mask_image.html" with object=player.weapon.special class="inline h-6 w-6" color=battle.uploader.favorite_color only %}
             {% endwith %}
         </div>
         {% if display_uploader is True %}

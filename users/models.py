@@ -28,14 +28,14 @@ class User(AbstractUser):
     last_name = None
 
     profile_picture = models.ImageField(_("profile picture"), upload_to='profile_pictures', blank=True, null=True)
-    saved_favorite_color = ColorField(default="00000000")
+    saved_favorite_color = ColorField(default="000000ff")
 
     @property
     def favorite_color(self):
         if self.github_link.is_sponsor:
             return self.saved_favorite_color
         else:
-            return Color.from_hex("00000000")
+            return Color.from_hex("000000ff")
 
     @property
     def display_sponsor_badge(self):

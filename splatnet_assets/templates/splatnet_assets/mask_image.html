@@ -1,0 +1,21 @@
+{% load mask_id %}
+<svg class="{{ class }}" viewBox="0 0 {{ object.mask_image.image.width }} {{ object.mask_image.image.height }}"
+     fill="none"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     preserveAspectRatio="xMidYMid slice">
+    <mask id="__{{ object|mask_id }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
+        <image x="0" y="0" width="{{ object.mask_image.image.width }}"
+               height="{{ object.mask_image.image.height }}"
+               href="{{ object.mask_image.url }}">
+        </image>
+    </mask>
+    <rect x="0" y="0" width="{{ object.mask_image.image.width }}"
+          height="{{ object.mask_image.image.height }}"
+          fill="{{ color.css }}"
+          mask="url(#__{{ object|mask_id }})"></rect>
+    <image x="0" y="0" width="{{ object.overlay_image.image.width }}"
+           height="{{ object.overlay_image.image.height }}"
+           href="{{ object.overlay_image.url }}">
+    </image>
+</svg>

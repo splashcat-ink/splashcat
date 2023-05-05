@@ -183,6 +183,8 @@ class SubWeapon(models.Model):
     splatnet_id = models.IntegerField()
     name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
     image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    mask_image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    overlay_image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
 
 
 class SpecialWeapon(models.Model):

@@ -2,7 +2,7 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.views.generic import FormView
@@ -72,6 +72,7 @@ def user_settings(request):
         form = AccountSettingsForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
+            return redirect('users:settings')
     else:
         form = AccountSettingsForm(instance=request.user)
     return render(request, 'users/settings.html', {

@@ -44,7 +44,7 @@ def parse_splashcat(data, request):
             noroshi=team.noroshi,
             paint_ratio=team.paint_ratio,
             score=team.score,
-            tricolor_role=team.tricolor_role.value,
+            tricolor_role=team.tricolor_role.value if team.tricolor_role else None,
         )
         for player in team.players:
             title_adjective, title_subject = get_title_parts_from_string(player.title)

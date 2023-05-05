@@ -54,6 +54,14 @@ class Command(BaseCommand):
                                 internal_id=weapon['__RowId'], type=LocalizationString.Type.SUB_WEAPON_NAME)[0],
                             'image': download_image_from_path('sub', weapon['Id'], f'subspe/Wsb_{weapon["__RowId"]}00'
                                                                                    f'.png'),
+                            'mask_image': download_image('sub_mask', weapon['Id'], f'https://uploads.catgirl'
+                                                                                   f'in.space/specialsmasks/Wsb_'
+                                                                                   f'{weapon["__RowId"]}00.png'),
+                            'overlay_image': download_image('sub_overlay', weapon['Id'], f'https://uploads.catgirl'
+                                                                                         f'in.space/specialsmasks'
+                                                                                         f'/Wsb_'
+                                                                                         f'{weapon["__RowId"]}'
+                                                                                         '01.png'),
                         }
                     )
                 elif weapon_type == 'special':

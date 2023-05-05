@@ -16,7 +16,7 @@ class Color:
             int(hex_string[0:2], 16),
             int(hex_string[2:4], 16),
             int(hex_string[4:6], 16),
-            int(hex_string[6:8], 16) if len(hex_string) >= 8 else 0,
+            int(hex_string[6:8], 16) if len(hex_string) >= 8 else 255,
         )
 
     @staticmethod
@@ -54,7 +54,7 @@ class ColorFormField(forms.Field):
         if value.startswith('#'):
             value = value[1:]
         color = Color.from_hex(value)
-        color.a = 0
+        color.a = 255
         return color
 
     def prepare_value(self, value):
@@ -89,6 +89,9 @@ class ColorField(models.Field):
         if value is None:
             return value
         return value
+
+    def get_internal_type(self):
+        return "CharField"
 
     def formfield(self, **kwargs):
         # This is a fairly standard way to set up some defaults

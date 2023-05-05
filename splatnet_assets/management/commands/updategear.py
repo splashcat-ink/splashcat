@@ -35,7 +35,7 @@ class Command(BaseCommand):
         print(f'Latest version: {latest_version}')
         print('Doing skills...')
 
-        skills_url = f'https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/parameter/' \
+        skills_url = f'https://leanny.github.io/splat3/data/parameter/' \
                      f'{latest_version}/misc/spl__GearSkillTraitsParam.spl__GearSkillTraitsParam.json'
 
         skills_data = requests.get(skills_url).json()
@@ -54,7 +54,7 @@ class Command(BaseCommand):
 
         print('Doing brands...')
 
-        brand_url = f'https://raw.githubusercontent.com/Leanny/leanny.github.io/master/splat3/data/parameter/' \
+        brand_url = f'https://leanny.github.io/splat3/data/parameter/' \
                     f'{latest_version}/misc/spl__BrandTraitsParam.spl__BrandTraitsParam.json'
 
         brand_data = requests.get(brand_url).json()
