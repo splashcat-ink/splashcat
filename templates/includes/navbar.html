@@ -53,33 +53,90 @@
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <a href="{% url 'sponsor' %}"
-                   class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                   class="{% if user.github_link.is_sponsor %}text-gray-300 hover:bg-gray-700 hover:text-white{% else %}text-gray-800 bg-gray-200 hover:bg-gray-100 hover:text-black{% endif %} rounded-md px-3 py-2 text-sm font-medium">
                     <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="" class="h-6 inline">
                     Sponsor
                 </a>
 
-                <button type="button"
-                        class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                    <span class="sr-only">View notifications</span>
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                         aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
-                    </svg>
-                </button>
-
                 {% if user.is_authenticated %}
+                    <div class="relative ml-3">
+                        <div>
+                            <button type="button"
+                                    class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                    _="set :open to false
+                                        on click
+                                          set :open to not :open
+                                          if :open is true
+                                            send open to #latest-battles-dropdown
+                                          otherwise
+                                            send close to #latest-battles-dropdown"
+                                    hx-get="/battles/htmx/latest/"
+                                    hx-trigger="click"
+                                    hx-swap="outerHTML"
+                                    hx-target="#latest-battles-dropdown-data"
+                            >
+                                <span class="sr-only">View recent battles</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5"
+                                     stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="hidden right-0 z-10 mt-2 w-96 min-w-fit origin-top-right rounded-md bg-gray-800 py-4 px-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition"
+                             role="menu" id="latest-battles-dropdown" aria-orientation="vertical"
+                             aria-labelledby="user-menu-button" tabindex="-1"
+                             _="on open
+                                 add .ease-out .duration-100 .opacity-0 .scale-95 .absolute
+                                 remove .hidden
+                                 wait a tick
+                                   add .opacity-100 .scale-100
+                                   remove .opacity-0 .scale-95
+                                 settle
+                                   remove .ease-out .duration-100
+                                end
+
+                               on close
+                                 add .ease-in .duration-75
+                                 wait a tick
+                                   remove .opacity-100
+                                   add .opacity-0 .scale-95
+                                 settle
+                                   remove .ease-in .duration-75 .opacity-0 .scale-95 .absolute
+                                   add .hidden
+                               end"
+                        >
+                            <div
+                                    class="flex justify-center"
+                                    id="latest-battles-dropdown-data"
+                            >
+                                {% include "splatnet_assets/squid_spinner.html" with class="h-10 w-10 animate-[spin_2s_linear_infinite]" %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button"
+                            class="ml-3 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <span class="sr-only">View notifications</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                             aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+                        </svg>
+                    </button>
+
                     <div class="relative ml-3">
                         <div>
                             <button
                                     _="set :open to false
-                                on click
-                                  set :open to not :open
-                                  log :open
-                                  if :open is true
-                                    send open to #user-dropdown
-                                  otherwise
-                                    send close to #user-dropdown"
+                                    on click
+                                      set :open to not :open
+                                      if :open is true
+                                        send open to #user-dropdown
+                                      otherwise
+                                        send close to #user-dropdown"
                                     type="button"
                                     class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                     id="user-menu-button"
@@ -106,7 +163,6 @@
                              role="menu" id="user-dropdown" aria-orientation="vertical"
                              aria-labelledby="user-menu-button" tabindex="-1"
                              _="on open
-                                 log 'open'
                                  add .ease-out .duration-100 .opacity-0 .scale-95 .absolute
                                  remove .hidden
                                  wait a tick
@@ -117,7 +173,6 @@
                                 end
 
                                on close
-                                 log 'close'
                                  add .ease-in .duration-75
                                  wait a tick
                                    remove .opacity-100

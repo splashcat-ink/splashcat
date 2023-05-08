@@ -10,9 +10,11 @@
     <div class="flex flex-col md:flex-row gap-4">
         <div class="basis-2/5 xl:basis-1/4 flex flex-col gap-2">
             <div class="card-mask bg-splatoon-battle-league p-4 pt-12 rounded-lg rotate-1">
-                <img src="{{ profile_user.profile_picture.url }}"
-                     alt="{{ profile_user.display_name }}'s profile picture"
-                     class="aspect-square max-w-full object-contain rounded-sm bg-gray-500/50">
+                {% if profile_user.profile_picture %}
+                    <img src="{{ profile_user.profile_picture.url }}"
+                         alt="{{ profile_user.display_name }}'s profile picture"
+                         class="aspect-square max-w-full object-contain rounded-sm bg-gray-500/50">
+                {% endif %}
                 <h1 class="text-2xl">
                     {{ profile_user.display_name }}
                     {% if profile_user.display_sponsor_badge %}
@@ -71,7 +73,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {% for battle in latest_battles %}
-                    {% include "users/includes/battle-card.html" with battle=battle only %}
+                    {% include "users/includes/battle-card.html" with battle=battle %}
                 {% endfor %}
             </div>
         </div>

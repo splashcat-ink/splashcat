@@ -10,4 +10,5 @@ urlpatterns = [
          name='redirect_from_splatnet_id'),
     path('api/<int:battle_id>/json/', get_battle_json, name='get_battle_json'),
     path('api/<str:splatnet_id>/exists/', check_if_battle_exists, name='check_battle_exists'),
+    path('htmx/latest/', get_latest_battles, name='htmx_latest_battles'),
 ]

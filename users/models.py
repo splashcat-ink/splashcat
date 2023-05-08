@@ -23,16 +23,16 @@ class User(AbstractUser):
             "unique": _("A user with that username already exists."),
         },
     )
-    display_name = models.CharField(_("display name"), max_length=30, blank=True)
+    display_name = models.CharField(_("display name"), max_length=30)
     first_name = None
     last_name = None
 
     profile_picture = models.ImageField(_("profile picture"), upload_to='profile_pictures', blank=True, null=True)
-    saved_favorite_color = ColorField(default="000000ff")
+    saved_favorite_color = ColorField(default="9333eaff")
 
     @property
     def favorite_color(self):
-        if self.github_link.is_sponsor:
+        if hasattr(self, 'github_link') and self.github_link.is_sponsor:
             return self.saved_favorite_color
         else:
             return Color.from_hex("000000ff")
@@ -72,6 +72,7 @@ class GitHubLink(models.Model):
     linked_user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='github_link', blank=True,
                                        null=True)
     github_id = models.IntegerField(unique=True)
+    github_username = models.CharField(max_length=39)
     is_sponsor = models.BooleanField(default=False)
     is_sponsor_public = models.BooleanField(default=False)
     sponsorship_amount_usd = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)

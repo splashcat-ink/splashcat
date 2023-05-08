@@ -1,0 +1,48 @@
+<div class="flex flex-col gap-2">
+    {% for battle in battles %}
+        <a class="flex flex-row gap-1 bg-gray-900 rounded-full px-2 py-1"
+           href="{% url 'battles:view_battle' battle.id %}">
+            <div
+                    class="rounded-full {% if battle.judgement == "WIN" %}bg-yellow-300{% else %}bg-gray-300{% endif %}
+                           text-gray-900 font-bold px-2 py-2 text-lg"
+            >
+                {{ battle.get_judgement_display|upper }}
+            </div>
+            <div class="flex flex-col">
+                <div class="text-sm whitespace-nowrap">{{ battle.vs_stage.name.string }}</div>
+                <div class="text-sm whitespace-nowrap">{{ battle.get_vs_rule_display }}</div>
+            </div>
+            <div class="grow"></div>
+            {% with player=battle.player team=battle.player.team %}
+                <div class="flex-none flex flex-row gap-1 px-4 justify-end rounded-full min-w-fit bg-black/50">
+                    <span class="text-xl w-min whitespace-nowrap pt-1">{{ player.paint }}p</span>
+                    <span class="text-lg w-min whitespace-nowrap pt-[2px]">
+                                {% if player.species == "OCTOLING" %}
+                                    {% include "battles/svg/octoling_splat.html" with color=team.color %}
+                                {% else %}
+                                    {% include "battles/svg/inkling_splat.html" with color=team.color %}
+                                {% endif %}
+                        x{{ player.kills|default:"--" }}
+                        {% if player.assists and player.assists != 0 %}
+                            <sub class="text-xs text-gray-300">
+                                                ({{ player.assists }})
+                                            </sub>
+                        {% endif %}
+                        </span>
+                    <span class="text-lg w-min whitespace-nowrap pt-[2px]">
+                                    {% if player.species == "OCTOLING" %}
+                                        {% include "battles/svg/octoling_splatted.html" with color=team.next_team.color %}
+                                    {% else %}
+                                        {% include "battles/svg/inkling_splatted.html" with color=team.next_team.color %}
+                                    {% endif %}
+                        x{{ player.deaths|default:"--" }}
+                        </span>
+                    <span class="text-lg w-min whitespace-nowrap">
+                    {% include "splatnet_assets/mask_image.html" with uploader=user object=player.weapon.special class="h-4 w-4 relative top-0" %}
+                    x{{ player.specials|default:"--" }}
+                        </span>
+                </div>
+            {% endwith %}
+        </a>
+    {% endfor %}
+</div>

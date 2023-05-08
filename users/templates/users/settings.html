@@ -8,40 +8,113 @@
     <h1 class="text-3xl font-splatoon1 mb-2">
         Settings
     </h1>
-
-    {{ form.non_field_errors }}
-
-    <form class="form-css form-div-cards" method="post" action="{% url "users:settings" %}">
-        {% csrf_token %}
-
+    <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
         <div>
-            {{ form.display_name.errors }}
-            <label class="text-xl" for="{{ form.display_name.id_for_label }}">Display Name</label>
-            {{ form.display_name }}
-        </div>
+            {{ form.non_field_errors }}
 
+            <form class="form-css form-div-cards" method="post" action="{% url "users:settings" %}">
+                {% csrf_token %}
 
-        <div>
-            {{ form.profile_picture.errors }}
-            <label class="text-xl" for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
-            {{ form.profile_picture }}
-        </div>
-
-
-        <div>
-            {{ form.saved_favorite_color.errors }}
-            <label class="text-xl" for="{{ form.saved_favorite_color.id_for_label }}">Favorite Color</label>
-            {{ form.saved_favorite_color }}
-            {% if not user.github_link.is_sponsor %}
-                <div class="w-72"></div>
-                <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/50 pt-10 p-6">
-                    <a class="text-center text-gray-200 text-lg" href="{% url 'sponsor' %}">
-                        Become a sponsor to change your favorite color.
-                    </a>
+                <div>
+                    {{ form.display_name.errors }}
+                    <label class="text-xl" for="{{ form.display_name.id_for_label }}">Display Name</label>
+                    {{ form.display_name }}
                 </div>
-            {% endif %}
+
+
+                <div>
+                    {{ form.profile_picture.errors }}
+                    <label class="text-xl" for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
+                    {{ form.profile_picture }}
+                </div>
+
+                <div>
+                    {{ form.saved_favorite_color.errors }}
+                    <label class="text-xl" for="{{ form.saved_favorite_color.id_for_label }}">Favorite Color</label>
+                    <p class="text-lg max-w-sm">
+                        Sub and special weapon icons will use this color on your profile and elsewhere on Splashcat.
+                    </p>
+                    {{ form.saved_favorite_color }}
+                    {% if not user.github_link.is_sponsor %}
+                        <div class="w-72"></div>
+                        <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/50 pt-10 p-6">
+                            <a class="text-center text-gray-200 text-lg" href="{% url 'sponsor' %}">
+                                Become a sponsor to change your favorite color.
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <input type="submit" value="Update">
+            </form>
         </div>
 
-        <input type="submit" value="Update">
-    </form>
+        <div class="form-div-cards">
+            <div>
+                <h1 class="text-xl font-splatoon1">GitHub Sponsors</h1>
+                <p>
+                    Sponsors on GitHub can link their GitHub account to Splashcat to receive special features.
+                </p>
+
+                {% if user.github_link.github_id %}
+                    Your Splashcat account is linked to @{{ user.github_link.github_username }} on GitHub.
+                {% endif %}
+
+                <form action="{% url 'users:link_github_account' %}" method="post" class="form-css flex flex-row gap-4">
+                    {% csrf_token %}
+                    <input
+                            type="submit"
+                            value="{% if user.github_link.github_id %}Relink GitHub Account{% else %}Link GitHub Account{% endif %}"
+                    >
+
+                    {% if user.github_link.github_id %}
+                        <button name="is_refresh" value="true" class="p-4 rounded bg-pink-500 hover:bg-pink-600"
+                                _="on click remove .animate-none from the <svg/> in me"
+                        >
+                            {% include "splatnet_assets/squid_spinner.html" with class="h-6 w-6 inline-block animate-[spin_2s_linear_infinite] animate-none" %}
+                            Refresh Sponsorship
+                        </button>
+                    {% endif %}
+                </form>
+            </div>
+
+            <div>
+                <h1 class="text-xl font-splatoon1">API Keys</h1>
+                <p>
+                    Create API keys to upload data to Splashcat.
+                </p>
+                <form action="{% url 'users:create_api_key' %}" method="post" class="form-css">
+                    {% csrf_token %}
+                    <input type="text" name="note" placeholder="Note">
+                    <input type="submit" value="Create API Key">
+                </form>
+
+                <table class="w-max table-auto border-collapse">
+                    <thead>
+                    <tr>
+                        <th class="border border-slate-200 p-1">Key</th>
+                        <th class="border border-slate-200 p-1">Note</th>
+                        <th class="border border-slate-200 p-1">Created</th>
+                        <th class="border border-slate-200 p-1">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for api_key in user.api_keys.all %}
+                        <tr>
+                            <td class="border border-slate-200 p-1 font-mono">{{ api_key.key }}</td>
+                            <td class="border border-slate-200 p-1">{{ api_key.note }}</td>
+                            <td class="border border-slate-200 p-1">{{ api_key.created }}</td>
+                            <td class="border border-slate-200 p-1">
+                                <form action="{% url 'users:delete_api_key' api_key.key %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="submit" value="❌">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

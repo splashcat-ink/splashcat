@@ -18,15 +18,17 @@
             {% with player=battle.player %}
                 <img src="{{ player.weapon.flat_image.url }}" class="inline-block h-10 w-10" alt="">
                 {{ player.weapon.name.string }}
-                {% include "splatnet_assets/mask_image.html" with object=player.weapon.sub class="inline h-6 w-6" color=battle.uploader.favorite_color only %}
-                {% include "splatnet_assets/mask_image.html" with object=player.weapon.special class="inline h-6 w-6" color=battle.uploader.favorite_color only %}
+                {% include "splatnet_assets/mask_image.html" with object=player.weapon.sub class="inline h-6 w-6" uploader=battle.uploader %}
+                {% include "splatnet_assets/mask_image.html" with object=player.weapon.special class="inline h-6 w-6" uploader=battle.uploader %}
             {% endwith %}
         </div>
         {% if display_uploader is True %}
             {% with uploader=battle.uploader %}
                 <div class="flex flex-row gap-1 items-center my-0.5 w-fit">
-                    <img src="{{ battle.uploader.profile_picture.url }}" alt="{{ battle.uploader.display_name }}"
-                         class="h-12 w-12 object-cover rounded-lg">
+                    {% if uploader.profile_picture %}
+                        <img src="{{ battle.uploader.profile_picture.url }}" alt="{{ battle.uploader.display_name }}"
+                             class="h-12 w-12 object-cover rounded-lg">
+                    {% endif %}
                     <div class="flex flex-col">
                         <div class="text-xl">
                             {{ battle.uploader.display_name }}

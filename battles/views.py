@@ -1,6 +1,7 @@
 import json
 
 import jsonschema
+from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.db import transaction
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
@@ -14,7 +15,6 @@ from battles.parsers.splashcat import parse_splashcat
 from battles.parsers.splatnet3 import parse_splatnet3
 from battles.utils import BattleAlreadyExistsError
 from splashcat.decorators import api_auth_required
-from users.forms import AccountSettingsForm
 
 
 # Create your views here.
@@ -127,3 +127,11 @@ def check_if_battle_exists(request, splatnet_id):
             'status': 'ok',
             'exists': False,
         }, status=200)
+
+
+@login_required
+def get_latest_battles(request):
+    battles = request.user.battles.with_prefetch().order_by('-id')[:10]
+    return render(request, 'battles/htmx/latest_battles.html', {
+        'battles': battles,
+    })
