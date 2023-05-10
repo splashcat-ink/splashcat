@@ -14,8 +14,34 @@
         "BANKARA",
         "X_MATCH",
         "REGULAR",
-        "FEST"
+        "FEST",
+        "PRIVATE"
       ]
+    },
+    "anarchy": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "SERIES",
+            "OPEN"
+          ]
+        },
+        "pointChange": {
+          "type": "integer"
+        }
+      }
+    },
+    "xBattle": {
+      "type": "object",
+      "properties": {
+        "xPower": {
+          "type": "number"
+        },
+        "xRank": {
+          "type": "integer"
+        }
+      }
     },
     "vsRule": {
       "enum": [

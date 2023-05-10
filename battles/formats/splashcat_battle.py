@@ -1,12 +1,36 @@
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Any, Optional, List, TypeVar, Callable, Type, cast
+from typing import Optional, Any, List, TypeVar, Type, Callable, cast
 
 import dateutil.parser
 
 T = TypeVar("T")
 EnumT = TypeVar("EnumT", bound=Enum)
+
+
+def from_none(x: Any) -> Any:
+    assert x is None
+    return x
+
+
+def from_union(fs, x):
+    for f in fs:
+        try:
+            return f(x)
+        except:
+            pass
+    assert False
+
+
+def from_int(x: Any) -> int:
+    assert isinstance(x, int) and not isinstance(x, bool)
+    return x
+
+
+def to_enum(c: Type[EnumT], x: Any) -> EnumT:
+    assert isinstance(x, c)
+    return x.value
 
 
 def from_float(x: Any) -> float:
@@ -24,28 +48,9 @@ def from_str(x: Any) -> str:
     return x
 
 
-def from_none(x: Any) -> Any:
-    assert x is None
-    return x
-
-
-def from_union(fs, x):
-    for f in fs:
-        try:
-            return f(x)
-        except:
-            pass
-    assert False
-
-
 def from_list(f: Callable[[Any], T], x: Any) -> List[T]:
     assert isinstance(x, list)
     return [f(y) for y in x]
-
-
-def from_int(x: Any) -> int:
-    assert isinstance(x, int) and not isinstance(x, bool)
-    return x
 
 
 def from_bool(x: Any) -> bool:
@@ -58,13 +63,34 @@ def to_class(c: Type[T], x: Any) -> dict:
     return cast(Any, x).to_dict()
 
 
-def to_enum(c: Type[EnumT], x: Any) -> EnumT:
-    assert isinstance(x, c)
-    return x.value
-
-
 def from_datetime(x: Any) -> datetime:
     return dateutil.parser.parse(x)
+
+
+class Mode(Enum):
+    OPEN = "OPEN"
+    SERIES = "SERIES"
+
+
+@dataclass
+class Anarchy:
+    mode: Optional[Mode] = None
+    point_change: Optional[int] = None
+
+    @staticmethod
+    def from_dict(obj: Any) -> 'Anarchy':
+        assert isinstance(obj, dict)
+        mode = from_union([Mode, from_none], obj.get("mode"))
+        point_change = from_union([from_int, from_none], obj.get("pointChange"))
+        return Anarchy(mode, point_change)
+
+    def to_dict(self) -> dict:
+        result: dict = {}
+        if self.mode is not None:
+            result["mode"] = from_union([lambda x: to_enum(Mode, x), from_none], self.mode)
+        if self.point_change is not None:
+            result["pointChange"] = from_union([from_int, from_none], self.point_change)
+        return result
 
 
 class SplashcatBattleJudgement(Enum):
@@ -293,6 +319,7 @@ class Team:
 class VsMode(Enum):
     BANKARA = "BANKARA"
     FEST = "FEST"
+    PRIVATE = "PRIVATE"
     REGULAR = "REGULAR"
     X_MATCH = "X_MATCH"
 
@@ -304,6 +331,27 @@ class VsRule(Enum):
     LOFT = "LOFT"
     TRI_COLOR = "TRI_COLOR"
     TURF_WAR = "TURF_WAR"
+
+
+@dataclass
+class XBattle:
+    x_power: Optional[float] = None
+    x_rank: Optional[int] = None
+
+    @staticmethod
+    def from_dict(obj: Any) -> 'XBattle':
+        assert isinstance(obj, dict)
+        x_power = from_union([from_float, from_none], obj.get("xPower"))
+        x_rank = from_union([from_int, from_none], obj.get("xRank"))
+        return XBattle(x_power, x_rank)
+
+    def to_dict(self) -> dict:
+        result: dict = {}
+        if self.x_power is not None:
+            result["xPower"] = from_union([to_float, from_none], self.x_power)
+        if self.x_rank is not None:
+            result["xRank"] = from_union([from_int, from_none], self.x_rank)
+        return result
 
 
 @dataclass
@@ -324,7 +372,9 @@ class SplashcatBattle:
     vs_mode: VsMode
     vs_rule: VsRule
     vs_stage_id: int
+    anarchy: Optional[Anarchy] = None
     knockout: Optional[Knockout] = None
+    x_battle: Optional[XBattle] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'SplashcatBattle':
@@ -338,9 +388,11 @@ class SplashcatBattle:
         vs_mode = VsMode(obj.get("vsMode"))
         vs_rule = VsRule(obj.get("vsRule"))
         vs_stage_id = from_int(obj.get("vsStageId"))
+        anarchy = from_union([Anarchy.from_dict, from_none], obj.get("anarchy"))
         knockout = from_union([Knockout, from_none], obj.get("knockout"))
+        x_battle = from_union([XBattle.from_dict, from_none], obj.get("xBattle"))
         return SplashcatBattle(awards, duration, judgement, played_time, splatnet_id, teams, vs_mode, vs_rule,
-                               vs_stage_id, knockout)
+                               vs_stage_id, anarchy, knockout, x_battle)
 
     def to_dict(self) -> dict:
         result: dict = {}
@@ -353,8 +405,12 @@ class SplashcatBattle:
         result["vsMode"] = to_enum(VsMode, self.vs_mode)
         result["vsRule"] = to_enum(VsRule, self.vs_rule)
         result["vsStageId"] = from_int(self.vs_stage_id)
+        if self.anarchy is not None:
+            result["anarchy"] = from_union([lambda x: to_class(Anarchy, x), from_none], self.anarchy)
         if self.knockout is not None:
             result["knockout"] = from_union([lambda x: to_enum(Knockout, x), from_none], self.knockout)
+        if self.x_battle is not None:
+            result["xBattle"] = from_union([lambda x: to_class(XBattle, x), from_none], self.x_battle)
         return result
 
 
