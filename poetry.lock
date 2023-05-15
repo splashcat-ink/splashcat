@@ -701,14 +701,14 @@ tzdata = "*"
 
 [[package]]
 name = "django-celery-results"
-version = "2.5.0"
+version = "2.5.1"
 description = "Celery result backends for Django."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "django_celery_results-2.5.0-py3-none-any.whl", hash = "sha256:efb68932bde8938794068a9d0929bea8601ec5f6a4150a7f7ab6e2a83a735938"},
-    {file = "django_celery_results-2.5.0.tar.gz", hash = "sha256:8631fd68158c41afddfc378840ecee2f10ddd7d4879e964f2597f483e4203269"},
+    {file = "django_celery_results-2.5.1-py3-none-any.whl", hash = "sha256:0da4cd5ecc049333e4524a23fcfc3460dfae91aa0a60f1fae4b6b2889c254e01"},
+    {file = "django_celery_results-2.5.1.tar.gz", hash = "sha256:3ecb7147f773f34d0381bac6246337ce4cf88a2ea7b82774ed48e518b67bb8fd"},
 ]
 
 [package.dependencies]
@@ -1875,4 +1875,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "5aa8a8c3baece693dbb28ed341a47c5aeeda41819fca9f1a345260520b056438"
+content-hash = "c9afb1eba7e51ad3985213709be8f83b8dc4e180b13138de6c8cadb306d39edb"
