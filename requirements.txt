@@ -249,6 +249,9 @@ django-debug-toolbar==4.0.0 ; python_version >= "3.11" and python_version < "4.0
 django-htmx==1.14.0 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:393e2a4a963aff691b3973c898dbca1363139d7c7bf2e8cc4c605e2ad808a779 \
     --hash=sha256:b689a8d6f7052a96a373411ec55ba81c1ddffb4d66b1f5ab4d6e3d28420842fd
+django-storages==1.13.2 ; python_version >= "3.11" and python_version < "4.0" \
+    --hash=sha256:31dc5a992520be571908c4c40d55d292660ece3a55b8141462b4e719aa38eab3 \
+    --hash=sha256:cbadd15c909ceb7247d4ffc503f12a9bec36999df8d0bef7c31e57177d512688
 django-timezone-field==5.0 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:15746ed367a5a32eda76cfa2886eeec1de8cda79f519b7c5e12f87ed7cdbd663 \
     --hash=sha256:199f211082eeac7e83563929b8ce41399c1c0f00dfc2f36bc00bea381027eaaa
