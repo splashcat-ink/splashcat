@@ -1,13 +1,19 @@
-<div class="flex flex-col gap-2">
-    {% for battle in battles %}
-        <a class="flex flex-row gap-1 bg-gray-900 rounded-full px-2 py-1"
-           href="{% url 'battles:view_battle' battle.id %}">
-            <div
-                    class="rounded-full {% if battle.judgement == "WIN" %}bg-yellow-300{% else %}bg-gray-300{% endif %}
+{% if battles|length == 0 %}
+    <div class="text-center text-gray-400">
+        <div class="text-2xl font-bold">No battles</div>
+        <div class="text-lg">You haven't played any battles yet.</div>
+    </div>
+{% else %}
+    <div class="flex flex-col gap-2">
+        {% for battle in battles %}
+            <a class="flex flex-row gap-1 bg-gray-900 rounded-full px-2 py-1"
+               href="{% url 'battles:view_battle' battle.id %}">
+                <div
+                        class="rounded-full {% if battle.judgement == "WIN" %}bg-yellow-300{% else %}bg-gray-300{% endif %}
                            text-gray-900 font-bold px-2 py-2 text-lg font-splatoon1"
-            >
-                {{ battle.get_judgement_display|upper }}
-            </div>
+                >
+                    {{ battle.get_judgement_display|upper }}
+                </div>
             <div class="flex flex-col">
                 <div class="text-sm whitespace-nowrap">{{ battle.vs_stage.name.string }}</div>
                 <div class="text-sm whitespace-nowrap">{{ battle.get_vs_rule_display }}</div>
@@ -46,3 +52,4 @@
         </a>
     {% endfor %}
 </div>
+{% endif %}
