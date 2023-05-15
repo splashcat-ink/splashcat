@@ -20,8 +20,8 @@ def download_image(asset_type: str, asset_name: str, asset_url: str) -> Image:
 
     image.original_file_name = asset_url
     if image.image:
-        image.image.file.delete()
-    image.image = ContentFile(image_data.read(), name=str(asset_name))
+        image.image.delete()
+    image.image.save(str(asset_name), ContentFile(image_data))
 
     image.save()
 
