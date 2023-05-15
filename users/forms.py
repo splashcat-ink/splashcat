@@ -41,3 +41,11 @@ class AuthenticationForm(DjangoAuthenticationForm):
     error_messages = DjangoAuthenticationForm.error_messages | {
         'email_not_verified': _('Your email address is not verified. Please check your email for a verification link.'),
     }
+
+    def confirm_login_allowed(self, user):
+        super().confirm_login_allowed(user)
+        if not user.verified_email:
+            raise forms.ValidationError(
+                self.error_messages['email_not_verified'],
+                code='email_not_verified',
+            )
