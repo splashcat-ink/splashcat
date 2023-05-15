@@ -21,7 +21,7 @@ def download_image(asset_type: str, asset_name: str, asset_url: str) -> Image:
     image.original_file_name = asset_url
     if image.image:
         image.image.delete()
-    image.image.save(ContentFile(image_data.getvalue()))
+    image.image.save(f'{asset_type}/{asset_name}.{asset_url.split(".")[-1]}', ContentFile(image_data.getvalue()))
 
     image.save()
 
