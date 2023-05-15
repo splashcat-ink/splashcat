@@ -226,7 +226,7 @@ def verify_email(request, user_id, token):
     correct_token = default_token_generator.check_token(user, token)
     if not correct_token:
         return HttpResponseBadRequest()
-    user.email_verified = True
+    user.verified_email = True
     user.is_active = True
     user.save()
     messages.add_message(request, messages.SUCCESS,
