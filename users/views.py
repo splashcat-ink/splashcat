@@ -145,7 +145,7 @@ def link_github_account_callback(request):
     if response.status_code != 200:
         return HttpResponseBadRequest()
 
-    if request.user.github_link:
+    if hasattr(request.user, 'github_link'):
         old_link = request.user.github_link
         old_link.linked_user = None
         old_link.save()
