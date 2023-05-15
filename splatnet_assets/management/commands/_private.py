@@ -1,7 +1,7 @@
 from io import BytesIO
 
 import requests
-from django.core.files import File
+from django.core.files.base import ContentFile
 
 from splatnet_assets.models import Image
 
@@ -19,7 +19,7 @@ def download_image(asset_type: str, asset_name: str, asset_url: str) -> Image:
     image, _created = Image.objects.get_or_create(type=asset_type, asset_name=asset_name)
 
     image.original_file_name = asset_url
-    image.image = File(image_data, name=f'{asset_type}/{asset_url.split("/")[-1]}')
+    image.image = ContentFile(image_data.read(), name=asset_name)
 
     image.save()
 
