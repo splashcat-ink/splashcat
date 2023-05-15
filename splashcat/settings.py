@@ -192,6 +192,8 @@ AWS_S3_SECRET_ACCESS_KEY = os.environ.get('B2_SECRET_ACCESS_KEY')
 AWS_S3_REGION_NAME = 'us-west-004'
 AWS_S3_ENDPOINT_URL = 'https://s3.us-west-004.backblazeb2.com'
 AWS_S3_CUSTOM_DOMAIN = 'cdn.splashcat.ink'
+AWS_STORAGE_BUCKET_NAME = 'splashcat-assets'
+AWS_QUERYSTRING_AUTH = False
 
 B2_ENDPOINT_URL = 'https://s3.us-west-004.backblazeb2.com'
 B2_ACCESS_KEY_ID = os.environ.get('B2_ACCESS_KEY_ID')
