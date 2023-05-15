@@ -53,6 +53,7 @@ class Battle(models.Model):
         FEST = 'FEST', _('Splatfest Battle')
         BANKARA = 'BANKARA', _('Anarchy Battle')
         X_MATCH = 'X_MATCH', _('X Battle')
+        PRIVATE = 'PRIVATE', _('Private Battle')
 
     class VsRule(models.TextChoices):
         TURF_WAR = 'TURF_WAR', _('Turf War')
@@ -219,6 +220,7 @@ class Player(models.Model):
     specials = models.IntegerField(blank=True, null=True)
     paint = models.IntegerField(blank=True, null=True)
     noroshi_try = models.IntegerField(blank=True, null=True)
+    order = models.IntegerField()
 
     @property
     def byname(self):

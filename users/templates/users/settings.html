@@ -5,9 +5,12 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl font-splatoon1 mb-2">
-        Settings
-    </h1>
+    <div class="flex flex-row gap-4">
+        <h1 class="text-3xl font-splatoon1 mb-2">
+            Settings
+        </h1>
+    </div>
+
     <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
         <div>
             {{ form.non_field_errors }}
@@ -57,7 +60,14 @@
                 </p>
 
                 {% if user.github_link.github_id %}
-                    Your Splashcat account is linked to @{{ user.github_link.github_username }} on GitHub.
+                    <div class="p-2 my-2 rounded backdrop-blur-lg bg-slate-900/40">
+                        Your Splashcat account is linked to
+                        <a href="https://github.com/{{ user.github_link.github_username }}"
+                           class="underline text-blue-500">
+                            @{{ user.github_link.github_username }}
+                        </a>
+                        on GitHub.
+                    </div>
                 {% endif %}
 
                 <form action="{% url 'users:link_github_account' %}" method="post" class="form-css flex flex-row gap-4">

@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm as DjangoAuthenticationForm
 from django.utils.translation import gettext_lazy as _
 
 from users.models import User
@@ -33,4 +33,11 @@ class RegisterForm(UserCreationForm):
         model = User
         fields = UserCreationForm.Meta.fields + (
             "display_name",
+            "email",
         )
+
+
+class AuthenticationForm(DjangoAuthenticationForm):
+    error_messages = DjangoAuthenticationForm.error_messages | {
+        'email_not_verified': _('Your email address is not verified. Please check your email for a verification link.'),
+    }

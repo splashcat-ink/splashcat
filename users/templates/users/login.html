@@ -6,10 +6,6 @@
 
     <h1 class="font-splatoon1 text-3xl">Login</h1>
 
-    {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
-
     {% if next %}
         {% if user.is_authenticated %}
             <p>Your account doesn't have access to this page. To proceed,

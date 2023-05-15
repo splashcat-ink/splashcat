@@ -17,7 +17,7 @@ class ApiKeyInline(TabularInline):
 
 class GitHubLinkInline(TabularInline):
     model = GitHubLink
-    fields = ("github_id", "is_sponsor", "is_sponsor_public")
+    fields = ('github_id', 'github_username', 'is_sponsor', 'is_sponsor_public', 'sponsorship_amount_usd')
 
 
 class UserAdmin(AbstractUserAdmin):

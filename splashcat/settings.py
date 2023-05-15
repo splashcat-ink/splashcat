@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'debug_toolbar',
     'django_htmx',
+    'anymail',
     'battles',
     'users',
     'splatnet_assets',
@@ -84,6 +85,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'splashcat.urls'
+
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
 TEMPLATES = [
     {
@@ -141,20 +146,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    'splashcat.auth.AuthBackend'
 ]
 
 AUTH_USER_MODEL = 'users.User'
-
-ACCOUNT_FORMS = {
-    'add_email': 'splashcat.allauth_forms.SplashcatAddEmailForm',
-    'change_password': 'splashcat.allauth_forms.SplashcatChangePasswordForm',
-    'login': 'splashcat.allauth_forms.SplashcatLoginForm',
-    'reset_password': 'splashcat.allauth_forms.SplashcatResetPasswordForm',
-    'reset_password_from_key': 'splashcat.allauth_forms.SplashcatResetPasswordKeyForm',
-    'set_password': 'splashcat.allauth_forms.SplashcatSetPasswordForm',
-    'signup': 'splashcat.allauth_forms.SplashcatSignupForm',
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -190,6 +185,15 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+B2_ENDPOINT_URL = 'https://s3.us-west-004.backblazeb2.com'
+B2_ACCESS_KEY_ID = os.environ.get('B2_ACCESS_KEY_ID')
+B2_SECRET_ACCESS_KEY = os.environ.get('B2_SECRET_ACCESS_KEY')
+
+BUNNY_NET_DATA_EXPORTS_TOKEN = os.environ.get('BUNNY_NET_DATA_EXPORTS_TOKEN')
+BUNNY_NET_DATA_EXPORTS_CDN_HOST = 'data-exports.splashcat.ink'
+
+HCAPTCHA_SECRET_KEY = os.environ.get('HCAPTCHA_SECRET_KEY')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -218,3 +222,14 @@ if DEBUG:
 
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'default'
+
+CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379')
+
+# Email
+
+ANYMAIL = {
+    'POSTMARK_SERVER_TOKEN': os.environ.get('POSTMARK_SERVER_TOKEN'),
+}
+EMAIL_BACKEND = 'anymail.backends.postmark.EmailBackend'
+DEFAULT_FROM_EMAIL = 'grizzco@splashcat.ink'
+SERVER_EMAIL = 'server@splashcat.ink'

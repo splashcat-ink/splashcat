@@ -4,11 +4,11 @@ import requests
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from django.views.generic import FormView
 
 from splashcat.decorators import github_webhook
 from .forms import RegisterForm, AccountSettingsForm
@@ -40,9 +40,37 @@ def profile(request, username: str):
                   })
 
 
-class RegisterView(FormView):
-    template_name = 'users/register.html'
-    form_class = RegisterForm
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            hcaptcha_token = request.POST.get('h-captcha-response')
+            if not hcaptcha_token:
+                messages.error(request, 'hCaptcha verification failed.')
+                return render(request, 'users/register.html', {
+                    'form': form,
+                })
+            hcaptcha_response = requests.post('https://hcaptcha.com/siteverify', data={
+                'secret': settings.HCAPTCHA_SECRET_KEY,
+                'response': hcaptcha_token,
+            }).json()
+            if not hcaptcha_response['success']:
+                messages.error(request, 'hCaptcha verification failed.')
+                return render(request, 'users/register.html', {
+                    'form': form,
+                })
+
+            user = form.save()
+
+            user.send_verification_email()
+
+            messages.success(request, 'Your account has been created. Please check your email to verify your account.')
+            return redirect('home')
+    else:
+        form = RegisterForm()
+    return render(request, 'users/register.html', {
+        'form': form,
+    })
 
 
 @csrf_exempt
@@ -191,3 +219,17 @@ def delete_api_key(request, key):
                          f'Deleted API key `{key}` for @{request.user.username}!'
                          )
     return redirect('users:settings')
+
+
+def verify_email(request, user_id, token):
+    user = get_object_or_404(User, id=user_id)
+    correct_token = default_token_generator.check_token(user, token)
+    if not correct_token:
+        return HttpResponseBadRequest()
+    user.email_verified = True
+    user.is_active = True
+    user.save()
+    messages.add_message(request, messages.SUCCESS,
+                         f'Verified email for @{user.username}!'
+                         )
+    return redirect('home')

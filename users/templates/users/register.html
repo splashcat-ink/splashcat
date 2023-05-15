@@ -6,13 +6,12 @@
 
     <h1 class="font-splatoon1 text-3xl">Register</h1>
 
-    {% if form.errors %}
-        bleh
-    {% endif %}
-
     <form method="post" action="{% url 'users:register' %}" class="form-css">
         {% csrf_token %}
         {{ form.as_div }}
+
+        <div class="h-captcha" data-sitekey="f04325b9-66a6-4fda-8293-7ea4c25dcfee" data-theme="dark"></div>
+        <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 
         <input type="submit" value="Register">
         <input type="hidden" name="next" value="{{ next }}">

@@ -23,7 +23,7 @@ urlpatterns = [
     ),
     path(
         "register/",
-        RegisterView.as_view(),
+        register,
         name="register",
     ),
     path(
@@ -43,4 +43,7 @@ urlpatterns = [
     path('api-keys/<str:key>/delete/',
          delete_api_key,
          name='delete_api_key'),
+    path('verify-email/<int:user_id>/<str:token>/',
+         verify_email,
+         name='verify_email'),
 ]

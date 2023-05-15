@@ -17,11 +17,10 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
 
 import users.views as users_views
 from splashcat import settings
-from splashcat.views import home
+from splashcat.views import home, sponsor
 
 urlpatterns = [
     path('', home, name='home'),
@@ -31,7 +30,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('battles/', include('battles.urls')),
     path('@<str:username>/', users_views.profile, name='profile'),
-    path('sponsor/', TemplateView.as_view(template_name='splashcat/sponsor.html'), name='sponsor'),
+    path('sponsor/', sponsor, name='sponsor'),
     path('i18n/', include('django.conf.urls.i18n')),
 ]
 

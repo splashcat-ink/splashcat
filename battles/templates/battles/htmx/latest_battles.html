@@ -4,7 +4,7 @@
            href="{% url 'battles:view_battle' battle.id %}">
             <div
                     class="rounded-full {% if battle.judgement == "WIN" %}bg-yellow-300{% else %}bg-gray-300{% endif %}
-                           text-gray-900 font-bold px-2 py-2 text-lg"
+                           text-gray-900 font-bold px-2 py-2 text-lg font-splatoon1"
             >
                 {{ battle.get_judgement_display|upper }}
             </div>

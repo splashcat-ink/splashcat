@@ -41,6 +41,10 @@
         @apply cursor-not-allowed;
     }
 
+    input[hidden] {
+        @apply hidden;
+    }
+
     .form-css * {
         @apply mb-2;
     }
@@ -73,6 +77,10 @@
 
     .form-css input[type=checkbox] {
         @apply w-auto;
+    }
+
+    .form-css input[hidden] {
+        @apply hidden;
     }
 
     .form-css input[type=submit] {

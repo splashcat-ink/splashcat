@@ -25,12 +25,57 @@
         <-- that's the cool badge!
     </div>
 
-    <iframe src="https://github.com/sponsors/catgirlinspace/card" title="Sponsor catgirlinspace" height="225"
-            width="600" style="border: 0;"></iframe>
+    <iframe src="https://github.com/sponsors/catgirlinspace/card" title="Sponsor catgirlinspace" height="175"
+            width="600" style="border: 0;" class="max-w-full"></iframe>
 
-    {% comment %}
-    <h2 class="text-xl">Current Sponsors</h2>
+    <h2 class="text-xl font-splatoon1">Sponsor Features</h2>
+    <p class="text-lg">
+        Must be sponsoring $5/month or more to receive.
+    </p>
+    <ul class="list-disc list-inside text-lg">
+        <li>
+            Sponsor Badge
+            <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                 class="h-8 w-8 inline-block">
+            <p class="text-sm ml-8 text-gray-500">
+                Must configure GitHub sponsorship privacy as public to display.
+            </p>
+        </li>
+        <li>
+            Favorite Color
+            <p class="text-md ml-8">
+                Set a favorite color to be used for sub and special weapon icons on your profile and elsewhere on
+                Splashcat.
+            </p>
+            <p class="text-sm ml-8 text-gray-500">
+                Sponsorship privacy does not affect this feature.
+            </p>
+        </li>
+    </ul>
 
-    TODO: do this later
-    {% endcomment %}
+    <h2 class="font-splatoon1 text-xl">Current Sponsors</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {% for sponsor in current_sponsors %}
+            <a class="flex flex-col gap-1 my-1 w-fit" href="{{ sponsor.get_absolute_url }}">
+                <div class="flex flex-row gap-2 items-center">
+                    {% if sponsor.profile_picture %}
+                        <img src="{{ sponsor.profile_picture.url }}" alt="{{ sponsor.display_name }}"
+                             class="h-12 w-12 object-cover rounded-lg">
+                    {% endif %}
+                    <div class="flex flex-col">
+                        <div class="text-xl">
+                            {{ sponsor.display_name }}
+                            {% if sponsor.display_sponsor_badge %}
+                                <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                                     class="h-6 inline-block">
+                            {% endif %}
+                        </div>
+                        <div class="text-sm text-gray-400">@{{ sponsor.username }}</div>
+                    </div>
+                </div>
+                {% include "includes/splashtag.html" with splashtag=sponsor.get_splashtag %}
+            </a>
+        {% endfor %}
+    </div>
 {% endblock %}

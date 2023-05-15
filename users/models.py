@@ -1,5 +1,10 @@
+import datetime
+from datetime import timedelta
+
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.tokens import default_token_generator
 from django.db import models
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
@@ -26,6 +31,8 @@ class User(AbstractUser):
     display_name = models.CharField(_("display name"), max_length=30)
     first_name = None
     last_name = None
+    verified_email = models.BooleanField(_("verified email"), default=False)
+    email = models.EmailField(_("email address"), unique=True)
 
     profile_picture = models.ImageField(_("profile picture"), upload_to='profile_pictures', blank=True, null=True)
     saved_favorite_color = ColorField(default="9333eaff")
@@ -49,6 +56,30 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse("profile", kwargs={"username": self.username})
+
+    @property
+    def is_verified_for_export_download(self):
+        # used for data exports
+        # verified users have been on splashcat for at least 24 hours and have at least 5 battles, or are a sponsor
+        return self.github_link.is_sponsor or \
+            (
+                    self.date_joined < datetime.datetime.now() - timedelta(days=1) and
+                    self.battles.count() >= 5 and
+                    self.verified_email
+            )
+
+    @property
+    def get_splashtag(self):
+        return self.battles.latest('played_time').splashtag
+
+    def send_verification_email(self):
+        if not self.verified_email:
+            token = default_token_generator.make_token(self)
+            message_contents = render_to_string('emails/verify_email.txt', {
+                'user': self,
+                'token': token,
+            })
+            self.email_user('Verify your email address', message_contents)
 
 
 def generate_key():
