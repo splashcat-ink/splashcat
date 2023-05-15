@@ -41,6 +41,7 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 ALLOWED_HOSTS += [gethostname(), gethostbyname(gethostname()), ]
+CSRF_TRUSTED_ORIGINS = ['https://splashcat.ink']
 
 SITE_ID = 1
 
