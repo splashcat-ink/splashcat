@@ -16,10 +16,12 @@ def download_image(asset_type: str, asset_name: str, asset_url: str) -> Image:
     response = requests.get(asset_url)
     image_data = BytesIO(response.content)
 
-    image, _created = Image.objects.get_or_create(type=asset_type, asset_name=asset_name)
+    image, _created = Image.objects.get_or_create(type=asset_type, asset_name=str(asset_name))
 
     image.original_file_name = asset_url
-    image.image = ContentFile(image_data.read(), name=asset_name)
+    if image.image:
+        image.image.file.delete()
+    image.image = ContentFile(image_data.read(), name=str(asset_name))
 
     image.save()
 
