@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -74,10 +75,12 @@ class User(AbstractUser):
 
     def send_verification_email(self):
         if not self.verified_email:
+            site = get_current_site()
             token = default_token_generator.make_token(self)
             message_contents = render_to_string('emails/verify_email.txt', {
                 'user': self,
                 'token': token,
+                'site': site,
             })
             self.email_user('Verify your email address', message_contents)
 
