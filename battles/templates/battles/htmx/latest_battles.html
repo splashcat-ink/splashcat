@@ -1,7 +1,7 @@
 {% if battles|length == 0 %}
     <div class="text-center text-gray-400">
         <div class="text-2xl font-bold">No battles</div>
-        <div class="text-lg">You haven't played any battles yet.</div>
+        <div class="text-lg">You haven't uploaded any battles yet.</div>
     </div>
 {% else %}
     <div class="flex flex-col gap-2">
@@ -14,15 +14,15 @@
                 >
                     {{ battle.get_judgement_display|upper }}
                 </div>
-            <div class="flex flex-col">
-                <div class="text-sm whitespace-nowrap">{{ battle.vs_stage.name.string }}</div>
-                <div class="text-sm whitespace-nowrap">{{ battle.get_vs_rule_display }}</div>
-            </div>
-            <div class="grow"></div>
-            {% with player=battle.player team=battle.player.team %}
-                <div class="flex-none flex flex-row gap-1 px-4 justify-end rounded-full min-w-fit bg-black/50">
-                    <span class="text-xl w-min whitespace-nowrap pt-1">{{ player.paint }}p</span>
-                    <span class="text-lg w-min whitespace-nowrap pt-[2px]">
+                <div class="flex flex-col shrink">
+                    <div class="text-sm whitespace-nowrap overflow-clip">{{ battle.vs_stage.name.string }}</div>
+                    <div class="text-sm whitespace-nowrap overflow-clip">{{ battle.get_vs_rule_display }}</div>
+                </div>
+                <div class="grow"></div>
+                {% with player=battle.player team=battle.player.team %}
+                    <div class="flex-none flex flex-row gap-1 px-4 justify-end rounded-full min-w-fit bg-black/50">
+                        <span class="text-xl w-min whitespace-nowrap pt-1">{{ player.paint }}p</span>
+                        <span class="text-lg w-min whitespace-nowrap pt-[2px]">
                                 {% if player.species == "OCTOLING" %}
                                     {% include "battles/svg/octoling_splat.html" with color=team.color %}
                                 {% else %}
