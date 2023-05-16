@@ -13,6 +13,7 @@ from django.views.decorators.http import require_http_methods
 
 from battles.models import Player
 from splashcat.decorators import github_webhook
+from splatnet_assets.models import Weapon
 from .forms import RegisterForm, AccountSettingsForm
 from .models import User, GitHubLink, ApiKey
 
@@ -35,9 +36,11 @@ def profile(request, username: str):
         average_deaths=models.Avg('deaths'),
         average_specials=models.Avg('specials'),
         average_paint=models.Avg('paint'),
-        most_used_weapons=models.Count('weapon'),
     )
-    most_used_weapon = aggregates['most_used_weapons'].order_by('-count').first()
+
+    most_used_weapon = Player.objects.filter(team__battle__uploader=user, is_self=True) \
+        .values('weapon').annotate(count=models.Count('weapon')).order_by('-count').first()
+    most_used_weapon = Weapon.objects.get(pk=most_used_weapon['weapon']) if most_used_weapon else None
 
     return render(request, 'users/profile.html',
                   {
