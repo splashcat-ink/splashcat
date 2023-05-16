@@ -5,11 +5,13 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
+from django.db import models
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
+from battles.models import Player
 from splashcat.decorators import github_webhook
 from .forms import RegisterForm, AccountSettingsForm
 from .models import User, GitHubLink, ApiKey
@@ -27,6 +29,13 @@ def profile(request, username: str):
     win_count = user.battles.filter(judgement='WIN').count()
     lose_count = user.battles.exclude(judgement__in=['WIN', 'DRAW']).count()
     win_rate = win_count / battle_count * 100 if battle_count else 0
+    aggregates = Player.objects.filter(team__battle__uploader=user, is_self=True).aggregate(
+        average_kills=models.Avg('kills'),
+        average_assists=models.Avg('assists'),
+        average_deaths=models.Avg('deaths'),
+        average_specials=models.Avg('specials'),
+        average_paint=models.Avg('paint')
+    )
 
     return render(request, 'users/profile.html',
                   {
@@ -37,6 +46,7 @@ def profile(request, username: str):
                       'win_count': win_count,
                       'lose_count': lose_count,
                       'win_rate': win_rate,
+                      'aggregates': aggregates,
                   })
 
 

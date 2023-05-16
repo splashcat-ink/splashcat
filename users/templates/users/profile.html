@@ -53,19 +53,19 @@
                 </div>
                 <div class="px-4">
                     <div class="text-lg">Average Kills</div>
-                    <div class="text-2xl">99.99</div>
+                    <div class="text-2xl">{{ aggregates.average_kills }}</div>
                 </div>
                 <div class="px-4">
                     <div class="text-lg">Average Deaths</div>
-                    <div class="text-2xl">99.99</div>
+                    <div class="text-2xl">{{ aggregates.average_deaths }}</div>
                 </div>
                 <div class="px-4">
                     <div class="text-lg">Average Turfed</div>
-                    <div class="text-2xl">9999.9p</div>
+                    <div class="text-2xl">{{ aggregates.average_paint }}</div>
                 </div>
                 <div class="px-4">
                     <div class="text-lg">Favorite Weapon</div>
-                    <div class="text-2xl">E-Liter 4K Scope</div>
+                    <div class="text-2xl">{{ aggregates.favorite_weapon.name.string }}</div>
                 </div>
             </div>
 
