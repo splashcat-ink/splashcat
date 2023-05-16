@@ -3,9 +3,8 @@ import hashlib
 from datetime import timedelta, datetime
 from urllib.parse import parse_qs, urlsplit, urlunsplit, urlencode, urljoin
 
+import boto3
 from django.conf import settings
-
-from battles.tasks import get_boto3_client
 
 
 def get_last_modified(obj):
@@ -36,3 +35,12 @@ def sign_url(url, expiration_time: timedelta):
     query = urlencode(parameters, doseq=True)
 
     return urlunsplit((scheme, netloc, path, query, fragment))
+
+
+def get_boto3_client():
+    return boto3.client(
+        service_name='s3',
+        endpoint_url=settings.B2_ENDPOINT_URL,
+        aws_access_key_id=settings.B2_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.B2_SECRET_ACCESS_KEY,
+    )

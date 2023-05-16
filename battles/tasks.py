@@ -5,26 +5,15 @@ from datetime import datetime, timezone, timedelta
 from io import StringIO, BytesIO
 from urllib.parse import urljoin
 
-import boto3
 from anymail.message import AnymailMessage
 from celery import shared_task
 from django.conf import settings
 from django.utils.crypto import salted_hmac
 
-from battles.data_exports import sign_url
+from battles.data_exports import sign_url, get_boto3_client
 from battles.models import Battle, Player, PlayerGear, BattleAward
 from splatnet_assets.models import Award
 from users.models import User
-
-
-def get_boto3_client():
-    return boto3.client(
-        service_name='s3',
-        endpoint_url=settings.B2_ENDPOINT_URL,
-        aws_access_key_id=settings.B2_ACCESS_KEY_ID,
-        aws_secret_access_key=settings.B2_SECRET_ACCESS_KEY,
-    )
-
 
 SALT = 'battle-export'
 
