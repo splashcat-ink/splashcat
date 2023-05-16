@@ -34,8 +34,10 @@ def profile(request, username: str):
         average_assists=models.Avg('assists'),
         average_deaths=models.Avg('deaths'),
         average_specials=models.Avg('specials'),
-        average_paint=models.Avg('paint')
+        average_paint=models.Avg('paint'),
+        most_used_weapons=models.Count('weapon'),
     )
+    most_used_weapon = aggregates['most_used_weapons'].order_by('-count').first()
 
     return render(request, 'users/profile.html',
                   {
@@ -47,6 +49,7 @@ def profile(request, username: str):
                       'lose_count': lose_count,
                       'win_rate': win_rate,
                       'aggregates': aggregates,
+                      'most_used_weapon_name': most_used_weapon.name.string,
                   })
 
 
