@@ -52,7 +52,7 @@ def profile(request, username: str):
                       'lose_count': lose_count,
                       'win_rate': win_rate,
                       'aggregates': aggregates,
-                      'most_used_weapon_name': most_used_weapon.name.string,
+                      'most_used_weapon': most_used_weapon,
                   })
 
 
