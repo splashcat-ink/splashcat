@@ -15,7 +15,8 @@
         <div>
             {{ form.non_field_errors }}
 
-            <form class="form-css form-div-cards" method="post" action="{% url "users:settings" %}">
+            <form class="form-css form-div-cards" method="post" action="{% url "users:settings" %}"
+                  enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div>
