@@ -189,11 +189,11 @@ def user_request_data_export(user: User | int):
 
     temp_file.seek(0)
     current_date = datetime.now().isoformat()
-    client.upload_fileobj(temp_file, 'splashcat-data-exports', f'user/{user.id}-{current_date}.json')
+    client.upload_fileobj(temp_file, 'splashcat-data-exports', f'user/{user.id}.json')
 
     # email the user a link to download
 
-    url = urljoin(f'https://{settings.BUNNY_NET_DATA_EXPORTS_CDN_HOST}', f'user/{user.id}-{current_date}.json')
+    url = urljoin(f'https://{settings.BUNNY_NET_DATA_EXPORTS_CDN_HOST}', f'user/{user.id}.json')
     url = sign_url(url, expiration_time=timedelta(days=7))
 
     message = AnymailMessage(
@@ -207,6 +207,9 @@ def user_request_data_export(user: User | int):
     }
 
     message.send()
+
+    user.data_export_pending = False
+    user.save()
 
 
 @shared_task

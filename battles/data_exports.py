@@ -12,9 +12,9 @@ def get_last_modified(obj):
 
 
 def get_latest_export_download_url():
-    boto3 = get_boto3_client()
-    objs = boto3.list_objects_v2(Bucket='splashcat-data-exports', Prefix='global/')['Contents']
-    last_added = [obj['Key'] for obj in sorted(objs, key=get_last_modified)][0]
+    b2_client = get_boto3_client()
+    objs = b2_client.list_objects_v2(Bucket='splashcat-data-exports', Prefix='global/')['Contents']
+    last_added = [obj['Key'] for obj in sorted(objs, key=get_last_modified)][-1]
 
     url = urljoin(f'https://{settings.BUNNY_NET_DATA_EXPORTS_CDN_HOST}', last_added)
     return sign_url(url, expiration_time=timedelta(days=1))
