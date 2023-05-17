@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="text-3xl font-splatoon1">
+        {% block title %}
+            500 Internal Server Error
+        {% endblock %}
+    </h1>
+
+    <p>
+        Uh oh, something went wrong while processing your request.
+        Please try again later.
+    </p>
+
+    <p>
+        This has been logged for the Squid Research Lab to investigate.
+    </p>
+{% endblock %}
