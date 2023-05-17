@@ -4,17 +4,19 @@ import jsonschema
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.db import transaction
-from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
+from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from jsonschema import validate
 
+from battles.data_exports import get_latest_export_download_url
 from battles.models import *
 from battles.parsers.splashcat import parse_splashcat
 from battles.parsers.splatnet3 import parse_splatnet3
 from battles.utils import BattleAlreadyExistsError
 from splashcat.decorators import api_auth_required
+from users.models import User
 
 
 # Create your views here.
@@ -35,6 +37,20 @@ def get_battle_json(request, battle_id):
     battle = get_object_or_404(Battle.objects.with_prefetch(), id=battle_id)
     data = serializers.serialize('json', [battle])
     return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def global_data_export(request):
+    return render(request, 'battles/global_data_export.html')
+
+
+@login_required
+def redirect_global_data_export(request):
+    user: User = request.user
+    if user.is_verified_for_export_download:
+        return redirect(get_latest_export_download_url())
+    else:
+        return HttpResponseForbidden()
 
 
 @csrf_exempt

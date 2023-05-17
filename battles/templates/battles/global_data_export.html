@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="text-3xl font-splatoon1">
+        {% block title %}
+            Global Data Exports
+        {% endblock %}
+    </h1>
+
+    Splashcat provides exports of all battles uploaded, updated each hour. The data is provided as several CSV files.
+    All IDs are hashes of the original ID.
+
+    {% if user.is_verified_for_export_download %}
+        <a href="{% url 'battles:redirect_global_data_export' %}"
+           class="p-4 rounded bg-pink-500 hover:bg-pink-600 block w-fit">Download</a>
+    {% else %}
+        Your account does not meet the requirements to download the data. Splashcat has some basic requirements for data
+        exports to prevent abuse.
+        <ul class="list-inside">
+            <li>More than 24 hours old</li>
+            <li>5 or more battles</li>
+            <li>Verified email</li>
+        </ul>
+        Sponsoring on GitHub and connecting your account will also allow you to download the data.
+    {% endif %}
+
+    <h2 class="text-xl font-splatoon1">
+        Data Format
+    </h2>
+
+    <h3 class="text-lg">
+        Battles
+    </h3>
+
+    <table class="font-sans table-auto">
+        <thead>
+        <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Description</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td>battle_id</td>
+            <td>string</td>
+            <td>Hash of the original battle ID</td>
+        </tr>
+        <tr>
+            <td>uploader_id</td>
+            <td>string</td>
+            <td>Hash of the uploader ID</td>
+        </tr>
+        <tr>
+            <td>has_disconnected_players</td>
+            <td>boolean</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>vs_mode</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>vs_rule</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>stage_id</td>
+            <td>integer</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>played_time</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>judgement</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>knockout</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>award_1</td>
+            <td>integer</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>award_2</td>
+            <td>integer</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>award_3</td>
+            <td>integer</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}
