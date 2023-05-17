@@ -66,7 +66,7 @@ class User(AbstractUser):
         # verified users have been on splashcat for at least 24 hours and have at least 5 battles, or are a sponsor
         return self.github_link.is_sponsor or \
             (
-                    self.date_joined < datetime.datetime.now() - timedelta(days=1) and
+                    self.date_joined < datetime.datetime.now(datetime.timezone.utc) - timedelta(days=1) and
                     self.battles.count() >= 5 and
                     self.verified_email
             )

@@ -258,8 +258,8 @@ def verify_email(request, user_id, token):
 def request_data_export(request):
     user: User = request.user
     # check that the last data export was more than 24 hours ago
-    if user.last_data_export and \
-            user.last_data_export > datetime.datetime.now(tz=user.last_data_export.tzinfo) - datetime.timedelta(days=1):
+    if (user.last_data_export and user.last_data_export > datetime.datetime.now(
+            tz=user.last_data_export.tzinfo) - datetime.timedelta(days=1)):
         messages.add_message(request, messages.ERROR,
                              f'You can only request a data export once per day.'
                              )
