@@ -14,14 +14,17 @@
         <a href="{% url 'battles:redirect_global_data_export' %}"
            class="p-4 rounded bg-pink-500 hover:bg-pink-600 block w-fit">Download</a>
     {% else %}
-        Your account does not meet the requirements to download the data. Splashcat has some basic requirements for data
-        exports to prevent abuse.
-        <ul class="list-inside">
-            <li>More than 24 hours old</li>
-            <li>5 or more battles</li>
-            <li>Verified email</li>
-        </ul>
-        Sponsoring on GitHub and connecting your account will also allow you to download the data.
+        <div>
+            Your account does not meet the requirements to download the data. Splashcat has some basic requirements for
+            data
+            exports to prevent abuse.
+            <ul class="list-inside list-disc">
+                <li>More than 24 hours old</li>
+                <li>5 or more battles</li>
+                <li>Verified email</li>
+            </ul>
+            Sponsoring on GitHub and connecting your account will also allow you to download the data.
+        </div>
     {% endif %}
 
     <h2 class="text-xl font-splatoon1">
@@ -98,6 +101,176 @@
         <tr>
             <td>award_3</td>
             <td>integer</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3 class="text-lg">
+        Teams
+    </h3>
+
+    <table class="font-sans table-auto">
+        <thead>
+        <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Description</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td>battle_id</td>
+            <td>string</td>
+            <td>Hash of the original battle ID</td>
+        </tr>
+        <tr>
+            <td>team_id</td>
+            <td>string</td>
+            <td>Hash of team ID</td>
+        </tr>
+        <tr>
+            <td>team_color</td>
+            <td>string</td>
+            <td>Hex string of the color</td>
+        </tr>
+        <tr>
+            <td>is_my_team</td>
+            <td>string</td>
+            <td>`True`/`False`</td>
+        </tr>
+        <tr>
+            <td>judgement</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>knockout</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>score</td>
+            <td>integer?</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>paint_ratio</td>
+            <td>number</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>noroshi</td>
+            <td>integer?</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>fest_streak_win_count</td>
+            <td>integer?</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>fest_team_name</td>
+            <td>string?</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>fest_uniform_bonus_rate</td>
+            <td>string?</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>fest_uniform_name</td>
+            <td>string?</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>tricolor_role</td>
+            <td>string?</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3 class="text-lg">
+        Players
+    </h3>
+
+    <table class="font-sans table-auto">
+        <thead>
+        <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Description</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td>battle_id</td>
+            <td>string</td>
+            <td>Hash of the original battle ID</td>
+        </tr>
+        <tr>
+            <td>team_id</td>
+            <td>string</td>
+            <td>Hash of team ID</td>
+        </tr>
+        <tr>
+            <td>player_id</td>
+            <td>string</td>
+            <td>Hash of player ID</td>
+        </tr>
+        <tr>
+            <td>npln_id</td>
+            <td>string</td>
+            <td>Hash of player's NPLN ID</td>
+        </tr>
+        <tr>
+            <td>is_self</td>
+            <td>string</td>
+            <td>`True`/`False`</td>
+        </tr>
+        <tr>
+            <td>weapon_id</td>
+            <td>string</td>
+            <td>Internal ID</td>
+        </tr>
+        <tr>
+            <td>species</td>
+            <td>string</td>
+            <td>`INKLING`/`OCTOLING`</td>
+        </tr>
+        <tr>
+            <td>disconnected</td>
+            <td>string?</td>
+            <td>`True`/`False`</td>
+        </tr>
+        <tr>
+            <td>kills</td>
+            <td>integer?</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>assists</td>
+            <td>integer?</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>deaths</td>
+            <td>integer?</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>specials</td>
+            <td>integer?</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>paint</td>
+            <td>integer</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>noroshi_try</td>
+            <td>integer?</td>
             <td></td>
         </tr>
         </tbody>
