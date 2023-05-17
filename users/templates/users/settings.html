@@ -9,6 +9,10 @@
         <h1 class="text-3xl font-splatoon1 mb-2">
             Settings
         </h1>
+        <form action="{% url 'users:request_data_export' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Request Data Export" class="p-4 bg-pink-500 hover:bg-pink-600 rounded">
+        </form>
     </div>
 
     <div class="grid gap-4 grid-cols-1 md:grid-cols-2">

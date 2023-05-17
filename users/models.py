@@ -34,6 +34,8 @@ class User(AbstractUser):
     last_name = None
     verified_email = models.BooleanField(_("verified email"), default=False)
     email = models.EmailField(_("email address"), unique=True)
+    last_data_export = models.DateTimeField(_("last data export"), blank=True, null=True)
+    data_export_pending = models.BooleanField(_("data export pending"), default=False)
 
     profile_picture = models.ImageField(_("profile picture"), upload_to='profile_pictures', blank=True, null=True)
     saved_favorite_color = ColorField(default="9333eaff")

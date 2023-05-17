@@ -1,3 +1,4 @@
+import datetime
 import json
 
 import requests
@@ -12,6 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
 from battles.models import Player
+from battles.tasks import user_request_data_export
 from splashcat.decorators import github_webhook
 from splatnet_assets.models import Weapon
 from .forms import RegisterForm, AccountSettingsForm
@@ -249,3 +251,29 @@ def verify_email(request, user_id, token):
                          f'Verified email for @{user.username}!'
                          )
     return redirect('home')
+
+
+@login_required
+@require_http_methods(['POST'])
+def request_data_export(request):
+    user: User = request.user
+    # check that the last data export was more than 24 hours ago
+    if user.last_data_export and \
+            user.last_data_export > datetime.datetime.now(tz=user.last_data_export.tzinfo) - datetime.timedelta(days=1):
+        messages.add_message(request, messages.ERROR,
+                             f'You can only request a data export once per day.'
+                             )
+        return redirect('users:settings')
+    if user.data_export_pending:
+        messages.add_message(request, messages.ERROR,
+                             f'You already have a data export pending.'
+                             )
+        return redirect('users:settings')
+    user.data_export_pending = True
+    user.last_data_export = datetime.datetime.now()
+    user_request_data_export.delay(user.pk)
+    user.save()
+    messages.add_message(request, messages.SUCCESS,
+                         f'Requested data export for @{user.username}! You should receive an email soon.'
+                         )
+    return redirect('users:settings')

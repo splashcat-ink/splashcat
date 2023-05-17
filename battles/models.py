@@ -130,6 +130,37 @@ class Battle(models.Model):
             .select_related('weapon__special__image') \
             .get(is_self=True)
 
+    def to_dict(self):
+        data = {
+            'battle_id': self.id,
+            'uploader_id': self.uploader_id,
+            'data_type': self.data_type,
+            'raw_data': self.raw_data,
+            'vs_mode': self.vs_mode,
+            'vs_rule': self.vs_rule,
+            'stage_id': self.vs_stage_id,
+            'uploaded_at': self.uploaded_at.isoformat(),
+            'updated_at': self.updated_at.isoformat(),
+            'played_time': self.played_time.isoformat(),
+            'duration': self.duration.total_seconds(),
+            'judgement': self.judgement,
+            'knockout': self.knockout,
+            'awards': [],
+            'teams': [],
+        }
+
+        for award in self.awards.all():
+            data['awards'].append({
+                'id': award.id,
+                'name': award.name.string,
+                'order': BattleAward.objects.get(battle=self, award=award).order,
+            })
+
+        for team in self.teams.all():
+            data['teams'].append(team.to_dict())
+
+        return data
+
 
 class BattleAward(models.Model):
     battle = models.ForeignKey('Battle', on_delete=models.CASCADE)
@@ -170,6 +201,28 @@ class Team(models.Model):
     def next_team(self):
         # get the next team, looping back to the beginning if necessary. used by the template to display colors
         return self.battle.teams.get(order=(self.order % self.battle.teams.count()) + 1)
+
+    def to_dict(self):
+        data = {
+            'is_my_team': self.is_my_team,
+            'color': self.color.to_hex(),
+            'fest_streak_win_count': self.fest_streak_win_count,
+            'fest_team_name': self.fest_team_name,
+            'fest_uniform_bonus_rate': self.fest_uniform_bonus_rate,
+            'fest_uniform_name': self.fest_uniform_name,
+            'tricolor_role': self.tricolor_role,
+            'judgement': self.judgement,
+            'score': self.score,
+            'paint_ratio': self.paint_ratio,
+            'noroshi': self.noroshi,
+            'order': self.order,
+            'players': [],
+        }
+
+        for player in self.players.all():
+            data['players'].append(player.to_dict())
+
+        return data
 
 
 class PlayerManager(models.Manager):
@@ -237,6 +290,38 @@ class Player(models.Model):
             'background': self.nameplate_background,
         }
 
+    def to_dict(self):
+        data = {
+            'is_self': self.is_self,
+            'species': self.species,
+            'npln_id': self.npln_id,
+            'name': self.name,
+            'name_id': self.name_id,
+            'title': self.byname,
+            'title_adjective_id': self.title_adjective.internal_id,
+            'title_subject_id': self.title_subject.internal_id,
+            'nameplate_background_id': self.nameplate_background.internal_id,
+            'nameplate_badge_ids': [
+                self.nameplate_badge_1.internal_id if self.nameplate_badge_1 else None,
+                self.nameplate_badge_2.internal_id if self.nameplate_badge_2 else None,
+                self.nameplate_badge_3.internal_id if self.nameplate_badge_3 else None,
+            ],
+            'weapon_id': self.weapon.internal_id,
+            'head_gear': self.head_gear.to_dict(),
+            'clothing_gear': self.clothing_gear.to_dict(),
+            'shoes_gear': self.shoes_gear.to_dict(),
+            'disconnect': self.disconnect,
+            'kills': self.kills,
+            'assists': self.assists,
+            'deaths': self.deaths,
+            'specials': self.specials,
+            'paint': self.paint,
+            'noroshi_try': self.noroshi_try,
+            'order': self.order,
+        }
+
+        return data
+
 
 class PlayerGear(models.Model):
     gear = models.ForeignKey('splatnet_assets.Gear', on_delete=models.PROTECT)
@@ -251,3 +336,14 @@ class PlayerGear(models.Model):
     @property
     def secondary_abilities(self):
         return [self.secondary_ability_1, self.secondary_ability_2, self.secondary_ability_3]
+
+    def to_dict(self):
+        return {
+            'gear_id': self.gear.internal_id,
+            'primary_ability_id': self.primary_ability.internal_id,
+            'secondary_ability_ids': [
+                self.secondary_abilities[0].internal_id if self.secondary_abilities[0] else None,
+                self.secondary_abilities[1].internal_id if self.secondary_abilities[1] else None,
+                self.secondary_abilities[2].internal_id if self.secondary_abilities[2] else None,
+            ],
+        }

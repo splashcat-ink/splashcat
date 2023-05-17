@@ -31,6 +31,11 @@ urlpatterns = [
         user_settings,
         name="settings",
     ),
+    path(
+        "settings/request-data-export/",
+        request_data_export,
+        name="request_data_export",
+    ),
     path('github/link/',
          link_github_account,
          name='link_github_account'),
