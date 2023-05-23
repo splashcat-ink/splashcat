@@ -11,7 +11,7 @@
         </h1>
         <form action="{% url 'users:request_data_export' %}" method="post">
             {% csrf_token %}
-            <input type="submit" value="Request Data Export" class="p-4 bg-pink-500 hover:bg-pink-600 rounded">
+            <input type="submit" value="Request Data Export" class="p-4 bg-pink-600 hover:bg-pink-700 rounded">
         </form>
     </div>
 
@@ -83,7 +83,7 @@
                     >
 
                     {% if user.github_link.github_id %}
-                        <button name="is_refresh" value="true" class="p-4 rounded bg-pink-500 hover:bg-pink-600"
+                        <button name="is_refresh" value="true" class="p-4 rounded bg-pink-600 hover:bg-pink-700"
                                 _="on click remove .animate-none from the <svg/> in me"
                         >
                             {% include "splatnet_assets/squid_spinner.html" with class="h-6 w-6 inline-block animate-[spin_2s_linear_infinite] animate-none" %}

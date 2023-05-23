@@ -12,7 +12,7 @@
 
     {% if user.is_verified_for_export_download %}
         <a href="{% url 'battles:redirect_global_data_export' %}"
-           class="p-4 rounded bg-pink-500 hover:bg-pink-600 block w-fit">Download</a>
+           class="p-4 rounded bg-pink-600 hover:bg-pink-700 block w-fit">Download</a>
     {% else %}
         <div>
             Your account does not meet the requirements to download the data. Splashcat has some basic requirements for
