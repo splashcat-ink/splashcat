@@ -22,7 +22,8 @@ class GitHubLinkInline(TabularInline):
 
 class UserAdmin(AbstractUserAdmin):
     fieldsets = AbstractUserAdmin.fieldsets + (
-        (None, {"fields": ["profile_picture", "saved_favorite_color", "data_export_pending", "last_data_export"]}),)
+        (None, {"fields": ["profile_picture", "saved_favorite_color", "data_export_pending", "last_data_export",
+                           "verified_email"]}),)
     inlines = [GitHubLinkInline]
 
     def __init__(self, model, admin_site):
