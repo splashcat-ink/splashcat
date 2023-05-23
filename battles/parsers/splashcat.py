@@ -30,6 +30,13 @@ def parse_splashcat(data, request):
     battle.duration = timedelta(seconds=splashcat_battle.duration)
     battle.judgement = splashcat_battle.judgement.value
     battle.knockout = splashcat_battle.knockout.value
+    battle.anarchy_mode = splashcat_battle.anarchy.mode.value if splashcat_battle.anarchy else None
+    battle.anarchy_point_change = splashcat_battle.anarchy.point_change if splashcat_battle.anarchy else None
+    battle.x_battle_x_power = splashcat_battle.x_battle.x_power if splashcat_battle.x_battle else None
+    battle.x_battle_rank = splashcat_battle.x_battle.x_rank if splashcat_battle.x_battle else None
+    battle.splatfest_mode = splashcat_battle.splatfest.mode.value if splashcat_battle.splatfest else None
+    battle.splatfest_clout_multiplier = splashcat_battle.splatfest.clout_multiplier if splashcat_battle.splatfest else None
+    battle.splatfest_power = splashcat_battle.splatfest.power if splashcat_battle.splatfest else None
     battle.save()
     for i, team in enumerate(splashcat_battle.teams):
         team_object = battle.teams.create(

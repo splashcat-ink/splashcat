@@ -55,6 +55,20 @@ class Battle(models.Model):
         X_MATCH = 'X_MATCH', _('X Battle')
         PRIVATE = 'PRIVATE', _('Private Battle')
 
+    class AnarchyMode(models.TextChoices):
+        SERIES = 'SERIES', _('Anarchy Battle (Series)')
+        OPEN = 'OPEN', _('Anarchy Battle (Open)')
+
+    class SplatfestBattleType(models.TextChoices):
+        OPEN = 'OPEN', _('Splatfest Battle (Open)')
+        PRO = 'PRO', _('Splatfest Battle (Pro)')
+
+    class SplatfestBattleCloutMultiplier(models.TextChoices):
+        NONE = 'NONE', _('1x')
+        DECUPLE = 'DECUPLE', _('10x')
+        DRAGON = 'DRAGON', _('100x')
+        DOUBLE_DRAGON = 'DOUBLE_DRAGON', _('333x')
+
     class VsRule(models.TextChoices):
         TURF_WAR = 'TURF_WAR', _('Turf War')
         AREA = 'AREA', _('Splat Zones')
@@ -90,6 +104,14 @@ class Battle(models.Model):
     duration = models.DurationField()
     judgement = models.CharField(max_length=32, choices=BattleJudgement.choices, db_index=True)
     knockout = models.CharField(max_length=32, choices=KnockoutJudgement.choices, blank=True, null=True)
+    anarchy_mode = models.CharField(max_length=32, choices=AnarchyMode.choices, blank=True, null=True)
+    anarchy_point_change = models.IntegerField(blank=True, null=True)
+    x_battle_x_power = models.FloatField(blank=True, null=True)
+    x_battle_rank = models.IntegerField(blank=True, null=True)
+    splatfest_mode = models.CharField(max_length=32, choices=SplatfestBattleType.choices, blank=True, null=True)
+    splatfest_clout_multiplier = models.CharField(max_length=32, choices=SplatfestBattleCloutMultiplier.choices,
+                                                  blank=True, null=True)
+    splatfest_power = models.FloatField(blank=True, null=True)
 
     # teams comes from related_name='teams' on Team.battle
 

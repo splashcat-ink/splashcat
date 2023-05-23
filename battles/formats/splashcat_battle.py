@@ -67,27 +67,27 @@ def from_datetime(x: Any) -> datetime:
     return dateutil.parser.parse(x)
 
 
-class Mode(Enum):
+class AnarchyMode(Enum):
     OPEN = "OPEN"
     SERIES = "SERIES"
 
 
 @dataclass
 class Anarchy:
-    mode: Optional[Mode] = None
+    mode: Optional[AnarchyMode] = None
     point_change: Optional[int] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Anarchy':
         assert isinstance(obj, dict)
-        mode = from_union([Mode, from_none], obj.get("mode"))
+        mode = from_union([AnarchyMode, from_none], obj.get("mode"))
         point_change = from_union([from_int, from_none], obj.get("pointChange"))
         return Anarchy(mode, point_change)
 
     def to_dict(self) -> dict:
         result: dict = {}
         if self.mode is not None:
-            result["mode"] = from_union([lambda x: to_enum(Mode, x), from_none], self.mode)
+            result["mode"] = from_union([lambda x: to_enum(AnarchyMode, x), from_none], self.mode)
         if self.point_change is not None:
             result["pointChange"] = from_union([from_int, from_none], self.point_change)
         return result
@@ -105,6 +105,44 @@ class Knockout(Enum):
     LOSE = "LOSE"
     NEITHER = "NEITHER"
     WIN = "WIN"
+
+
+class CloutMultiplier(Enum):
+    DECUPLE = "DECUPLE"
+    DOUBLE_DRAGON = "DOUBLE_DRAGON"
+    DRAGON = "DRAGON"
+    NONE = "NONE"
+
+
+class SplatfestMode(Enum):
+    OPEN = "OPEN"
+    PRO = "PRO"
+
+
+@dataclass
+class Splatfest:
+    clout_multiplier: Optional[CloutMultiplier] = None
+    mode: Optional[SplatfestMode] = None
+    power: Optional[int] = None
+
+    @staticmethod
+    def from_dict(obj: Any) -> 'Splatfest':
+        assert isinstance(obj, dict)
+        clout_multiplier = from_union([CloutMultiplier, from_none], obj.get("cloutMultiplier"))
+        mode = from_union([SplatfestMode, from_none], obj.get("mode"))
+        power = from_union([from_int, from_none], obj.get("power"))
+        return Splatfest(clout_multiplier, mode, power)
+
+    def to_dict(self) -> dict:
+        result: dict = {}
+        if self.clout_multiplier is not None:
+            result["cloutMultiplier"] = from_union([lambda x: to_enum(CloutMultiplier, x), from_none],
+                                                   self.clout_multiplier)
+        if self.mode is not None:
+            result["mode"] = from_union([lambda x: to_enum(SplatfestMode, x), from_none], self.mode)
+        if self.power is not None:
+            result["power"] = from_union([from_int, from_none], self.power)
+        return result
 
 
 @dataclass
@@ -374,6 +412,7 @@ class SplashcatBattle:
     vs_stage_id: int
     anarchy: Optional[Anarchy] = None
     knockout: Optional[Knockout] = None
+    splatfest: Optional[Splatfest] = None
     x_battle: Optional[XBattle] = None
 
     @staticmethod
@@ -390,9 +429,10 @@ class SplashcatBattle:
         vs_stage_id = from_int(obj.get("vsStageId"))
         anarchy = from_union([Anarchy.from_dict, from_none], obj.get("anarchy"))
         knockout = from_union([Knockout, from_none], obj.get("knockout"))
+        splatfest = from_union([Splatfest.from_dict, from_none], obj.get("splatfest"))
         x_battle = from_union([XBattle.from_dict, from_none], obj.get("xBattle"))
         return SplashcatBattle(awards, duration, judgement, played_time, splatnet_id, teams, vs_mode, vs_rule,
-                               vs_stage_id, anarchy, knockout, x_battle)
+                               vs_stage_id, anarchy, knockout, splatfest, x_battle)
 
     def to_dict(self) -> dict:
         result: dict = {}
@@ -409,6 +449,8 @@ class SplashcatBattle:
             result["anarchy"] = from_union([lambda x: to_class(Anarchy, x), from_none], self.anarchy)
         if self.knockout is not None:
             result["knockout"] = from_union([lambda x: to_enum(Knockout, x), from_none], self.knockout)
+        if self.splatfest is not None:
+            result["splatfest"] = from_union([lambda x: to_class(Splatfest, x), from_none], self.splatfest)
         if self.x_battle is not None:
             result["xBattle"] = from_union([lambda x: to_class(XBattle, x), from_none], self.x_battle)
         return result

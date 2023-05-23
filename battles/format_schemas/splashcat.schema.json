@@ -18,6 +18,28 @@
         "PRIVATE"
       ]
     },
+    "splatfest": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "OPEN",
+            "PRO"
+          ]
+        },
+        "cloutMultiplier": {
+          "enum": [
+            "NONE",
+            "DECUPLE",
+            "DRAGON",
+            "DOUBLE_DRAGON"
+          ]
+        },
+        "power": {
+          "type": "integer"
+        }
+      }
+    },
     "anarchy": {
       "type": "object",
       "properties": {
