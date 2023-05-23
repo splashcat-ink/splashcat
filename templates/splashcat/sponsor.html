@@ -53,6 +53,7 @@
         </li>
     </ul>
 
+    {% if current_sponsors|length > 0 %}
     <h2 class="font-splatoon1 text-xl">Current Sponsors</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -78,4 +79,5 @@
             </a>
         {% endfor %}
     </div>
+    {% endif %}
 {% endblock %}
