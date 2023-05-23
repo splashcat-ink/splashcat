@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('unicorn/', include('django_unicorn.urls')),
     path('users/', include('users.urls')),
     path('battles/', include('battles.urls')),
     path('@<str:username>/', users_views.profile, name='profile'),

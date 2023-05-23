@@ -1,5 +1,6 @@
 {% load static %}
 {% load django_htmx %}
+{% load unicorn %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +19,7 @@
     <script src="{% static 'js/hyperscript.min.js' %}" defer></script>
     <script src="{% static 'js/htmx.min.js' %}" defer></script>
     {% django_htmx_script %}
+    {% unicorn_scripts %}
     <!-- Matomo -->
     <script>
         let _paq = window._paq = window._paq || [];
@@ -38,6 +40,7 @@
     <!-- End Matomo Code -->
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+{% csrf_token %}
 <header>
     {% include 'includes/navbar.html' %}
 </header>

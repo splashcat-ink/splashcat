@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'debug_toolbar',
     'django_htmx',
+    'django_unicorn',
     'anymail',
     'battles',
     'users',
