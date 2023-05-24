@@ -16,11 +16,21 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps import views
 from django.urls import path, include
 
 import users.views as users_views
+from battles.sitemaps import BattlesSitemap
 from splashcat import settings
+from splashcat.sitemaps import StaticViewSitemap
 from splashcat.views import home, sponsor
+from users.sitemaps import UsersSitemap
+
+sitemaps = {
+    'static': StaticViewSitemap,
+    'users': UsersSitemap,
+    'battles': BattlesSitemap,
+}
 
 urlpatterns = [
     path('', home, name='home'),
@@ -33,6 +43,18 @@ urlpatterns = [
     path('@<str:username>/', users_views.profile, name='profile'),
     path('sponsor/', sponsor, name='sponsor'),
     path('i18n/', include('django.conf.urls.i18n')),
+    path(
+        "sitemap.xml",
+        views.index,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.index",
+    ),
+    path(
+        "sitemap-<section>.xml",
+        views.sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
 ]
 
 if settings.DEBUG:
