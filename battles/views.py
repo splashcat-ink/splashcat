@@ -53,6 +53,14 @@ def redirect_global_data_export(request):
         return HttpResponseForbidden()
 
 
+@api_auth_required
+def get_recent_battle_ids(request):
+    recent_battles = request.user.battles.order_by('-played_time')[:100]
+    return JsonResponse({
+        'battle_ids': [battle.splatnet_id for battle in recent_battles],
+    })
+
+
 @csrf_exempt
 @require_http_methods(['POST'])
 @api_auth_required
@@ -61,7 +69,7 @@ def upload_battle(request):
     data = request.body
     if request.content_type == 'application/json':
         data = json.loads(data)
-    elif request.content_type == 'application/x-messagepack':
+    elif request.content_type == 'application/x-messagepack' or request.content_type == 'application/x-msgpack':
         import msgpack
         data = msgpack.unpackb(data)
 
