@@ -1,18 +1,29 @@
 {
   "name": "splashcat",
+  "private": true,
   "version": "1.0.0",
   "description": "",
-  "main": "tailwind.config.js",
+  "main": "frontend/index.js",
+  "type": "module",
   "scripts": {
-    "css:watch": "tailwindcss -i ./static/css/input.css -o ./static/css/styles.css -w",
-    "css:build": "tailwindcss -i ./static/css/input.css -o ./static/css/styles.css"
+    "build": "node ./frontend/build.mjs",
+    "watch": "node ./frontend/build.mjs -w"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "kitt <catgirl@catgirlin.space>",
+  "license": "AGPL-3.0-only",
   "dependencies": {
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
+    "htmx.org": "^1.9.2",
+    "hyperscript.org": "^0.9.8",
     "tailwindcss": "^3.3.1"
+  },
+  "devDependencies": {
+    "chokidar": "^3.5.3",
+    "cssnano": "^6.0.1",
+    "esbuild": "^0.17.19",
+    "postcss": "^8.4.24",
+    "tiny-throttle": "^1.0.4"
   }
 }
