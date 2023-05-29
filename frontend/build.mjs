@@ -65,7 +65,7 @@ if (process.argv.includes("-w") || process.argv.includes("--watch")) {
         console.time("Built in ");
         await Promise.all([
             // No need to do anything with this as ESBuild also logs it for us.
-            ctx.rebuild().catch((_) => {}),
+            ctx.rebuild().then(() => console.log("Built js!")).catch((_) => {}),
             postcssBuild()
         ]);
         console.timeEnd("Built in ");
