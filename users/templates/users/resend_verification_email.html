@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="text-3xl font-splatoon1">{% block title %}
+        Resend Verification Email
+    {% endblock %}</h1>
+
+    <form method="post" action="{% url 'users:resend_verification_email' %}" class="form-css">
+        {% csrf_token %}
+        {{ form.as_div }}
+
+        <input type="submit" value="Resend Email">
+    </form>
+{% endblock %}

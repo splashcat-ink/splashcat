@@ -61,3 +61,26 @@ class AuthenticationForm(DjangoAuthenticationForm):
                 self.error_messages['email_not_verified'],
                 code='email_not_verified',
             )
+
+
+class ResendVerificationEmailForm(forms.Form):
+    email = forms.EmailField(label=_("Email address"), max_length=254)
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if email is not None:
+            user = User.objects.get(email=email)
+            if user:
+                if user.verified_email:
+                    raise forms.ValidationError(
+                        _("This email address is already verified."),
+                        code='email_already_verified',
+                    )
+        return email
+
+    def send_email(self):
+        email = self.cleaned_data.get("email")
+        if email is not None:
+            user = User.objects.get(email=email)
+            if user:
+                user.send_verification_email()

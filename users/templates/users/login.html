@@ -25,5 +25,6 @@
 
     {# Assumes you set up the password_reset view in your URLconf #}
     <p><a href="{% url 'users:password_reset' %}">Lost password?</a></p>
+    <p><a href="{% url 'users:resend_verification_email' %}">Resend Verification Email</a></p>
 
 {% endblock %}

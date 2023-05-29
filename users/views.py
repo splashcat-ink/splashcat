@@ -16,7 +16,7 @@ from battles.models import Player
 from battles.tasks import user_request_data_export
 from splashcat.decorators import github_webhook
 from splatnet_assets.models import Weapon
-from .forms import RegisterForm, AccountSettingsForm
+from .forms import RegisterForm, AccountSettingsForm, ResendVerificationEmailForm
 from .models import User, GitHubLink, ApiKey
 
 
@@ -251,6 +251,22 @@ def verify_email(request, user_id, token):
                          f'Verified email for @{user.username}!'
                          )
     return redirect('home')
+
+
+def resend_verification_email(request):
+    if request.method == 'POST':
+        form = ResendVerificationEmailForm(request.POST)
+        if form.is_valid():
+            form.send_email()
+            messages.add_message(request, messages.SUCCESS,
+                                 f'Verification email sent to {form.cleaned_data["email"]}!'
+                                 )
+            return redirect('home')
+    else:
+        form = ResendVerificationEmailForm()
+    return render(request, 'users/resend_verification_email.html', {
+        'form': form,
+    })
 
 
 @login_required

@@ -52,4 +52,7 @@ urlpatterns = [
     path('verify-email/<int:user_id>/<str:token>/',
          verify_email,
          name='verify_email'),
+    path('verify-email/resend/',
+         resend_verification_email,
+         name='resend_verification_email'),
 ]
