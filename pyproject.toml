@@ -28,7 +28,7 @@ psycopg2-binary = "^2.9.6"
 celery = { extras = ["redis"], version = "^5.2.7" }
 django-celery-results = "^2.5.1"
 django-celery-beat = "^2.5.0"
-boto3 = "^1.26.138"
+boto3 = "^1.26.142"
 django-anymail = { extras = ["postmark"], version = "^10.0" }
 django-storages = "^1.13.2"
 eventlet = "^0.33.3"
