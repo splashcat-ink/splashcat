@@ -1,6 +1,7 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
 
+from users.forms import AuthenticationForm
 from users.views import *
 
 app_name = "users"
@@ -8,7 +9,7 @@ urlpatterns = [
     path('api/github-sponsors-webhook/', github_sponsors_webhook, name='github_sponsors_webhook'),
     path(
         "login/",
-        auth_views.LoginView.as_view(template_name="users/login.html"),
+        auth_views.LoginView.as_view(template_name="users/login.html", form_class=AuthenticationForm),
         name="login",
     ),
     path(
