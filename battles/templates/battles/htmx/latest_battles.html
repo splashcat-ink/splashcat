@@ -1,10 +1,10 @@
 {% if battles|length == 0 %}
-    <div class="text-center text-gray-400">
+    <div class="text-center text-gray-400" id="latest-battles-dropdown-data">
         <div class="text-2xl font-bold">No battles</div>
         <div class="text-lg">You haven't uploaded any battles yet.</div>
     </div>
 {% else %}
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2" id="latest-battles-dropdown-data">
         {% for battle in battles %}
             <a class="flex flex-row gap-1 bg-gray-900 rounded-full px-2 py-1"
                href="{% url 'battles:view_battle' battle.id %}">
