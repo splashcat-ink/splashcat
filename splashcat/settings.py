@@ -212,25 +212,24 @@ HCAPTCHA_SECRET_KEY = os.environ.get('HCAPTCHA_SECRET_KEY')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-sentry_sdk.init(
-    dsn='https://9babb5ac79274bed8e3c56a222b44ab6@o4505055559352320.ingest.sentry.io/4505055561449472',
-    integrations=[
-        DjangoIntegration(),
-    ],
+SENTRY_DSN = os.environ.get('SENTRY_DSN')
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[
+            DjangoIntegration(),
+        ],
+    
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
 
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
-
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True,
-    profiles_sample_rate=1.0,
-)
-
-if DEBUG:
-    sentry_sdk.init()  # when debugging locally don't send to sentry
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+        profiles_sample_rate=1.0,
+    )
 
 # Celery
 
