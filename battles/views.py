@@ -102,14 +102,14 @@ def upload_battle(request):
             battle = parse_splatnet3(data, request)
         except jsonschema.ValidationError as e:
             return HttpResponseBadRequest(e, content_type='text/plain')
-        except BattleAlreadyExistsError as e:
+        except BattleAlreadyExistsError:
             return HttpResponseBadRequest(
                 json.dumps({
                     'status': 'error',
                     'error': 'battle already exists',
                 })
             )
-        except NotImplementedError as e:
+        except NotImplementedError:
             return HttpResponseBadRequest(
                 json.dumps({
                     'status': 'error',

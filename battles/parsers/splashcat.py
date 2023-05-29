@@ -53,7 +53,7 @@ def parse_splashcat(data, request):
             score=team.score,
             tricolor_role=team.tricolor_role.value if team.tricolor_role else None,
         )
-        for player in team.players:
+        for pi, player in enumerate(team.players):
             title_adjective, title_subject = get_title_parts_from_string(player.title)
 
             team_object.players.create(
@@ -79,6 +79,7 @@ def parse_splashcat(data, request):
                 specials=player.specials,
                 paint=player.paint,
                 noroshi_try=player.noroshi_try,
+                order=pi,
             )
     for i, award in enumerate(splashcat_battle.awards):
         battle.awards.add(
