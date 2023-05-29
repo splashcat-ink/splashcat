@@ -62,21 +62,23 @@ def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            hcaptcha_token = request.POST.get('h-captcha-response')
-            if not hcaptcha_token:
-                messages.error(request, 'hCaptcha verification failed.')
-                return render(request, 'users/register.html', {
-                    'form': form,
-                })
-            hcaptcha_response = requests.post('https://hcaptcha.com/siteverify', data={
-                'secret': settings.HCAPTCHA_SECRET_KEY,
-                'response': hcaptcha_token,
-            }).json()
-            if not hcaptcha_response['success']:
-                messages.error(request, 'hCaptcha verification failed.')
-                return render(request, 'users/register.html', {
-                    'form': form,
-                })
+            if settings.HCAPTCHA_SECRET_KEY:
+                hcaptcha_token = request.POST.get('h-captcha-response')
+                if not hcaptcha_token:
+                    messages.error(request, 'hCaptcha verification failed.')
+                    return render(request, 'users/register.html', {
+                        'form': form,
+                    })
+                hcaptcha_response = requests.post('https://hcaptcha.com/siteverify', data={
+                    'secret': settings.HCAPTCHA_SECRET_KEY,
+                    'response': hcaptcha_token,
+                }).json()
+                if not hcaptcha_response['success']:
+                    messages.error(request, 'hCaptcha verification failed.')
+                    return render(request, 'users/register.html', {
+                        'form': form,
+                    })
+                
 
             user = form.save()
 
