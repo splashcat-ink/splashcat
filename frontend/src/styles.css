@@ -124,6 +124,40 @@
         @apply odd:-rotate-1;
         @apply w-fit;
     }
+
+    .squid-tape-tl {
+        mask-image: url("/static/squid_tape/tl.svg");
+        mask-repeat: no-repeat;
+        mask-size: contain;
+        width: 10px;
+        height: 10px;
+        @apply bg-white;
+    }
+
+    .squid-tape-br {
+        mask-image: url("/static/squid_tape/br.svg");
+        mask-repeat: no-repeat;
+        mask-size: contain;
+        width: 10px;
+        height: 10px;
+        @apply bg-white;
+    }
+
+    .squid-tape-label {
+        --squid-size: 10px;
+        clip-path: polygon(
+                -5px var(--squid-size),
+                var(--squid-size) var(--squid-size),
+                var(--squid-size) -5px,
+                100% -5px,
+                100% calc(100% - var(--squid-size)),
+                calc(100% - var(--squid-size)) calc(100% - var(--squid-size)),
+                calc(100% - var(--squid-size)) calc(100% + var(--squid-size)),
+                0 calc(100% + var(--squid-size))
+        );
+        padding-left: var(--squid-size);
+        padding-right: var(--squid-size);
+    }
 }
 
 @font-face {

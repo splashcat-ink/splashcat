@@ -1,6 +1,10 @@
 {% load static %}
 <a class="card-mask rounded-2xl {% if battle.vs_mode == "BANKARA" %}bg-splatoon-battle-ranked{% elif battle.vs_mode == "X_MATCH" %}bg-splatoon-battle-xmatch{% else %}bg-splatoon-battle-regular{% endif %} battle-card-background transition duration-200 hover:rotate-2 drop-shadow-lg hover:drop-shadow-2xl"
    href="{% url 'battles:view_battle' battle.id %}">
+    {% if battle.vs_mode == "FEST" and battle.splatfest_clout_multiplier != "NONE" %}
+        {% include "splatnet_assets/squid_tape.html" with bg="bg-purple-600 -rotate-6 left-1 top-1 absolute" content=battle.get_splatfest_clout_multiplier_display %}
+    {% endif %}
+
     <div class="text-xl float-right p-1">{{ battle.played_time|date:"SHORT_DATE_FORMAT" }}</div>
     <div class="bg-black/50 mt-8 p-2">
         <div class="text-lg float-right">{{ battle.vs_stage.name.string }}</div>
@@ -11,7 +15,8 @@
             {{ battle.get_vs_mode_display }}
         </div>
         <div class="text-lg">
-            <img src="/static/images/rule-icons/{{ battle.vs_rule }}" class="inline-block h-8 w-8" alt="">
+            <img src="/static/images/rule-icons/{{ battle.get_vs_rule_image_name|lower }}.svg"
+                 class="inline-block h-8 w-8" alt="">
             {{ battle.get_vs_rule_display }}
         </div>
         <div class="text-lg">

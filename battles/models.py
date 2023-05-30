@@ -183,6 +183,17 @@ class Battle(models.Model):
 
         return data
 
+    def get_vs_rule_image_name(self):
+        vs_rule_to_image_name = {
+            self.VsRule.TURF_WAR: 'regular',
+            self.VsRule.AREA: 'area',
+            self.VsRule.LOFT: 'yagura',
+            self.VsRule.GOAL: 'hoko',
+            self.VsRule.CLAM: 'asari',
+        }
+
+        return vs_rule_to_image_name[self.vs_rule]
+
 
 class BattleAward(models.Model):
     battle = models.ForeignKey('Battle', on_delete=models.CASCADE)

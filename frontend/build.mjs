@@ -1,13 +1,14 @@
 #!/usr/bin/env node
-import { fileURLToPath } from "url";
-import { readFile, writeFile } from "fs/promises";
-import { join } from "path";
-import { watch } from "chokidar";
-import { debounce } from "tiny-throttle";
-import { build, context } from "esbuild";
+import {fileURLToPath} from "url";
+import {readFile, writeFile} from "fs/promises";
+import {join} from "path";
+import {watch} from "chokidar";
+import {debounce} from "tiny-throttle";
+import {build, context} from "esbuild";
 import postcss from "postcss";
 import tailwind from "tailwindcss";
 import cssnano from "cssnano";
+import autoprefixer from "autoprefixer";
 
 const dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -33,6 +34,7 @@ let postcssOptions = {
 
 const cssProcessor = postcss([
     tailwind(join(dirname, "tailwind.config.js")),
+    autoprefixer(),
     cssnano()
 ]);
 
@@ -43,7 +45,7 @@ process.cwd = () => join(dirname);
 
 const postcssBuild = async () => {
     try {
-        const css = await readFile(postcssOptions.from, { encoding: "utf-8" });
+        const css = await readFile(postcssOptions.from, {encoding: "utf-8"});
         const result = await cssProcessor.process(css, postcssOptions);
 
         await writeFile(postcssOptions.to, result.css);
@@ -60,12 +62,13 @@ if (process.argv.includes("-w") || process.argv.includes("--watch")) {
     console.log("Starting...");
     const ctx = await context(esbuildOptions);
 
-    const rebuild = debounce(async () =>{
+    const rebuild = debounce(async () => {
         console.clear();
         console.time("Built in ");
         await Promise.all([
             // No need to do anything with this as ESBuild also logs it for us.
-            ctx.rebuild().then(() => console.log("Built js!")).catch((_) => {}),
+            ctx.rebuild().then(() => console.log("Built js!")).catch((_) => {
+            }),
             postcssBuild()
         ]);
         console.timeEnd("Built in ");
