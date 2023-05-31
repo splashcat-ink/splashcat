@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
     Splashcat
@@ -15,6 +16,50 @@
             {% for battle in user_recent_battles %}
                 {% include "users/includes/battle-card.html" with battle=battle %}
             {% endfor %}
+        </div>
+    {% else %}
+        <div class="flex flex-col gap-4 px-1">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="basis-2/3 card-mask -rotate-1 bg-gray-400 p-4 pt-2 rounded bg-contain bg-[url('/static/images/tapes-transparent.png')] mx-auto max-w-fit">
+                    <img src="{% static 'images/tape/tape-1.png' %}" alt=""
+                         class="rotate-6 drop-shadow z-10 mx-auto relative h-12 top-6">
+                    <img src="{% static 'images/home/battles.png' %}" alt="battle cards"
+                         class="drop-shadow-lg border-4 rounded border-gray-700 max-h-96 mx-auto">
+                </div>
+                <div class="basis-1/3 flex justify-center items-center">
+                    {% include "splatnet_assets/squid_tape.html" with bg="bg-splatoon-blue rotate-1 font-splatoon1 text-3xl" content="Track your battles!" border="p-4" %}
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row-reverse gap-4">
+                <div class="basis-2/3 card-mask rotate-1 bg-gray-400 p-4 pt-2 rounded bg-contain bg-[url('/static/images/tapes-transparent.png')] mx-auto max-w-fit overflow-hidden">
+                    <img src="{% static 'images/tape/tape-2.png' %}" alt=""
+                         class="-rotate-6 drop-shadow z-10 mx-auto relative h-16 top-6">
+                    <img src="{% static 'images/home/statistics.png' %}" alt="a player's statistics"
+                         class="drop-shadow-lg border-4 rounded border-gray-700 max-h-96 mx-auto">
+                    <img src="{% static 'images/tape/tape-1.png' %}" alt=""
+                         class="relative z-10 drop-shadow h-10 bottom-8 left-[85%] -rotate-45">
+                </div>
+                <div class="basis-1/3 flex justify-center items-center">
+                    {% include "splatnet_assets/squid_tape.html" with bg="bg-splatoon-purple -rotate-1 font-splatoon1 text-3xl" content="View battle statistics!" border="p-4" %}
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex flex-row justify-center items-center basis-1/3">
+                    <img
+                            src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="sponsor badge"
+                            class="[image-rendering:pixelated] h-full aspect-square">
+                </div>
+                <div class="basis-2/3 flex flex-col justify-center items-center gap-2">
+                    {% include "splatnet_assets/squid_tape.html" with bg="bg-splatoon-purple rotate-1 font-splatoon1 text-3xl" content="Support Splashcat!" border="p-4" %}
+
+                    <p class="max-w-lg text-lg text-center">
+                        Sponsor Splashcat to support future development and receive a sponsor badge and profile
+                        customizations!
+                    </p>
+                </div>
+            </div>
         </div>
     {% endif %}
 

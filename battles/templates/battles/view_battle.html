@@ -19,9 +19,11 @@
             </svg>
         </button>
     </h1>
-    <div class="py-2">
-        <a href="{% url 'admin:battles_battle_change' battle.id %}" class="bg-red-700 p-2 rounded w-fit">Admin</a>
-    </div>
+    {% if user.is_staff %}
+        <div class="py-2">
+            <a href="{% url 'admin:battles_battle_change' battle.id %}" class="bg-red-700 p-2 rounded w-fit">Admin</a>
+        </div>
+    {% endif %}
 
     <a class="flex flex-row gap-2 items-center my-3 w-fit" href="{% url 'profile' battle.uploader.username %}">
         {% if battle.uploader.profile_picture %}
