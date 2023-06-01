@@ -211,7 +211,8 @@
                   "$ref": "#/$defs/gear"
                 },
                 "kills": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Should report the same way that SplatNet 3 does (kills + assists)"
                 },
                 "assists": {
                   "type": "integer"
