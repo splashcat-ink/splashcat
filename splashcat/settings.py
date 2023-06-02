@@ -189,7 +189,10 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 if not DEBUG:
-    STORAGES = global_settings.STORAGES | {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
+    STORAGES = global_settings.STORAGES | {
+        "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"},
+        "staticfiles": {"BACKEND": "splashcat.storages.StaticStorage"}
+    }
 AWS_S3_ACCESS_KEY_ID = os.environ.get('B2_ACCESS_KEY_ID')
 AWS_S3_SECRET_ACCESS_KEY = os.environ.get('B2_SECRET_ACCESS_KEY')
 AWS_S3_REGION_NAME = 'us-west-004'
@@ -219,7 +222,7 @@ if SENTRY_DSN:
         integrations=[
             DjangoIntegration(),
         ],
-    
+
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for performance monitoring.
         # We recommend adjusting this value in production.
