@@ -20,7 +20,7 @@ let esbuildOptions = {
     bundle: true,
     sourcemap: true,
     outdir: join(dirname, "..", "static", "js"),
-    minify: true
+    minify: true,
 };
 
 /** @type {import("postcss").ProcessOptions} */
