@@ -286,8 +286,8 @@ class Player(models.Model):
     name = models.CharField(max_length=50)
     name_id = models.CharField(max_length=10)
     species = models.CharField(max_length=32, choices=Species.choices)
-    title_adjective = models.ForeignKey('splatnet_assets.TitleAdjective', on_delete=models.PROTECT)
-    title_subject = models.ForeignKey('splatnet_assets.TitleSubject', on_delete=models.PROTECT)
+    title_adjective = models.ForeignKey('splatnet_assets.TitleAdjective', on_delete=models.PROTECT, null=True)
+    title_subject = models.ForeignKey('splatnet_assets.TitleSubject', on_delete=models.PROTECT, null=True)
     nameplate_background = models.ForeignKey('splatnet_assets.NameplateBackground', on_delete=models.PROTECT)
     nameplate_badge_1 = models.ForeignKey('splatnet_assets.NameplateBadge', on_delete=models.PROTECT, null=True,
                                           related_name='+')

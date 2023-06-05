@@ -32,6 +32,8 @@ def get_title_parts_from_string(title: str):
             if subject_localization:
                 return localization_object.titleadjective, subject_localization.titlesubject
 
+    return None, None
+
 
 def get_ability(ability: str):
     try:
