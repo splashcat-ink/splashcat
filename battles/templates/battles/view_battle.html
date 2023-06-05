@@ -192,6 +192,7 @@
 
     {% include 'includes/splashtag.html' with splashtag=battle.splashtag only %}
 
+    {% comment %}
     <div class="sticky left-0 bottom-0 w-full flex gap-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-2 mt-4 -mb-3 sm:rounded-t-xl bg-gray-700 whitespace-nowrap text-xs sm:text-sm md:text-base">
         <a href="{{ pagination.href.first }}" class="py-2 px-4 rounded-full bg-gray-600">Latest Battle</a>
         <div class="grow"></div>
@@ -200,4 +201,5 @@
         <a href="{{ pagination.href.next }}"
            class="py-2 px-4 rounded-full {% if pagination.href.next %}bg-gray-600{% else %}bg-gray-800 text-gray-400{% endif %}">Previous</a>
     </div>
+    {% endcomment %}
 {% endblock %}
