@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://splashcat.ink/api/schemas/splashcat.schema.json",
   "title": "Splsahcat Battle",
-  "description": "A battle to be uploaded to Splashcat. Any SplatNet 3 strings should use en-US locale. Splashcat will translate strings into the user's langauge.",
+  "description": "A battle to be uploaded to Splashcat. Any SplatNet 3 strings should use en-US locale. Splashcat will translate strings into the user's language.",
   "type": "object",
   "properties": {
     "splatnetId": {
