@@ -45,13 +45,16 @@ class AuthenticationForm(DjangoAuthenticationForm):
     def clean(self):
         username = self.cleaned_data.get("username")
         if username is not None:
-            user = User.objects.get(username=username)
-            if user:
-                if not user.verified_email:
-                    raise forms.ValidationError(
-                        self.error_messages['email_not_verified'],
-                        code='email_not_verified',
-                    )
+            try:
+                user = User.objects.get(username=username)
+                if user:
+                    if not user.verified_email:
+                        raise forms.ValidationError(
+                            self.error_messages['email_not_verified'],
+                            code='email_not_verified',
+                        )
+            except User.DoesNotExist:
+                pass
         super().clean()
 
     def confirm_login_allowed(self, user):
