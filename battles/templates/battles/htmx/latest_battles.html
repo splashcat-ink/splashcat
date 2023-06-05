@@ -28,28 +28,28 @@
                                 {% else %}
                                     {% include "battles/svg/inkling_splat.html" with color=team.color %}
                                 {% endif %}
-                        x{{ player.kills|default:"--" }}
-                        {% if player.assists and player.assists != 0 %}
-                            <sub class="text-xs text-gray-300">
+                            x{{ player.kills|default_if_none:"--" }}
+                            {% if player.assists and player.assists != 0 %}
+                                <sub class="text-xs text-gray-300">
                                                 ({{ player.assists }})
                                             </sub>
-                        {% endif %}
+                            {% endif %}
                         </span>
-                    <span class="text-lg w-min whitespace-nowrap pt-[2px]">
+                        <span class="text-lg w-min whitespace-nowrap pt-[2px]">
                                     {% if player.species == "OCTOLING" %}
                                         {% include "battles/svg/octoling_splatted.html" with color=team.next_team.color %}
                                     {% else %}
                                         {% include "battles/svg/inkling_splatted.html" with color=team.next_team.color %}
                                     {% endif %}
-                        x{{ player.deaths|default:"--" }}
+                            x{{ player.deaths|default_if_none:"--" }}
                         </span>
-                    <span class="text-lg w-min whitespace-nowrap">
+                        <span class="text-lg w-min whitespace-nowrap">
                     {% include "splatnet_assets/mask_image.html" with uploader=user object=player.weapon.special class="h-4 w-4 relative top-0" %}
-                    x{{ player.specials|default:"--" }}
+                    x{{ player.specials|default_if_none:"--" }}
                         </span>
-                </div>
-            {% endwith %}
-        </a>
-    {% endfor %}
-</div>
+                    </div>
+                {% endwith %}
+            </a>
+        {% endfor %}
+    </div>
 {% endif %}
