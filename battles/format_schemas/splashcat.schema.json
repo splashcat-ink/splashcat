@@ -15,7 +15,8 @@
         "X_MATCH",
         "REGULAR",
         "FEST",
-        "PRIVATE"
+        "PRIVATE",
+        "LEAGUE"
       ]
     },
     "splatfest": {
