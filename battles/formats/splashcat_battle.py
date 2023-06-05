@@ -360,6 +360,7 @@ class VsMode(Enum):
     PRIVATE = "PRIVATE"
     REGULAR = "REGULAR"
     X_MATCH = "X_MATCH"
+    LEAGUE = "LEAGUE"
 
 
 class VsRule(Enum):
