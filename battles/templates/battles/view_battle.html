@@ -142,17 +142,17 @@
                                                  role="img" aria-label="Special-Weapon Uses"
                                                  preserveAspectRatio="xMidYMid slice">
                                     <mask id="__{{ maskingId }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
-                                        <image x="0" y="0" width="{{ player.weapon.special.mask_image.image.width }}"
-                                               height="{{ player.weapon.special.mask_image.image.height }}"
+                                        <image x="0" y="0" width="{{ player.weapon.special.mask_image.width }}"
+                                               height="{{ player.weapon.special.mask_image.height }}"
                                                href="{{ player.weapon.special.mask_image.url }}">
                                         </image>
                                     </mask>
-                                    <rect x="0" y="0" width="{{ player.weapon.special.mask_image.image.width }}"
-                                          height="{{ player.weapon.special.mask_image.image.height }}"
+                                    <rect x="0" y="0" width="{{ player.weapon.special.mask_image.width }}"
+                                          height="{{ player.weapon.special.mask_image.height }}"
                                           fill="{{ team.color.css }}"
                                           mask="url(#__{{ maskingId }})"></rect>
-                                    <image x="0" y="0" width="{{ player.weapon.special.overlay_image.image.width }}"
-                                           height="{{ player.weapon.special.overlay_image.image.height }}"
+                                    <image x="0" y="0" width="{{ player.weapon.special.overlay_image.width }}"
+                                           height="{{ player.weapon.special.overlay_image.height }}"
                                            href="{{ player.weapon.special.overlay_image.url }}">
                                     </image>
                                 </svg>

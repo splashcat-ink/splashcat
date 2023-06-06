@@ -23,6 +23,14 @@ class Image(models.Model):
     def url(self):
         return self.image.url
 
+    @property
+    def width(self):
+        return 128
+
+    @property
+    def height(self):
+        return 128
+
 
 class LocalizationString(models.Model):
     class Type(models.TextChoices):
