@@ -148,8 +148,12 @@ class Battle(models.Model):
             .select_related('weapon__flat_image') \
             .select_related('weapon__sub__name') \
             .select_related('weapon__sub__image') \
+            .select_related('weapon__sub__overlay_image') \
+            .select_related('weapon__sub__mask_image') \
             .select_related('weapon__special__name') \
             .select_related('weapon__special__image') \
+            .select_related('weapon__special__overlay_image') \
+            .select_related('weapon__special__mask_image') \
             .get(is_self=True)
 
     def to_dict(self):
@@ -310,6 +314,8 @@ class Player(models.Model):
 
     @property
     def byname(self):
+        if self.title_adjective is None or self.title_subject is None:
+            return ''
         return self.title_adjective.string.string + ' ' + self.title_subject.string.string
 
     @property
