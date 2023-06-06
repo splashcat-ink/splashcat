@@ -101,65 +101,68 @@
                 {% endif %}
 
                 <div class="flex flex-col gap-2">
-                    {% for player in team.players.all %}
-                        <div class="flex flex-nowrap gap-2 rounded-full bg-gray-900/50 p-1">
-                            <img src="{{ player.weapon.flat_image.url }}"
-                                 class="inline-block h-10 w-10" alt="">
-                            <div class="shrink min-w-0 flex flex-col whitespace-nowrap">
-                                <div class="text-xs text-gray-300 truncate">{{ player.byname }}</div>
-                                <div class="text-lg">{{ player.name }}</div>
-                            </div>
-                            <div class="grow"></div>
-                            <div class="flex-none flex flex-row gap-1 px-4 justify-end rounded-full min-w-fit bg-black/50">
-                                <span class="text-xl w-min whitespace-nowrap pt-1">{{ player.paint }}p</span>
-                                <span class="text-lg w-min whitespace-nowrap pt-[2px]">
-                                {% if player.species == "OCTOLING" %}
-                                    {% include "battles/svg/octoling_splat.html" with color=team.color %}
-                                {% else %}
-                                    {% include "battles/svg/inkling_splat.html" with color=team.color %}
-                                {% endif %}
-                                    x{{ player.kills|default_if_none:"--" }}
-                                    {% if player.assists and player.assists != 0 %}
-                                        <sub class="text-xs text-gray-300">
-                                                ({{ player.assists }})
-                                            </sub>
-                                    {% endif %}
-                        </span>
-                                <span class="text-lg w-min whitespace-nowrap pt-[2px]">
+                    {% with next_team=team.next_team %}
+                        {% for player in team.players.all %}
+                            <div class="flex flex-nowrap gap-2 rounded-full bg-gray-900/50 p-1">
+                                <img src="{{ player.weapon.flat_image.url }}"
+                                     class="inline-block h-10 w-10" alt="">
+                                <div class="shrink min-w-0 flex flex-col whitespace-nowrap">
+                                    <div class="text-xs text-gray-300 truncate">{{ player.byname }}</div>
+                                    <div class="text-lg">{{ player.name }}</div>
+                                </div>
+                                <div class="grow"></div>
+                                <div class="flex-none flex flex-row gap-1 px-4 justify-end rounded-full min-w-fit bg-black/50">
+                                    <span class="text-xl w-min whitespace-nowrap pt-1">{{ player.paint }}p</span>
+                                    <span class="text-lg w-min whitespace-nowrap pt-[2px]">
                                     {% if player.species == "OCTOLING" %}
-                                        {% include "battles/svg/octoling_splatted.html" with color=team.next_team.color %}
+                                        {% include "battles/svg/octoling_splat.html" with color=team.color %}
                                     {% else %}
-                                        {% include "battles/svg/inkling_splatted.html" with color=team.next_team.color %}
+                                        {% include "battles/svg/inkling_splat.html" with color=team.color %}
                                     {% endif %}
-                                    x{{ player.deaths|default_if_none:"--" }}
-                        </span>
-                                <span class="text-lg w-min whitespace-nowrap">
-                                    {% with maskingId=player.npln_id %}
-                                        <svg width="24" class="h-4 w-4 relative top-0" viewBox="0 0 128 128" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg"
-                                             role="img" aria-label="Special-Weapon Uses"
-                                             preserveAspectRatio="xMidYMid slice">
-                                <mask id="__{{ maskingId }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
-                                    <image x="0" y="0" width="{{ player.weapon.special.mask_image.image.width }}"
-                                           height="{{ player.weapon.special.mask_image.image.height }}"
-                                           href="{{ player.weapon.special.mask_image.url }}">
+                                        x{{ player.kills|default_if_none:"--" }}
+                                        {% if player.assists and player.assists != 0 %}
+                                            <sub class="text-xs text-gray-300">
+                                                    ({{ player.assists }})
+                                                </sub>
+                                        {% endif %}
+                            </span>
+                                    <span class="text-lg w-min whitespace-nowrap pt-[2px]">
+                                        {% if player.species == "OCTOLING" %}
+                                            {% include "battles/svg/octoling_splatted.html" with color=next_team.color %}
+                                        {% else %}
+                                            {% include "battles/svg/inkling_splatted.html" with color=next_team.color %}
+                                        {% endif %}
+                                        x{{ player.deaths|default_if_none:"--" }}
+                            </span>
+                                    <span class="text-lg w-min whitespace-nowrap">
+                                        {% with maskingId=player.npln_id %}
+                                            <svg width="24" class="h-4 w-4 relative top-0" viewBox="0 0 128 128"
+                                                 fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg"
+                                                 role="img" aria-label="Special-Weapon Uses"
+                                                 preserveAspectRatio="xMidYMid slice">
+                                    <mask id="__{{ maskingId }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
+                                        <image x="0" y="0" width="{{ player.weapon.special.mask_image.image.width }}"
+                                               height="{{ player.weapon.special.mask_image.image.height }}"
+                                               href="{{ player.weapon.special.mask_image.url }}">
+                                        </image>
+                                    </mask>
+                                    <rect x="0" y="0" width="{{ player.weapon.special.mask_image.image.width }}"
+                                          height="{{ player.weapon.special.mask_image.image.height }}"
+                                          fill="{{ team.color.css }}"
+                                          mask="url(#__{{ maskingId }})"></rect>
+                                    <image x="0" y="0" width="{{ player.weapon.special.overlay_image.image.width }}"
+                                           height="{{ player.weapon.special.overlay_image.image.height }}"
+                                           href="{{ player.weapon.special.overlay_image.url }}">
                                     </image>
-                                </mask>
-                                <rect x="0" y="0" width="{{ player.weapon.special.mask_image.image.width }}"
-                                      height="{{ player.weapon.special.mask_image.image.height }}"
-                                      fill="{{ team.color.css }}"
-                                      mask="url(#__{{ maskingId }})"></rect>
-                                <image x="0" y="0" width="{{ player.weapon.special.overlay_image.image.width }}"
-                                       height="{{ player.weapon.special.overlay_image.image.height }}"
-                                       href="{{ player.weapon.special.overlay_image.url }}">
-                                </image>
-                            </svg>
-                                    {% endwith %}
-                                    x{{ player.specials|default_if_none:"--" }}
-                        </span>
+                                </svg>
+                                        {% endwith %}
+                                        x{{ player.specials|default_if_none:"--" }}
+                            </span>
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    {% endwith %}
                 </div>
             </div>
         {% endfor %}
