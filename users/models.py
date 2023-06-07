@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
+from battles.models import Battle
 from splatnet_assets.fields import ColorField, Color
 
 
@@ -73,7 +74,10 @@ class User(AbstractUser):
 
     @property
     def get_splashtag(self):
-        return self.battles.with_prefetch().latest('played_time').splashtag
+        try:
+            return self.battles.with_prefetch().latest('played_time').splashtag
+        except Battle.DoesNotExist:
+            return None
 
     def send_verification_email(self):
         if not self.verified_email:
