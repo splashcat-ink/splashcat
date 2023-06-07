@@ -47,15 +47,35 @@
             <div class="flex flex-row">
                 <h2 class="text-3xl font-splatoon1">Latest Battles</h2>
                 <div class="grow"></div>
-                <a href="{% url 'profile_battles_list' profile_user.username %}"
-                   class="text-lg bg-pink-600 hover:bg-pink-700 p-2 rounded">View All</a>
+                {% if latest_battles|length == 0 %}
+                    <span class="text-lg bg-pink-950 cursor-not-allowed p-2 rounded">View All</span>
+                {% else %}
+                    <a href="{% url 'profile_battles_list' profile_user.username %}"
+                       class="text-lg bg-pink-600 hover:bg-pink-700 p-2 rounded">View All</a>
+                {% endif %}
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                {% for battle in latest_battles %}
-                    {% include "users/includes/battle-card.html" with battle=battle %}
-                {% endfor %}
-            </div>
+            {% if latest_battles|length == 0 %}
+                <div class="flex flex-col gap-2 items-center">
+                    <div class="text-2xl font-splatoon1">{% if profile_user == user %}Upload some battles!{% else %}No
+                        battles{% endif %}</div>
+                    <p class="text-lg max-w-prose text-center">
+                        Looks like {% if profile_user == user %}you haven't{% else %}{{ profile_user.display_name }}
+                        hasn't{% endif %} uploaded any battles yet.
+                        {% if profile_user == user %}
+                            <a href="" class="text-blue-500 underline">Use an exporter to download data from SplatNet 3
+                                and
+                                send it to Splashcat!</a>
+                        {% endif %}
+                    </p>
+                </div>
+            {% else %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {% for battle in latest_battles %}
+                        {% include "users/includes/battle-card.html" with battle=battle %}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
