@@ -25,37 +25,41 @@ class BattleManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().defer("raw_data")
 
-    def with_prefetch(self):
+    def with_prefetch(self, include_player_gear=False):
+        player_prefetch_queryset = Player.objects \
+            .select_related('title_adjective__string') \
+            .select_related('title_subject__string') \
+            .select_related('nameplate_background__image') \
+            .select_related('nameplate_badge_1__image') \
+            .select_related('nameplate_badge_2__image') \
+            .select_related('nameplate_badge_3__image') \
+            .select_related('weapon__name') \
+            .select_related('weapon__flat_image') \
+            .select_related('weapon__sub__name') \
+            .select_related('weapon__sub__overlay_image') \
+            .select_related('weapon__sub__mask_image') \
+            .select_related('weapon__special__name') \
+            .select_related('weapon__special__overlay_image') \
+            .select_related('weapon__special__mask_image')
+
+        if include_player_gear:
+            player_prefetch_queryset \
+                .select_related('head_gear__gear__name') \
+                .select_related('head_gear__gear__image') \
+                .select_related('head_gear__gear__brand') \
+                .select_related('clothing_gear__gear__name') \
+                .select_related('clothing_gear__gear__image') \
+                .select_related('clothing_gear__gear__brand') \
+                .select_related('shoes_gear__gear__name') \
+                .select_related('shoes_gear__gear__image') \
+                .select_related('shoes_gear__gear__brand')
+
         player_prefetch = Prefetch(
             'teams__players',
-            queryset=Player.objects.all()
-            .select_related('title_adjective__string')
-            .select_related('title_subject__string')
-            .select_related('nameplate_background__image')
-            .select_related('nameplate_badge_1__image')
-            .select_related('nameplate_badge_2__image')
-            .select_related('nameplate_badge_3__image')
-            .select_related('weapon__name')
-            .select_related('weapon__flat_image')
-            .select_related('weapon__sub__name')
-            .select_related('weapon__sub__overlay_image')
-            .select_related('weapon__sub__mask_image')
-            .select_related('weapon__special__name')
-            .select_related('weapon__special__overlay_image')
-            .select_related('weapon__special__mask_image')
-            .select_related('head_gear__gear__name')
-            .select_related('head_gear__gear__image')
-            .select_related('head_gear__gear__brand')
-            .select_related('clothing_gear__gear__name')
-            .select_related('clothing_gear__gear__image')
-            .select_related('clothing_gear__gear__brand')
-            .select_related('shoes_gear__gear__name')
-            .select_related('shoes_gear__gear__image')
-            .select_related('shoes_gear__gear__brand'),
+            queryset=player_prefetch_queryset,
         )
 
-        return self.select_related('uploader', 'vs_stage__name',
-                                   'vs_stage__image', ) \
+        return self.select_related('uploader__github_link', 'vs_stage__name', 'vs_stage__image') \
             .prefetch_related('awards').prefetch_related(player_prefetch)
 
 
