@@ -9,32 +9,7 @@
 {% block content %}
     <div class="flex flex-col md:flex-row gap-4">
         <div class="basis-2/5 xl:basis-1/4 flex flex-col gap-2">
-            <div class="card-mask bg-splatoon-battle-league p-4 pt-12 rounded-lg rotate-1">
-                {% if profile_user.profile_picture %}
-                    <img src="{{ profile_user.profile_picture.url }}"
-                         alt="{{ profile_user.display_name }}'s profile picture"
-                         class="aspect-square max-w-full object-contain rounded-sm bg-gray-500/50">
-                {% endif %}
-                <h1 class="text-2xl">
-                    {{ profile_user.display_name }}
-                    {% if profile_user.display_sponsor_badge %}
-                        <a href="{% url 'sponsor' %}">
-                            <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
-                                 class="h-6 inline-block">
-                        </a>
-                    {% endif %}
-                </h1>
-                <p class="text-lg text-gray-300">@{{ profile_user.username }}</p>
-            </div>
-            {% if splashtag %}
-            <div class="-rotate-[0.5deg] shadow-lg w-fit">
-                {% include "includes/splashtag.html" with splashtag=splashtag only %}
-            </div>
-            {% endif %}
-            {% if user.is_staff %}
-                <a href="{% url 'admin:users_user_change' profile_user.id %}"
-                   class="bg-red-700 p-2 rounded w-fit">Admin</a>
-            {% endif %}
+            {% include 'users/profile_sidebar.html' with profile=profile_user %}
         </div>
 
         <div class="flex grow flex-col gap-2">
@@ -69,7 +44,12 @@
                 </div>
             </div>
 
-            <h2 class="text-3xl font-splatoon1">Latest Battles</h2>
+            <div class="flex flex-row">
+                <h2 class="text-3xl font-splatoon1">Latest Battles</h2>
+                <div class="grow"></div>
+                <a href="{% url 'profile_battles_list' profile_user.username %}"
+                   class="text-lg bg-pink-600 hover:bg-pink-700 p-2 rounded">View All</a>
+            </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {% for battle in latest_battles %}

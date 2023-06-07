@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.db import models
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
@@ -24,7 +25,7 @@ from .models import User, GitHubLink, ApiKey
 
 def profile(request, username: str):
     user = get_object_or_404(User, username=username)
-    latest_battles = user.battles.order_by('-played_time') \
+    latest_battles = user.battles.with_prefetch().order_by('-played_time') \
                          .select_related('vs_stage__name')[:12]
     splashtag = latest_battles[0].splashtag if latest_battles else None
 
@@ -58,6 +59,26 @@ def profile(request, username: str):
                   })
 
 
+def profile_battle_list(request, username: str):
+    user = get_object_or_404(User, username=username)
+    battles = user.battles.with_prefetch().order_by('-played_time') \
+        .select_related('vs_stage__name')
+
+    paginator = Paginator(battles, 24)
+
+    page = request.GET.get('page', 1)
+    try:
+        page = paginator.page(page)
+    except (ValueError, TypeError, EmptyPage, InvalidPage):
+        return HttpResponseBadRequest('Invalid page number.')
+
+    return render(request, 'users/profile_battle_list.html', {
+        'profile_user': user,
+        'page': page,
+        'splashtag': user.get_splashtag,
+    })
+
+
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -78,7 +99,6 @@ def register(request):
                     return render(request, 'users/register.html', {
                         'form': form,
                     })
-                
 
             user = form.save()
 

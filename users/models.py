@@ -73,7 +73,7 @@ class User(AbstractUser):
 
     @property
     def get_splashtag(self):
-        return self.battles.latest('played_time').splashtag
+        return self.battles.with_prefetch().latest('played_time').splashtag
 
     def send_verification_email(self):
         if not self.verified_email:

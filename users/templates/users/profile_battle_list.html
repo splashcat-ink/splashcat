@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {{ profile_user.display_name }} (@{{ profile_user.username }})
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-splatoon1">{{ profile_user.display_name }}'s Battles</h1>
+    <div class="flex flex-col-reverse md:flex-row gap-4">
+        <div class="basis-2/5 xl:basis-1/4 flex flex-col gap-2">
+            {% include 'users/profile_sidebar.html' with profile=profile_user %}
+        </div>
+
+        <div class="flex grow flex-col gap-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                {% for battle in page.object_list %}
+                    {% include "users/includes/battle-card.html" with battle=battle %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <nav class="flex flex-wrap gap-2 mx-auto pt-2 justify-center">
+        <a href="?page=1" class="bg-purple-700 rounded-lg p-2 px-3">⇤</a>
+
+        {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}" class="bg-purple-700 rounded-lg p-2 px-3">←</a>
+        {% endif %}
+
+        {% for i in page.paginator.page_range %}
+            {% if page.number == i %}
+                <span class="bg-purple-800 rounded-lg p-2 px-3">{{ i }}</span>
+            {% else %}
+                <a href="?page={{ i }}" class="bg-purple-700 rounded-lg p-2 px-3">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}" class="bg-purple-700 rounded-lg p-2 px-3">→</a>
+        {% endif %}
+
+        <a href="?page={{ page.paginator.num_pages }}" class="bg-purple-700 rounded-lg p-2 px-3">⇥</a>
+    </nav>
+{% endblock %}

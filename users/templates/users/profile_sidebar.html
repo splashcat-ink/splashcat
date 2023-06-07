@@ -1,0 +1,27 @@
+{% load static %}
+<div class="card-mask bg-splatoon-battle-league p-4 pt-12 rounded-lg rotate-1">
+    {% if profile.profile_picture %}
+        <img src="{{ profile.profile_picture.url }}"
+             alt="{{ profile.display_name }}'s profile picture"
+             class="aspect-square max-w-full object-contain rounded-sm bg-gray-500/50">
+    {% endif %}
+    <h1 class="text-2xl">
+        {{ profile.display_name }}
+        {% if profile.display_sponsor_badge %}
+            <a href="{% url 'sponsor' %}">
+                <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                     class="h-6 inline-block">
+            </a>
+        {% endif %}
+    </h1>
+    <p class="text-lg text-gray-300">@{{ profile.username }}</p>
+</div>
+{% if splashtag %}
+    <div class="-rotate-[0.5deg] shadow-lg w-fit">
+        {% include "includes/splashtag.html" with splashtag=splashtag only %}
+    </div>
+{% endif %}
+{% if user.is_staff %}
+    <a href="{% url 'admin:users_user_change' profile.id %}"
+       class="bg-red-700 p-2 rounded w-fit">Admin</a>
+{% endif %}
