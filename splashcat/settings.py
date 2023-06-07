@@ -247,3 +247,12 @@ ANYMAIL = {
 EMAIL_BACKEND = 'anymail.backends.postmark.EmailBackend'
 DEFAULT_FROM_EMAIL = 'grizzco@splashcat.ink'
 SERVER_EMAIL = 'server@splashcat.ink'
+
+# Cache
+
+if True:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+        }
+    }
