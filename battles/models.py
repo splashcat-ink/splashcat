@@ -26,24 +26,37 @@ class BattleManager(models.Manager):
         return super().get_queryset().defer("raw_data")
 
     def with_prefetch(self):
+        player_prefetch = Prefetch(
+            'teams__players',
+            queryset=Player.objects.all()
+            .select_related('title_adjective__string')
+            .select_related('title_subject__string')
+            .select_related('nameplate_background__image')
+            .select_related('nameplate_badge_1__image')
+            .select_related('nameplate_badge_2__image')
+            .select_related('nameplate_badge_3__image')
+            .select_related('weapon__name')
+            .select_related('weapon__flat_image')
+            .select_related('weapon__sub__name')
+            .select_related('weapon__sub__overlay_image')
+            .select_related('weapon__sub__mask_image')
+            .select_related('weapon__special__name')
+            .select_related('weapon__special__overlay_image')
+            .select_related('weapon__special__mask_image')
+            .select_related('head_gear__gear__name')
+            .select_related('head_gear__gear__image')
+            .select_related('head_gear__gear__brand')
+            .select_related('clothing_gear__gear__name')
+            .select_related('clothing_gear__gear__image')
+            .select_related('clothing_gear__gear__brand')
+            .select_related('shoes_gear__gear__name')
+            .select_related('shoes_gear__gear__image')
+            .select_related('shoes_gear__gear__brand'),
+        )
+
         return self.select_related('uploader', 'vs_stage__name',
                                    'vs_stage__image', ) \
-            .prefetch_related(
-            'awards',
-            'teams__players__head_gear__gear__name', 'teams__players__head_gear__gear__brand',
-            'teams__players__head_gear__gear__image',
-            'teams__players__clothing_gear__gear__name', 'teams__players__clothing_gear__gear__brand',
-            'teams__players__clothing_gear__gear__image',
-            'teams__players__shoes_gear__gear__name', 'teams__players__shoes_gear__gear__brand',
-            'teams__players__shoes_gear__gear__image',
-            'teams__players__weapon__name', 'teams__players__weapon__flat_image',
-            'teams__players__weapon__sub__name', 'teams__players__weapon__sub__image',
-            'teams__players__weapon__special__name',
-            'teams__players__weapon__special__mask_image',
-            'teams__players__weapon__special__overlay_image',
-            'teams__players__nameplate_background',
-            'teams__players__title_adjective__string', 'teams__players__title_subject__string',
-        )
+            .prefetch_related('awards').prefetch_related(player_prefetch)
 
 
 class Battle(models.Model):
@@ -137,24 +150,10 @@ class Battle(models.Model):
 
     @property
     def player(self):
-        return self.teams.get(is_my_team=True).players \
-            .select_related('title_adjective__string') \
-            .select_related('title_subject__string') \
-            .select_related('nameplate_background__image') \
-            .select_related('nameplate_badge_1__image') \
-            .select_related('nameplate_badge_2__image') \
-            .select_related('nameplate_badge_3__image') \
-            .select_related('weapon__name') \
-            .select_related('weapon__flat_image') \
-            .select_related('weapon__sub__name') \
-            .select_related('weapon__sub__image') \
-            .select_related('weapon__sub__overlay_image') \
-            .select_related('weapon__sub__mask_image') \
-            .select_related('weapon__special__name') \
-            .select_related('weapon__special__image') \
-            .select_related('weapon__special__overlay_image') \
-            .select_related('weapon__special__mask_image') \
-            .get(is_self=True)
+        for team in self.teams.all():
+            for player in team.players.all():
+                if player.is_self:
+                    return player
 
     def to_dict(self):
         data = {

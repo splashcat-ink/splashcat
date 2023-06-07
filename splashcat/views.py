@@ -5,9 +5,12 @@ from users.models import User
 
 
 def home(request):
-    recent_battles = Battle.objects.with_prefetch().prefetch_related('uploader__github_link').order_by('-id')[:24]
-    user_recent_battles = request.user.battles.with_prefetch().order_by('-id')[
-                          :12] if request.user.is_authenticated else None
+    recent_battles = Battle.objects.with_prefetch() \
+                         .prefetch_related('uploader__github_link') \
+                         .select_related('vs_stage__name') \
+                         .order_by('-id')[:24]
+    user_recent_battles = request.user.battles.with_prefetch().select_related('vs_stage__name') \
+                              .order_by('-id')[:12] if request.user.is_authenticated else None
 
     return render(request, 'splashcat/home.html', {
         'recent_battles': recent_battles,
