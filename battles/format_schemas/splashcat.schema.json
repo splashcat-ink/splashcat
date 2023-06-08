@@ -52,6 +52,9 @@
         },
         "pointChange": {
           "type": "integer"
+        },
+        "power": {
+          "type": "integer"
         }
       }
     },
@@ -63,6 +66,17 @@
         },
         "xRank": {
           "type": "integer"
+        }
+      }
+    },
+    "challenge": {
+      "type": "object",
+      "properties": {
+        "power": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string"
         }
       }
     },
