@@ -24,3 +24,7 @@ def sponsor(request):
     return render(request, 'splashcat/sponsor.html', {
         'current_sponsors': current_sponsors,
     })
+
+
+def uploaders_information(request):
+    return render(request, 'splashcat/uploaders_information.html')

@@ -23,7 +23,7 @@ import users.views as users_views
 from battles.sitemaps import BattlesSitemap
 from splashcat import settings
 from splashcat.sitemaps import StaticViewSitemap
-from splashcat.views import home, sponsor
+from splashcat.views import home, sponsor, uploaders_information
 from users.sitemaps import UsersSitemap
 
 sitemaps = {
@@ -43,6 +43,7 @@ urlpatterns = [
     path('@<str:username>/', users_views.profile, name='profile'),
     path('@<str:username>/battles/', users_views.profile_battle_list, name='profile_battles_list'),
     path('sponsor/', sponsor, name='sponsor'),
+    path('uploaders-information/', uploaders_information, name='uploaders_information'),
     path('i18n/', include('django.conf.urls.i18n')),
     path(
         "sitemap.xml",

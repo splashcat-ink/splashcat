@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Uploaders
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-splatoon1">
+        Uploading battles to Splashcat
+    </h1>
+
+    <p class="prose-xl max-w-prose prose-a:text-blue-500 prose-a:underline">
+        Several uploader options exist for Splashcat, with some listed below. Splashcat does <i>not</i> provide support
+        for these projects. Any inquiries should be directed to the respective project maintainers.
+    </p>
+
+    <h2 class="text-xl pt-3 font-splatoon1">
+        <a href="https://github.com/cesaregarza/DataZipcaster" class="text-blue-500 underline">
+            DataZipcaster
+        </a>
+    </h2>
+    Developed by <a href="https://github.com/cesaregarza" class="text-blue-500 underline">cesaregarza</a> as the
+    original uploader for Splashcat. DataZipcaster supports importing from multiple sources, including SplatNet 3.
+{% endblock %}
