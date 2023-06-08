@@ -56,9 +56,17 @@
 
     <div class="text-lg">
         {{ battle.get_vs_mode_display }}
+
+        {% if battle.power is not None %}
+            <span class="text-base">
+                (Power: {{ battle.power|floatformat:1 }})
+            </span>
+        {% endif %}
     </div>
 
     <div class="text-lg">
+        <img src="/static/images/rule-icons/{{ battle.get_vs_rule_image_name|lower }}.svg"
+             class="inline-block h-8 w-8" alt="">
         {{ battle.get_vs_rule_display }}
     </div>
 
@@ -66,16 +74,16 @@
 
     {% if battle.judgement == "EXEMPTED_LOSE" %}
         <span class="bg-gray-700/60 text-xl p-4 rounded inline-block my-4">
-    Some players disconnected early on, so the match was a draw.
-</span>
+            Some players disconnected early on, so the match was a draw.
+        </span>
     {% elif battle.judgement == "DEEMED_LOSE" %}
         <span class="bg-gray-700/60 text-xl p-4 rounded inline-block my-4">
-    The match was not fully completed.
-</span>
+            The match was not fully completed.
+        </span>
     {% elif battle.judgement == "DRAW" %}
         <span class="bg-gray-700/60 text-xl p-4 rounded inline-block my-4">
-    No contest.
-</span>
+            No contest.
+        </span>
     {% endif %}
 
     <div class="grid grid-cols-1 {% if battle.teams.count <= 2 %}md:grid-cols-2 xl:grid-cols-3{% else %}lg:grid-cols-3{% endif %} gap-4 py-4 px-1">

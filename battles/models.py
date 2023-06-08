@@ -67,7 +67,7 @@ class BattleManager(models.Manager):
 class Battle(models.Model):
     class VsMode(models.TextChoices):
         REGULAR = 'REGULAR', _('Regular Battle')
-        LEAGUE = 'LEAGUE', _('League Battle')
+        CHALLENGE = 'CHALLENGE', _('Challenge')
         FEST = 'FEST', _('Splatfest Battle')
         BANKARA = 'BANKARA', _('Anarchy Battle')
         X_MATCH = 'X_MATCH', _('X Battle')

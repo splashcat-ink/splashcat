@@ -22,7 +22,7 @@ from users.models import User
 # Create your views here.
 
 def view_battle(request, battle_id):
-    battle = get_object_or_404(Battle.objects.with_prefetch(True), id=battle_id)
+    battle: Battle = get_object_or_404(Battle.objects.with_prefetch(True), id=battle_id)
     return render(request, 'battles/view_battle.html', {
         'battle': battle,
     })
