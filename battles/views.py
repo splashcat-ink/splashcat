@@ -129,6 +129,11 @@ def upload_battle(request):
                 })
             )
 
+    if battle.vs_mode == battle.VsMode.X_MATCH:
+        user: User = request.user
+        battle.x_battle_division = user.x_battle_division
+        battle.save()
+
     return JsonResponse({
         'status': 'ok',
         'battle_id': battle.id,

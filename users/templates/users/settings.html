@@ -29,7 +29,6 @@
                     {{ form.display_name }}
                 </div>
 
-
                 <div>
                     {{ form.profile_picture.errors }}
                     <label class="text-xl" for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
@@ -51,6 +50,18 @@
                             </a>
                         </div>
                     {% endif %}
+                </div>
+
+                <div>
+                    {{ form.x_battle_division.errors }}
+                    <label class="text-xl" for="{{ form.x_battle_division.id_for_label }}">X Battle Division</label>
+                    <p class="text-lg">
+                        The Takoroka Division is for players from Japan, Hong Kong, South Korea, Australia, and New
+                        Zealand.</p>
+                    <p class="text-lg">
+                        The Tentatek Division is for players from the Americas and Europe.
+                    </p>
+                    {{ form.x_battle_division }}
                 </div>
 
                 <input type="submit" value="Update">

@@ -11,6 +11,7 @@ from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
 from battles.models import Battle
+from splatnet_assets.common_model_choices import XBattleDivisions
 from splatnet_assets.fields import ColorField, Color
 
 
@@ -35,6 +36,10 @@ class User(AbstractUser):
     last_name = None
     verified_email = models.BooleanField(_("verified email"), default=False)
     email = models.EmailField(_("email address"), unique=True)
+
+    x_battle_division = models.CharField(_("X Battle division"), max_length=20, choices=XBattleDivisions.choices,
+                                         default=XBattleDivisions.UNSPECIFIED)
+
     last_data_export = models.DateTimeField(_("last data export"), blank=True, null=True)
     data_export_pending = models.BooleanField(_("data export pending"), default=False)
 

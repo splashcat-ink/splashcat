@@ -3,6 +3,7 @@ from django.db.models import Prefetch
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from splatnet_assets.common_model_choices import XBattleDivisions
 from splatnet_assets.fields import ColorField
 
 
@@ -125,6 +126,7 @@ class Battle(models.Model):
     anarchy_point_change = models.IntegerField(blank=True, null=True)
     x_battle_x_power = models.FloatField(blank=True, null=True)
     x_battle_rank = models.IntegerField(blank=True, null=True)
+    x_battle_division = models.CharField(max_length=32, blank=True, null=True, choices=XBattleDivisions.choices)
     splatfest_mode = models.CharField(max_length=32, choices=SplatfestBattleType.choices, blank=True, null=True)
     splatfest_clout_multiplier = models.CharField(max_length=32, choices=SplatfestBattleCloutMultiplier.choices,
                                                   blank=True, null=True)
@@ -340,8 +342,8 @@ class Player(models.Model):
             'name': self.name,
             'name_id': self.name_id,
             'title': self.byname,
-            'title_adjective_id': self.title_adjective.internal_id,
-            'title_subject_id': self.title_subject.internal_id,
+            'title_adjective_id': self.title_adjective.internal_id if self.title_adjective,
+            'title_subject_id': self.title_subject.internal_id if self.title_subject,
             'nameplate_background_id': self.nameplate_background.internal_id,
             'nameplate_badge_ids': [
                 self.nameplate_badge_1.internal_id if self.nameplate_badge_1 else None,

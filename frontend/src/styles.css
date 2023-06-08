@@ -57,7 +57,7 @@
         @apply block;
     }
 
-    .form-css input {
+    .form-css input, select {
         @apply block;
         @apply w-full;
         @apply sm:w-1/2;
