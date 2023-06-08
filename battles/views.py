@@ -151,6 +151,10 @@ def upload_battle(request):
         battle.x_battle_division = user.x_battle_division
         battle.save()
 
+    battle.uploader_agent_name = data['uploader_agent']['name']
+    battle.uploader_agent_version = data['uploader_agent']['version']
+    battle.uploader_agent_extra = data['uploader_agent']['extra']
+
     return JsonResponse({
         'status': 'ok',
         'battle_id': battle.id,
