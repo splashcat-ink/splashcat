@@ -342,8 +342,8 @@ class Player(models.Model):
             'name': self.name,
             'name_id': self.name_id,
             'title': self.byname,
-            'title_adjective_id': self.title_adjective.internal_id if self.title_adjective,
-            'title_subject_id': self.title_subject.internal_id if self.title_subject,
+            'title_adjective_id': self.title_adjective.internal_id if self.title_adjective else None,
+            'title_subject_id': self.title_subject.internal_id if self.title_subject else None,
             'nameplate_background_id': self.nameplate_background.internal_id,
             'nameplate_badge_ids': [
                 self.nameplate_badge_1.internal_id if self.nameplate_badge_1 else None,
