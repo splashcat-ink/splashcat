@@ -1,6 +1,7 @@
 from django import template
 from django.utils.crypto import get_random_string
 
+from splatnet_assets.fields import Color
 from splatnet_assets.models import SubWeapon, SpecialWeapon
 from users.models import User
 
@@ -17,6 +18,8 @@ def mask_id(weapon_object: SubWeapon | SpecialWeapon):
 def get_color(context, uploader: User):
     if hasattr(uploader, 'github_link') and uploader.github_link.is_sponsor:
         context['color'] = uploader.favorite_color
-    else:
+    elif hasattr(context, 'user') and context['user'].is_authenticated:
         context['color'] = context['user'].favorite_color
+    else:
+        context['color'] = Color.from_hex("000000ff")
     return ''
