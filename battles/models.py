@@ -124,13 +124,12 @@ class Battle(models.Model):
     knockout = models.CharField(max_length=32, choices=KnockoutJudgement.choices, blank=True, null=True)
     anarchy_mode = models.CharField(max_length=32, choices=AnarchyMode.choices, blank=True, null=True)
     anarchy_point_change = models.IntegerField(blank=True, null=True)
-    x_battle_x_power = models.FloatField(blank=True, null=True)
     x_battle_rank = models.IntegerField(blank=True, null=True)
     x_battle_division = models.CharField(max_length=32, blank=True, null=True, choices=XBattleDivisions.choices)
     splatfest_mode = models.CharField(max_length=32, choices=SplatfestBattleType.choices, blank=True, null=True)
     splatfest_clout_multiplier = models.CharField(max_length=32, choices=SplatfestBattleCloutMultiplier.choices,
                                                   blank=True, null=True)
-    splatfest_power = models.FloatField(blank=True, null=True)
+    power = models.IntegerField(blank=True, null=True)
 
     # teams comes from related_name='teams' on Team.battle
 
