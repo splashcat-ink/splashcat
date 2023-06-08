@@ -34,6 +34,9 @@ class BattleManager(models.Manager):
             .select_related('nameplate_badge_1__image') \
             .select_related('nameplate_badge_2__image') \
             .select_related('nameplate_badge_3__image') \
+            .select_related('nameplate_badge_1__description') \
+            .select_related('nameplate_badge_2__description') \
+            .select_related('nameplate_badge_3__description') \
             .select_related('weapon__name') \
             .select_related('weapon__flat_image') \
             .select_related('weapon__sub__name') \
@@ -61,7 +64,7 @@ class BattleManager(models.Manager):
         )
 
         return self.select_related('uploader__github_link', 'vs_stage__name', 'vs_stage__image') \
-            .prefetch_related('awards').prefetch_related(player_prefetch)
+            .prefetch_related('awards__name').prefetch_related(player_prefetch)
 
 
 class Battle(models.Model):
@@ -110,6 +113,9 @@ class Battle(models.Model):
         ]
 
     uploader = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='battles')
+    uploader_agent_name = models.CharField(max_length=32, blank=True)
+    uploader_agent_version = models.CharField(max_length=32, blank=True)
+    uploader_agent_extra = models.CharField(max_length=100, blank=True)
     splatnet_id = models.CharField(max_length=100)
     raw_data = models.JSONField()
     data_type = models.CharField(max_length=32)  # e.g. "splatnet3"

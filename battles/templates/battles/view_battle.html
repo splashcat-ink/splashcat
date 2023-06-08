@@ -203,6 +203,18 @@
 
     {% include 'includes/splashtag.html' with splashtag=battle.splashtag only %}
 
+    {% if battle.uploader_agent_name %}
+        <p class="text-sm pt-2">
+            Uploaded using {{ battle.uploader_agent_name }} {% if battle.uploader_agent_version %}(version
+            {{ battle.uploader_agent_version }}){% endif %}.
+        </p>
+
+        {% if battle.uploader_agent_extra %}
+            <div class="text-sm pt-2">Extra data:</div>
+            <span class="font-mono text-xs pt-1 max-w-prose">{{ battle.uploader_agent_extra }}</span>
+        {% endif %}
+    {% endif %}
+
     {% comment %}
     <div class="sticky left-0 bottom-0 w-full flex gap-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-2 mt-4 -mb-3 sm:rounded-t-xl bg-gray-700 whitespace-nowrap text-xs sm:text-sm md:text-base">
         <a href="{{ pagination.href.first }}" class="py-2 px-4 rounded-full bg-gray-600">Latest Battle</a>

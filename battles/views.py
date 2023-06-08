@@ -90,7 +90,24 @@ def upload_battle(request):
                 },
                 'data_type': {
                     'enum': ['splatnet3', 'splashcat']
-                }
+                },
+                'uploader_agent': {
+                    'type': 'object',
+                    'properties': {
+                        'name': {
+                            'type': 'string',
+                            'maxLength': 32,
+                        },
+                        'version': {
+                            'type': 'string',
+                            'maxLength': 32,
+                        },
+                        'extra': {
+                            'type': 'string',
+                            'maxLength': 100,
+                        },
+                    },
+                },
             },
             'required': ['battle', 'data_type'],
         })
