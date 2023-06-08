@@ -170,6 +170,8 @@ def update_global_battle_data():
 def user_request_data_export(user: User | int):
     if isinstance(user, int):
         user: User = User.objects.get(pk=user)
+    user.data_export_pending = False
+    user.save()
 
     battles = user.battles.with_prefetch().order_by('-played_time')
 
@@ -207,9 +209,6 @@ def user_request_data_export(user: User | int):
     }
 
     message.send()
-
-    user.data_export_pending = False
-    user.save()
 
 
 @shared_task
