@@ -113,9 +113,9 @@ class Battle(models.Model):
         ]
 
     uploader = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='battles')
-    uploader_agent_name = models.CharField(max_length=32, blank=True)
-    uploader_agent_version = models.CharField(max_length=50, blank=True)
-    uploader_agent_extra = models.CharField(max_length=100, blank=True)
+    uploader_agent_name = models.CharField(max_length=32, blank=True, null=True)
+    uploader_agent_version = models.CharField(max_length=50, blank=True, null=True)
+    uploader_agent_extra = models.CharField(max_length=100, blank=True, null=True)
     splatnet_id = models.CharField(max_length=100)
     raw_data = models.JSONField()
     data_type = models.CharField(max_length=32)  # e.g. "splatnet3"

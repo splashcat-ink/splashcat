@@ -1,7 +1,7 @@
 {% load static %}
 <nav class="bg-gray-800">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div class="relative flex h-16 items-center justify-between">
+        <div class="relative flex h-20 items-center justify-between">
             <div class="flex items-center sm:hidden">
                 <!-- Mobile menu button-->
                 <button
@@ -32,14 +32,12 @@
                     </svg>
                 </button>
             </div>
-            <div class="flex flex-1 items-center justify-start sm:items-stretch">
+            <div class="flex flex-1 items-center justify-start">
                 <a href="{% url 'home' %}" class="flex flex-shrink-0 items-center">
-                    <img class="block h-8 w-auto lg:hidden"
-                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
-                    <img class="hidden h-8 w-auto lg:block"
-                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
+                    <img class="block h-16 w-auto bg-gray-900/25 rounded"
+                         src="{% static 'images/judd-pride.png' %}" alt="Splashcat">
                 </a>
-                <div class="hidden sm:ml-6 sm:block">
+                <div class="hidden sm:ml-6 sm:block text-lg">
                     <div class="flex space-x-4">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         <a href="{% url 'home' %}"
@@ -78,7 +76,7 @@
                                 <span class="sr-only">View recent battles</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5"
-                                     stroke="currentColor" class="w-6 h-6">
+                                     stroke="currentColor" class="w-8 h-8">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                           d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"/>
                                 </svg>
@@ -144,11 +142,11 @@
                                     aria-haspopup="true">
                                 <span class="sr-only">Open user menu</span>
                                 {% if user.profile_picture %}
-                                    <img class="h-8 w-8 rounded-full object-cover"
+                                    <img class="h-10 w-10 rounded-full object-cover"
                                          src="{{ user.profile_picture.url }}"
                                          alt="">
                                 {% else %}
-                                    <div class="h-8 w-8 rounded-full bg-slate-200"></div>
+                                    <div class="h-10 w-10 rounded-full bg-slate-200"></div>
                                 {% endif %}
                             </button>
                         </div>

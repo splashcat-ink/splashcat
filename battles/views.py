@@ -81,6 +81,18 @@ def upload_battle(request):
             })
         )
 
+    # normalize incoming data by recursively removing any fields containing None
+    # this prevents weird cases where JSON data lacks the fields completely but MessagePack data has them as None
+    def normalize(to_normalize):
+        if isinstance(to_normalize, dict):
+            return {k: normalize(v) for k, v in to_normalize.items() if v is not None}
+        elif isinstance(to_normalize, list):
+            return [normalize(v) for v in to_normalize]
+        else:
+            return to_normalize
+
+    data = normalize(data)
+
     try:
         validate(data, {
             'type': 'object',
@@ -151,9 +163,11 @@ def upload_battle(request):
         battle.x_battle_division = user.x_battle_division
         battle.save()
 
-    battle.uploader_agent_name = data['uploader_agent']['name']
-    battle.uploader_agent_version = data['uploader_agent']['version']
-    battle.uploader_agent_extra = data['uploader_agent']['extra']
+    uploader_agent = data.get('uploader_agent', {})
+    battle.uploader_agent_name = uploader_agent.get('name')
+    battle.uploader_agent_version = uploader_agent.get('version')
+    battle.uploader_agent_extra = uploader_agent.get('extra')
+    battle.save()
 
     return JsonResponse({
         'status': 'ok',

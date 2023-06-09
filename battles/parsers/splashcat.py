@@ -29,7 +29,7 @@ def parse_splashcat(data, request):
     battle.played_time = splashcat_battle.played_time
     battle.duration = timedelta(seconds=splashcat_battle.duration)
     battle.judgement = splashcat_battle.judgement.value
-    battle.knockout = splashcat_battle.knockout.value
+    battle.knockout = splashcat_battle.knockout.value if splashcat_battle.knockout else None
     battle.anarchy_mode = splashcat_battle.anarchy.mode.value if splashcat_battle.anarchy else None
     battle.anarchy_point_change = splashcat_battle.anarchy.point_change if splashcat_battle.anarchy else None
     battle.power = splashcat_battle.anarchy.power if splashcat_battle.anarchy else None
