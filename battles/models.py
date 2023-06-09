@@ -28,35 +28,20 @@ class BattleManager(models.Manager):
 
     def with_prefetch(self, include_player_gear=False):
         player_prefetch_queryset = Player.objects \
-            .select_related('title_adjective__string') \
-            .select_related('title_subject__string') \
-            .select_related('nameplate_background__image') \
-            .select_related('nameplate_badge_1__image') \
-            .select_related('nameplate_badge_2__image') \
-            .select_related('nameplate_badge_3__image') \
-            .select_related('nameplate_badge_1__description') \
-            .select_related('nameplate_badge_2__description') \
-            .select_related('nameplate_badge_3__description') \
-            .select_related('weapon__name') \
-            .select_related('weapon__flat_image') \
-            .select_related('weapon__sub__name') \
-            .select_related('weapon__sub__overlay_image') \
-            .select_related('weapon__sub__mask_image') \
-            .select_related('weapon__special__name') \
-            .select_related('weapon__special__overlay_image') \
-            .select_related('weapon__special__mask_image')
+            .prefetch_related('title_adjective__string', 'title_subject__string', 'nameplate_background__image',
+                              'nameplate_badge_1__image', 'nameplate_badge_2__image', 'nameplate_badge_3__image',
+                              'nameplate_badge_1__description', 'nameplate_badge_2__description',
+                              'nameplate_badge_3__description', 'weapon__name', 'weapon__flat_image',
+                              'weapon__sub__name',
+                              'weapon__sub__overlay_image', 'weapon__sub__mask_image', 'weapon__special__name',
+                              'weapon__special__overlay_image', 'weapon__special__mask_image')
 
         if include_player_gear:
             player_prefetch_queryset \
-                .select_related('head_gear__gear__name') \
-                .select_related('head_gear__gear__image') \
-                .select_related('head_gear__gear__brand') \
-                .select_related('clothing_gear__gear__name') \
-                .select_related('clothing_gear__gear__image') \
-                .select_related('clothing_gear__gear__brand') \
-                .select_related('shoes_gear__gear__name') \
-                .select_related('shoes_gear__gear__image') \
-                .select_related('shoes_gear__gear__brand')
+                .prefetch_related('head_gear__gear__name', 'head_gear__gear__image', 'head_gear__gear__brand',
+                                  'clothing_gear__gear__name', 'clothing_gear__gear__image',
+                                  'clothing_gear__gear__brand',
+                                  'shoes_gear__gear__name', 'shoes_gear__gear__image', 'shoes_gear__gear__brand')
 
         player_prefetch = Prefetch(
             'teams__players',
