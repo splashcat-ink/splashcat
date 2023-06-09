@@ -7,6 +7,13 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} | Splashcat</title>
+    <link rel="preconnect" href="https://cdn.splashcat.ink">
+    <link rel="dns-prefetch" href="https://cdn.splashcat.ink">
+    <link rel="preload" as="script" href="{% static 'js/index.js' %}">
+    <link rel="preload" href="{% static 'fonts/splatnet3/Splatoon1-common.woff2' %}" as="font" type="font/woff2"
+          crossorigin>
+    <link rel="preload" href="{% static 'fonts/splatnet3/Splatoon2-common.woff2' %}" as="font" type="font/woff2"
+          crossorigin>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
