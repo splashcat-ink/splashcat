@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1 class="font-splatoon1 text-3xl">{% block title %}Reset password{% endblock %}</h1>
+
+    {% if form.errors %}
+        <p>Invalid email address. Please try again.</p>
+    {% endif %}
+
+    <p>Please enter your email address and we'll send you instructions on how to reset your password.</p>
+
+    <form method="post" action="{% url 'users:password_reset' %}" class="form-css">
+        {% csrf_token %}
+        {{ form.as_div }}
+
+        <input type="submit" value="Reset password">
+    </form>
+
+{% endblock %}
