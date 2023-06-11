@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="text-3xl font-splatoon1">
+        {% block title %}
+            Password reset complete
+        {% endblock %}
+    </h1>
+
+    <p class="text-xl">Your password has been changed!</p>
+    <a href="{% url 'users:login' %}" class="inline-block p-4 mt-2 rounded bg-pink-600 hover:bg-pink-700">Login</a>
+{% endblock %}
