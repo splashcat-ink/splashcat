@@ -3,24 +3,10 @@
 {% block content %}
     {% if validlink %}
         <p>Please enter (and confirm) your new password.</p>
-        <form action="" method="post">
+        <form action="" method="post" class="form-css">
             {% csrf_token %}
-            <table>
-                <tr>
-                    <td>{{ form.new_password1.errors }}
-                        <label for="id_new_password1">New password:</label></td>
-                    <td>{{ form.new_password1 }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.new_password2.errors }}
-                        <label for="id_new_password2">Confirm password:</label></td>
-                    <td>{{ form.new_password2 }}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" value="Change my password"></td>
-                </tr>
-            </table>
+            {{ form.as_div }}
+            <input type="submit" value="Change my password">
         </form>
     {% else %}
         <h1>Password reset failed</h1>
