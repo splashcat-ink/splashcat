@@ -112,7 +112,7 @@ def upload_battle(request):
                         },
                         'version': {
                             'type': 'string',
-                            'maxLength': 32,
+                            'maxLength': 50,
                         },
                         'extra': {
                             'type': 'string',
