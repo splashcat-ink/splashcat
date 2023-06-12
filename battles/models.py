@@ -94,7 +94,9 @@ class Battle(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=["uploader", "-played_time"]),
+            models.Index(fields=["uploader", "-uploaded_at"]),
             models.Index(fields=["uploader", "judgement"]),
+            models.Index(fields=["uploaded_at"]),
         ]
 
     uploader = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='battles')

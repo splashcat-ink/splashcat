@@ -8,9 +8,9 @@ def home(request):
     recent_battles = Battle.objects.with_prefetch() \
                          .prefetch_related('uploader__github_link') \
                          .select_related('vs_stage__name') \
-                         .order_by('-id')[:24]
+                         .order_by('-uploaded_at')[:24]
     user_recent_battles = request.user.battles.with_prefetch().select_related('vs_stage__name') \
-                              .order_by('-id')[:12] if request.user.is_authenticated else None
+                              .order_by('-uploaded_at')[:12] if request.user.is_authenticated else None
 
     return render(request, 'splashcat/home.html', {
         'recent_battles': recent_battles,
