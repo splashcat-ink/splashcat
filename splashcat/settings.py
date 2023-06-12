@@ -248,7 +248,7 @@ ANYMAIL = {
     'POSTMARK_SERVER_TOKEN': os.environ.get('POSTMARK_SERVER_TOKEN'),
 }
 EMAIL_BACKEND = 'anymail.backends.postmark.EmailBackend'
-DEFAULT_FROM_EMAIL = 'grizzco@splashcat.ink'
+DEFAULT_FROM_EMAIL = 'Splashcat <grizzco@splashcat.ink>'
 SERVER_EMAIL = 'server@splashcat.ink'
 
 # Cache
