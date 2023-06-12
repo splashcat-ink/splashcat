@@ -195,6 +195,14 @@ class Battle(models.Model):
 
         return vs_rule_to_image_name[self.vs_rule]
 
+    def get_short_judgement_display(self):
+        if self.judgement == self.BattleJudgement.WIN:
+            return _('Victory')
+        elif self.judgement == self.BattleJudgement.DRAW:
+            return _('Draw')
+        else:
+            return _('Defeat')
+
 
 class BattleAward(models.Model):
     battle = models.ForeignKey('Battle', on_delete=models.CASCADE)

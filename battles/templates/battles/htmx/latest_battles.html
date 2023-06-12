@@ -12,7 +12,7 @@
                         class="rounded-full {% if battle.judgement == "WIN" %}bg-yellow-300{% else %}bg-gray-300{% endif %}
                            text-gray-900 font-bold px-2 py-2 text-lg font-splatoon1"
                 >
-                    {{ battle.get_judgement_display|upper }}
+                    {{ battle.get_short_judgement_display|upper }}
                 </div>
                 <div class="flex flex-col shrink min-w-0">
                     <div class="text-sm whitespace-nowrap overflow-clip">{{ battle.vs_stage.name.string }}</div>

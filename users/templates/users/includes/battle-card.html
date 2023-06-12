@@ -9,7 +9,7 @@
     <div class="bg-black/50 mt-8 p-2">
         <div class="text-lg float-right">{{ battle.vs_stage.name.string }}</div>
         <div class="font-splatoon1 text-2xl {% if battle.judgement == "WIN" %}text-yellow-200{% else %}text-gray-300{% endif %}">
-            {{ battle.get_judgement_display }}
+            {{ battle.get_short_judgement_display }}
         </div>
         <div>
             {{ battle.get_vs_mode_display }}
