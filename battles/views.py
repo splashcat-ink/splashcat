@@ -55,7 +55,7 @@ def redirect_global_data_export(request):
 
 @api_auth_required
 def get_recent_battle_ids(request):
-    recent_battles = request.user.battles.order_by('-played_time')[:100]
+    recent_battles = request.user.battles.order_by('-played_time')[:300]
     return JsonResponse({
         'battle_ids': [battle.splatnet_id for battle in recent_battles],
     })
