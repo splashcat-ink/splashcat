@@ -321,12 +321,12 @@ class TricolorRole(Enum):
 class Team:
     color: Color
     is_my_team: bool
-    judgement: TeamJudgement
     order: int
     fest_streak_win_count: Optional[int] = None
     fest_team_name: Optional[str] = None
-    fest_uniform_bonus_rate: Optional[int] = None
+    fest_uniform_bonus_rate: Optional[float] = None
     fest_uniform_name: Optional[str] = None
+    judgement: Optional[TeamJudgement] = None
     noroshi: Optional[int] = None
     paint_ratio: Optional[float] = None
     players: Optional[List[Player]] = None
@@ -338,34 +338,35 @@ class Team:
         assert isinstance(obj, dict)
         color = Color.from_dict(obj.get("color"))
         is_my_team = from_bool(obj.get("isMyTeam"))
-        judgement = TeamJudgement(obj.get("judgement"))
         order = from_int(obj.get("order"))
         fest_streak_win_count = from_union([from_int, from_none], obj.get("festStreakWinCount"))
         fest_team_name = from_union([from_str, from_none], obj.get("festTeamName"))
-        fest_uniform_bonus_rate = from_union([from_int, from_none], obj.get("festUniformBonusRate"))
+        fest_uniform_bonus_rate = from_union([from_float, from_none], obj.get("festUniformBonusRate"))
         fest_uniform_name = from_union([from_str, from_none], obj.get("festUniformName"))
+        judgement = from_union([TeamJudgement, from_none], obj.get("judgement"))
         noroshi = from_union([from_int, from_none], obj.get("noroshi"))
         paint_ratio = from_union([from_float, from_none], obj.get("paintRatio"))
         players = from_union([lambda x: from_list(Player.from_dict, x), from_none], obj.get("players"))
         score = from_union([from_int, from_none], obj.get("score"))
         tricolor_role = from_union([TricolorRole, from_none], obj.get("tricolorRole"))
-        return Team(color, is_my_team, judgement, order, fest_streak_win_count, fest_team_name, fest_uniform_bonus_rate,
-                    fest_uniform_name, noroshi, paint_ratio, players, score, tricolor_role)
+        return Team(color, is_my_team, order, fest_streak_win_count, fest_team_name, fest_uniform_bonus_rate,
+                    fest_uniform_name, judgement, noroshi, paint_ratio, players, score, tricolor_role)
 
     def to_dict(self) -> dict:
         result: dict = {}
         result["color"] = to_class(Color, self.color)
         result["isMyTeam"] = from_bool(self.is_my_team)
-        result["judgement"] = to_enum(TeamJudgement, self.judgement)
         result["order"] = from_int(self.order)
         if self.fest_streak_win_count is not None:
             result["festStreakWinCount"] = from_union([from_int, from_none], self.fest_streak_win_count)
         if self.fest_team_name is not None:
             result["festTeamName"] = from_union([from_str, from_none], self.fest_team_name)
         if self.fest_uniform_bonus_rate is not None:
-            result["festUniformBonusRate"] = from_union([from_int, from_none], self.fest_uniform_bonus_rate)
+            result["festUniformBonusRate"] = from_union([to_float, from_none], self.fest_uniform_bonus_rate)
         if self.fest_uniform_name is not None:
             result["festUniformName"] = from_union([from_str, from_none], self.fest_uniform_name)
+        if self.judgement is not None:
+            result["judgement"] = from_union([lambda x: to_enum(TeamJudgement, x), from_none], self.judgement)
         if self.noroshi is not None:
             result["noroshi"] = from_union([from_int, from_none], self.noroshi)
         if self.paint_ratio is not None:
@@ -382,8 +383,8 @@ class Team:
 
 class VsMode(Enum):
     BANKARA = "BANKARA"
-    FEST = "FEST"
     CHALLENGE = "CHALLENGE"
+    FEST = "FEST"
     PRIVATE = "PRIVATE"
     REGULAR = "REGULAR"
     X_MATCH = "X_MATCH"
