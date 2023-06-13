@@ -30,7 +30,7 @@ def view_battle(request, battle_id):
 
 def redirect_from_splatnet_id(request, uploader_username, splatnet_id):
     battle = get_object_or_404(Battle, splatnet_id=splatnet_id, uploader__username=uploader_username)
-    return redirect('view_battle', battle_id=battle.id)
+    return redirect('battles:view_battle', battle_id=battle.id)
 
 
 def get_battle_json(request, battle_id):
