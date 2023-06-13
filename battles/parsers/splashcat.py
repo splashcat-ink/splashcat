@@ -35,7 +35,7 @@ def parse_splashcat(data, request):
     battle.power = splashcat_battle.anarchy.power if splashcat_battle.anarchy else None
     battle.power = splashcat_battle.x_battle.x_power if splashcat_battle.x_battle else None
     battle.x_battle_rank = splashcat_battle.x_battle.x_rank if splashcat_battle.x_battle else None
-    battle.splatfest_mode = splashcat_battle.splatfest.mode.value if splashcat_battle.splatfest else None
+    battle.splatfest_mode = splashcat_battle.splatfest.mode.value if splashcat_battle.splatfest and splashcat_battle.splatfest.mode else None
     battle.splatfest_clout_multiplier = splashcat_battle.splatfest.clout_multiplier if splashcat_battle.splatfest else None
     battle.power = splashcat_battle.splatfest.power if splashcat_battle.splatfest else None
     battle.save()
