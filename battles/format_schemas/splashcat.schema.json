@@ -282,7 +282,6 @@
         "required": [
           "isMyTeam",
           "color",
-          "judgement",
           "order"
         ]
       }
