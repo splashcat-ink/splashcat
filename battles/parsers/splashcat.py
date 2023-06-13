@@ -47,7 +47,7 @@ def parse_splashcat(data, request):
             fest_team_name=team.fest_team_name,
             fest_uniform_bonus_rate=team.fest_uniform_bonus_rate,
             fest_uniform_name=team.fest_uniform_name,
-            judgement=team.judgement.value,
+            judgement=team.judgement.value if team.judgement else None,
             order=team.order,
             noroshi=team.noroshi,
             paint_ratio=team.paint_ratio,

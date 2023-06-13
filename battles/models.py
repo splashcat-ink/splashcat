@@ -225,7 +225,7 @@ class Team(models.Model):
     fest_team_name = models.CharField(max_length=50, blank=True, null=True)
     fest_uniform_bonus_rate = models.FloatField(blank=True, null=True)
     fest_uniform_name = models.CharField(max_length=50, blank=True, null=True)
-    judgement = models.CharField(max_length=32, choices=Judgement.choices)
+    judgement = models.CharField(max_length=32, choices=Judgement.choices, blank=True, null=True)
     order = models.IntegerField()
     # players comes from a many-to-one relationship from the Player class
     noroshi = models.IntegerField(blank=True, null=True)
