@@ -134,7 +134,7 @@
             "type": "string"
           },
           "festUniformBonusRate": {
-            "type": "integer"
+            "type": "number"
           },
           "festUniformName": {
             "type": "string"
