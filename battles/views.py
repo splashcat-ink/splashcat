@@ -38,8 +38,9 @@ def battle_opengraph(request, battle_id):
         if battle.vs_rule != battle.VsRule.TURF_WAR:
             total += team.score
             team_value = team.score
-            display_text = _("KNOCKOUT!") if team.score == 100 and battle.knockout == KnockoutJudgement.WIN else _(
-                "Score: %(score)d") % {'score': team.score}
+            display_text = _("KNOCKOUT!") if \
+                team.score == 100 and battle.knockout == KnockoutJudgement.WIN or \
+                battle.knockout == KnockoutJudgement.LOSE else _("Score: %(score)d") % {'score': team.score}
         else:
             total += team.paint_ratio
             team_value = team.paint_ratio
