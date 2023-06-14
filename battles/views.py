@@ -2,7 +2,6 @@ import json
 
 import jsonschema
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
 from django.db import transaction
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render, redirect
@@ -28,6 +27,13 @@ def view_battle(request, battle_id):
     })
 
 
+def battle_opengraph(request, battle_id):
+    battle: Battle = get_object_or_404(Battle.objects.with_prefetch(True), id=battle_id)
+    return render(request, 'battles/battle_opengraph.html', {
+        'battle': battle,
+    })
+
+
 def redirect_from_splatnet_id(request, uploader_username, splatnet_id):
     battle = get_object_or_404(Battle, splatnet_id=splatnet_id, uploader__username=uploader_username)
     return redirect('battles:view_battle', battle_id=battle.id)
@@ -35,7 +41,7 @@ def redirect_from_splatnet_id(request, uploader_username, splatnet_id):
 
 def get_battle_json(request, battle_id):
     battle = get_object_or_404(Battle.objects.with_prefetch(True), id=battle_id)
-    data = serializers.serialize('json', [battle])
+    data = json.dumps(battle.to_dict())
     return HttpResponse(data, content_type='application/json')
 
 

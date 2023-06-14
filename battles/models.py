@@ -122,6 +122,8 @@ class Battle(models.Model):
     splatfest_mode = models.CharField(max_length=32, choices=SplatfestBattleType.choices, blank=True, null=True)
     splatfest_clout_multiplier = models.CharField(max_length=32, choices=SplatfestBattleCloutMultiplier.choices,
                                                   blank=True, null=True)
+    splatfest_clout_contribution = models.FloatField(blank=True, null=True)
+    splatfest_festival_shells = models.IntegerField(blank=True, null=True)
     power = models.IntegerField(blank=True, null=True)
 
     # teams comes from related_name='teams' on Team.battle
