@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>OpenGraph</title>
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-900 text-purple-100 font-splatoon2 bg-[url('/static/images/information-bg.jpg')] bg-[length:600px]">
+{% block content %}{% endblock %}
+</body>
+</html>
