@@ -114,6 +114,8 @@
                                 first:text-left last:text-right first:pl-4 last:pr-4 overflow-visible whitespace-nowrap {% if team.width < 50 %}z-10{% endif %}"
                                     style="--team-color: {{ team.team_color.css }}; --bar-width: {{ team.width }}%">
                                 {{ team.display_text }}</div>
+                        {% else %}
+                            <div></div>
                         {% endif %}
                     {% endfor %}
                 {% endif %}
