@@ -46,6 +46,12 @@
         })();
     </script>
     <!-- End Matomo Code -->
+
+    <meta property="og:type" content="website">
+    {% block opengraph_head %}
+        <meta property="og:title" content="Splashcat">
+        <meta property="og:description" content="Splashcat records battle data for later analysis.">
+    {% endblock %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 {% csrf_token %}
