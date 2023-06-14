@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render, redirect
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from jsonschema import validate
@@ -29,8 +30,36 @@ def view_battle(request, battle_id):
 
 def battle_opengraph(request, battle_id):
     battle: Battle = get_object_or_404(Battle.objects.with_prefetch(True), id=battle_id)
+
+    team_bar_display = []
+
+    total = 0
+    for i, team in enumerate(battle.teams.all()):
+        if battle.vs_rule != battle.VsRule.TURF_WAR:
+            total += team.score
+            team_value = team.score
+            display_text = _("KNOCKOUT!") if team.score == 100 and battle.knockout == KnockoutJudgement.WIN else _(
+                "Score: %(score)d") % {'score': team.score}
+        else:
+            total += team.paint_ratio
+            team_value = team.paint_ratio
+            display_text = _("%(percent).1f%%") % {'percent': team.paint_ratio * 100}
+        display_object = {
+            'display_text': display_text,
+            'team_color': team.color,
+            'team_value': team_value,
+        }
+        if team.is_my_team:
+            team_bar_display.insert(0, display_object)
+        else:
+            team_bar_display.append(display_object)
+
+    for display_object in team_bar_display:
+        display_object['width'] = display_object['team_value'] / total * 100
+
     return render(request, 'battles/battle_opengraph.html', {
         'battle': battle,
+        'team_bar_display': team_bar_display,
     })
 
 

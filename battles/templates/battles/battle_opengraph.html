@@ -106,6 +106,12 @@
                     <span class="text-2xl text-center align-middle w-full h-full pt-1">
                 The match was not fully completed.
             </span>
+                {% else %}
+                    {% for team in team_bar_display %}
+                        <div class="w-[var(--bar-width)] h-full bg-[color:var(--team-color)] text-4xl font-splatoon1 align-middle text-center first:text-left last:text-right px-4"
+                             style="--team-color: {{ team.team_color.css }}; --bar-width: {{ team.width }}%">
+                            {{ team.display_text }}</div>
+                    {% endfor %}
                 {% endif %}
             </div>
 
