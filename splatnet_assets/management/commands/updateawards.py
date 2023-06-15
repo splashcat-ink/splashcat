@@ -48,6 +48,8 @@ silver = [
     "Skewer",
     "TripleTornado",
     "EnergyStand",
+    "Firework",
+    "Castle",
     "Battle2",
     "GachiareaPaint2",
     "GachiareaFrontHold2",
