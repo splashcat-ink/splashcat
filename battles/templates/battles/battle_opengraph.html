@@ -39,7 +39,7 @@
                             {% endif %}
                                         x{{ player.kills|default_if_none:"--" }}
                                         {% if player.assists and player.assists != 0 %}
-                                            <sub class="text-xs text-gray-300">
+                                            <sub class="text-xs text-gray-300 -ml-1.5">
                                                     ({{ player.assists }})
                                                 </sub>
                                         {% endif %}
