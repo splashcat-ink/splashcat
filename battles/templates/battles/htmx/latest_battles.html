@@ -5,12 +5,27 @@
     </div>
 {% else %}
     <div class="flex flex-col gap-2" id="latest-battles-dropdown-data">
+        <div class="flex flex-row">
+            <div class="text-2xl font-splatoon1">Recent Battles</div>
+            <div class="grow"></div>
+            <div>
+                <button name="is_refresh" value="true" class="p-2"
+                        _="on click remove .animate-none from the <svg/> in me"
+                        hx-get="/battles/htmx/latest/"
+                        hx-trigger="click"
+                        hx-swap="outerHTML"
+                        hx-target="#latest-battles-dropdown-data"
+                >
+                    {% include "splatnet_assets/squid_spinner.html" with class="h-6 w-6 inline-block animate-[spin_2s_linear_infinite] animate-none" %}
+                </button>
+            </div>
+        </div>
         {% for battle in battles %}
             <a class="flex flex-row gap-1 bg-gray-900 rounded-full px-2 py-1"
                href="{% url 'battles:view_battle' battle.id %}">
                 <div
                         class="rounded-full {% if battle.judgement == "WIN" %}bg-yellow-300{% else %}bg-gray-300{% endif %}
-                           text-gray-900 font-bold px-2 py-2 text-lg font-splatoon1"
+                           text-gray-900 font-bold px-2 py-2 text-lg font-splatoon1 min-w-[7ch]"
                 >
                     {{ battle.get_short_judgement_display|upper }}
                 </div>
