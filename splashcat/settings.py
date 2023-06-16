@@ -41,7 +41,10 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 ALLOWED_HOSTS += [gethostname(), gethostbyname(gethostname()), ]
-CSRF_TRUSTED_ORIGINS = ['https://splashcat.ink']
+CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink']
+
+FLY_REGION = os.environ.get('FLY_REGION')
+FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION')
 
 SITE_ID = 1
 
@@ -75,6 +78,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'splashcat.middleware.FlyDotIoMiddleware',  # handles redirecting to the primary region based on cookie and method
     'django_htmx.middleware.HtmxMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -85,6 +89,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'splashcat.middleware.PostgresReadOnlyMiddleware',  # redirects to primary region when a read only error occurs
 ]
 
 ROOT_URLCONF = 'splashcat.urls'
@@ -126,8 +131,13 @@ if database_url is None:
         }
     }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    database_connection_details = dj_database_url.parse(database_url)
+
+    if FLY_REGION != FLY_PRIMARY_REGION:
+        database_connection_details["PORT"] = 5433
+
     DATABASES = {
-        "default": dj_database_url.parse(database_url),
+        "default": database_connection_details,
     }
 
 # Password validation

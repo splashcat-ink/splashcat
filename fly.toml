@@ -1,0 +1,27 @@
+# fly.toml app configuration file generated for splashcat on 2023-06-12T20:53:52-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "splashcat"
+primary_region = "iad"
+console_command = "/code/manage.py shell"
+
+[deploy]
+release_command = "python manage.py migrate"
+
+[env]
+PORT = "8000"
+DJANGO_ALLOWED_HOSTS = "splashcat.fly.dev"
+DEBUG = "False"
+
+[http_service]
+internal_port = 8000
+force_https = true
+auto_stop_machines = true
+auto_start_machines = true
+min_machines_running = 0
+
+[[statics]]
+guest_path = "/code/static"
+url_prefix = "/static/"
