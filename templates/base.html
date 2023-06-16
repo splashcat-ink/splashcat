@@ -28,24 +28,8 @@
     <script src="{% static 'js/index.js' %}" defer></script>
     {% django_htmx_script %}
     {% unicorn_scripts %}
-    <!-- Matomo -->
-    <script>
-        let _paq = window._paq = window._paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['setCustomDimension', 1, '{% if user.is_authenticated %}{% if user.github_link.is_sponsor %}sponsor{% else %}user{% endif %}{% else %}guest{% endif %}']);
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        (function () {
-            let u = "//matomo.catgirlin.space/";
-            _paq.push(['setTrackerUrl', u + 'matomo.php']);
-            _paq.push(['setSiteId', '5']);
-            let d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-            g.async = true;
-            g.src = u + 'matomo.js';
-            s.parentNode.insertBefore(g, s);
-        })();
-    </script>
-    <!-- End Matomo Code -->
+
+    <script defer data-domain="splashcat.ink" src="https://plausible.io/js/script.js"></script>
 
     <meta property="og:type" content="website">
     {% block opengraph_head %}
