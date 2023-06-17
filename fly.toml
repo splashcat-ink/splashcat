@@ -21,7 +21,12 @@ force_https = true
 auto_stop_machines = true
 auto_start_machines = true
 min_machines_running = 0
+processes = ["app"]
 
 [[statics]]
 guest_path = "/code/static"
 url_prefix = "/static/"
+
+[processes]
+app = "daphne -b 0.0.0.0 splashcat.asgi:application"
+celery-worker = "celery -A splashcat worker -l INFO -B"
