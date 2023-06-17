@@ -35,13 +35,15 @@ def battle_opengraph(request, battle_id):
 
     total = 0
     for i, team in enumerate(battle.teams.all()):
-        if battle.vs_rule != battle.VsRule.TURF_WAR:
+        team_value = 0
+        display_text = ""
+        if battle.vs_rule != battle.VsRule.TURF_WAR and team.score is not None:
             total += team.score
             team_value = team.score
             display_text = _("KNOCKOUT!") if \
                 team.score == 100 and battle.knockout == KnockoutJudgement.WIN or \
                 battle.knockout == KnockoutJudgement.LOSE else _("Score: %(score)d") % {'score': team.score}
-        else:
+        elif team.paint_ratio is not None:
             total += team.paint_ratio
             team_value = team.paint_ratio
             display_text = _("%(percent).1f%%") % {'percent': team.paint_ratio * 100}
