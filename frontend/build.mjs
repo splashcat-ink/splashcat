@@ -35,7 +35,7 @@ let postcssOptions = {
 const cssProcessor = postcss([
     tailwind(join(dirname, "tailwind.config.js")),
     autoprefixer(),
-    cssnano()
+    cssnano(),
 ]);
 
 // HACK: for some reason this terribleness has to be done to make PostCSS not hang trying to read every file on the filesystem. I have no idea why this happens.

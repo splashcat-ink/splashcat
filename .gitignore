@@ -8,3 +8,4 @@ node_modules/
 !/static/css/.gitkeep
 !/static/js/.gitkeep
 .env
+staticfiles/
