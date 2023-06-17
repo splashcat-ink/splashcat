@@ -6,7 +6,7 @@
 
     <h1 class="font-splatoon1 text-3xl">Register</h1>
 
-    <form method="post" action="{% url 'users:register' %}" class="form-css">
+    <form method="post" action="{% url 'users:register' %}" class="form-css plausible-event-name=Register">
         {% csrf_token %}
         {{ form.as_div }}
 
