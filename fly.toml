@@ -24,7 +24,7 @@ min_machines_running = 0
 processes = ["app"]
 
 [[statics]]
-guest_path = "/code/static"
+guest_path = "/code/staticfiles"
 url_prefix = "/static/"
 
 [processes]
