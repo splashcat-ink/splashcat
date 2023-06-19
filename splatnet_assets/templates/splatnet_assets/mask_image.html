@@ -9,7 +9,7 @@
         <mask id="__{{ mask_id }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
             <image x="0" y="0" width="{{ object.mask_image.width }}"
                    height="{{ object.mask_image.height }}"
-                   href="{{ object.mask_image.url }}">
+                   href="{{ object.mask_image.url }}?{{ image_params }}">
             </image>
         </mask>
         <rect x="0" y="0" width="{{ object.mask_image.width }}"
@@ -18,7 +18,7 @@
               mask="url(#__{{ mask_id }})"></rect>
         <image x="0" y="0" width="{{ object.overlay_image.width }}"
                height="{{ object.overlay_image.height }}"
-               href="{{ object.overlay_image.url }}">
+               href="{{ object.overlay_image.url }}?{{ image_params }}">
         </image>
     </svg>
 {% endwith %}

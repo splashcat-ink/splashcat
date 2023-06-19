@@ -27,17 +27,17 @@
         </div>
         <div class="text-lg">
             {% with player=battle.player %}
-                <img src="{{ player.weapon.flat_image.url }}" class="inline-block h-10 w-10" alt="">
+                <img src="{{ player.weapon.flat_image.url }}?height=80&width=80" class="inline-block h-10 w-10" alt="">
                 {{ player.weapon.name.string }}
-                {% include "splatnet_assets/mask_image.html" with object=player.weapon.sub class="inline h-6 w-6" uploader=battle.uploader %}
-                {% include "splatnet_assets/mask_image.html" with object=player.weapon.special class="inline h-6 w-6" uploader=battle.uploader %}
+                {% include "splatnet_assets/mask_image.html" with object=player.weapon.sub class="inline h-6 w-6" uploader=battle.uploader image_params="height=48&width=48" %}
+                {% include "splatnet_assets/mask_image.html" with object=player.weapon.special class="inline h-6 w-6" uploader=battle.uploader image_params="height=48&width=48" %}
             {% endwith %}
         </div>
         {% if display_uploader is True %}
             {% with uploader=battle.uploader %}
                 <div class="flex flex-row gap-1 items-center my-0.5 w-fit">
                     {% if uploader.profile_picture %}
-                        <img src="{{ battle.uploader.profile_picture.url }}?optimizer=image"
+                        <img src="{{ battle.uploader.profile_picture.url }}?optimizer=image&height=96&width=96"
                              alt="{{ battle.uploader.display_name }}"
                              class="h-12 w-12 object-cover rounded-lg">
                     {% endif %}
@@ -46,7 +46,7 @@
                             {{ battle.uploader.display_name }}
                             {% if battle.uploader.display_sponsor_badge %}
                                 <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
-                                     class="h-6 inline-block">
+                                     class="h-6 inline-block" height="48" width="48">
                             {% endif %}
                         </div>
                         <div class="text-sm text-gray-400">@{{ battle.uploader.username }}</div>
