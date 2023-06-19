@@ -33,7 +33,6 @@ protocol = "http"
 restart_limit = 5
 timeout = "5s"
 tls_skip_verify = false
-[services.http_checks.headers]
 
 [[statics]]
 guest_path = "/code/staticfiles"
