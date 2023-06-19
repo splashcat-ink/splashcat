@@ -9,19 +9,31 @@ console_command = "/code/manage.py shell"
 
 [deploy]
 release_command = "python manage.py migrate"
+strategy = "canary"
 
 [env]
 PORT = "8000"
-DJANGO_ALLOWED_HOSTS = "splashcat.fly.dev"
+DJANGO_ALLOWED_HOSTS = "splashcat.fly.dev,splashcat.ink"
 DEBUG = "False"
+SENTRY_DSN = "https://9babb5ac79274bed8e3c56a222b44ab6@o4505055559352320.ingest.sentry.io/4505055561449472"
 
-[http_service]
+[[services]]
 internal_port = 8000
 force_https = true
 auto_stop_machines = true
 auto_start_machines = true
 min_machines_running = 0
 processes = ["app"]
+[[services.http_checks]]
+interval = "10s"
+grace_period = "5s"
+method = "get"
+path = "/"
+protocol = "http"
+restart_limit = 5
+timeout = "5s"
+tls_skip_verify = false
+[services.http_checks.headers]
 
 [[statics]]
 guest_path = "/code/staticfiles"
