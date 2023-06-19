@@ -32,11 +32,11 @@
     <script defer data-domain="splashcat.ink"
             event-user_type="
 
-
                     {% if user.is_authenticated %}{% if user.github_link.is_sponsor %}sponsor{% else %}user{% endif %}{% else %}guest{% endif %}"
             src="https://plausible.io/js/script.tagged-events.pageview-props.outbound-links.js"></script>
 
     <meta property="og:type" content="website">
+    <meta property="twitter:site" content="@Splashcatink">
     {% block opengraph_head %}
         <meta property="og:title" content="Splashcat">
         <meta property="og:description" content="Splashcat records battle data for later analysis.">
@@ -76,6 +76,11 @@
                class="bg-purple-600 hover:bg-purple-700 rounded p-4 my-auto">GitHub</a>
             <a href="https://discord.gg/JPFwvbSWMS"
                class="bg-purple-600 hover:bg-purple-700 rounded p-4 my-auto">Discord</a>
+            <a href="https://splashcat.social/@splashcat"
+               class="bg-purple-600 hover:bg-purple-700 rounded p-4 my-auto">
+                <img src="{% static 'images/fediverse-logo.svg' %}" alt="Fediverse logo" class="h-6 inline-block">
+                @splashcat@splashcat.social
+            </a>
         </div>
     </div>
 </footer>
