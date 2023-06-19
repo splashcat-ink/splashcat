@@ -5,7 +5,7 @@
 
     <div class="w-[1200px] h-[630px] relative">
         <img src="{{ battle.vs_stage.image.url }}" class="w-full h-full absolute top-0 left-0 object-cover">
-        <div class="h-full w-2/5 absolute right-0 bg-gray-800/70 bg-[url('/static/images/tapes-transparent.png')] bg-contain px-8 flex flex-col {% if battle.teams.count > 2 %}gap-2 py-4{% else %}gap-8 py-12{% endif %}">
+        <div class="h-full w-2/5 absolute right-0 bg-gray-800/70 bg-[url('../images/tapes-transparent.png')] bg-contain px-8 flex flex-col {% if battle.teams.count > 2 %}gap-2 py-4{% else %}gap-8 py-12{% endif %}">
             {% for team in battle.teams.all|dictsort:"order" %}
                 <div class="w-full h-min px-2 py-1 {% if battle.teams.count > 2 %}rotate-1 odd:-rotate-1{% else %}rotate-2 odd:-rotate-2{% endif %} rounded-lg bg-[color:var(--team-color)]"
                      style="--team-color: {{ team.color.css }}">
@@ -85,7 +85,7 @@
             {% endfor %}
         </div>
 
-        <div class="h-1/5 w-[calc(60%-2rem)] bg-gray-800/50 bg-[url('/static/images/tapes-transparent.png')] bg-contain rounded-lg p-4 absolute ml-4 mb-4 bottom-0">
+        <div class="h-1/5 w-[calc(60%-2rem)] bg-gray-800/50 bg-[url('../images/tapes-transparent.png')] bg-contain rounded-lg p-4 absolute ml-4 mb-4 bottom-0">
             <div class="flex gap-4">
             <span class="text-3xl font-splatoon1">
                 {{ battle.vs_stage.name.string }}

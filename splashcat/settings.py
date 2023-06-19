@@ -41,7 +41,10 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 ALLOWED_HOSTS += [gethostname(), gethostbyname(gethostname()), ]
-CSRF_TRUSTED_ORIGINS = ['https://splashcat.ink']
+CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink']
+
+FLY_REGION = os.environ.get('FLY_REGION')
+FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION')
 
 SITE_ID = 1
 
@@ -75,6 +78,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'splashcat.middleware.FlyDotIoMiddleware',  # handles redirecting to the primary region based on cookie and method
     'django_htmx.middleware.HtmxMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -85,6 +89,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'splashcat.middleware.PostgresReadOnlyMiddleware',  # redirects to primary region when a read only error occurs
 ]
 
 ROOT_URLCONF = 'splashcat.urls'
@@ -126,8 +131,13 @@ if database_url is None:
         }
     }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    database_connection_details = dj_database_url.parse(database_url)
+
+    if FLY_REGION != FLY_PRIMARY_REGION:
+        database_connection_details["PORT"] = 5433
+
     DATABASES = {
-        "default": dj_database_url.parse(database_url),
+        "default": database_connection_details,
     }
 
 # Password validation
@@ -177,7 +187,7 @@ LANGUAGES = global_settings.LANGUAGES + [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'https://cdn.splashcat.ink/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
@@ -188,8 +198,18 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+STORAGES = global_settings.STORAGES | {
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+    },
+}
+
 if not DEBUG:
-    STORAGES = global_settings.STORAGES | {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
+    STORAGES |= {"default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
+    }
+    }
+
 AWS_S3_ACCESS_KEY_ID = os.environ.get('B2_ACCESS_KEY_ID')
 AWS_S3_SECRET_ACCESS_KEY = os.environ.get('B2_SECRET_ACCESS_KEY')
 AWS_S3_REGION_NAME = 'us-west-004'

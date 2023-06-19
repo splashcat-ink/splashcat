@@ -10,21 +10,21 @@
     body {
         @apply bg-gray-900;
         @apply text-purple-100;
-        background-image: url("/static/images/information-bg.jpg");
+        background-image: url("../images/information-bg.jpg");
         background-size: 600px;
     }
 }
 
 @layer components {
     .card-mask {
-        mask-image: url("/static/images/card-mask.svg");
+        mask-image: url("../images/card-mask.svg");
         mask-repeat: no-repeat;
         mask-position: top;
         mask-size: 2000px auto;
     }
 
     .battle-card-background {
-        background-image: url("/static/images/tapes-transparent.png");
+        background-image: url("../images/tapes-transparent.png");
         background-size: contain;
         filter: brightness(50%);
     }
@@ -116,7 +116,7 @@
         @apply p-4;
         @apply card-mask;
         @apply pt-6;
-        background-image: url("/static/images/tapes-transparent.png");
+        background-image: url("../images/tapes-transparent.png");
         background-size: 300px;
         @apply bg-purple-800;
         @apply mb-6;
@@ -126,7 +126,7 @@
     }
 
     .squid-tape-tl {
-        mask-image: url("/static/squid_tape/tl.svg");
+        mask-image: url("../squid_tape/tl.svg");
         mask-repeat: no-repeat;
         mask-size: contain;
         width: 10px;
@@ -135,7 +135,7 @@
     }
 
     .squid-tape-br {
-        mask-image: url("/static/squid_tape/br.svg");
+        mask-image: url("../squid_tape/br.svg");
         mask-repeat: no-repeat;
         mask-size: contain;
         width: 10px;
@@ -162,166 +162,166 @@
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1-cjk-common.woff2");
+    src: url("../fonts/splatnet3/Splatoon1-cjk-common.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF, U+3000-303F, U+FF00-FFEF;
 }
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1-common.woff2");
+    src: url("../fonts/splatnet3/Splatoon1-common.woff2");
     font-display: swap;
 }
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1-symbol-common.woff2");
+    src: url("../fonts/splatnet3/Splatoon1-symbol-common.woff2");
     font-display: swap;
     unicode-range: U+20A0-20CF, U+2100-214F, U+22??, U+23??, U+25A0-25FF, U+26??, U+FB00-FB4F;
 }
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1CHzh-level1.woff2");
+    src: url("../fonts/splatnet3/Splatoon1CHzh-level1.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1CHzh-level2.woff2");
+    src: url("../fonts/splatnet3/Splatoon1CHzh-level2.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1JP-hiragana-katakana.woff2");
+    src: url("../fonts/splatnet3/Splatoon1JP-hiragana-katakana.woff2");
     font-display: swap;
     unicode-range: U+3040-30FF;
 }
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1JP-level1.woff2");
+    src: url("../fonts/splatnet3/Splatoon1JP-level1.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1JP-level2.woff2");
+    src: url("../fonts/splatnet3/Splatoon1JP-level2.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1KRko-level1.woff2");
+    src: url("../fonts/splatnet3/Splatoon1KRko-level1.woff2");
     font-display: swap;
     unicode-range: U+AC00-D7AF;
 }
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1KRko-level2.woff2");
+    src: url("../fonts/splatnet3/Splatoon1KRko-level2.woff2");
     font-display: swap;
     unicode-range: U+AC00-D7AF;
 }
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1TWzh-level1.woff2");
+    src: url("../fonts/splatnet3/Splatoon1TWzh-level1.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
 
 @font-face {
     font-family: Splatoon1;
-    src: url("/static/fonts/splatnet3/Splatoon1TWzh-level2.woff2");
+    src: url("../fonts/splatnet3/Splatoon1TWzh-level2.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2-cjk-common.woff2");
+    src: url("../fonts/splatnet3/Splatoon2-cjk-common.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF, U+3000-303F, U+FF00-FFEF;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2-common.woff2");
+    src: url("../fonts/splatnet3/Splatoon2-common.woff2");
     font-display: swap;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2-symbol-common.woff2");
+    src: url("../fonts/splatnet3/Splatoon2-symbol-common.woff2");
     font-display: swap;
     unicode-range: U+20A0-20CF, U+2100-214F, U+22??, U+23??, U+25A0-25FF, U+26??, U+FB00-FB4F;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2CHzh-level1.woff2");
+    src: url("../fonts/splatnet3/Splatoon2CHzh-level1.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2CHzh-level2.woff2");
+    src: url("../fonts/splatnet3/Splatoon2CHzh-level2.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2JP-hiragana-katakana.woff2");
+    src: url("../fonts/splatnet3/Splatoon2JP-hiragana-katakana.woff2");
     font-display: swap;
     unicode-range: U+3040-30FF;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2JP-level1.woff2");
+    src: url("../fonts/splatnet3/Splatoon2JP-level1.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2JP-level2.woff2");
+    src: url("../fonts/splatnet3/Splatoon2JP-level2.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2KRko-level1.woff2");
+    src: url("../fonts/splatnet3/Splatoon2KRko-level1.woff2");
     font-display: swap;
     unicode-range: U+AC00-D7AF;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2KRko-level2.woff2");
+    src: url("../fonts/splatnet3/Splatoon2KRko-level2.woff2");
     font-display: swap;
     unicode-range: U+AC00-D7AF;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2TWzh-level1.woff2");
+    src: url("../fonts/splatnet3/Splatoon2TWzh-level1.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
 
 @font-face {
     font-family: Splatoon2;
-    src: url("/static/fonts/splatnet3/Splatoon2TWzh-level2.woff2");
+    src: url("../fonts/splatnet3/Splatoon2TWzh-level2.woff2");
     font-display: swap;
     unicode-range: U+4E00-9FFF;
 }
