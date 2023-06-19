@@ -21,8 +21,10 @@
             {% endif %}
         </div>
         <div class="text-lg">
-            <img src="/static/images/rule-icons/{{ battle.get_vs_rule_image_name|lower }}.svg"
-                 class="inline-block h-8 w-8" alt="">
+            {% with image_name=battle.get_vs_rule_image_name|lower %}
+                <img src="{% static 'images/rule-icons/'|add:image_name|add:'.svg' %}"
+                     class="inline-block h-8 w-8" alt="">
+            {% endwith %}
             {{ battle.get_vs_rule_display }}
         </div>
         <div class="text-lg">
@@ -46,7 +48,7 @@
                             {{ battle.uploader.display_name }}
                             {% if battle.uploader.display_sponsor_badge %}
                                 <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
-                                     class="h-6 inline-block" height="48" width="48">
+                                     class="h-6 w-6 inline-block" height="48" width="48">
                             {% endif %}
                         </div>
                         <div class="text-sm text-gray-400">@{{ battle.uploader.username }}</div>
