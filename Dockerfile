@@ -27,7 +27,7 @@ COPY . /code
 COPY --from=frontend_builder /app/static/js/ /code/static/js/
 COPY --from=frontend_builder /app/static/css/ /code/static/css/
 
-ENV SECRET_KEY "QcPjp0CDhgMqrPPuPlO0uZMPuq8dGOXVu2UHB0GgZUii9a4UT0"
+ENV SECRET_KEY "non-secret-key-for-building-purposes"
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
