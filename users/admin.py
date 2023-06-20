@@ -25,7 +25,7 @@ class UserAdmin(AbstractUserAdmin):
         (None, {"fields": ["profile_picture", "saved_favorite_color", "data_export_pending", "last_data_export",
                            "verified_email"]}),)
     inlines = [GitHubLinkInline]
-    list_display = ("username", "email", "display_name", "is_staff", "date_joined", "verified_email",)
+    list_display = ("username", "display_name", "email", "is_staff", "date_joined", "verified_email",)
     search_fields = ("username", "display_name", "email")
 
     def __init__(self, model, admin_site):
