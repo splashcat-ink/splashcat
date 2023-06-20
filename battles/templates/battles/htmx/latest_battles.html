@@ -2,6 +2,9 @@
     <div class="text-center text-gray-400" id="latest-battles-dropdown-data">
         <div class="text-2xl font-bold">No battles</div>
         <div class="text-lg">You haven't uploaded any battles yet.</div>
+        <a href="{% url 'uploaders_information' %}" class="text-blue-500 underline">
+            Use an exporter to download data from SplatNet 3 and send it to Splashcat!
+        </a>
     </div>
 {% else %}
     <div class="flex flex-col gap-2" id="latest-battles-dropdown-data">

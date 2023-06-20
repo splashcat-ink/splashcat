@@ -66,9 +66,9 @@
                         Looks like {% if profile_user == user %}you haven't{% else %}{{ profile_user.display_name }}
                         hasn't{% endif %} uploaded any battles yet.
                         {% if profile_user == user %}
-                            <a href="" class="text-blue-500 underline">Use an exporter to download data from SplatNet 3
-                                and
-                                send it to Splashcat!</a>
+                            <a href="{% url 'uploaders_information' %}" class="text-blue-500 underline">
+                                Use an exporter to download data from SplatNet 3 and send it to Splashcat!
+                            </a>
                         {% endif %}
                     </p>
                 </div>
