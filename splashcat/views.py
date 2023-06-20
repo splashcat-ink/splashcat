@@ -27,4 +27,13 @@ def sponsor(request):
 
 
 def uploaders_information(request):
-    return render(request, 'splashcat/uploaders_information.html')
+    developer_usernames = ["Joy"]
+    developer_users = User.objects.filter(username__in=developer_usernames)
+
+    developers = {}
+    for user in developer_users:
+        developers[user.username] = user
+
+    return render(request, 'splashcat/uploaders_information.html', {
+        'developers': developers,
+    })
