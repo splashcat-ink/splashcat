@@ -1,4 +1,5 @@
 name: Fly.io Deploy
+concurrency: production_deploy
 on:
   push:
     branches:
