@@ -19,7 +19,7 @@
     <meta name="description"
           content="{% block description %}Splashcat records battle data for later analysis.{% endblock %}">
     <meta name="keywords" content="splashcat,splatoon,battle,stats,statistics">
-    <link rel="icon" href="{% static 'images/judd-pride.png' %}"/>
+    <link rel="icon" href="{% static 'images/judd-pride.png' %}?height=256"/>
 
     <script
             src="https://js.sentry-cdn.com/656fdd98ff1a4c389b37c00a96e33513.min.js"
@@ -31,6 +31,7 @@
 
     <script defer data-domain="splashcat.ink"
             event-user_type="
+
 
                     {% if user.is_authenticated %}{% if user.github_link.is_sponsor %}sponsor{% else %}user{% endif %}{% else %}guest{% endif %}"
             src="https://plausible.io/js/script.tagged-events.pageview-props.outbound-links.js"></script>
