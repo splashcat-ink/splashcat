@@ -26,9 +26,7 @@
 
     <script defer
             data-domain="splashcat.ink"
-            event-user_type="
-
-                    {% if user.is_authenticated %}{% if user.github_link.is_sponsor %}sponsor{% else %}user{% endif %}{% else %}guest{% endif %}"
+            event-user_type="{% if user.is_authenticated and user.github_link.is_sponsor %}sponsor{% elif user.is_authenticated %}user{% else %}guest{% endif %}"
             src="https://plausible.io/js/script.tagged-events.pageview-props.outbound-links.js"></script>
 
     <meta property="og:type" content="website">
