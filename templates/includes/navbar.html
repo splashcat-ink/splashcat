@@ -143,7 +143,7 @@
                                 <span class="sr-only">Open user menu</span>
                                 {% if user.profile_picture %}
                                     <img class="h-10 w-10 rounded-full object-cover"
-                                         src="{{ user.profile_picture.url }}"
+                                         src="{{ user.profile_picture.url }}?height=80&width=80"
                                          alt="">
                                 {% else %}
                                     <div class="h-10 w-10 rounded-full bg-slate-200"></div>
