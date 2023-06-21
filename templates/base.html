@@ -24,7 +24,8 @@
     {% django_htmx_script %}
     {% unicorn_scripts %}
 
-    <script defer data-domain="splashcat.ink"
+    <script defer
+            data-domain="splashcat.ink"
             event-user_type="
 
                     {% if user.is_authenticated %}{% if user.github_link.is_sponsor %}sponsor{% else %}user{% endif %}{% else %}guest{% endif %}"
