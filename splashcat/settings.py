@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'django_unicorn',
     'anymail',
+    'oidc_provider',
     'battles',
     'users',
     'splatnet_assets',
@@ -283,3 +284,7 @@ if True:
             "BACKEND": "django.core.cache.backends.dummy.DummyCache",
         }
     }
+
+# OpenID Connect
+OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'
+SITE_URL = 'https://splashcat.ink'
