@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_htmx',
     'django_unicorn',
+    'oidc_provider',
     'anymail',
     'battles',
     'users',
