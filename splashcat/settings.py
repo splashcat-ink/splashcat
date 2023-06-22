@@ -71,7 +71,6 @@ INSTALLED_APPS = [
     'django_htmx',
     'django_unicorn',
     'anymail',
-    'oidc_provider',
     'battles',
     'users',
     'splatnet_assets',
