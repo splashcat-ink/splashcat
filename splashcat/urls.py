@@ -45,6 +45,7 @@ urlpatterns = [
     path('sponsor/', sponsor, name='sponsor'),
     path('uploaders-information/', uploaders_information, name='uploaders_information'),
     path('i18n/', include('django.conf.urls.i18n')),
+    path('openid/', include('oidc_provider.urls', namespace='oidc_provider')),
     path(
         "sitemap.xml",
         views.index,

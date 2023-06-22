@@ -41,7 +41,7 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 ALLOWED_HOSTS += [gethostname(), gethostbyname(gethostname()), ]
-CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink']
+CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink', 'http://12700.us-1.sharedwithexpose.com']
 
 FLY_REGION = os.environ.get('FLY_REGION')
 FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION')
@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'django_unicorn',
     'anymail',
+    'oidc_provider',
     'battles',
     'users',
     'splatnet_assets',
@@ -283,3 +284,6 @@ if True:
             "BACKEND": "django.core.cache.backends.dummy.DummyCache",
         }
     }
+
+# OpenID Connect
+OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'
