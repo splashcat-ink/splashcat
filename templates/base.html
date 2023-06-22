@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static %}
 {% load django_htmx %}
 {% load unicorn %}
@@ -27,7 +28,13 @@
     <script defer
             data-domain="splashcat.ink"
             event-user_type="{% if user.is_authenticated and user.github_link.is_sponsor %}sponsor{% elif user.is_authenticated %}user{% else %}guest{% endif %}"
+            {% if share_query_param is not None %}event-share="{{ share_query_param }}"{% endif %}
             src="https://plausible.io/js/script.tagged-events.pageview-props.outbound-links.js"></script>
+    <script>
+        window.plausible = window.plausible || function () {
+            (window.plausible.q = window.plausible.q || []).push(arguments)
+        }
+    </script>
 
     <meta property="og:type" content="website">
     <meta property="twitter:site" content="@Splashcatink">

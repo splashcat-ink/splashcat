@@ -110,6 +110,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
+                'splashcat.context_processors.share_query_param',
             ],
         },
     },
