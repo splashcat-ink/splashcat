@@ -268,7 +268,8 @@ def generate_battle_description(battle_id: int):
         messages=[
             {"role": "system", "content": GPT_PROMPT},
             {"role": "user", "content": json_string},
-        ]
+        ],
+        temperature=0.2,
     )
     generated_description = completion.choices[0].message.content
 
