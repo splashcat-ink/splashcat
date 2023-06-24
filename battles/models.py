@@ -126,6 +126,10 @@ class Battle(models.Model):
     splatfest_festival_shells = models.IntegerField(blank=True, null=True)
     power = models.IntegerField(blank=True, null=True)
 
+    gpt_description = models.TextField(blank=True)
+    gpt_description_generated = models.BooleanField(default=False)
+    gpt_description_generated_at = models.DateTimeField(blank=True, null=True)
+
     # teams comes from related_name='teams' on Team.battle
 
     awards = models.ManyToManyField('splatnet_assets.Award', related_name='battles', through='BattleAward')

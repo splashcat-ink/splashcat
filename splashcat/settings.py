@@ -288,3 +288,6 @@ if True:
 # OpenID Connect
 OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'
 SITE_URL = 'https://splashcat.ink'
+
+# OpenAI
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
