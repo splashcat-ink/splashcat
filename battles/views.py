@@ -17,7 +17,7 @@ from battles.parsers.splatnet3 import parse_splatnet3
 from battles.tasks import generate_battle_description
 from battles.utils import BattleAlreadyExistsError
 from splashcat.decorators import api_auth_required
-from users.models import User
+from users.models import User, SponsorshipTiers
 
 
 # Create your views here.
@@ -208,7 +208,7 @@ def upload_battle(request):
     battle.uploader_agent_extra = uploader_agent.get('extra')
     battle.save()
 
-    if hasattr(user, 'github_link') and user.github_link.is_sponsor and user.github_link.sponsorship_amount_usd >= 10:
+    if user.sponsor_tiers[SponsorshipTiers.S_PLUS_PONSOR]:
         generate_battle_description.delay(battle.id)
 
     return JsonResponse({

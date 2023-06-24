@@ -19,7 +19,8 @@ def home(request):
 
 
 def sponsor(request):
-    current_sponsors = User.objects.filter(github_link__is_sponsor=True, github_link__is_sponsor_public=True) \
+    current_sponsors = User.objects.filter(github_link__is_sponsor=True, github_link__is_sponsor_public=True,
+                                           github_link__sponsorship_amount_usd__gte=5) \
         .order_by('github_link__sponsorship_amount_usd').reverse()
     return render(request, 'splashcat/sponsor.html', {
         'current_sponsors': current_sponsors,

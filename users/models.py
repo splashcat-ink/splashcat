@@ -1,5 +1,6 @@
 import datetime
 from datetime import timedelta
+from enum import Enum
 
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.tokens import default_token_generator
@@ -14,8 +15,30 @@ from battles.models import Battle
 from splatnet_assets.common_model_choices import XBattleDivisions
 from splatnet_assets.fields import ColorField, Color
 
-
 # Create your models here.
+
+sponsor_perks = {
+    "badge": {
+        "minimum_tier": "sponsor",
+    },
+    "favorite_color": {
+        "minimum_tier": "sponsor",
+    },
+    "gpt_description": {
+        "minimum_tier": "s+ponsor",
+    },
+}
+
+
+class SponsorshipTiers(Enum):
+    SPONSOR = "sponsor"
+    S_PLUS_PONSOR = "s+ponsor"
+
+
+sponsorship_tier_costs = {
+    SponsorshipTiers.SPONSOR: 5,
+    SponsorshipTiers.S_PLUS_PONSOR: 10,
+}
 
 
 class User(AbstractUser):
@@ -48,14 +71,20 @@ class User(AbstractUser):
 
     @property
     def favorite_color(self):
-        if hasattr(self, 'github_link') and self.github_link.is_sponsor:
+        if self.sponsor_tiers[SponsorshipTiers.SPONSOR] is True:
             return self.saved_favorite_color
         else:
             return Color.from_hex("000000ff")
 
     @property
     def display_sponsor_badge(self):
-        return self.github_link.is_sponsor and self.github_link.is_sponsor_public
+        return self.sponsor_tiers[SponsorshipTiers.SPONSOR] and self.github_link.is_sponsor_public
+
+    @property
+    def sponsor_tiers(self) -> dict[SponsorshipTiers, bool]:
+        if hasattr(self, 'github_link') and self.github_link.is_sponsor:
+            sponsorship_amount = self.github_link.sponsorship_amount_usd
+            return {tier: sponsorship_amount >= amount for tier, amount in sponsorship_tier_costs.items()}
 
     def get_full_name(self):
         return self.display_name.strip()
@@ -70,7 +99,7 @@ class User(AbstractUser):
     def is_verified_for_export_download(self):
         # used for data exports
         # verified users have been on splashcat for at least 24 hours and have at least 5 battles, or are a sponsor
-        return self.github_link.is_sponsor or \
+        return self.sponsor_tiers[SponsorshipTiers.SPONSOR] or \
             (
                     self.date_joined < datetime.datetime.now(datetime.timezone.utc) - timedelta(days=1) and
                     self.battles.count() >= 5 and
