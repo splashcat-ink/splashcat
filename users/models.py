@@ -84,7 +84,9 @@ class User(AbstractUser):
     def sponsor_tiers(self) -> dict[SponsorshipTiers, bool]:
         if hasattr(self, 'github_link') and self.github_link.is_sponsor:
             sponsorship_amount = self.github_link.sponsorship_amount_usd
-            return {tier: sponsorship_amount >= amount for tier, amount in sponsorship_tier_costs.items()}
+        else:
+            sponsorship_amount = 0
+        return {tier: sponsorship_amount >= amount for tier, amount in sponsorship_tier_costs.items()}
 
     def get_full_name(self):
         return self.display_name.strip()
