@@ -9,7 +9,7 @@ async function shareBattle(battleId) {
         try {
             window.plausible('Share', {props: {type: 'Battle'}})
             await navigator.share({
-                url: `https://splashcat.ink/battle/${battleId}/?share`,
+                url: `https://splashcat.ink/battles/${battleId}/?share`,
             });
         } catch (err) {
             console.log(err);
