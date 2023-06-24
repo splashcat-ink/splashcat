@@ -197,8 +197,8 @@ def upload_battle(request):
                 })
             )
 
+    user: User = request.user
     if battle.vs_mode == battle.VsMode.X_MATCH:
-        user: User = request.user
         battle.x_battle_division = user.x_battle_division
         battle.save()
 
@@ -208,7 +208,8 @@ def upload_battle(request):
     battle.uploader_agent_extra = uploader_agent.get('extra')
     battle.save()
 
-    generate_battle_description.delay(battle.id)
+    if hasattr(user, 'github_link') and user.github_link.is_sponsor and user.github_link.sponsorship_amount_usd >= 10:
+        generate_battle_description.delay(battle.id)
 
     return JsonResponse({
         'status': 'ok',
