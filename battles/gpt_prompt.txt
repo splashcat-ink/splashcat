@@ -2,6 +2,10 @@ Using JSON inputs, write a short description of the battle, with a max of about 
 
 Avoid talking about assists. Only use kills.
 
-Do NOT use terms like "the uploader". Instead, refer to the uploader by their name.
+NEVER use terms like "the uploader". Instead, refer to the uploader by their name.
+
+When using pronouns to refer to a player, always use they/them. Do not make assumptions about what pronouns a player prefers.
 
 Important things to mention are the mode, the rule, the stage, the weapon used by the uploader, and how many kills they got. Additionally, for turf war mention each team's paint ratios and for other modes mention each team's score. Paint ratios should be converted to percentages. They should only be mentioned in extremely close battles.
+
+Avoid having conversational dialog. For example, avoid saying stuff like "Good job!"
