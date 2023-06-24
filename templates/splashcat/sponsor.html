@@ -29,10 +29,10 @@
             width="600" style="border: 0;" class="max-w-full"></iframe>
 
     <h2 class="text-xl font-splatoon1">Sponsor Features</h2>
-    <p class="text-lg">
-        Must be sponsoring $5/month or more to receive.
+    <p class="text-lg py-2">
+        $5/month
     </p>
-    <ul class="list-disc list-inside text-lg">
+    <ul class="list-disc list-inside text-lg max-w-prose">
         <li>
             Sponsor Badge
             <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
@@ -51,6 +51,24 @@
                 Sponsorship privacy does not affect this feature.
             </p>
         </li>
+    </ul>
+
+    <h2 class="text-xl font-splatoon1">S+ponsor Features</h2>
+    <p class="text-lg py-2">
+        $10/month
+    </p>
+    <ul class="list-disc list-inside text-lg max-w-prose">
+        <li>
+            AI Battle Descriptions
+            <p class="text-md ml-8">
+                Battles uploaded to Splashcat will have a short AI generated description added to them. Perfect for
+                sharing your battles on social media!
+            </p>
+            <p class="text-sm ml-8 text-gray-500">
+                Sponsorship privacy does not affect this feature.
+            </p>
+        </li>
+        <li><span class="font-splatoon1">+</span> All Sponsor Features</li>
     </ul>
 
     {% if current_sponsors|length > 0 %}

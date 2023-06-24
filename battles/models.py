@@ -124,7 +124,11 @@ class Battle(models.Model):
                                                   blank=True, null=True)
     splatfest_clout_contribution = models.FloatField(blank=True, null=True)
     splatfest_festival_shells = models.IntegerField(blank=True, null=True)
-    power = models.IntegerField(blank=True, null=True)
+    power = models.FloatField(blank=True, null=True)
+
+    gpt_description = models.TextField(blank=True)
+    gpt_description_generated = models.BooleanField(default=False)
+    gpt_description_generated_at = models.DateTimeField(blank=True, null=True)
 
     # teams comes from related_name='teams' on Team.battle
 

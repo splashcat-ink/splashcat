@@ -5,9 +5,23 @@
 
 {% block opengraph_head %}
     <meta property="og:title" content="{{ battle.uploader.display_name }}'s battle on {{ battle.played_time }}">
-    <meta property="og:description" content="Splashcat records battle data for later analysis.">
+
+    <meta property="og:description" content="{% if battle.gpt_description_generated %}
+        {{ battle.gpt_description }}
+    {% else %}
+        Splashcat records battle data for later analysis.
+    {% endif %}">
+
     <meta name="twitter:card" content="summary_large_image">
     <meta property="og:image" content="https://cdn.splashcat.ink/image-render/battle/{{ battle.id }}/render.png">
+{% endblock %}
+
+{% block description %}
+    {% if battle.gpt_description_generated %}
+        {{ battle.gpt_description }}
+    {% else %}
+        {{ block.super }}
+    {% endif %}
 {% endblock %}
 
 {% block title %}{{ battle.uploader.display_name }}'s battle on {{ battle.played_time }}{% endblock %}
@@ -49,32 +63,42 @@
         </div>
     </a>
 
-    <div class="flex flex-wrap gap-4 py-2">
-    <span class="text-2xl">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-             class="w-8 h-8 inline">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
+    {% if battle.gpt_description_generated %}
+        <details class="bg-purple-900 p-4 rounded w-fit max-w-prose group">
+            <summary class="group-open:border-b-2 group-open:mb-2 group-open:pb-1">AI Battle Description</summary>
+            {{ battle.gpt_description }}
+        </details>
+    {% endif %}
 
-        {{ battle.duration|duration }}
-    </span>
-    </div>
+    <div class="flex flex-row gap-4 items-center">
+        <div class="flex flex-wrap gap-4 py-2">
+            <span class="text-2xl">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor"
+                     class="w-8 h-8 inline">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
 
-    <div class="text-lg">
-        {{ battle.get_vs_mode_display }}
-
-        {% if battle.power is not None %}
-            <span class="text-base">
-                (Power: {{ battle.power|floatformat:1 }})
+                {{ battle.duration|duration }}
             </span>
-        {% endif %}
-    </div>
+        </div>
 
-    <div class="text-lg">
-        <img src="/static/images/rule-icons/{{ battle.get_vs_rule_image_name|lower }}.svg"
-             class="inline-block h-8 w-8" alt="">
-        {{ battle.get_vs_rule_display }}
+        <div class="text-lg">
+            {{ battle.get_vs_mode_display }}
+
+            {% if battle.power is not None %}
+                <span class="text-base">
+                    (Power: {{ battle.power|floatformat:1 }})
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="text-lg">
+            <img src="/static/images/rule-icons/{{ battle.get_vs_rule_image_name|lower }}.svg"
+                 class="inline-block h-8 w-8" alt="">
+            {{ battle.get_vs_rule_display }}
+        </div>
     </div>
 
     <img src="https://cdn.splashcat.ink/image-render/battle/{{ battle.id }}/render.png"

@@ -14,6 +14,7 @@ from battles.data_exports import get_latest_export_download_url
 from battles.models import *
 from battles.parsers.splashcat import parse_splashcat
 from battles.parsers.splatnet3 import parse_splatnet3
+from battles.tasks import generate_battle_description
 from battles.utils import BattleAlreadyExistsError
 from splashcat.decorators import api_auth_required
 from users.models import User
@@ -196,8 +197,8 @@ def upload_battle(request):
                 })
             )
 
+    user: User = request.user
     if battle.vs_mode == battle.VsMode.X_MATCH:
-        user: User = request.user
         battle.x_battle_division = user.x_battle_division
         battle.save()
 
@@ -206,6 +207,9 @@ def upload_battle(request):
     battle.uploader_agent_version = uploader_agent.get('version')
     battle.uploader_agent_extra = uploader_agent.get('extra')
     battle.save()
+
+    if hasattr(user, 'github_link') and user.github_link.is_sponsor and user.github_link.sponsorship_amount_usd >= 10:
+        generate_battle_description.delay(battle.id)
 
     return JsonResponse({
         'status': 'ok',

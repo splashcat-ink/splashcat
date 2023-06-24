@@ -5,17 +5,24 @@ from datetime import datetime, timezone, timedelta
 from io import StringIO, BytesIO
 from urllib.parse import urljoin
 
+import openai
 from anymail.message import AnymailMessage
 from celery import shared_task
 from django.conf import settings
 from django.utils.crypto import salted_hmac
 
 from battles.data_exports import sign_url, get_boto3_client
+from battles.gpt_descriptions import battle_to_gpt_dict
 from battles.models import Battle, Player
 from splatnet_assets.models import Award
 from users.models import User
 
 SALT = 'battle-export'
+
+openai.api_key = settings.OPENAI_API_KEY
+
+with open('battles/gpt_prompt.txt') as f:
+    GPT_PROMPT = f.read()
 
 
 def hash_id(id_to_hash):
@@ -245,5 +252,29 @@ def cleanup_old_exports():
                     Bucket='splashcat-data-exports',
                     Key=item['Key'],
                 )
+
+    return True
+
+
+@shared_task
+def generate_battle_description(battle_id: int):
+    battle: Battle = Battle.objects.get(pk=battle_id)
+
+    battle_dict = battle_to_gpt_dict(battle)
+    json_string = json.dumps(battle_dict, ensure_ascii=False)
+
+    completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo-0613",
+        messages=[
+            {"role": "system", "content": GPT_PROMPT},
+            {"role": "user", "content": json_string},
+        ]
+    )
+    generated_description = completion.choices[0].message.content
+
+    battle.gpt_description = generated_description
+    battle.gpt_description_generated = True
+    battle.gpt_description_generated_at = datetime.now()
+    battle.save()
 
     return True
