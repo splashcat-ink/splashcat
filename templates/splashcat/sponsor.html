@@ -61,8 +61,9 @@
                 <a class="flex flex-col gap-1 my-1 w-fit" href="{{ sponsor.get_absolute_url }}">
                     <div class="flex flex-row gap-2 items-center">
                         {% if sponsor.profile_picture %}
-                            <img src="{{ sponsor.profile_picture.url }}" alt="{{ sponsor.display_name }}"
-                                 class="h-12 w-12 object-cover rounded-lg">
+                            <img src="{{ sponsor.profile_picture.url }}?height=96&width=96"
+                                 alt="{{ sponsor.display_name }}"
+                                 class="h-12 w-12 object-cover rounded-lg" height="96" width="96">
                         {% endif %}
                         <div class="flex flex-col">
                             <div class="text-xl">
