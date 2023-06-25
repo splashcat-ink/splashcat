@@ -296,3 +296,7 @@ SITE_URL = 'https://splashcat.ink'
 
 # OpenAI
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+
+# Sessions
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"

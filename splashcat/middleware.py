@@ -32,6 +32,11 @@ class FlyDotIoMiddleware:
                                     headers={
                                         'fly-replay': f'region={settings.FLY_PRIMARY_REGION};state=threshold',
                                     })
+        elif request.path_info.startswith('/openid/') and settings.FLY_REGION != settings.FLY_PRIMARY_REGION:
+            response = HttpResponse(f'Replaying in {settings.FLY_PRIMARY_REGION} because of openid', status=409,
+                                    headers={
+                                        'fly-replay': f'region={settings.FLY_PRIMARY_REGION};state=force_openid',
+                                    })
         else:
             response = self.get_response(request)
 
