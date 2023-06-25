@@ -28,7 +28,7 @@ def team_to_gpt_dict(team):
     data = {
         'is_my_team': team.is_my_team,
         'fest_streak_win_count': team.fest_streak_win_count,
-        'fest_team_name': f'Team {team.fest_team_name}',
+        'fest_team_name': f'Team {team.fest_team_name}' if team.fest_team_name else None,
         'fest_uniform_bonus_rate': team.fest_uniform_bonus_rate,
         'fest_uniform_name': team.fest_uniform_name,
         'tricolor_role': team.get_tricolor_role_display(),
