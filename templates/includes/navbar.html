@@ -69,7 +69,8 @@
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <a href="{% url 'sponsor' %}"
                    class="{% if user.github_link.is_sponsor %}text-gray-300 hover:bg-gray-700 hover:text-white{% else %}text-gray-800 bg-gray-200 hover:bg-gray-100 hover:text-black{% endif %} rounded-md px-3 py-2 text-sm font-medium">
-                    <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="" class="h-6 inline">
+                    <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt=""
+                         class="h-6 inline [image-rendering:pixelated]">
                     Sponsor
                 </a>
 
@@ -247,7 +248,8 @@
 
             <a href="{% url 'sponsor' %}"
                class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
-                <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="" class="h-6 inline">
+                <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt=""
+                     class="h-6 inline [image-rendering:pixelated]">
                 Sponsor
             </a>
 

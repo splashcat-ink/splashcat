@@ -56,7 +56,7 @@
                 {{ battle.uploader.display_name }}
                 {% if battle.uploader.display_sponsor_badge %}
                     <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
-                         class="h-6 inline-block">
+                         class="h-6 inline-block [image-rendering:pixelated]">
                 {% endif %}
             </div>
             <div class="text-sm text-gray-400">@{{ battle.uploader.username }}</div>
