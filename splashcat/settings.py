@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_htmx',
     'django_unicorn',
+    'silk',
     'oidc_provider',
     'anymail',
     'battles',
@@ -83,6 +84,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'splashcat.middleware.FlyDotIoMiddleware',  # handles redirecting to the primary region based on cookie and method
+    'silk.middleware.SilkyMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -306,3 +308,10 @@ OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 # Sessions
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+
+# Silk
+
+SILKY_AUTHENTICATION = True  # User must login
+SILKY_AUTHORISATION = True  # User must have permissions
+SILKY_META = True
+SILKY_ANALYZE_QUERIES = True

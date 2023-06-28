@@ -47,6 +47,7 @@ urlpatterns = [
     path('health-check/', health_check, name='health_check'),
     path('i18n/', include('django.conf.urls.i18n')),
     path('openid/', include('oidc_provider.urls', namespace='oidc_provider')),
+    path('silk/', include('silk.urls', namespace='silk')),
     path(
         "sitemap.xml",
         views.index,
