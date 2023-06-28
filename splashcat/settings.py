@@ -315,3 +315,4 @@ SILKY_AUTHENTICATION = True  # User must login
 SILKY_AUTHORISATION = True  # User must have permissions
 SILKY_META = True
 SILKY_ANALYZE_QUERIES = True
+SILKY_PYTHON_PROFILER = True
