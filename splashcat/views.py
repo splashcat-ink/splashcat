@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from battles.models import Battle
@@ -38,3 +39,7 @@ def uploaders_information(request):
     return render(request, 'splashcat/uploaders_information.html', {
         'developers': developers,
     })
+
+
+def health_check(request):
+    return HttpResponse('okii :3')

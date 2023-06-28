@@ -289,6 +289,12 @@ if not DEBUG:
             "KEY_PREFIX": 'django_cache_',
         }
     }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+        }
+    }
 
 # OpenID Connect
 OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'
