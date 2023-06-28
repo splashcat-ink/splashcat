@@ -73,7 +73,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_htmx',
     'django_unicorn',
-    'silk',
+    # 'silk',
     'oidc_provider',
     'anymail',
     'battles',
@@ -84,7 +84,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'splashcat.middleware.FlyDotIoMiddleware',  # handles redirecting to the primary region based on cookie and method
-    'silk.middleware.SilkyMiddleware',
+    # 'silk.middleware.SilkyMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
