@@ -71,13 +71,13 @@
     {% endif %}
 
     <h2 class="text-2xl font-splatoon1">Recent Battles</h2>
-    
+    {% cache 300 home_recent_battles %}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {% for battle in recent_battles %}
                 {% include "users/includes/battle-card.html" with battle=battle display_uploader=True %}
             {% endfor %}
         </div>
-    
+    {% endcache %}
 
     <h2 class="text-2xl font-splatoon1">Data</h2>
     <div class="flex flex-row gap-4">
