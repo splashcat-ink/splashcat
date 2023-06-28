@@ -1,13 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from silk.profiling.profiler import silk_profile
-
 from battles.models import Battle
 from users.models import User
 
 
-@silk_profile()
 def home(request):
     recent_battles = Battle.objects.with_prefetch() \
                          .prefetch_related('uploader__github_link') \
