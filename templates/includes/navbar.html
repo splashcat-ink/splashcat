@@ -70,7 +70,7 @@
                 <a href="{% url 'sponsor' %}"
                    class="{% if user.github_link.is_sponsor %}text-gray-300 hover:bg-gray-700 hover:text-white{% else %}text-gray-800 bg-gray-200 hover:bg-gray-100 hover:text-black{% endif %} rounded-md px-3 py-2 text-sm font-medium">
                     <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt=""
-                         class="h-6 inline [image-rendering:pixelated]">
+                         class="h-6 w-auto inline [image-rendering:pixelated]" height="16" width="16">
                     Sponsor
                 </a>
 
@@ -249,7 +249,7 @@
             <a href="{% url 'sponsor' %}"
                class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
                 <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt=""
-                     class="h-6 inline [image-rendering:pixelated]">
+                     class="h-6 w-auto inline [image-rendering:pixelated]" height="16" width="16">
                 Sponsor
             </a>
 
