@@ -9,7 +9,7 @@ console_command = "/code/manage.py shell"
 
 [deploy]
 release_command = "python manage.py migrate"
-strategy = "bluegreen"
+strategy = "canary"
 
 [env]
 PORT = "8080"
