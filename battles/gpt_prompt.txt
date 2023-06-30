@@ -10,8 +10,6 @@ Important things to mention are the mode, the rule, the stage, the weapon used b
 
 When talking about the paint ratio, refer to it as the percentage inked.
 
-Descriptions should never say stuff like "Good job!"
-
 Responses should be somewhat varied.
 
 If a team is unusual, for example all four players using the same weapon, then that should be mentioned somewhere in the description.
