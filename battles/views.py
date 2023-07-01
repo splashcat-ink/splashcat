@@ -58,8 +58,10 @@ def battle_opengraph(request, battle_id):
         else:
             team_bar_display.append(display_object)
 
+    if total == 0:
+        total = 1
     for display_object in team_bar_display:
-        display_object['width'] = display_object['team_value'] / max(total, 1) * 100
+        display_object['width'] = display_object['team_value'] / total * 100
 
     return render(request, 'battles/battle_opengraph.html', {
         'battle': battle,
