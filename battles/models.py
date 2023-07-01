@@ -77,6 +77,7 @@ class Battle(models.Model):
 
     class VsRule(models.TextChoices):
         TURF_WAR = 'TURF_WAR', _('Turf War')
+        TRI_COLOR = 'TRI_COLOR', _('Tricolor Turf War')
         AREA = 'AREA', _('Splat Zones')
         LOFT = 'LOFT', _('Tower Control')
         CLAM = 'CLAM', _('Clam Blitz')
@@ -193,6 +194,7 @@ class Battle(models.Model):
     def get_vs_rule_image_name(self):
         vs_rule_to_image_name = {
             self.VsRule.TURF_WAR: 'regular',
+            self.VsRule.TRI_COLOR: 'regular',
             self.VsRule.AREA: 'area',
             self.VsRule.LOFT: 'yagura',
             self.VsRule.GOAL: 'hoko',
