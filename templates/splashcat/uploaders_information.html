@@ -34,7 +34,8 @@
                     <div class="text-xl">
                         {{ developer.display_name }}
                         {% if developer.display_sponsor_badge %}
-                            <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                            <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png"
+                                 alt="Splashcat Sponsor"
                                  class="h-6 inline-block [image-rendering:pixelated]">
                         {% endif %}
                     </div>

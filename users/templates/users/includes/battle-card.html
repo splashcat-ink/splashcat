@@ -47,7 +47,8 @@
                         <div class="text-xl">
                             {{ battle.uploader.display_name }}
                             {% if battle.uploader.display_sponsor_badge %}
-                                <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                                <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png"
+                                     alt="Splashcat Sponsor"
                                      class="h-6 w-6 inline-block [image-rendering:pixelated]" height="16" width="16">
                             {% endif %}
                         </div>

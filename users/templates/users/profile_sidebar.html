@@ -9,7 +9,7 @@
         {{ profile.display_name }}
         {% if profile.display_sponsor_badge %}
             <a href="{% url 'sponsor' %}">
-                <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png" alt="Splashcat Sponsor"
                      class="h-6 inline-block [image-rendering:pixelated]">
             </a>
         {% endif %}

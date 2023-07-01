@@ -20,7 +20,7 @@
     </p>
 
     <div class="text-lg py-2">
-        <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+        <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png" alt="Splashcat Sponsor"
              class="h-12 w-12 inline-block [image-rendering:pixelated]">
         <-- that's the cool badge!
     </div>
@@ -35,7 +35,7 @@
     <ul class="list-disc list-inside text-lg max-w-prose">
         <li>
             Sponsor Badge
-            <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+            <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png" alt="Splashcat Sponsor"
                  class="h-8 w-8 inline-block [image-rendering:pixelated]">
             <p class="text-sm ml-8 text-gray-500">
                 Must configure GitHub sponsorship privacy as public to display.
@@ -87,7 +87,8 @@
                             <div class="text-xl">
                                 {{ sponsor.display_name }}
                                 {% if sponsor.display_sponsor_badge %}
-                                    <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                                    <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png"
+                                         alt="Splashcat Sponsor"
                                          class="h-6 inline-block [image-rendering:pixelated]">
                                 {% endif %}
                             </div>
