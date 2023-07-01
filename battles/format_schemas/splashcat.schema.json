@@ -149,7 +149,7 @@
           "order": {
             "type": "integer",
             "minimum": 0,
-            "maximum": 2
+            "maximum": 3
           },
           "noroshi": {
             "type": "integer"
