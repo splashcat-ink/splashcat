@@ -15,7 +15,7 @@
                 <button name="is_refresh" value="true" class="p-2"
                         _="on click remove .animate-none from the <svg/> in me"
                         hx-get="/battles/htmx/latest/"
-                        hx-trigger="click"
+                        hx-trigger="click, every 10s"
                         hx-swap="outerHTML"
                         hx-target="#latest-battles-dropdown-data"
                 >
