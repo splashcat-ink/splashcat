@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
+from oidc_provider.models import UserConsent
 
 from battles.models import Battle
 from splatnet_assets.common_model_choices import XBattleDivisions
@@ -96,6 +97,10 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse("profile", kwargs={"username": self.username})
+
+    @property
+    def has_mastodon_account(self):
+        return UserConsent.objects.filter(user=self, client_id=1).exists()
 
     @property
     def is_verified_for_export_download(self):
