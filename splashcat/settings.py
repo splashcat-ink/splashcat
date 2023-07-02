@@ -283,20 +283,14 @@ SERVER_EMAIL = 'server@splashcat.ink'
 
 # Cache
 
-if not DEBUG:
-    CACHES = {
-        "default": {
-            "BACKEND": "django.core.cache.backends.redis.RedisCache",
-            "LOCATION": os.environ.get('REDIS_URL', 'redis://localhost:6379'),
-            "KEY_PREFIX": 'django_cache_',
-        }
-    }
-else:
-    CACHES = {
-        "default": {
-            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
-        }
-    }
+# if not DEBUG:
+#     CACHES = {
+#         "default": {
+#             "BACKEND": "django.core.cache.backends.redis.RedisCache",
+#             "LOCATION": os.environ.get('REDIS_URL', 'redis://localhost:6379'),
+#             "KEY_PREFIX": 'django_cache_',
+#         }
+#     }
 
 # OpenID Connect
 OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'
