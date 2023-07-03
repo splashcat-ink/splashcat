@@ -39,6 +39,10 @@ tls_skip_verify = false
 guest_path = "/code/staticfiles"
 url_prefix = "/static/"
 
+[[statics]]
+guest_path = "/code/battles/format_schemas"
+url_prefix = "/battles/api/schemas/"
+
 [processes]
 app = "daphne -b 0.0.0.0 -p 8080 splashcat.asgi:application"
 celery-worker = "celery -A splashcat worker -l INFO -B"
