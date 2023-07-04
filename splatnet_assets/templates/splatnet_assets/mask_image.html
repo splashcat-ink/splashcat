@@ -1,11 +1,14 @@
 {% load mask_id %}
 {% get_color uploader %}
 {% with object|mask_id as mask_id %}
-    <svg class="{{ class }}" viewBox="0 0 {{ object.mask_image.width }} {{ object.mask_image.height }}"
-         fill="none"
-         xmlns="http://www.w3.org/2000/svg"
-         role="img"
-         preserveAspectRatio="xMidYMid slice">
+    <svg
+            class="{{ class }}" viewBox="0 0 {{ object.mask_image.width }} {{ object.mask_image.height }}"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            preserveAspectRatio="xMidYMid slice"
+            {% if alt %}alt="{{ alt }}" title="{{ alt }}" data-tippy="{{ alt }}"{% endif %}
+    >
         <mask id="__{{ mask_id }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
             <image x="0" y="0" width="{{ object.mask_image.width }}"
                    height="{{ object.mask_image.height }}"
