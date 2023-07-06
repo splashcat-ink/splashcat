@@ -76,7 +76,7 @@ class AnarchyMode(Enum):
 class Anarchy:
     mode: Optional[AnarchyMode] = None
     point_change: Optional[int] = None
-    power: Optional[int] = None
+    power: Optional[float] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Anarchy':

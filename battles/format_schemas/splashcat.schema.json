@@ -37,7 +37,7 @@
           ]
         },
         "power": {
-          "type": "integer"
+          "type": "number"
         }
       }
     },
@@ -54,7 +54,7 @@
           "type": "integer"
         },
         "power": {
-          "type": "integer"
+          "type": "number"
         }
       }
     },
@@ -73,7 +73,7 @@
       "type": "object",
       "properties": {
         "power": {
-          "type": "integer"
+          "type": "number"
         },
         "id": {
           "type": "string"
