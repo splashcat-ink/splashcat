@@ -83,7 +83,7 @@ class Anarchy:
         assert isinstance(obj, dict)
         mode = from_union([AnarchyMode, from_none], obj.get("mode"))
         point_change = from_union([from_int, from_none], obj.get("pointChange"))
-        power = from_union([from_int, from_none], obj.get("power"))
+        power = from_union([from_float, from_none], obj.get("power"))
         return Anarchy(mode, point_change, power)
 
     def to_dict(self) -> dict:
@@ -93,7 +93,7 @@ class Anarchy:
         if self.point_change is not None:
             result["pointChange"] = from_union([from_int, from_none], self.point_change)
         if self.power is not None:
-            result["power"] = from_union([from_int, from_none], self.power)
+            result["power"] = from_union([from_float, from_none], self.power)
         return result
 
 
@@ -106,7 +106,7 @@ class Challenge:
     def from_dict(obj: Any) -> 'Challenge':
         assert isinstance(obj, dict)
         id = from_union([from_str, from_none], obj.get("id"))
-        power = from_union([from_int, from_none], obj.get("power"))
+        power = from_union([from_float, from_none], obj.get("power"))
         return Challenge(id, power)
 
     def to_dict(self) -> dict:
@@ -114,7 +114,7 @@ class Challenge:
         if self.id is not None:
             result["id"] = from_union([from_str, from_none], self.id)
         if self.power is not None:
-            result["power"] = from_union([from_int, from_none], self.power)
+            result["power"] = from_union([from_float, from_none], self.power)
         return result
 
 
@@ -148,14 +148,14 @@ class SplatfestMode(Enum):
 class Splatfest:
     clout_multiplier: Optional[CloutMultiplier] = None
     mode: Optional[SplatfestMode] = None
-    power: Optional[int] = None
+    power: Optional[float] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Splatfest':
         assert isinstance(obj, dict)
         clout_multiplier = from_union([CloutMultiplier, from_none], obj.get("cloutMultiplier"))
         mode = from_union([SplatfestMode, from_none], obj.get("mode"))
-        power = from_union([from_int, from_none], obj.get("power"))
+        power = from_union([from_float, from_none], obj.get("power"))
         return Splatfest(clout_multiplier, mode, power)
 
     def to_dict(self) -> dict:
@@ -166,7 +166,7 @@ class Splatfest:
         if self.mode is not None:
             result["mode"] = from_union([lambda x: to_enum(SplatfestMode, x), from_none], self.mode)
         if self.power is not None:
-            result["power"] = from_union([from_int, from_none], self.power)
+            result["power"] = from_union([from_float, from_none], self.power)
         return result
 
 
