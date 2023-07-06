@@ -19,7 +19,7 @@
     {% if profile.has_mastodon_account %}
         <div class="pt-4 pb-2">
             <a href="https://splashcat.social/@{{ profile.username }}" target="_blank"
-               class="bg-purple-600 hover:bg-purple-700 rounded p-2 whitespace-nowrap" rel="me noopener">
+               class="bg-purple-600 hover:bg-purple-700 rounded p-2 pr-3 whitespace-nowrap" rel="me noopener">
                 <img src="{% static 'images/fediverse-logo.svg' %}" alt="Fediverse logo" class="h-6 w-6 inline-block"
                      height="16" width="16">
                 @{{ profile.username }}@splashcat.social
