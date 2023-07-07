@@ -60,6 +60,8 @@ def profile(request, username: str):
                       'win_count': win_count,
                       'lose_count': lose_count,
                       'win_rate': win_rate,
+                      'period_ago_wins': period_ago_wins,
+                      'period_ago_loses': period_ago_loses,
                       'period_ago_win_rate': period_ago_win_rate,
                       'aggregates': aggregates,
                       'most_used_weapon': most_used_weapon,

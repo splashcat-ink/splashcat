@@ -28,7 +28,10 @@
                 </div>
                 <div class="px-4">
                     <div class="text-lg">24 Hour Win Rate</div>
-                    <div class="text-2xl">{{ period_ago_win_rate|floatformat:1 }}%</div>
+                    <div class="text-2xl">
+                        {{ period_ago_win_rate|floatformat:1 }}%
+                        <span class="text-sm pl-2">({{ period_ago_wins }}/{{ period_ago_wins|add:period_ago_loses }})</span>
+                    </div>
                 </div>
                 <div class="px-4">
                     <div class="text-lg">Average Kills</div>
