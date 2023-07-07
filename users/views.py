@@ -41,6 +41,12 @@ def profile(request, username: str):
         average_paint=models.Avg('paint'),
     )
 
+    period_ago = datetime.datetime.now() - datetime.timedelta(hours=24)
+    period_ago_wins = user.battles.filter(judgement='WIN', played_time__gte=period_ago).count()
+    period_ago_loses = user.battles.exclude(judgement__in=['WIN', 'DRAW']).filter(played_time__gte=period_ago).count()
+    period_ago_win_rate = period_ago_wins / (period_ago_wins + period_ago_loses) * 100 if \
+        period_ago_wins + period_ago_loses else None
+
     most_used_weapon = Player.objects.filter(team__battle__uploader=user, is_self=True) \
         .values('weapon').annotate(count=models.Count('weapon')).order_by('-count').first()
     most_used_weapon = Weapon.objects.get(pk=most_used_weapon['weapon']) if most_used_weapon else None
@@ -54,6 +60,7 @@ def profile(request, username: str):
                       'win_count': win_count,
                       'lose_count': lose_count,
                       'win_rate': win_rate,
+                      'period_ago_win_rate': period_ago_win_rate,
                       'aggregates': aggregates,
                       'most_used_weapon': most_used_weapon,
                   })
