@@ -49,6 +49,9 @@ class LocalizationString(models.Model):
         AWARD = 'AWARD', 'Award'
         BRAND = 'BRAND', 'Brand'
         STAGE = 'STAGE', 'Stage'
+        CHALLENGE_NAME = 'CHALLENGE_NAME', 'Challenge Name'
+        CHALLENGE_DESCRIPTION = 'CHALLENGE_DESCRIPTION', 'Challenge Description'
+        CHALLENGE_LONG_DESCRIPTION = 'CHALLENGE_LONG_DESCRIPTION', 'Challenge Long Description'
 
     internal_id = models.CharField(max_length=100)
     type = models.CharField(max_length=50, choices=Type.choices)
@@ -202,3 +205,10 @@ class SpecialWeapon(models.Model):
     image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
     mask_image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
     overlay_image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+
+
+class Challenge(models.Model):
+    internal_id = models.CharField(max_length=100)
+    name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT, related_name='+')
+    description = models.OneToOneField('LocalizationString', on_delete=models.PROTECT, related_name='+')
+    long_description = models.OneToOneField('LocalizationString', on_delete=models.PROTECT, related_name='+')

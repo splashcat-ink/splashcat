@@ -8,7 +8,7 @@ from battles.formats.splashcat_battle import SplashcatBattle, Gear as SplashcatJ
 from battles.models import Battle, PlayerGear
 from battles.utils import BattleAlreadyExistsError, get_title_parts_from_string, get_ability
 from splatnet_assets.fields import Color
-from splatnet_assets.models import Gear, Stage, NameplateBackground, NameplateBadge, Weapon, Award
+from splatnet_assets.models import Gear, Stage, NameplateBackground, NameplateBadge, Weapon, Award, Challenge
 
 
 def parse_splashcat(data, request):
@@ -46,6 +46,14 @@ def parse_splashcat(data, request):
         battle.splatfest_clout_multiplier = splashcat_battle.splatfest.clout_multiplier.value if \
             splashcat_battle.splatfest.clout_multiplier else None
         battle.power = splashcat_battle.splatfest.power
+
+    if splashcat_battle.challenge:
+        try:
+            challenge = Challenge.objects.get(interal_id=splashcat_battle.challenge.id)
+        except Challenge.DoesNotExist:
+            challenge = None
+        battle.challenge = challenge
+        battle.power = splashcat_battle.challenge.power
 
     battle.save()
     for i, team in enumerate(splashcat_battle.teams):
