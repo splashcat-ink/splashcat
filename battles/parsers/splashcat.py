@@ -49,7 +49,7 @@ def parse_splashcat(data, request):
 
     if splashcat_battle.challenge:
         try:
-            challenge = Challenge.objects.get(interal_id=splashcat_battle.challenge.id)
+            challenge = Challenge.objects.get(internal_id=splashcat_battle.challenge.id)
         except Challenge.DoesNotExist:
             challenge = None
         battle.challenge = challenge
