@@ -6,6 +6,16 @@
     {{ profile_user.display_name }} (@{{ profile_user.username }})
 {% endblock %}
 
+{% block opengraph_head %}
+    <meta property="og:title" content="{{ profile_user.display_name }} (@{{ profile_user.username }})">
+
+    <meta property="og:description" content="Splashcat records battle data for later analysis.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image"
+          content="https://cdn.splashcat.ink/image-render/user/{{ profile_user.username }}/render.png?quality=100">
+{% endblock %}
+
 {% block content %}
     <div class="flex flex-col md:flex-row gap-4">
         <div class="basis-2/5 xl:basis-1/4 flex flex-col gap-2">
