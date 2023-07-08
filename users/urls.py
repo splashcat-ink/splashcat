@@ -6,6 +6,7 @@ from users.views import *
 
 app_name = "users"
 urlpatterns = [
+    path('opengraph/<str:username>/user/', profile_opengraph, name='profile_opengraph'),
     path('api/github-sponsors-webhook/', github_sponsors_webhook, name='github_sponsors_webhook'),
     path(
         "login/",

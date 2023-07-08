@@ -68,6 +68,41 @@ def profile(request, username: str):
                   })
 
 
+def profile_opengraph(request, username: str):
+    user = get_object_or_404(User, username=username)
+    latest_battles = user.battles.with_prefetch().order_by('-played_time') \
+                         .select_related('vs_stage__name')[:12]
+    splashtag = latest_battles[0].splashtag if latest_battles else None
+
+    battle_count = user.battles.count()
+    win_count = user.battles.filter(judgement='WIN').count()
+    lose_count = user.battles.exclude(judgement__in=['WIN', 'DRAW']).count()
+    win_rate = win_count / battle_count * 100 if battle_count else 0
+
+    period_ago = datetime.datetime.now() - datetime.timedelta(hours=24)
+    period_ago_wins = user.battles.filter(judgement='WIN', played_time__gte=period_ago).count()
+    period_ago_loses = user.battles.exclude(judgement__in=['WIN', 'DRAW']).filter(played_time__gte=period_ago).count()
+    period_ago_win_rate = period_ago_wins / (period_ago_wins + period_ago_loses) * 100 if \
+        period_ago_wins + period_ago_loses else None
+
+    most_used_weapons = Player.objects.filter(team__battle__uploader=user, is_self=True) \
+                            .values('weapon').annotate(count=models.Count('weapon')).order_by('-count')[:3]
+    most_used_weapons = Weapon.objects.filter(pk__in=[weapon['weapon'] for weapon in most_used_weapons])
+
+    return render(request, 'users/opengraph/user.html',
+                  {
+                      'profile_user': user,
+                      'splashtag': splashtag,
+                      'latest_battles': latest_battles,
+                      'battle_count': battle_count,
+                      'win_count': win_count,
+                      'lose_count': lose_count,
+                      'win_rate': win_rate,
+                      'period_ago_win_rate': period_ago_win_rate,
+                      'most_used_weapons': most_used_weapons,
+                  })
+
+
 def profile_battle_list(request, username: str):
     user = get_object_or_404(User, username=username)
     battles = user.battles.with_prefetch().order_by('-played_time') \
