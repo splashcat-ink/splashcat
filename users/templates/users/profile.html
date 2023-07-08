@@ -13,13 +13,23 @@
 
     <meta name="twitter:card" content="summary_large_image">
     <meta property="og:image"
-          content="https://cdn.splashcat.ink/image-render/user/{{ profile_user.username }}/render.png?quality=100">
+          content="https://cdn.splashcat.ink/image-render/user/{{ profile_user.username }}/render.png?quality=100&cache_key={{ request.GET.cache }}">
 {% endblock %}
 
 {% block content %}
     <div class="flex flex-col md:flex-row gap-4">
         <div class="basis-2/5 xl:basis-1/4 flex flex-col gap-2">
             {% include 'users/profile_sidebar.html' with profile=profile_user %}
+            <button class="share-profile hidden"
+                    data-username="{{ profile_user.username }}"
+                    data-cache-buster="{{ profile_user.battles.count }}"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15"></path>
+                </svg>
+            </button>
         </div>
 
         <div class="flex grow flex-col gap-2">

@@ -28,23 +28,23 @@ def from_int(x: Any) -> int:
     return x
 
 
-def to_enum(c: Type[EnumT], x: Any) -> EnumT:
-    assert isinstance(x, c)
-    return x.value
-
-
-def from_str(x: Any) -> str:
-    assert isinstance(x, str)
-    return x
-
-
 def from_float(x: Any) -> float:
     assert isinstance(x, (float, int)) and not isinstance(x, bool)
     return float(x)
 
 
+def to_enum(c: Type[EnumT], x: Any) -> EnumT:
+    assert isinstance(x, c)
+    return x.value
+
+
 def to_float(x: Any) -> float:
     assert isinstance(x, float)
+    return x
+
+
+def from_str(x: Any) -> str:
+    assert isinstance(x, str)
     return x
 
 
@@ -93,14 +93,15 @@ class Anarchy:
         if self.point_change is not None:
             result["pointChange"] = from_union([from_int, from_none], self.point_change)
         if self.power is not None:
-            result["power"] = from_union([from_float, from_none], self.power)
+            result["power"] = from_union([to_float, from_none], self.power)
         return result
 
 
 @dataclass
 class Challenge:
+    """base64 decoded and split by `-` to get the last section"""
     id: Optional[str] = None
-    power: Optional[int] = None
+    power: Optional[float] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Challenge':
@@ -114,7 +115,7 @@ class Challenge:
         if self.id is not None:
             result["id"] = from_union([from_str, from_none], self.id)
         if self.power is not None:
-            result["power"] = from_union([from_float, from_none], self.power)
+            result["power"] = from_union([to_float, from_none], self.power)
         return result
 
 
@@ -166,7 +167,7 @@ class Splatfest:
         if self.mode is not None:
             result["mode"] = from_union([lambda x: to_enum(SplatfestMode, x), from_none], self.mode)
         if self.power is not None:
-            result["power"] = from_union([from_float, from_none], self.power)
+            result["power"] = from_union([to_float, from_none], self.power)
         return result
 
 

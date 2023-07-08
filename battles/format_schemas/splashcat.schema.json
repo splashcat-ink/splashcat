@@ -76,7 +76,8 @@
           "type": "number"
         },
         "id": {
-          "type": "string"
+          "type": "string",
+          "description": "base64 decoded and split by `-` to get the last section"
         }
       }
     },
