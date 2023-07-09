@@ -74,7 +74,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'django_unicorn',
     # 'silk',
-    'oidc_provider',
+    'splashcat.apps.PatchedOidcProvider',
     'anymail',
     'battles',
     'users',
