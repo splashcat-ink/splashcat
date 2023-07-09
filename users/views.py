@@ -29,10 +29,9 @@ def profile(request, username: str):
                          .select_related('vs_stage__name')[:12]
     splashtag = latest_battles[0].splashtag if latest_battles else None
 
-    battle_count = user.battles.count()
     win_count = user.battles.filter(judgement='WIN').count()
     lose_count = user.battles.exclude(judgement__in=['WIN', 'DRAW']).count()
-    win_rate = win_count / battle_count * 100 if battle_count else 0
+    win_rate = win_count / (win_count + lose_count) * 100 if win_count + lose_count else 0
     aggregates = Player.objects.filter(team__battle__uploader=user, is_self=True).aggregate(
         average_kills=models.Avg('kills'),
         average_assists=models.Avg('assists'),
@@ -56,7 +55,6 @@ def profile(request, username: str):
                       'profile_user': user,
                       'splashtag': splashtag,
                       'latest_battles': latest_battles,
-                      'battle_count': battle_count,
                       'win_count': win_count,
                       'lose_count': lose_count,
                       'win_rate': win_rate,
@@ -74,10 +72,9 @@ def profile_opengraph(request, username: str):
                          .select_related('vs_stage__name')[:12]
     splashtag = latest_battles[0].splashtag if latest_battles else None
 
-    battle_count = user.battles.count()
     win_count = user.battles.filter(judgement='WIN').count()
     lose_count = user.battles.exclude(judgement__in=['WIN', 'DRAW']).count()
-    win_rate = win_count / battle_count * 100 if battle_count else 0
+    win_rate = win_count / (win_count + lose_count) * 100 if win_count + lose_count else 0
 
     period_ago = datetime.datetime.now() - datetime.timedelta(hours=24)
     period_ago_wins = user.battles.filter(judgement='WIN', played_time__gte=period_ago).count()
@@ -94,7 +91,6 @@ def profile_opengraph(request, username: str):
                       'profile_user': user,
                       'splashtag': splashtag,
                       'latest_battles': latest_battles,
-                      'battle_count': battle_count,
                       'win_count': win_count,
                       'lose_count': lose_count,
                       'win_rate': win_rate,

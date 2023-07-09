@@ -48,7 +48,8 @@ class Command(BaseCommand):
                         internal_id=skill, type=LocalizationString.Type.ABILITY)[0],
                     'description': LocalizationString.objects.get_or_create(
                         internal_id=skill, type=LocalizationString.Type.ABILITY_DESCRIPTION)[0],
-                    'image': download_image_from_path('ability', skill, f'skill/{skill}.png'),
+                    'image': download_image_from_path(
+                        'ability', skill, f'skill/{"Unknown" if skill == "None" else skill}.png'),
                 }
             )
 
