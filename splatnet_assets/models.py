@@ -167,16 +167,10 @@ class TitleAdjective(models.Model):
     internal_id = models.CharField(max_length=100)
     string = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
 
-    def __str__(self):
-        return self.string.string_en_us
-
 
 class TitleSubject(models.Model):
     internal_id = models.CharField(max_length=100)
     string = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
-
-    def __str__(self):
-        return self.string.string_en_us
 
 
 class Weapon(models.Model):
