@@ -270,17 +270,17 @@ files = [
 
 [[package]]
 name = "boto3"
-version = "1.27.0"
+version = "1.28.1"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.27.0-py3-none-any.whl", hash = "sha256:e1e535e9fb23977252f13652ed2fa9b4f2d59a53b04a5f2fad3ee415b6a3b2b0"},
-    {file = "boto3-1.27.0.tar.gz", hash = "sha256:908f9c277325d68963dfcfce963a05336f0eb19505fc239c0ab9d01f4cba0296"},
+    {file = "boto3-1.28.1-py3-none-any.whl", hash = "sha256:9923ab006bba749bececc5c8cb0c3dc9bc33c91358774f8ff22096ead373b772"},
+    {file = "boto3-1.28.1.tar.gz", hash = "sha256:12f5ea4a98e8e19c981912ac22bc5d87f1f1d8f8269287eace0dd517c9d23e01"},
 ]
 
 [package.dependencies]
-botocore = ">=1.30.0,<1.31.0"
+botocore = ">=1.31.1,<1.32.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -289,13 +289,13 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.30.0"
+version = "1.31.1"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.30.0-py3-none-any.whl", hash = "sha256:cac1333f41ec98e6f75bbba3f2c74b9e76aa3847469ecea6e7773a0af0049bee"},
-    {file = "botocore-1.30.0.tar.gz", hash = "sha256:b9cb5b78a289f0615a48d85066f01869029aa41b95993f2c0c55003df037c23f"},
+    {file = "botocore-1.31.1-py3-none-any.whl", hash = "sha256:62e954b8eb9a404510dd97c4fdfaae25bd0349213a3cd70e937e0634821342f5"},
+    {file = "botocore-1.31.1.tar.gz", hash = "sha256:4c9c58ae286a2ca1f900c9bce285b9efd1f0401648aa54a5026c93ada63ad897"},
 ]
 
 [package.dependencies]
@@ -1693,6 +1693,7 @@ files = [
     {file = "Pillow-10.0.0-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:3b08d4cc24f471b2c8ca24ec060abf4bebc6b144cb89cba638c720546b1cf538"},
     {file = "Pillow-10.0.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:d737a602fbd82afd892ca746392401b634e278cb65d55c4b7a8f48e9ef8d008d"},
     {file = "Pillow-10.0.0-cp311-cp311-win_amd64.whl", hash = "sha256:3a82c40d706d9aa9734289740ce26460a11aeec2d9c79b7af87bb35f0073c12f"},
+    {file = "Pillow-10.0.0-cp311-cp311-win_arm64.whl", hash = "sha256:bc2ec7c7b5d66b8ec9ce9f720dbb5fa4bace0f545acd34870eff4a369b44bf37"},
     {file = "Pillow-10.0.0-cp312-cp312-macosx_10_10_x86_64.whl", hash = "sha256:d80cf684b541685fccdd84c485b31ce73fc5c9b5d7523bf1394ce134a60c6883"},
     {file = "Pillow-10.0.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:76de421f9c326da8f43d690110f0e79fe3ad1e54be811545d7d91898b4c8493e"},
     {file = "Pillow-10.0.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:81ff539a12457809666fef6624684c008e00ff6bf455b4b89fd00a140eecd640"},
@@ -1702,6 +1703,7 @@ files = [
     {file = "Pillow-10.0.0-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:d50b6aec14bc737742ca96e85d6d0a5f9bfbded018264b3b70ff9d8c33485551"},
     {file = "Pillow-10.0.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:00e65f5e822decd501e374b0650146063fbb30a7264b4d2744bdd7b913e0cab5"},
     {file = "Pillow-10.0.0-cp312-cp312-win_amd64.whl", hash = "sha256:f31f9fdbfecb042d046f9d91270a0ba28368a723302786c0009ee9b9f1f60199"},
+    {file = "Pillow-10.0.0-cp312-cp312-win_arm64.whl", hash = "sha256:1ce91b6ec08d866b14413d3f0bbdea7e24dfdc8e59f562bb77bc3fe60b6144ca"},
     {file = "Pillow-10.0.0-cp38-cp38-macosx_10_10_x86_64.whl", hash = "sha256:349930d6e9c685c089284b013478d6f76e3a534e36ddfa912cde493f235372f3"},
     {file = "Pillow-10.0.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:3a684105f7c32488f7153905a4e3015a3b6c7182e106fe3c37fbb5ef3e6994c3"},
     {file = "Pillow-10.0.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b4f69b3700201b80bb82c3a97d5e9254084f6dd5fb5b16fc1a7b974260f89f43"},
@@ -2594,4 +2596,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "c45375594cf4a369a74013d82cd5899063c9526194083b9ad97300bfcfc5fc4a"
+content-hash = "07750e0268f0679c61fdd8411a2c9dc8c3185c7de4a85e5fb96796520bce3bfb"
