@@ -93,7 +93,8 @@ class Command(BaseCommand):
                         'name': localization_string,
                         'rarity': gear['Rarity'],
                         'main_ability': Ability.objects.get(internal_id=gear['Skill']),
-                        'image': download_image_from_path('gear', gear['Id'], f'gear/{gear["__RowId"]}.png'),
+                        'image': download_image_from_path(f'gear-{str.lower(gear_type)}', gear['Id'],
+                                                          f'gear/{gear["__RowId"]}.png'),
                     }
                 )
 
