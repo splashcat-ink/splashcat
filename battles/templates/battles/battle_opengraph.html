@@ -107,24 +107,38 @@
                 The match was not fully completed.
             </span>
                 {% else %}
-                    <div class="h-full w-full relative before:block before:absolute before:w-full before:h-[40px] before:-left-[0.5px] before:-top-[5px] before:content-[''] before:bg-[url('/static/opengraph/waves.png')] before:bg-top before:bg-no-repeat before:bg-[length:100%_25px] before:z-10
+                    {% if team_bar_display|length > 2 %}
+                        {% for team in team_bar_display %}
+                            {% if team.team_value != 0 %}
+                                <div
+                                        class="w-[var(--bar-width)] h-full bg-[color:var(--team-color)] text-4xl font-splatoon1 align-middle text-center
+                                first:text-left last:text-right first:pl-4 last:pr-4 overflow-visible whitespace-nowrap {% if team.width < 50 %}z-10{% endif %}"
+                                        style="--team-color: {{ team.team_color.css }}; --bar-width: {{ team.width }}%">
+                                    {{ team.display_text }}</div>
+                            {% else %}
+                                <div></div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="h-full w-full relative before:block before:absolute before:w-full before:h-[40px] before:-left-[0.5px] before:-top-[5px] before:content-[''] before:bg-[url('/static/opengraph/waves.png')] before:bg-top before:bg-no-repeat before:bg-[length:100%_25px] before:z-10
                                 bg-[var(--last-team-color)] bg-[url('/static/opengraph/bubbles.png')] bg-contain"
-                         style="--last-team-color:
+                             style="--last-team-color:
                                  {% with team_bar_display|last as last %}{{ last.team_color.css }}{% endwith %}">
-                        <div class="float-left text-left h-full flex items-center">
-                            <div class="absolute h-full bg-[var(--team-color)] bg-[url('/static/opengraph/bubbles.png')] bg-contain [mask-image:url('/static/opengraph/cutout.png')] [mask-repeat:no-repeat] [mask-size:cover] [mask-position:right_center]"
-                                 style="width: {{ team_bar_display.0.width }}%; --team-color: {{ team_bar_display.0.team_color.css }};"
-                            ></div>
-                            <div class="font-splatoon1 relative text-3xl px-3 whitespace-nowrap z-20">
-                                {{ team_bar_display.0.display_text }}
+                            <div class="float-left text-left h-full flex items-center">
+                                <div class="absolute h-full bg-[var(--team-color)] bg-[url('/static/opengraph/bubbles.png')] bg-contain [mask-image:url('/static/opengraph/cutout.png')] [mask-repeat:no-repeat] [mask-size:cover] [mask-position:right_center]"
+                                     style="width: {{ team_bar_display.0.width }}%; --team-color: {{ team_bar_display.0.team_color.css }};"
+                                ></div>
+                                <div class="font-splatoon1 relative text-3xl px-3 whitespace-nowrap z-20">
+                                    {{ team_bar_display.0.display_text }}
+                                </div>
+                            </div>
+                            <div class="float-right text-right h-full flex items-center">
+                                <div class="font-splatoon1 relative text-3xl px-3 whitespace-nowrap z-20">
+                                    {{ team_bar_display.1.display_text }}
+                                </div>
                             </div>
                         </div>
-                        <div class="float-right text-right h-full flex items-center">
-                            <div class="font-splatoon1 relative text-3xl px-3 whitespace-nowrap z-20">
-                                {{ team_bar_display.1.display_text }}
-                            </div>
-                        </div>
-                    </div>
+                    {% endif %}
                 {% endif %}
             </div>
 
