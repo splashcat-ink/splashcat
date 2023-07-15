@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Prefetch
 from django.urls import reverse
@@ -118,6 +119,10 @@ class Battle(models.Model):
     knockout = models.CharField(max_length=32, choices=KnockoutJudgement.choices, blank=True, null=True)
     anarchy_mode = models.CharField(max_length=32, choices=AnarchyMode.choices, blank=True, null=True)
     anarchy_point_change = models.IntegerField(blank=True, null=True)
+    anarchy_rank = models.CharField(max_length=2, blank=True, null=True)
+    anarchy_s_plus_number = models.IntegerField(blank=True, null=True,
+                                                validators=[MinValueValidator(0), MaxValueValidator(50)])
+    anarchy_points = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
     x_battle_rank = models.IntegerField(blank=True, null=True)
     x_battle_division = models.CharField(max_length=32, blank=True, null=True, choices=XBattleDivisions.choices)
     splatfest_mode = models.CharField(max_length=32, choices=SplatfestBattleType.choices, blank=True, null=True)

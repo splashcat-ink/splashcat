@@ -32,9 +32,12 @@ def parse_splashcat(data, request):
     battle.knockout = splashcat_battle.knockout.value if splashcat_battle.knockout else None
 
     if splashcat_battle.anarchy:
-        battle.anarchy_mode = splashcat_battle.anarchy.mode.value if splashcat_battle.anarchy else None
-        battle.anarchy_point_change = splashcat_battle.anarchy.point_change if splashcat_battle.anarchy else None
-        battle.power = splashcat_battle.anarchy.power if splashcat_battle.anarchy else None
+        battle.anarchy_mode = splashcat_battle.anarchy.mode.value
+        battle.anarchy_point_change = splashcat_battle.anarchy.point_change
+        battle.power = splashcat_battle.anarchy.power
+        battle.anarchy_rank = splashcat_battle.anarchy.rank
+        battle.anarchy_s_plus_number = splashcat_battle.anarchy.s_plus_number
+        battle.anarchy_points = splashcat_battle.anarchy.points
 
     if splashcat_battle.x_battle:
         battle.power = splashcat_battle.x_battle.x_power

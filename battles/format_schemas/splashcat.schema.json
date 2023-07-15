@@ -55,6 +55,30 @@
         },
         "power": {
           "type": "number"
+        },
+        "rank": {
+          "enum": [
+            "C-",
+            "C",
+            "C+",
+            "B-",
+            "B",
+            "B+",
+            "A-",
+            "A",
+            "A+",
+            "S",
+            "S+"
+          ]
+        },
+        "sPlusNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 50
+        },
+        "points": {
+          "type": "integer",
+          "minimum": 0
         }
       }
     },

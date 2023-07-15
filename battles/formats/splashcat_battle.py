@@ -72,19 +72,39 @@ class AnarchyMode(Enum):
     SERIES = "SERIES"
 
 
+class Rank(Enum):
+    A = "A-"
+    B = "B-"
+    C = "C-"
+    PURPLE_A = "A+"
+    PURPLE_B = "B+"
+    PURPLE_C = "C+"
+    RANK_A = "A"
+    RANK_B = "B"
+    RANK_C = "C"
+    RANK_S = "S+"
+    S = "S"
+
+
 @dataclass
 class Anarchy:
     mode: Optional[AnarchyMode] = None
     point_change: Optional[int] = None
+    points: Optional[int] = None
     power: Optional[float] = None
+    rank: Optional[Rank] = None
+    s_plus_number: Optional[int] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Anarchy':
         assert isinstance(obj, dict)
         mode = from_union([AnarchyMode, from_none], obj.get("mode"))
         point_change = from_union([from_int, from_none], obj.get("pointChange"))
+        points = from_union([from_int, from_none], obj.get("points"))
         power = from_union([from_float, from_none], obj.get("power"))
-        return Anarchy(mode, point_change, power)
+        rank = from_union([Rank, from_none], obj.get("rank"))
+        s_plus_number = from_union([from_int, from_none], obj.get("sPlusNumber"))
+        return Anarchy(mode, point_change, points, power, rank, s_plus_number)
 
     def to_dict(self) -> dict:
         result: dict = {}
@@ -92,8 +112,14 @@ class Anarchy:
             result["mode"] = from_union([lambda x: to_enum(AnarchyMode, x), from_none], self.mode)
         if self.point_change is not None:
             result["pointChange"] = from_union([from_int, from_none], self.point_change)
+        if self.points is not None:
+            result["points"] = from_union([from_int, from_none], self.points)
         if self.power is not None:
             result["power"] = from_union([to_float, from_none], self.power)
+        if self.rank is not None:
+            result["rank"] = from_union([lambda x: to_enum(Rank, x), from_none], self.rank)
+        if self.s_plus_number is not None:
+            result["sPlusNumber"] = from_union([from_int, from_none], self.s_plus_number)
         return result
 
 
