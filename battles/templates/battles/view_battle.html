@@ -265,6 +265,18 @@
 
     {% include 'includes/splashtag.html' with splashtag=battle.splashtag only %}
 
+    {% with battle.get_related_battles as related_battles %}
+        {% if related_battles|length > 0 %}
+            <h1 class="text-2xl font-splatoon1 pt-2">Related Battles</h1>
+            <span class="text-lg pt-2">Other Splashcat users have uploaded this same battle!</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-2">
+                {% for related_battle in related_battles %}
+                    {% include 'users/includes/battle-card.html' with battle=related_battle display_uploader=True %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
     {% if battle.uploader_agent_name %}
         <p class="text-sm pt-2">
             Uploaded using {{ battle.uploader_agent_name }} {% if battle.uploader_agent_version %}(version
@@ -277,14 +289,12 @@
         {% endif %}
     {% endif %}
 
-    {% comment %}
     <div class="sticky left-0 bottom-0 w-full flex gap-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-2 mt-4 -mb-3 sm:rounded-t-xl bg-gray-700 whitespace-nowrap text-xs sm:text-sm md:text-base">
-        <a href="{{ pagination.href.first }}" class="py-2 px-4 rounded-full bg-gray-600">Latest Battle</a>
+        <a href="{{ latest_battle.get_absolute_url }}" class="py-2 px-4 rounded-full bg-gray-600">Latest Battle</a>
         <div class="grow"></div>
-        <a href="{{ pagination.href.previous }}"
-           class="py-2 px-4 rounded-full {% if pagination.href.previous %}bg-gray-600{% else %}bg-gray-600/50 text-gray-400{% endif %}">Next</a>
-        <a href="{{ pagination.href.next }}"
-           class="py-2 px-4 rounded-full {% if pagination.href.next %}bg-gray-600{% else %}bg-gray-800 text-gray-400{% endif %}">Previous</a>
+        <a href="{{ battle.get_player_next_battle.get_absolute_url }}"
+           class="py-2 px-4 rounded-full {% if battle.get_player_next_battle %}bg-gray-600{% else %}bg-gray-600/50 text-gray-400{% endif %}">Next</a>
+        <a href="{{ battle.get_player_previous_battle.get_absolute_url }}"
+           class="py-2 px-4 rounded-full {% if battle.get_player_previous_battle %}bg-gray-600{% else %}bg-gray-800 text-gray-400{% endif %}">Previous</a>
     </div>
-    {% endcomment %}
 {% endblock %}

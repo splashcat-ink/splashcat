@@ -24,8 +24,10 @@ from users.models import User, SponsorshipTiers
 
 def view_battle(request, battle_id):
     battle: Battle = get_object_or_404(Battle.objects.with_prefetch(True), id=battle_id)
+    uploader_latest_battle = battle.uploader.battles.latest("played_time")
     return render(request, 'battles/view_battle.html', {
         'battle': battle,
+        'latest_battle': uploader_latest_battle,
     })
 
 

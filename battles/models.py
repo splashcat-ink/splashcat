@@ -213,6 +213,21 @@ class Battle(models.Model):
         else:
             return _('Defeat')
 
+    def get_related_battles(self):
+        return Battle.objects.filter(splatnet_id=self.splatnet_id).exclude(id=self.id)
+
+    def get_player_next_battle(self):
+        try:
+            return self.get_next_by_played_time(uploader_id=self.uploader_id)
+        except Battle.DoesNotExist:
+            return None
+
+    def get_player_previous_battle(self):
+        try:
+            return self.get_previous_by_played_time(uploader_id=self.uploader_id)
+        except Battle.DoesNotExist:
+            return None
+
 
 class BattleAward(models.Model):
     battle = models.ForeignKey('Battle', on_delete=models.CASCADE)
