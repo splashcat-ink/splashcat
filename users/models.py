@@ -60,6 +60,7 @@ class User(AbstractUser):
     last_name = None
     verified_email = models.BooleanField(_("verified email"), default=False)
     email = models.EmailField(_("email address"), unique=True)
+    preferred_pronouns = models.CharField(_("preferred pronouns"), max_length=20, blank=True, null=True)
 
     x_battle_division = models.CharField(_("X Battle division"), max_length=20, choices=XBattleDivisions.choices,
                                          default=XBattleDivisions.UNSPECIFIED)

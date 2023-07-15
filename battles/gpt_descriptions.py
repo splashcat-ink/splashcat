@@ -3,6 +3,7 @@ from battles.models import Battle
 
 def battle_to_gpt_dict(battle: Battle):
     data = {
+        'uploader_preferred_pronouns': battle.uploader.preferred_pronouns or "they/them",
         'vs_mode': battle.get_vs_mode_display(),
         'vs_rule': battle.get_vs_rule_display(),
         'stage_name': battle.vs_stage.name.string,

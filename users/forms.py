@@ -17,6 +17,7 @@ class AccountSettingsForm(forms.ModelForm):
             "profile_picture",
             "saved_favorite_color",
             "x_battle_division",
+            "preferred_pronouns",
         )
         labels = {
             "saved_favorite_color": _("Favorite Color"),

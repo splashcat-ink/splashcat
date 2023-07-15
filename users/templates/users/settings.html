@@ -64,6 +64,13 @@
                     {{ form.x_battle_division }}
                 </div>
 
+                <div>
+                    {{ form.preferred_pronouns.errors }}
+                    <label class="text-xl" for="{{ form.preferred_pronouns.id_for_label }}">Preferred Pronouns</label>
+                    <p>Used for AI Battle Descriptions and shown on your profile.</p>
+                    {{ form.preferred_pronouns }}
+                </div>
+
                 <input type="submit" value="Update">
             </form>
         </div>
