@@ -24,7 +24,7 @@ from .models import User, GitHubLink, ApiKey
 # Create your views here.
 
 def profile(request, username: str):
-    user = get_object_or_404(User, username=username)
+    user = get_object_or_404(User, username__iexact=username)
     latest_battles = user.battles.with_prefetch().order_by('-played_time') \
                          .select_related('vs_stage__name')[:12]
     splashtag = latest_battles[0].splashtag if latest_battles else None
@@ -67,7 +67,7 @@ def profile(request, username: str):
 
 
 def profile_opengraph(request, username: str):
-    user = get_object_or_404(User, username=username)
+    user = get_object_or_404(User, username__iexact=username)
     latest_battles = user.battles.with_prefetch().order_by('-played_time') \
                          .select_related('vs_stage__name')[:12]
     splashtag = latest_battles[0].splashtag if latest_battles else None
@@ -100,7 +100,7 @@ def profile_opengraph(request, username: str):
 
 
 def profile_battle_list(request, username: str):
-    user = get_object_or_404(User, username=username)
+    user = get_object_or_404(User, username__iexact=username)
     battles = user.battles.with_prefetch().order_by('-played_time') \
         .select_related('vs_stage__name')
 
