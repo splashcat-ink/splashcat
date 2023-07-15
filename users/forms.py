@@ -29,6 +29,17 @@ class AccountSettingsForm(forms.ModelForm):
             "profile_picture": ImageWidget,
         }
 
+    # override the attributes on the preferred_pronouns field to prevent autocomplete
+    preferred_pronouns = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "autocomplete": "off",
+                "autocorrect": "off",
+            }
+        )
+    )
+
 
 class RegisterForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
