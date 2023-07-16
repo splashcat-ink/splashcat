@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'users',
     'splatnet_assets',
     'notifications',
+    'groups',
 ]
 
 MIDDLEWARE = [
