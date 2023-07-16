@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
-from oidc_provider.models import UserConsent
+from oidc_provider.models import Token
 
 from battles.models import Battle
 from splatnet_assets.common_model_choices import XBattleDivisions
@@ -101,7 +101,7 @@ class User(AbstractUser):
 
     @property
     def has_mastodon_account(self):
-        return UserConsent.objects.filter(user=self, client_id=1).exists()
+        return Token.objects.filter(user=self, client_id=1).exists()
 
     @property
     def is_verified_for_export_download(self):
@@ -131,6 +131,9 @@ class User(AbstractUser):
                 'site': site,
             })
             self.email_user('Verify your email address', message_contents)
+
+    def get_groups(self):
+        return self.groups_owned.all() | self.group_set.all()
 
 
 def generate_key():
