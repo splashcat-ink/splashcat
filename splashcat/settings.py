@@ -41,7 +41,7 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 ALLOWED_HOSTS += [gethostname(), gethostbyname(gethostname()), ]
-CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink']
+CSRF_TRUSTED_ORIGINS = ['https://splashcat-litefs-test-1.fly.dev', 'https://splashcat.ink']
 
 FLY_REGION = os.environ.get('FLY_REGION')
 FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION')
@@ -83,7 +83,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'splashcat.middleware.FlyDotIoMiddleware',  # handles redirecting to the primary region based on cookie and method
+    # 'splashcat.middleware.FlyDotIoMiddleware',  # handles redirecting to the primary region based on cookie and method
     # 'silk.middleware.SilkyMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -130,11 +130,18 @@ WSGI_APPLICATION = 'splashcat.wsgi.application'
 
 database_url = os.environ.get("DATABASE_URL")
 
-if database_url is None:
+if database_url is None and DEBUG is True:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+elif database_url is None and DEBUG is False:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': '/litefs/splashcat.db',
         }
     }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
@@ -214,7 +221,7 @@ STORAGES = global_settings.STORAGES | {
     },
 }
 
-if not DEBUG:
+if not DEBUG or True:
     STORAGES |= {"default": {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
     }
@@ -272,6 +279,8 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379')
 
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 1
+
 # Email
 
 ANYMAIL = {
@@ -283,14 +292,12 @@ SERVER_EMAIL = 'server@splashcat.ink'
 
 # Cache
 
-# if not DEBUG:
-#     CACHES = {
-#         "default": {
-#             "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#             "LOCATION": os.environ.get('REDIS_URL', 'redis://localhost:6379'),
-#             "KEY_PREFIX": 'django_cache_',
-#         }
-#     }
+if DEBUG:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+        }
+    }
 
 # OpenID Connect
 OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'

@@ -1,21 +1,15 @@
-# fly.toml app configuration file generated for splashcat on 2023-06-12T20:53:52-04:00
+# fly.toml app configuration file generated for splashcat-litefs-test-1 on 2023-07-08T17:51:49-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "splashcat"
+app = "splashcat-litefs-test-1"
 primary_region = "iad"
 console_command = "/code/manage.py shell"
 
-[deploy]
-release_command = "python manage.py migrate"
-strategy = "rolling"
-
 [env]
-PORT = "8080"
-DJANGO_ALLOWED_HOSTS = "splashcat.fly.dev,splashcat.ink"
-DEBUG = "False"
-SENTRY_DSN = "https://9babb5ac79274bed8e3c56a222b44ab6@o4505055559352320.ingest.sentry.io/4505055561449472"
+PORT = "8000"
+DJANGO_ALLOWED_HOSTS = "*"
 
 [http_service]
 internal_port = 8080
@@ -23,8 +17,6 @@ force_https = true
 auto_stop_machines = true
 auto_start_machines = true
 min_machines_running = 0
-processes = ["app"]
-
 [[http_service.checks]]
 grace_period = "5s"
 interval = "5s"
@@ -43,6 +35,6 @@ url_prefix = "/static/"
 guest_path = "/code/battles/format_schemas"
 url_prefix = "/battles/api/schemas/"
 
-[processes]
-app = "daphne -b 0.0.0.0 -p 8080 splashcat.asgi:application"
-celery-worker = "celery -A splashcat worker -l INFO -B"
+[mounts]
+source = "litefs"
+destination = "/var/lib/litefs"
