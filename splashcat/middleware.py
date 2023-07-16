@@ -2,13 +2,12 @@ import datetime
 import re
 
 from django.conf import settings
-from django.db import DatabaseError
+from django.db import InternalError
 from django.http import HttpRequest, HttpResponse
-from psycopg.errors import lookup
+from psycopg.errors import ReadOnlySqlTransaction
 
 THRESHOLD_COOKIE = "fly-replay-threshold"
 THRESHOLD_TIME = datetime.timedelta(seconds=5)
-READONLY_ERROR = lookup("25006")
 
 
 def get_fly_replay_state(request: HttpRequest):
@@ -61,11 +60,13 @@ class PostgresReadOnlyMiddleware:
 
     @staticmethod
     def process_exception(_request: HttpRequest, exception: Exception):
-        if exception is DatabaseError:
+        if isinstance(exception, InternalError):
             # check if it's an error related to read-only replica
             # if so, return a 409 with a fly-replay header
-            if exception.__cause__ is READONLY_ERROR:
+            if isinstance(exception.__cause__, ReadOnlySqlTransaction):
                 return HttpResponse(f'Replaying in {settings.FLY_PRIMARY_REGION} because of captured write', status=409,
                                     headers={
                                         'fly-replay': f'region={settings.FLY_PRIMARY_REGION};state=captured_write',
                                     })
+        else:
+            return None
