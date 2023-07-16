@@ -265,6 +265,11 @@ if SENTRY_DSN:
         profiles_sample_rate=0.1,
     )
 
+    sentry_sdk.set_context("fly.io", {
+        "current_region": os.environ.get("FLY_REGION"),
+        "primary_region": os.environ.get("PRIMARY_REGION"),
+    })
+
 # Celery
 
 CELERY_RESULT_BACKEND = 'django-db'
