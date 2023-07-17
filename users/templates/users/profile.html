@@ -30,6 +30,14 @@
                           d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15"></path>
                 </svg>
             </button>
+            {% with groups=profile_user.get_groups %}
+                {% if groups|length > 0 %}
+                    <h2 class="text-xl font-splatoon1">Groups</h2>
+                    {% for group in groups %}
+                        {% include 'groups/includes/card.html' with group=group %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
 
         <div class="flex grow flex-col gap-2">
