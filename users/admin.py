@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import TabularInline
 from django.contrib.auth.admin import UserAdmin as AbstractUserAdmin
 
+from groups.admin import MembershipInline
 from .models import User, ApiKey, GitHubLink
 
 
@@ -24,7 +25,7 @@ class UserAdmin(AbstractUserAdmin):
     fieldsets = AbstractUserAdmin.fieldsets + (
         (None, {"fields": ["profile_picture", "saved_favorite_color", "data_export_pending", "last_data_export",
                            "verified_email", "preferred_pronouns"]}),)
-    inlines = [GitHubLinkInline]
+    inlines = [GitHubLinkInline, MembershipInline]
     list_display = ("username", "display_name", "email", "is_staff", "date_joined", "verified_email",)
     search_fields = ("username", "display_name", "email")
 

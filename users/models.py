@@ -133,7 +133,7 @@ class User(AbstractUser):
             self.email_user('Verify your email address', message_contents)
 
     def get_groups(self):
-        return self.groups_owned.all() | self.group_set.all()
+        return list(self.groups_owned.all()) + list(self.group_set.all())
 
 
 def generate_key():

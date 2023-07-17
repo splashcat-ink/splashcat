@@ -45,6 +45,11 @@
                            class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                            aria-current="page">Home</a>
 
+
+                        <a href="{% url 'groups:index' %}"
+                           class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                           aria-current="page">Groups</a>
+
                         <a href="https://splatoon3.ink/" target="_blank"
                            class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
                             Schedule
@@ -236,6 +241,9 @@
         <div class="space-y-1 px-2 pt-2 pb-3">
             <a href="{% url 'home' %}"
                class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Home</a>
+
+            <a href="{% url 'groups:index' %}"
+               class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Groups</a>
 
             <a href="https://splatoon3.ink/" target="_blank"
                class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">

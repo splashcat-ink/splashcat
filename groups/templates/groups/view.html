@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <h1 class="font-splatoon1 text-3xl pb-2">
+        {% block title %}
+            {{ group.name }}
+        {% endblock %}
+    </h1>
+    <div class="flex flex-row gap-4">
+        {% if user.is_staff %}
+            <a href="{% url 'admin:groups_group_change' group.id %}" class="bg-red-700 p-2 rounded w-fit">Admin</a>
+        {% endif %}
+        {% if group.owner == user %}
+            <a href="{% url 'groups:group_admin' group.id %}" class="bg-purple-700 p-2 rounded w-fit">Manage Group</a>
+        {% endif %}
+        {% if is_group_member and group.owner != user %}
+            <a hx-post="{% url 'groups:leave_group' group.id %}"
+               hx-confirm="Are you sure you want to leave {{ group.name }}?" class="bg-purple-700 p-2 rounded w-fit">
+                Leave Group
+            </a>
+        {% endif %}
+        {% if is_group_member == False and group.owner != user and group.privacy_level == group.PrivacyLevels.RESTRICTED %}
+            <form action="{% url 'groups:request_join_group' group.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="bg-purple-700 p-2 rounded w-fit">Request to Join</button>
+            </form>
+        {% endif %}
+        {% if is_group_member == False and group.owner != user and group.privacy_level == group.PrivacyLevels.PUBLIC %}
+            <form action="{% url 'groups:join_group' group.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="bg-purple-700 p-2 rounded w-fit">Join</button>
+            </form>
+        {% endif %}
+    </div>
+    <p class="text-xl py-2">{{ group.description }}</p>
+
+    <h2 class="font-splatoon1 text-xl">Owner</h2>
+    {% include "users/includes/user-link.html" with user=group.owner show_splashtag=True %}
+
+    {% if group.members.count > 0 %}
+        <h2 class="font-splatoon1 text-xl">Members</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {% for member in group.members.all %}
+                {% include "users/includes/user-link.html" with user=member show_splashtag=True %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h2 class="font-splatoon1 text-xl">Recent Battles</h2>
+    {% if group_recent_battles|length == 0 %}
+        <div class="flex flex-col gap-2 items-center">
+            <div class="text-2xl font-splatoon1">No battles</div>
+            <p class="text-lg max-w-prose text-center">
+                Looks like no one in {{ group.name }} has uploaded any battles yet.
+                {% if is_group_member %}
+                    <a href="{% url 'uploaders_information' %}" class="text-blue-500 underline">
+                        Use an exporter to download data from SplatNet 3 and send it to Splashcat!
+                    </a>
+                {% endif %}
+            </p>
+        </div>
+    {% else %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {% for battle in group_recent_battles %}
+                {% include "users/includes/battle-card.html" with battle=battle display_uploader=True %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

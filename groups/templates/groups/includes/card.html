@@ -1,0 +1,28 @@
+{% load static %}
+<a class="card-mask rounded-2xl bg-purple-700 bg-cover bg-[url('../images/camo-transparent-bg.png')] transition duration-200 hover:rotate-2 drop-shadow-lg hover:drop-shadow-2xl"
+   href="{% url 'groups:view_group' group.id %}">
+    <div class="bg-black/50 p-2 mt-8 h-full">
+        <div class="text-xl">{{ group.name }}</div>
+        <div class="text-sm">{{ group.description|truncatewords:30 }}</div>
+        {% with owner=group.owner %}
+            <div class="flex flex-row gap-1 items-center my-0.5 w-fit">
+                {% if owner.profile_picture %}
+                    <img src="{{ owner.profile_picture.url }}?optimizer=image&height=96&width=96"
+                         alt="{{ owner.display_name }}"
+                         class="h-12 w-12 object-cover rounded-lg" height="96" width="96">
+                {% endif %}
+                <div class="flex flex-col">
+                    <div class="text-xl">
+                        {{ owner.display_name }}
+                        {% if owner.display_sponsor_badge %}
+                            <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png"
+                                 alt="Splashcat Sponsor"
+                                 class="h-6 w-6 inline-block [image-rendering:pixelated]" height="16" width="16">
+                        {% endif %}
+                    </div>
+                    <div class="text-sm text-gray-400">@{{ owner.username }}</div>
+                </div>
+            </div>
+        {% endwith %}
+    </div>
+</a>

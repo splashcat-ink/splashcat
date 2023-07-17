@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+    <div class="flex flex-row gap-4">
+        <h1 class="text-3xl font-splatoon1 mb-2">
+            {% block title %}
+                Group Admin
+            {% endblock %}
+        </h1>
+    </div>
+
+    <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+        <div>
+            {{ form.non_field_errors }}
+
+            <form class="form-css form-div-cards" method="post" action="{% url "groups:group_admin" group.id %}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div>
+                    {{ form.name.errors }}
+                    <label class="text-xl" for="{{ form.name.id_for_label }}">Name</label>
+                    {{ form.name }}
+                </div>
+
+                <div>
+                    {{ form.description.errors }}
+                    <label class="text-xl" for="{{ form.description.id_for_label }}">Description</label>
+                    {{ form.description }}
+                </div>
+
+                <div>
+                    {{ form.privacy_level.errors }}
+                    <label class="text-xl" for="{{ form.privacy_level.id_for_label }}">Privacy Level</label>
+                    {{ form.privacy_level }}
+                </div>
+
+                <input type="submit" value="Update">
+            </form>
+        </div>
+
+        <div class="form-div-cards">
+            {% if group.privacy_level == group.PrivacyLevels.RESTRICTED %}
+                <div>
+                    <h1 class="text-xl font-splatoon1">Pending Join Requests</h1>
+                    <p>
+                        Your group is in restricted mode! You must approve join requests before they can join.
+                    </p>
+
+                    <form action="{% url 'groups:answer_join_request' group.id %}" method="post"
+                          class="form-css flex flex-row gap-4">
+                        {% csrf_token %}
+                        <table class="w-full table-auto border-collapse">
+                            <thead>
+                            <tr>
+                                <th class="border border-slate-200 p-1">Username</th>
+                                <th class="border border-slate-200 p-1">Accept</th>
+                                <th class="border border-slate-200 p-1">Deny</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for join_request in group.pending_join_requests.all %}
+                                <tr>
+                                    <td class="border border-slate-200 p-1 font-mono">{{ join_request.username }}</td>
+                                    <td class="border border-slate-200 p-1">
+                                        <button name="answer" value="{{ join_request.id }};accept"
+                                                class="p-1 rounded bg-pink-800 hover:bg-pink-900">
+                                            ✅
+                                        </button>
+                                    </td>
+                                    <td class="border border-slate-200 p-1">
+                                        <button name="answer" value="{{ join_request.id }};deny"
+                                                class="p-1 rounded bg-pink-800 hover:bg-pink-900">
+                                            ❌
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            {% elif group.privacy_level == group.PrivacyLevels.PRIVATE %}
+                <div>
+                    <h1 class="text-xl font-splatoon1">Send Invites</h1>
+                    <p class="py-2">
+                        Your group is private! You must send invites to users before they can join.
+                    </p>
+
+                    <form action="{% url 'groups:invite_to_group' group.id %}" method="post"
+                          class="form-css">
+                        {% csrf_token %}
+
+                        {{ group_invite_form.as_div }}
+
+                        <input type="submit" value="Update">
+                    </form>
+
+                    {% if group.pending_invites.count > 0 %}
+                        <h2 class="text-lg font-splatoon1">Pending Invites</h2>
+                        <p class="py-2">
+                            These users have been invited to your group, but have not accepted yet.
+                        </p>
+                        <ul class="list-disc list-inside">
+                            {% for invite in group.pending_invites.all %}
+                                <li>{{ invite.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

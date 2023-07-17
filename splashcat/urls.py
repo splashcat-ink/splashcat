@@ -39,6 +39,7 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     path('unicorn/', include('django_unicorn.urls')),
     path('users/', include('users.urls')),
+    path('groups/', include('groups.urls')),
     path('battles/', include('battles.urls')),
     path('@<str:username>/', users_views.profile, name='profile'),
     path('@<str:username>/battles/', users_views.profile_battle_list, name='profile_battles_list'),
