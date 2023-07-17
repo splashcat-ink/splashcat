@@ -32,10 +32,20 @@ def view_group(request, group_id):
     group_recent_battles = Battle.objects.with_prefetch().filter(uploader__in=group_all_members).order_by(
         "-played_time")[:16]
     is_group_member = request.user.is_authenticated and request.user in group_all_members
+
+    battles = Battle.objects.filter(uploader__in=group_all_members)
+
+    win_count = battles.filter(judgement='WIN').count()
+    lose_count = battles.exclude(judgement__in=['WIN', 'DRAW']).count()
+    win_rate = win_count / (win_count + lose_count) * 100 if win_count + lose_count else 0
+
     return render(request, 'groups/view.html', {
         'group': group,
         'group_recent_battles': group_recent_battles,
         'is_group_member': is_group_member,
+        'win_count': win_count,
+        'lose_count': lose_count,
+        'win_rate': win_rate,
     })
 
 

@@ -47,6 +47,22 @@
         </div>
     {% endif %}
 
+    <h2 class="font-splatoon1 text-xl">Statistics</h2>
+    <div class="flex flex-row flex-wrap divide-x-2 divide-gray-500 gap-y-2">
+        <div class="px-4">
+            <div class="text-lg">Victories</div>
+            <div class="text-2xl">{{ win_count }}</div>
+        </div>
+        <div class="px-4">
+            <div class="text-lg">Defeats</div>
+            <div class="text-2xl">{{ lose_count }}</div>
+        </div>
+        <div class="px-4">
+            <div class="text-lg">Win Rate</div>
+            <div class="text-2xl">{{ win_rate|floatformat:1 }}%</div>
+        </div>
+    </div>
+
     <h2 class="font-splatoon1 text-xl">Recent Battles</h2>
     {% if group_recent_battles|length == 0 %}
         <div class="flex flex-col gap-2 items-center">
