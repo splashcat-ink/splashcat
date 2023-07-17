@@ -13,12 +13,12 @@
             {% endif %}
         </div>
         <div class="text-sm text-gray-400">@{{ user.username }}</div>
-        {% if show_splashtag == True %}
-            {% with user.get_splashtag as splashtag %}
-                {% if splashtag %}
-                    {% include "includes/splashtag.html" with splashtag=splashtag %}
-                {% endif %}
-            {% endwith %}
-        {% endif %}
     </div>
+    {% if show_splashtag == True %}
+        {% with user.get_splashtag as splashtag %}
+            {% if splashtag %}
+                {% include "includes/splashtag.html" with splashtag=splashtag %}
+            {% endif %}
+        {% endwith %}
+    {% endif %}
 </a>
