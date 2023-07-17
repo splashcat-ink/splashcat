@@ -63,7 +63,7 @@
                             <tbody>
                             {% for join_request in group.pending_join_requests.all %}
                                 <tr>
-                                    <td class="border border-slate-200 p-1 font-mono">{{ join_request.username }}</td>
+                                    <td class="border border-slate-200 p-1">{{ join_request.username }}</td>
                                     <td class="border border-slate-200 p-1">
                                         <button name="answer" value="{{ join_request.id }};accept"
                                                 class="p-1 rounded bg-pink-800 hover:bg-pink-900">

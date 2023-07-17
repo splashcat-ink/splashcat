@@ -50,7 +50,7 @@
             <tbody>
             {% for group in pending_invites %}
                 <tr>
-                    <td class="border border-slate-200 p-1 font-mono"><a
+                    <td class="border border-slate-200 p-1"><a
                             href="{% url 'groups:view_group' group.id %}">{{ group.name }}</a></td>
                     <td class="border border-slate-200 p-1">
                         <form action="{% url 'groups:answer_group_invite' group.id %}" method="post">
