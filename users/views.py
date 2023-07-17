@@ -26,7 +26,7 @@ from .models import User, GitHubLink, ApiKey
 def profile(request, username: str):
     user = get_object_or_404(User, username__iexact=username)
     latest_battles = user.battles.with_prefetch().order_by('-played_time') \
-                         .select_related('vs_stage__name')[:12]
+                         .select_related('vs_stage__name')[:18]
     splashtag = latest_battles[0].splashtag if latest_battles else None
 
     win_count = user.battles.filter(judgement='WIN').count()
