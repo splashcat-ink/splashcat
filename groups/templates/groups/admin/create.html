@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+    <div class="flex flex-row gap-4">
+        <h1 class="text-3xl font-splatoon1 mb-2">
+            {% block title %}
+                Group Creation
+            {% endblock %}
+        </h1>
+    </div>
+
+    <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+        <div>
+            {{ form.non_field_errors }}
+
+            <form class="form-css form-div-cards" method="post" action="{% url "groups:create_group" %}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div>
+                    {{ form.name.errors }}
+                    <label class="text-xl" for="{{ form.name.id_for_label }}">Name</label>
+                    {{ form.name }}
+                </div>
+
+                <div>
+                    {{ form.description.errors }}
+                    <label class="text-xl" for="{{ form.description.id_for_label }}">Description</label>
+                    {{ form.description }}
+                </div>
+
+                <div>
+                    {{ form.privacy_level.errors }}
+                    <label class="text-xl" for="{{ form.privacy_level.id_for_label }}">Privacy Level</label>
+                    {{ form.privacy_level }}
+                </div>
+
+                <input type="submit" value="Create">
+            </form>
+        </div>
+    </div>
+{% endblock %}

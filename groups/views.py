@@ -59,6 +59,22 @@ def group_admin(request, group_id):
     })
 
 
+def create_group(request):
+    if request.method == 'POST':
+        form = GroupAdminForm(request.POST, request.FILES)
+        if form.is_valid():
+            group = form.save(commit=False)
+            group.owner = request.user
+            group.save()
+            messages.success(request, 'Group created! Invite some friends to join.')
+            return redirect('groups:view_group', group_id=group.pk)
+    else:
+        form = GroupAdminForm()
+    return render(request, 'groups/admin/create.html', {
+        'form': form,
+    })
+
+
 @require_POST
 def request_join_group(request, group_id):
     group = get_object_or_404(Group, pk=group_id)

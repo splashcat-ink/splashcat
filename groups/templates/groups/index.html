@@ -9,6 +9,12 @@
         See how you preform as a team or compete on the leaderboards!
     </p>
 
+    <div class="py-4">
+        <a href="{% url 'groups:create_group' %}" class="bg-purple-700 hover:bg-purple-800 p-2 rounded">
+            Create Group
+        </a>
+    </div>
+
     {% if member_groups|length > 0 %}
         <h2 class="font-splatoon1 text-2xl py-1">Joined Groups</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
