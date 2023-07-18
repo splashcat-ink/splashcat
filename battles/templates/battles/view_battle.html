@@ -245,7 +245,7 @@
         {% if related_battles|length > 0 %}
             <h1 class="text-2xl font-splatoon1 pt-2">Related Battles</h1>
             <span class="text-lg pt-2">Other Splashcat users have uploaded this same battle!</span>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pt-2">
                 {% for related_battle in related_battles %}
                     {% include 'users/includes/battle-card.html' with battle=related_battle display_uploader=True %}
                 {% endfor %}
