@@ -1,0 +1,91 @@
+<div class="flex flex-nowrap gap-2 rounded-full bg-black/50 p-1 cursor-pointer relative"
+     _="on click get the next <dialog/> then call it.showModal()">
+    {% if player.is_self %}
+        <svg class="fill-yellow-300 absolute -left-8 -top-1 w-10 h-10"
+             xmlns="http://www.w3.org/2000/svg" width="25" height="24" fill="none"
+             viewBox="0 0 25 24">
+            <path fill-rule="evenodd"
+                  d="M15.57 0L0 1.015 6.882 23l12-4.616-.13 4.193L24 15.982l-7.484-3.975 1.851 3.835-6.668.393L15.569 0z"
+                  clip-rule="evenodd"></path>
+        </svg>
+    {% endif %}
+
+    <img src="{{ player.weapon.flat_image.url }}"
+         class="inline-block h-10 w-10" alt="">
+    <div class="shrink min-w-0 flex flex-col whitespace-nowrap">
+        <div class="text-xs text-gray-300 truncate">{{ player.byname }}</div>
+        <div class="text-lg">{{ player.name }}</div>
+    </div>
+    <div class="grow"></div>
+    <div class="flex-none flex flex-row gap-1 px-4 justify-end rounded-full min-w-fit bg-black/50">
+        <span class="text-xl w-min whitespace-nowrap pt-1">{{ player.paint }}p</span>
+        <span class="text-lg w-min whitespace-nowrap pt-[2px]">
+            {% if player.species == "OCTOLING" %}
+                {% include "battles/svg/octoling_splat.html" with color=team.color %}
+            {% else %}
+                {% include "battles/svg/inkling_splat.html" with color=team.color %}
+            {% endif %}
+            x{{ player.kills|default_if_none:"--" }}
+            {% if player.assists and player.assists != 0 %}
+                <sub class="text-xs text-gray-300">
+                    ({{ player.assists }})
+                </sub>
+            {% endif %}
+        </span>
+        <span class="text-lg w-min whitespace-nowrap pt-[2px]">
+            {% if player.species == "OCTOLING" %}
+                {% include "battles/svg/octoling_splatted.html" with color=next_team.color %}
+            {% else %}
+                {% include "battles/svg/inkling_splatted.html" with color=next_team.color %}
+            {% endif %}
+            x{{ player.deaths|default_if_none:"--" }}
+        </span>
+        <span class="text-lg w-min whitespace-nowrap">
+            {% with maskingId=player.npln_id %}
+                <svg width="24" class="h-4 w-4 relative top-0" viewBox="0 0 128 128"
+                     fill="none"
+                     xmlns="http://www.w3.org/2000/svg"
+                     role="img" aria-label="Special-Weapon Uses"
+                     preserveAspectRatio="xMidYMid slice">
+                    <mask id="__{{ maskingId }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
+                        <image x="0" y="0" width="{{ player.weapon.special.mask_image.width }}"
+                               height="{{ player.weapon.special.mask_image.height }}"
+                               href="{{ player.weapon.special.mask_image.url }}">
+                        </image>
+                    </mask>
+                    <rect x="0" y="0" width="{{ player.weapon.special.mask_image.width }}"
+                          height="{{ player.weapon.special.mask_image.height }}"
+                          fill="{{ team.color.css }}"
+                          mask="url(#__{{ maskingId }})"></rect>
+                    <image x="0" y="0" width="{{ player.weapon.special.overlay_image.width }}"
+                           height="{{ player.weapon.special.overlay_image.height }}"
+                           href="{{ player.weapon.special.overlay_image.url }}">
+                    </image>
+                </svg>
+            {% endwith %}
+            x{{ player.specials|default_if_none:"--" }}
+        </span>
+    </div>
+</div>
+
+<dialog
+        class="open:backdrop:backdrop-blur-sm open:backdrop:bg-purple-400/75 open:backdrop:transition-all
+                transform rounded-xl text-purple-50
+                bg-gray-800 shadow-xl transition-all
+                open:flex open:flex-col open:items-center open:gap-4"
+>
+    {% include "includes/splashtag.html" with splashtag=player.splashtag %}
+    <div class="text-xl font-splatoon1">Weapon Used</div>
+    <div>
+        {% include "battles/includes/weapon.html" with weapon=player.weapon %}
+    </div>
+    <div class="text-xl font-splatoon1">Gear Used</div>
+    <div class="flex justify-center gap-4">
+        {% include "battles/includes/gear.html" with gear=player.head_gear %}
+        {% include "battles/includes/gear.html" with gear=player.clothing_gear %}
+        {% include "battles/includes/gear.html" with gear=player.shoes_gear %}
+    </div>
+    <button class="w-full transition-colors bg-gray-700 hover:bg-gray-600 rounded-full p-2 text-xl"
+            _="on click get the closest parent <dialog/> then call it.close()">Close
+    </button>
+</dialog>
