@@ -24,18 +24,30 @@ from users.models import User, SponsorshipTiers
 
 def view_battle(request, battle_id):
     battle: Battle = get_object_or_404(Battle.objects.with_prefetch(True), id=battle_id)
+
+    team_bar_display = make_team_bar_display(battle)
     uploader_latest_battle = battle.uploader.battles.latest("played_time")
+
     return render(request, 'battles/view_battle.html', {
         'battle': battle,
         'latest_battle': uploader_latest_battle,
+        'team_bar_display': team_bar_display,
     })
 
 
 def battle_opengraph(request, battle_id):
     battle: Battle = get_object_or_404(Battle.objects.with_prefetch(True), id=battle_id)
 
-    team_bar_display = []
+    team_bar_display = make_team_bar_display(battle)
 
+    return render(request, 'battles/battle_opengraph.html', {
+        'battle': battle,
+        'team_bar_display': team_bar_display,
+    })
+
+
+def make_team_bar_display(battle):
+    team_bar_display = []
     total = 0
     for i, team in enumerate(battle.teams.all()):
         team_value = 0
@@ -57,16 +69,11 @@ def battle_opengraph(request, battle_id):
             team_bar_display.insert(0, display_object)
         else:
             team_bar_display.append(display_object)
-
     if total == 0:
         total = 1
     for display_object in team_bar_display:
         display_object['width'] = display_object['team_value'] / total * 100
-
-    return render(request, 'battles/battle_opengraph.html', {
-        'battle': battle,
-        'team_bar_display': team_bar_display,
-    })
+    return team_bar_display
 
 
 def redirect_from_splatnet_id(request, uploader_username, splatnet_id):

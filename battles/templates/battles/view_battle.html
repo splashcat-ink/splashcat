@@ -108,9 +108,6 @@
         </div>
     </div>
 
-    <img src="https://cdn.splashcat.ink/image-render/battle/{{ battle.id }}/render.png"
-         alt="{{ battle.vs_stage.name.string }}" class="w-full h-auto md:max-w-7xl" width="1200" height="630">
-
     {% if battle.judgement == "EXEMPTED_LOSE" %}
         <span class="bg-gray-700/60 text-xl p-4 rounded inline-block my-4">
             Some players disconnected early on, so the match was a draw.
@@ -125,117 +122,96 @@
         </span>
     {% endif %}
 
-    <div class="grid grid-cols-1 {% if battle.teams.count <= 2 %}md:grid-cols-2 xl:grid-cols-3{% else %}lg:grid-cols-3{% endif %} gap-4 py-4 px-1">
-        {% for team in battle.teams.all|dictsort:"order" %}
-            <div
-                    class="rounded-lg bg-[color:var(--team-color)] p-2 card-mask -rotate-1 odd:rotate-1"
-                    style="--team-color: {{ team.color.css }};"
-            >
-                <div class="font-splatoon1 text-2xl">
-                    {% if team.judgement == "WIN" %}
-                        VICTORY
-                    {% elif team.judgement == "DRAW" %}
-                        DRAW
-                    {% elif team.judgement == "LOSE" %}
-                        DEFEAT
-                    {% else %}
-                        --
-                    {% endif %}
-                </div>
+    <div class="max-w-[1200px] bg-[url:var(--stage-image)] h-fit bg-cover grid grid-cols-1 auto-rows-auto lg:grid-cols-5 lg:grid-rows-5 relative pt-2 lg:pt-0"
+         style="--stage-image: url({{ battle.vs_stage.image.url }});">
+        <div class="row-start-3 row-end-6 lg:col-start-4 lg:col-end-6 lg:row-span-full bg-gray-800/70 bg-[url('../images/tapes-transparent.png')] bg-contain px-8 flex flex-col lg:flex-col {% if battle.teams.count > 2 %}gap-2 py-4{% else %}gap-8 py-12 md:flex-row{% endif %}">
+            {% for team in battle.teams.all|dictsort:"order" %}
+                {% include "battles/components/team_card.html" with team=team %}
+            {% endfor %}
+        </div>
 
-                {% if team.fest_team_name %}
-                    <div class="text-xl">Team {{ team.fest_team_name }}</div>
+        <div class="row-start-1 row-end-2 lg:col-start-1 lg:col-end-4 lg:row-start-4 lg:row-end-5 px-4 text-center text-gray-50 flex flex-col gap-2 justify-end">
+            <span>
+                <span>{{ battle.played_time }}</span>
+                <span>{{ battle.duration|duration }}</span>
+            </span>
+
+            <span>
+                <span>{{ battle.player.paint }}p</span>
+                {% if battle.power %}
+                    Power: {{ battle.power|floatformat:1 }}
                 {% endif %}
+                {% if battle.splatfest_clout_contribution %}
+                    <span>Clout: {{ battle.splatfest_clout_contribution }}</span>
+                {% endif %}
+                {% if battle.splatfest_festival_shells %}
+                    <span>Festival Shells: {{ battle.splatfest_festival_shells }}</span>
+                {% endif %}
+            </span>
+        </div>
 
-                <div class="flex flex-col gap-2">
-                    {% with next_team=team.next_team %}
-                        {% for player in team.players.all %}
-                            <div class="flex flex-nowrap gap-2 rounded-full bg-gray-900/50 p-1 cursor-pointer"
-                                 _="on click get the next <dialog/> then call it.showModal()">
-                                <img src="{{ player.weapon.flat_image.url }}"
-                                     class="inline-block h-10 w-10" alt="">
-                                <div class="shrink min-w-0 flex flex-col whitespace-nowrap">
-                                    <div class="text-xs text-gray-300 truncate">{{ player.byname }}</div>
-                                    <div class="text-lg">{{ player.name }}</div>
-                                </div>
-                                <div class="grow"></div>
-                                <div class="flex-none flex flex-row gap-1 px-4 justify-end rounded-full min-w-fit bg-black/50">
-                                    <span class="text-xl w-min whitespace-nowrap pt-1">{{ player.paint }}p</span>
-                                    <span class="text-lg w-min whitespace-nowrap pt-[2px]">
-                                    {% if player.species == "OCTOLING" %}
-                                        {% include "battles/svg/octoling_splat.html" with color=team.color %}
-                                    {% else %}
-                                        {% include "battles/svg/inkling_splat.html" with color=team.color %}
-                                    {% endif %}
-                                        x{{ player.kills|default_if_none:"--" }}
-                                        {% if player.assists and player.assists != 0 %}
-                                            <sub class="text-xs text-gray-300">
-                                                    ({{ player.assists }})
-                                                </sub>
-                                        {% endif %}
-                            </span>
-                                    <span class="text-lg w-min whitespace-nowrap pt-[2px]">
-                                        {% if player.species == "OCTOLING" %}
-                                            {% include "battles/svg/octoling_splatted.html" with color=next_team.color %}
-                                        {% else %}
-                                            {% include "battles/svg/inkling_splatted.html" with color=next_team.color %}
-                                        {% endif %}
-                                        x{{ player.deaths|default_if_none:"--" }}
-                            </span>
-                                    <span class="text-lg w-min whitespace-nowrap">
-                                        {% with maskingId=player.npln_id %}
-                                            <svg width="24" class="h-4 w-4 relative top-0" viewBox="0 0 128 128"
-                                                 fill="none"
-                                                 xmlns="http://www.w3.org/2000/svg"
-                                                 role="img" aria-label="Special-Weapon Uses"
-                                                 preserveAspectRatio="xMidYMid slice">
-                                    <mask id="__{{ maskingId }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
-                                        <image x="0" y="0" width="{{ player.weapon.special.mask_image.width }}"
-                                               height="{{ player.weapon.special.mask_image.height }}"
-                                               href="{{ player.weapon.special.mask_image.url }}">
-                                        </image>
-                                    </mask>
-                                    <rect x="0" y="0" width="{{ player.weapon.special.mask_image.width }}"
-                                          height="{{ player.weapon.special.mask_image.height }}"
-                                          fill="{{ team.color.css }}"
-                                          mask="url(#__{{ maskingId }})"></rect>
-                                    <image x="0" y="0" width="{{ player.weapon.special.overlay_image.width }}"
-                                           height="{{ player.weapon.special.overlay_image.height }}"
-                                           href="{{ player.weapon.special.overlay_image.url }}">
-                                    </image>
-                                </svg>
-                                        {% endwith %}
-                                        x{{ player.specials|default_if_none:"--" }}
-                            </span>
+        <div class="row-start-2 row-end-3 lg:col-start-1 lg:col-end-4 lg:row-start-5 lg:row-end-6 bg-gray-800/50 relative bg-[url('../images/tapes-transparent.png')] bg-contain rounded-lg p-4 mx-4 mb-4 bottom-0">
+            <div class="flex gap-4">
+            <span class="text-3xl font-splatoon1">
+                {{ battle.vs_stage.name.string }}
+            </span>
+                <div class="grow"></div>
+                <span class="text-2xl">
+                <img src="/static/images/rule-icons/{{ battle.get_vs_rule_image_name|lower }}.svg"
+                     class="inline-block h-10 w-10">
+                {{ battle.get_vs_rule_display }}
+            </span>
+            </div>
+            <div class="mt-1 w-full h-1/2 bg-black rounded-full overflow-hidden flex">
+                {% if battle.judgement == "DRAW" %}
+                    <span class="text-2xl text-center align-middle w-full h-full pt-1">
+                No contest.
+            </span>
+                {% elif battle.judgement == "DEEMED_LOSE" %}
+                    <span class="text-2xl text-center align-middle w-full h-full pt-1">
+                The match was not fully completed.
+            </span>
+                {% else %}
+                    {% if team_bar_display|length > 2 %}
+                        {% for team in team_bar_display %}
+                            {% if team.team_value != 0 %}
+                                <div
+                                        class="w-[var(--bar-width)] h-full bg-[color:var(--team-color)] text-4xl font-splatoon1 align-middle text-center
+                                first:text-left last:text-right first:pl-4 last:pr-4 overflow-visible whitespace-nowrap {% if team.width < 50 %}z-10{% endif %}"
+                                        style="--team-color: {{ team.team_color.css }}; --bar-width: {{ team.width }}%">
+                                    {{ team.display_text }}</div>
+                            {% else %}
+                                <div></div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="h-full w-full relative before:block before:absolute before:w-full before:h-[40px] before:-left-[0.5px] before:-top-[5px] before:content-[''] before:bg-[url('/static/opengraph/waves.png')] before:bg-top before:bg-no-repeat before:bg-[length:100%_25px] before:z-10
+                                bg-[var(--last-team-color)] bg-[url('/static/opengraph/bubbles.png')] bg-contain"
+                             style="--last-team-color:
+                                 {% with team_bar_display|last as last %}{{ last.team_color.css }}{% endwith %}">
+                            <div class="float-left text-left h-full flex items-center">
+                                <div class="absolute h-full bg-[var(--team-color)] bg-[url('/static/opengraph/bubbles.png')] bg-contain [mask-image:url('/static/opengraph/cutout.png')] [mask-repeat:no-repeat] [mask-size:cover] [mask-position:right_center]"
+                                     style="width: {{ team_bar_display.0.width }}%; --team-color: {{ team_bar_display.0.team_color.css }};"
+                                ></div>
+                                <div class="font-splatoon1 relative text-3xl px-3 whitespace-nowrap z-20">
+                                    {{ team_bar_display.0.display_text }}
                                 </div>
                             </div>
-
-                            <dialog
-                                    class="open:backdrop:backdrop-blur-sm open:backdrop:bg-purple-400/75 open:backdrop:transition-all
-                                transform rounded-xl text-purple-50
-                                bg-gray-800 shadow-xl transition-all
-                                open:flex open:flex-col open:items-center open:gap-4"
-                            >
-                                {% include "includes/splashtag.html" with splashtag=player.splashtag %}
-                                <div class="text-xl font-splatoon1">Weapon Used</div>
-                                <div>
-                                    {% include "battles/includes/weapon.html" with weapon=player.weapon %}
+                            <div class="float-right text-right h-full flex items-center">
+                                <div class="font-splatoon1 relative text-3xl px-3 whitespace-nowrap z-20">
+                                    {{ team_bar_display.1.display_text }}
                                 </div>
-                                <div class="text-xl font-splatoon1">Gear Used</div>
-                                <div class="flex justify-center gap-4">
-                                    {% include "battles/includes/gear.html" with gear=player.head_gear %}
-                                    {% include "battles/includes/gear.html" with gear=player.clothing_gear %}
-                                    {% include "battles/includes/gear.html" with gear=player.shoes_gear %}
-                                </div>
-                                <button class="w-full transition-colors bg-gray-700 hover:bg-gray-600 rounded-full p-2 text-xl"
-                                        _="on click get the closest parent <dialog/> then call it.close()">Close
-                                </button>
-                            </dialog>
-                        {% endfor %}
-                    {% endwith %}
-                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </div>
-        {% endfor %}
+        </div>
+
+        <span class="text-white/60 pl-2 pb-2 absolute bottom-0 left-0 text-lg font-light">
+            splashcat.ink
+            <span class="pl-4">{{ battle.player.name }}#{{ battle.player.name_id }}</span>
+        </span>
     </div>
 
     {% if battle.awards.count > 0 %}

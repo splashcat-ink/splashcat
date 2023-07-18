@@ -70,7 +70,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django_celery_results',
     'django_celery_beat',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'django_htmx',
     'django_unicorn',
     # 'silk',
@@ -87,7 +87,7 @@ MIDDLEWARE = [
     'splashcat.middleware.FlyDotIoMiddleware',  # handles redirecting to the primary region based on cookie and method
     # 'silk.middleware.SilkyMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
