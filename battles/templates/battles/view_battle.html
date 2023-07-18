@@ -265,7 +265,7 @@
         {% endif %}
     {% endif %}
 
-    <div class="sticky left-0 bottom-0 w-full flex gap-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-2 mt-4 -mb-3 sm:rounded-t-xl bg-gray-700 whitespace-nowrap text-xs sm:text-sm md:text-base">
+    <div class="sticky left-0 bottom-0 w-full flex gap-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-2 mt-4 -mb-3 sm:rounded-t-xl bg-gray-700 whitespace-nowrap text-xs sm:text-sm md:text-base z-40">
         <a href="{{ latest_battle.get_absolute_url }}" class="py-2 px-4 rounded-full bg-gray-600">Latest Battle</a>
         <div class="grow"></div>
         <a href="{{ battle.get_player_next_battle.get_absolute_url }}"
