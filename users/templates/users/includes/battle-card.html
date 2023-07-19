@@ -1,5 +1,5 @@
 {% load static %}
-<a class="group hover:scale-110 card-mask rounded-2xl {% if battle.vs_mode == "BANKARA" %}bg-splatoon-battle-ranked{% elif battle.vs_mode == "X_MATCH" %}bg-splatoon-battle-xmatch{% elif battle.vs_mode == "CHALLENGE" %}bg-splatoon-battle-league{% else %}bg-splatoon-battle-regular{% endif %} battle-card-background transition duration-200 hover:rotate-2 odd:hover:-rotate-2 drop-shadow-lg hover:drop-shadow-2xl {% if battle.judgement != "WIN" %}brightness-[0.80]{% endif %}"
+<a class="group hover:scale-110 hover:z-10 card-mask rounded-2xl {% if battle.vs_mode == "BANKARA" %}bg-splatoon-battle-ranked{% elif battle.vs_mode == "X_MATCH" %}bg-splatoon-battle-xmatch{% elif battle.vs_mode == "CHALLENGE" %}bg-splatoon-battle-league{% else %}bg-splatoon-battle-regular{% endif %} battle-card-background transition duration-200 hover:rotate-2 odd:hover:-rotate-2 drop-shadow-lg hover:drop-shadow-2xl {% if battle.judgement != "WIN" %}brightness-[0.80]{% endif %}"
    href="{% url 'battles:view_battle' battle.id %}">
     {% if battle.vs_mode == "FEST" and battle.splatfest_clout_multiplier != "NONE" %}
         {% include "splatnet_assets/squid_tape.html" with bg="bg-purple-600 -rotate-6 left-1 top-1 absolute" content=battle.get_splatfest_clout_multiplier_display %}
