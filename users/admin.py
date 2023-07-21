@@ -24,8 +24,7 @@ class GitHubLinkInline(TabularInline):
 class UserAdmin(AbstractUserAdmin):
     fieldsets = AbstractUserAdmin.fieldsets + (
         (None, {"fields": ["profile_picture", "saved_favorite_color", "data_export_pending", "last_data_export",
-                           "verified_email", "preferred_pronouns", "approved_to_upload_videos",
-                           "video_collection_id"]}),)
+                           "verified_email", "preferred_pronouns"]}),)
     inlines = [GitHubLinkInline, MembershipInline]
     list_display = ("username", "display_name", "email", "is_staff", "date_joined", "verified_email",)
     search_fields = ("username", "display_name", "email")
