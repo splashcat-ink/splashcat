@@ -221,6 +221,7 @@ def upload_battle(request):
     if related_video:
         related_video.battle = battle
         related_video.save()
+        related_video.update_video_thumbnail()
 
     if user.sponsor_tiers[SponsorshipTiers.S_PLUS_PONSOR]:
         generate_battle_description.delay(battle.id)
