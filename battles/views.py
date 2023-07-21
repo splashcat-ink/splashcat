@@ -217,6 +217,11 @@ def upload_battle(request):
     battle.uploader_agent_extra = uploader_agent.get('extra')
     battle.save()
 
+    related_video = battle.find_related_battle_video()
+    if related_video:
+        related_video.battle = battle
+        related_video.save()
+
     if user.sponsor_tiers[SponsorshipTiers.S_PLUS_PONSOR]:
         generate_battle_description.delay(battle.id)
 
