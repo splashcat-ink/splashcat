@@ -81,7 +81,6 @@ INSTALLED_APPS = [
     'splatnet_assets',
     'notifications',
     'groups',
-    'videos',
 ]
 
 MIDDLEWARE = [
@@ -216,7 +215,7 @@ STORAGES = global_settings.STORAGES | {
     },
 }
 
-if not DEBUG or True:
+if not DEBUG:
     STORAGES |= {"default": {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
     }
@@ -236,9 +235,6 @@ B2_SECRET_ACCESS_KEY = os.environ.get('B2_SECRET_ACCESS_KEY')
 
 BUNNY_NET_DATA_EXPORTS_TOKEN = os.environ.get('BUNNY_NET_DATA_EXPORTS_TOKEN')
 BUNNY_NET_DATA_EXPORTS_CDN_HOST = 'data-exports.splashcat.ink'
-
-BUNNY_VIDEO_API_KEY = os.environ.get('BUNNY_VIDEO_API_KEY')
-BUNNY_VIDEO_LIBRARY_ID = int(os.environ.get('BUNNY_VIDEO_LIBRARY_ID', 0))
 
 HCAPTCHA_SECRET_KEY = os.environ.get('HCAPTCHA_SECRET_KEY')
 
@@ -301,13 +297,6 @@ SERVER_EMAIL = 'server@splashcat.ink'
 #             "KEY_PREFIX": 'django_cache_',
 #         }
 #     }
-
-if DEBUG:
-    CACHES = {
-        "default": {
-            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
-        }
-    }
 
 # OpenID Connect
 OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'

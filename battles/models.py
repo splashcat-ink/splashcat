@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Prefetch
@@ -234,13 +232,6 @@ class Battle(models.Model):
             return self.get_previous_by_played_time(uploader_id=self.uploader_id)
         except Battle.DoesNotExist:
             return None
-
-    def find_related_battle_video(self):
-        return self.uploader.battlevideo_set.filter(
-            battle_start_time__gte=self.played_time - timedelta(minutes=1),
-            battle_start_time__lte=self.played_time + timedelta(minutes=1),
-            battle__isnull=True,
-        ).first()
 
 
 class BattleAward(models.Model):
