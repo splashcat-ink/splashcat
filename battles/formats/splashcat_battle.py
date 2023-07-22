@@ -269,7 +269,6 @@ class Player:
     head_gear: Gear
     is_me: bool
     name: str
-    name_id: str
     npln_id: str
     paint: int
     shoes_gear: Gear
@@ -281,6 +280,7 @@ class Player:
     deaths: Optional[int] = None
     """Should report the same way that SplatNet 3 does (kills + assists)"""
     kills: Optional[int] = None
+    name_id: Optional[str] = None
     noroshi_try: Optional[int] = None
     specials: Optional[int] = None
 
@@ -293,7 +293,6 @@ class Player:
         head_gear = Gear.from_dict(obj.get("headGear"))
         is_me = from_bool(obj.get("isMe"))
         name = from_str(obj.get("name"))
-        name_id = from_str(obj.get("nameId"))
         npln_id = from_str(obj.get("nplnId"))
         paint = from_int(obj.get("paint"))
         shoes_gear = Gear.from_dict(obj.get("shoesGear"))
@@ -304,10 +303,11 @@ class Player:
         assists = from_union([from_int, from_none], obj.get("assists"))
         deaths = from_union([from_int, from_none], obj.get("deaths"))
         kills = from_union([from_int, from_none], obj.get("kills"))
+        name_id = from_union([from_str, from_none], obj.get("nameId"))
         noroshi_try = from_union([from_int, from_none], obj.get("noroshiTry"))
         specials = from_union([from_int, from_none], obj.get("specials"))
-        return Player(badges, clothing_gear, disconnected, head_gear, is_me, name, name_id, npln_id, paint, shoes_gear,
-                      species, splashtag_background_id, title, weapon_id, assists, deaths, kills, noroshi_try, specials)
+        return Player(badges, clothing_gear, disconnected, head_gear, is_me, name, npln_id, paint, shoes_gear, species,
+                      splashtag_background_id, title, weapon_id, assists, deaths, kills, name_id, noroshi_try, specials)
 
     def to_dict(self) -> dict:
         result: dict = {}
@@ -317,7 +317,6 @@ class Player:
         result["headGear"] = to_class(Gear, self.head_gear)
         result["isMe"] = from_bool(self.is_me)
         result["name"] = from_str(self.name)
-        result["nameId"] = from_str(self.name_id)
         result["nplnId"] = from_str(self.npln_id)
         result["paint"] = from_int(self.paint)
         result["shoesGear"] = to_class(Gear, self.shoes_gear)
@@ -331,6 +330,8 @@ class Player:
             result["deaths"] = from_union([from_int, from_none], self.deaths)
         if self.kills is not None:
             result["kills"] = from_union([from_int, from_none], self.kills)
+        if self.name_id is not None:
+            result["nameId"] = from_union([from_str, from_none], self.name_id)
         if self.noroshi_try is not None:
             result["noroshiTry"] = from_union([from_int, from_none], self.noroshi_try)
         if self.specials is not None:

@@ -361,7 +361,7 @@ class Player(models.Model):
     is_self = models.BooleanField()
     npln_id = models.CharField(max_length=100)
     name = models.CharField(max_length=50)
-    name_id = models.CharField(max_length=10)
+    name_id = models.CharField(max_length=10, blank=True, null=True)
     species = models.CharField(max_length=32, choices=Species.choices)
     title_adjective = models.ForeignKey('splatnet_assets.TitleAdjective', on_delete=models.PROTECT, null=True)
     title_subject = models.ForeignKey('splatnet_assets.TitleSubject', on_delete=models.PROTECT, null=True)
