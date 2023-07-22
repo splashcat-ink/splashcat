@@ -36,7 +36,7 @@ def get_title_parts_from_string(title: str):
 
 def get_ability(ability: str):
     try:
-        return Ability.objects.get(name__string_en_us=ability)
+        return Ability.objects.get(name__string_en_us__iexact=ability)
     except Ability.DoesNotExist:
         return Ability.objects.get(internal_id='None')
 
