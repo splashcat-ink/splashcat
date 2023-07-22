@@ -241,6 +241,17 @@
 
     {% include 'includes/splashtag.html' with splashtag=battle.splashtag only %}
 
+    {% if battle.battlevideo %}
+        <h2 class="text-xl font-splatoon1">Video</h2>
+
+        <div class="max-w-3xl aspect-video">
+            <iframe src="https://iframe.mediadelivery.net/embed/140045/{{ battle.battlevideo.bunny_video_id }}?autoplay=false&loop=false&muted=false&preload=false"
+                    loading="lazy" style="border:none;height:100%;width:100%;"
+                    allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
+                    allowfullscreen="allowfullscreen"></iframe>
+        </div>
+    {% endif %}
+
     {% with battle.get_related_battles as related_battles %}
         {% if related_battles|length > 0 %}
             <h1 class="text-2xl font-splatoon1 pt-2">Related Battles</h1>
