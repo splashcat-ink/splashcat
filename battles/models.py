@@ -28,29 +28,67 @@ class BattleManager(models.Manager):
         return super().get_queryset().defer("raw_data")
 
     def with_prefetch(self, include_player_gear=False):
-        player_prefetch_queryset = Player.objects \
-            .prefetch_related('title_adjective__string', 'title_subject__string', 'nameplate_background__image',
-                              'nameplate_badge_1__image', 'nameplate_badge_2__image', 'nameplate_badge_3__image',
-                              'nameplate_badge_1__description', 'nameplate_badge_2__description',
-                              'nameplate_badge_3__description', 'weapon__name', 'weapon__flat_image',
-                              'weapon__sub__name',
-                              'weapon__sub__overlay_image', 'weapon__sub__mask_image', 'weapon__special__name',
-                              'weapon__special__overlay_image', 'weapon__special__mask_image')
+        queryset = self.select_related('uploader__github_link', 'vs_stage__name', 'vs_stage__image') \
+            .prefetch_related('awards__name')
+
+        queryset = queryset.prefetch_related('teams__players__title_adjective__string',
+                                             'teams__players__title_subject__string',
+                                             'teams__players__nameplate_background__image',
+                                             'teams__players__nameplate_badge_1__image',
+                                             'teams__players__nameplate_badge_2__image',
+                                             'teams__players__nameplate_badge_3__image',
+                                             'teams__players__nameplate_badge_1__description',
+                                             'teams__players__nameplate_badge_2__description',
+                                             'teams__players__nameplate_badge_3__description',
+                                             'teams__players__weapon__name',
+                                             'teams__players__weapon__flat_image',
+                                             'teams__players__weapon__image_3d',
+                                             'teams__players__weapon__sub__name',
+                                             'teams__players__weapon__sub__overlay_image',
+                                             'teams__players__weapon__sub__mask_image',
+                                             'teams__players__weapon__special__name',
+                                             'teams__players__weapon__special__overlay_image',
+                                             'teams__players__weapon__special__mask_image')
 
         if include_player_gear:
-            player_prefetch_queryset \
-                .prefetch_related('head_gear__gear__name', 'head_gear__gear__image', 'head_gear__gear__brand',
-                                  'clothing_gear__gear__name', 'clothing_gear__gear__image',
-                                  'clothing_gear__gear__brand',
-                                  'shoes_gear__gear__name', 'shoes_gear__gear__image', 'shoes_gear__gear__brand')
+            queryset = queryset.prefetch_related('teams__players__head_gear__gear__name',
+                                                 'teams__players__head_gear__gear__image',
+                                                 'teams__players__head_gear__gear__brand',
+                                                 'teams__players__head_gear__primary_ability__name',
+                                                 'teams__players__head_gear__primary_ability__image',
+                                                 'teams__players__head_gear__secondary_ability_1__name',
+                                                 'teams__players__head_gear__secondary_ability_1__image',
+                                                 'teams__players__head_gear__secondary_ability_2__name',
+                                                 'teams__players__head_gear__secondary_ability_2__image',
+                                                 'teams__players__head_gear__secondary_ability_3__name',
+                                                 'teams__players__head_gear__secondary_ability_3__image',
 
-        player_prefetch = Prefetch(
-            'teams__players',
-            queryset=player_prefetch_queryset,
-        )
+                                                 'teams__players__clothing_gear__gear__name',
+                                                 'teams__players__clothing_gear__gear__image',
+                                                 'teams__players__clothing_gear__gear__brand',
+                                                 'teams__players__clothing_gear__primary_ability__name',
+                                                 'teams__players__clothing_gear__primary_ability__image',
+                                                 'teams__players__clothing_gear__secondary_ability_1__name',
+                                                 'teams__players__clothing_gear__secondary_ability_1__image',
+                                                 'teams__players__clothing_gear__secondary_ability_2__name',
+                                                 'teams__players__clothing_gear__secondary_ability_2__image',
+                                                 'teams__players__clothing_gear__secondary_ability_3__name',
+                                                 'teams__players__clothing_gear__secondary_ability_3__image',
 
-        return self.select_related('uploader__github_link', 'vs_stage__name', 'vs_stage__image') \
-            .prefetch_related('awards__name').prefetch_related(player_prefetch)
+                                                 'teams__players__shoes_gear__gear__name',
+                                                 'teams__players__shoes_gear__gear__image',
+                                                 'teams__players__shoes_gear__gear__brand',
+                                                 'teams__players__shoes_gear__primary_ability__name',
+                                                 'teams__players__shoes_gear__primary_ability__image',
+                                                 'teams__players__shoes_gear__secondary_ability_1__name',
+                                                 'teams__players__shoes_gear__secondary_ability_1__image',
+                                                 'teams__players__shoes_gear__secondary_ability_2__name',
+                                                 'teams__players__shoes_gear__secondary_ability_2__image',
+                                                 'teams__players__shoes_gear__secondary_ability_3__name',
+                                                 'teams__players__shoes_gear__secondary_ability_3__image',
+                                                 )
+
+        return queryset
 
 
 class Battle(models.Model):
@@ -272,7 +310,7 @@ class Team(models.Model):
     @property
     def next_team(self):
         # get the next team, looping back to the beginning if necessary. used by the template to display colors
-        return self.battle.teams.get(order=(self.order % self.battle.teams.count()) + 1)
+        return self.battle.teams.only('color').get(order=(self.order % self.battle.teams.count()) + 1)
 
     def to_dict(self):
         data = {
