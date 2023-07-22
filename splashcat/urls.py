@@ -41,6 +41,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('groups/', include('groups.urls')),
     path('battles/', include('battles.urls')),
+    path('videos/', include('videos.urls')),
     path('@<str:username>/', users_views.profile, name='profile'),
     path('@<str:username>/battles/', users_views.profile_battle_list, name='profile_battles_list'),
     path('sponsor/', sponsor, name='sponsor'),
