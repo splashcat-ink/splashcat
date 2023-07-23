@@ -139,7 +139,7 @@ class User(AbstractUser):
 
 
 def generate_key():
-    return get_random_string(20)
+    return get_random_string(30)
 
 
 class ApiKey(models.Model):
