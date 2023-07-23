@@ -6,7 +6,7 @@ from django.views.decorators.http import require_POST
 
 from splashcat.decorators import api_auth_required
 from users.models import User
-from videos.bunny import create_video, upload_video as upload_to_bunny
+from videos.bunny import create_video, upload_video as upload_to_bunny, get_video_collection_for_user
 from videos.models import BattleVideo
 
 
@@ -19,10 +19,11 @@ def upload_video(request):
     user: User = request.user
     if not user.approved_to_upload_videos:
         return HttpResponseForbidden()
+    collection_id = get_video_collection_for_user(user)
     battle_start_time = request.POST.get("battle_start_time")
     battle_start_time = datetime.datetime.fromisoformat(battle_start_time)
     video = request.FILES.get("video")
-    video_id = create_video(f'{user.username}-{battle_start_time.isoformat()}', user.video_collection_id)
+    video_id = create_video(f'{user.username}-{battle_start_time.isoformat()}', collection_id)
     upload_to_bunny(video_id, video)
 
     video_object = BattleVideo(

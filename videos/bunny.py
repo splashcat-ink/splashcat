@@ -4,6 +4,8 @@ from urllib.parse import urlencode
 import requests
 from django.conf import settings
 
+from users.models import User
+
 
 def create_video(title, collection_id):
     url = f"https://video.bunnycdn.com/library/{settings.BUNNY_VIDEO_LIBRARY_ID}/videos"
@@ -52,3 +54,28 @@ def set_video_thumbnail(video_id, thumbnail_url):
     }
 
     requests.post(url, headers=headers)
+
+
+def get_video_collection_for_user(user: User):
+    if user.video_collection_id:
+        return user.video_collection_id
+
+    url = "https://video.bunnycdn.com/library/140045/collections"
+
+    headers = {
+        "accept": "application/json",
+        "content-type": "application/*+json"
+    }
+
+    data = {
+        'name': f"@{user.username}",
+    }
+
+    response = requests.post(url, data=json.dumps(data), headers=headers)
+
+    collection_id = response.json().get('guid')
+
+    user.video_collection_id = collection_id
+    user.save()
+
+    return collection_id
