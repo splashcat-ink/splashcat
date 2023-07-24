@@ -1,3 +1,5 @@
+import os
+
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -43,3 +45,10 @@ def uploaders_information(request):
 
 def health_check(request):
     return HttpResponse('okii :3')
+
+
+def robots_txt(request):
+    script_dir = os.path.dirname(__file__)
+    abs_file_path = os.path.join(script_dir, 'robots.txt')
+    with open(abs_file_path) as f:
+        return HttpResponse(f.read(), content_type='text/plain', headers={'Cache-Control': 'public, max-age=86400'})

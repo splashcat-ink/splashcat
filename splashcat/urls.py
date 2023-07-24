@@ -23,7 +23,7 @@ import users.views as users_views
 from battles.sitemaps import BattlesSitemap
 from splashcat import settings
 from splashcat.sitemaps import StaticViewSitemap
-from splashcat.views import home, sponsor, uploaders_information, health_check
+from splashcat.views import home, sponsor, uploaders_information, health_check, robots_txt
 from users.sitemaps import UsersSitemap
 
 sitemaps = {
@@ -49,6 +49,7 @@ urlpatterns = [
     path('health-check/', health_check, name='health_check'),
     path('i18n/', include('django.conf.urls.i18n')),
     path('openid/', include('oidc_provider.urls', namespace='oidc_provider')),
+    path('robots.txt', robots_txt, name='robots_txt'),
     # path('silk/', include('silk.urls', namespace='silk')),
     path(
         "sitemap.xml",
