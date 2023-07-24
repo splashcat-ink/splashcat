@@ -17,14 +17,16 @@
                 loading="lazy"
         >
         {% for ability in gear.secondary_abilities %}
-            <img
-                    src="{{ ability.image.url }}"
-                    alt="{{ ability.name.string }}"
-                    title="{{ ability.name.string }}"
-                    data-tippy="{{ ability.name.string }}"
-                    class="rounded-full bg-black h-6 w-6"
-                    loading="lazy"
-            >
+            {% if ability != None %}
+                <img
+                        src="{{ ability.image.url }}"
+                        alt="{{ ability.name.string }}"
+                        title="{{ ability.name.string }}"
+                        data-tippy="{{ ability.name.string }}"
+                        class="rounded-full bg-black h-6 w-6"
+                        loading="lazy"
+                >
+            {% endif %}
         {% endfor %}
     </div>
 </div>
