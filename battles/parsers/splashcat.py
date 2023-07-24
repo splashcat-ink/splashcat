@@ -35,7 +35,7 @@ def parse_splashcat(data, request):
         battle.anarchy_mode = splashcat_battle.anarchy.mode.value
         battle.anarchy_point_change = splashcat_battle.anarchy.point_change
         battle.power = splashcat_battle.anarchy.power
-        battle.anarchy_rank = splashcat_battle.anarchy.rank
+        battle.anarchy_rank = splashcat_battle.anarchy.rank.value if splashcat_battle.anarchy.rank else None
         battle.anarchy_s_plus_number = splashcat_battle.anarchy.s_plus_number
         battle.anarchy_points = splashcat_battle.anarchy.points
 
