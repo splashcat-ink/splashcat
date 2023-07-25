@@ -158,6 +158,18 @@
         padding-left: var(--squid-size);
         padding-right: var(--squid-size);
     }
+
+    @keyframes preview-image-lazy-load {
+        0% {
+            display: none;
+        }
+        1% {
+            display: block;
+        }
+        100% {
+            display: block;
+        }
+    }
 }
 
 @font-face {
