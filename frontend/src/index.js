@@ -4,12 +4,11 @@ import {browserInit as initHyperscript} from "hyperscript.org";
 
 initHyperscript();
 
-async function shareBattle(battleId) {
+async function webShare(url) {
     if (navigator.share) {
         try {
-            window.plausible('Share', {props: {type: 'Battle'}})
             await navigator.share({
-                url: `https://splashcat.ink/battles/${battleId}/?share`,
+                url,
             });
         } catch (err) {
             console.log(err);
@@ -17,35 +16,31 @@ async function shareBattle(battleId) {
     }
 }
 
-const shareBattleButtons = document.querySelectorAll("button.share-battle");
-for (const button of shareBattleButtons) {
-    if (navigator.share) {
-        button.classList.remove("hidden");
-        button.addEventListener("click", () => {
-            shareBattle(button.dataset.battleId)
-        });
+async function copyToClipboard(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+    } catch (err) {
+        console.error(err.name, err.message);
     }
 }
 
-async function shareProfile(username, cacheBuster) {
-    if (navigator.share) {
-        try {
-            window.plausible('Share', {props: {type: 'Profile'}})
-            await navigator.share({
-                url: `https://splashcat.ink/@${username}/?share&cache=${cacheBuster}`,
-            });
-        } catch (err) {
-            console.log(err);
+const shareButtons = document.querySelectorAll("button.share-button");
+for (const button of shareButtons) {
+    if (button.dataset.shareType === "webShare") {
+        if (!navigator.share) {
+            button.style.display = "none";
         }
-    }
-}
-
-const shareProfileButtons = document.querySelectorAll("button.share-profile");
-for (const button of shareProfileButtons) {
-    if (navigator.share) {
-        button.classList.remove("hidden");
         button.addEventListener("click", () => {
-            shareProfile(button.dataset.username, button.dataset.cacheBuster)
+            window.plausible('Share', {props: {type: button.dataset.contentType, shareType: button.dataset.shareType}})
+            webShare(button.dataset.url);
         });
+    } else if (button.dataset.shareType === "clipboard") {
+        button.addEventListener("click", async () => {
+            window.plausible('Share', {props: {type: button.dataset.contentType, shareType: button.dataset.shareType}})
+            await copyToClipboard(button.dataset.url);
+            button.classList.add("copy-tooltipped");
+        });
+        button.addEventListener("mouseleave", () => button.classList.remove("copy-tooltipped"));
+        button.addEventListener("blur", () => button.classList.remove("copy-tooltipped"));
     }
 }

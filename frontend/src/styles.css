@@ -16,6 +16,25 @@
 }
 
 @layer components {
+    .copy-tooltipped {
+        @apply relative;
+        @apply before:absolute;
+        @apply before:inset-0;
+        @apply before:z-10;
+        @apply before:content-['Copied!'];
+        @apply before:-top-10;
+        @apply before:bg-gray-950;
+        @apply before:text-purple-100;
+        @apply before:rounded;
+        @apply before:px-2;
+        @apply before:py-1;
+        @apply before:w-fit;
+        @apply before:h-fit;
+        @apply before:origin-bottom;
+        @apply before:text-lg;
+        @apply before:font-splatoon2;
+    }
+
     .card-mask {
         mask-image: url("../images/card-mask.svg");
         mask-repeat: no-repeat;
