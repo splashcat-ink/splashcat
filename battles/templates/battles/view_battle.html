@@ -33,7 +33,7 @@
         <time datetime="{{ battle.played_time }}">{{ battle.played_time }}</time>
 
         <button class="share-button inline-block"
-                data-url="https://splashcat.ink/battles/{{ battleId }}/?share"
+                data-url="https://splashcat.ink/battles/{{ battle.id }}/?share"
                 data-content-type="Battle"
                 data-share-type="webShare"
         >
@@ -45,7 +45,7 @@
         </button>
 
         <button class="share-button inline-block"
-                data-url="https://splashcat.ink/battles/{{ battleId }}/?share"
+                data-url="https://splashcat.ink/battles/{{ battle.id }}/?share"
                 data-content-type="Battle"
                 data-share-type="clipboard"
         >
