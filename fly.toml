@@ -46,4 +46,4 @@ url_prefix = "/battles/api/schemas/"
 
 [processes]
 app = "daphne -b 0.0.0.0 -p 8080 splashcat.asgi:application"
-celery-worker = "celery -A splashcat worker -l INFO -B"
+celery-worker = "celery -A splashcat worker -l INFO -B -P solo"
