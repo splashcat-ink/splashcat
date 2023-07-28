@@ -24,29 +24,6 @@
     Developed by <a href="https://github.com/cesaregarza" class="text-blue-500 underline">cesaregarza</a> as the
     original uploader for Splashcat. DataZipcaster supports importing from multiple sources, including SplatNet 3.
     {% with developers.Joy as developer %}
-        <a class="flex flex-col gap-1 my-1 w-fit" href="{{ developer.get_absolute_url }}">
-            <div class="flex flex-row gap-2 items-center">
-                {% if developer.profile_picture %}
-                    <img src="{{ developer.profile_picture.url }}?height=96&width=96" alt="{{ developer.display_name }}"
-                         class="h-12 w-12 object-cover rounded-lg">
-                {% endif %}
-                <div class="flex flex-col">
-                    <div class="text-xl">
-                        {{ developer.display_name }}
-                        {% if developer.display_sponsor_badge %}
-                            <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png"
-                                 alt="Splashcat Sponsor"
-                                 class="h-6 inline-block [image-rendering:pixelated]">
-                        {% endif %}
-                    </div>
-                    <div class="text-sm text-gray-400">@{{ developer.username }}</div>
-                </div>
-            </div>
-            {% with developer.get_splashtag as splashtag %}
-                {% if splashtag %}
-                    {% include "includes/splashtag.html" with splashtag=splashtag %}
-                {% endif %}
-            {% endwith %}
-        </a>
+        {% include "users/includes/user-link.html" with user=developer show_splashtag=True %}
     {% endwith %}
 {% endblock %}

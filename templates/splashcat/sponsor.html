@@ -76,31 +76,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {% for sponsor in current_sponsors %}
-                <a class="flex flex-col gap-1 my-1 w-fit" href="{{ sponsor.get_absolute_url }}">
-                    <div class="flex flex-row gap-2 items-center">
-                        {% if sponsor.profile_picture %}
-                            <img src="{{ sponsor.profile_picture.url }}?height=96&width=96"
-                                 alt="{{ sponsor.display_name }}"
-                                 class="h-12 w-12 object-cover rounded-lg" height="96" width="96">
-                        {% endif %}
-                        <div class="flex flex-col">
-                            <div class="text-xl">
-                                {{ sponsor.display_name }}
-                                {% if sponsor.display_sponsor_badge %}
-                                    <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png"
-                                         alt="Splashcat Sponsor"
-                                         class="h-6 inline-block [image-rendering:pixelated]">
-                                {% endif %}
-                            </div>
-                            <div class="text-sm text-gray-400">@{{ sponsor.username }}</div>
-                        </div>
-                    </div>
-                    {% with sponsor.get_splashtag as splashtag %}
-                        {% if splashtag %}
-                            {% include "includes/splashtag.html" with splashtag=splashtag %}
-                        {% endif %}
-                    {% endwith %}
-                </a>
+                {% include "users/includes/user-link.html" with user=sponsor show_splashtag=True %}
             {% endfor %}
         </div>
     {% endif %}
