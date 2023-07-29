@@ -1,7 +1,6 @@
 from django import template
 from django.utils.crypto import get_random_string
 
-from splatnet_assets.fields import Color
 from splatnet_assets.models import SubWeapon, SpecialWeapon
 from users.models import User, SponsorshipTiers
 
@@ -20,6 +19,6 @@ def get_color(context, uploader: User):
         context['color'] = uploader.favorite_color
     elif hasattr(context, 'user') and context['user'].is_authenticated:
         context['color'] = context['user'].favorite_color
-    else:
-        context['color'] = Color.from_hex("000000ff")
+    if not context.get('color'):
+        context['color'] = uploader.battles.latest("played_time").teams.first().color
     return ''

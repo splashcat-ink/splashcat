@@ -14,7 +14,7 @@ from oidc_provider.models import Token
 
 from battles.models import Battle
 from splatnet_assets.common_model_choices import XBattleDivisions
-from splatnet_assets.fields import ColorField, Color
+from splatnet_assets.fields import ColorField
 
 # Create your models here.
 
@@ -77,8 +77,6 @@ class User(AbstractUser):
     def favorite_color(self):
         if self.sponsor_tiers[SponsorshipTiers.SPONSOR] is True:
             return self.saved_favorite_color
-        else:
-            return Color.from_hex("000000ff")
 
     @property
     def display_sponsor_badge(self):
