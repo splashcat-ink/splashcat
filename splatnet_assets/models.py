@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import get_language
+from django.utils.translation import get_language, to_locale
 
 from splatnet_assets.fields import ColorField
 
@@ -73,7 +73,7 @@ class LocalizationString(models.Model):
     @property
     def string(self, locale: str = None):
         if locale is None:
-            locale = get_language()
+            locale = to_locale(get_language())
         # Handle locales that don't exist
         exists = hasattr(self, f'string_{locale.lower().replace("-", "_")}')
         if not exists:
