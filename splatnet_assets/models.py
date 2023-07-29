@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import get_language, to_locale
+from django.utils.translation import get_language
 
 from splatnet_assets.fields import ColorField
 
@@ -30,6 +30,11 @@ class Image(models.Model):
     @property
     def height(self):
         return 128
+
+
+django_locale_to_splatnet_locale = {
+    'ja': 'ja-JP',
+}
 
 
 class LocalizationString(models.Model):
@@ -73,7 +78,11 @@ class LocalizationString(models.Model):
     @property
     def string(self, locale: str = None):
         if locale is None:
-            locale = to_locale(get_language())
+            locale = get_language()
+
+        if locale in django_locale_to_splatnet_locale:
+            locale = django_locale_to_splatnet_locale[locale]
+
         # Handle locales that don't exist
         exists = hasattr(self, f'string_{locale.lower().replace("-", "_")}')
         if not exists:
