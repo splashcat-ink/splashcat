@@ -1,4 +1,4 @@
-Using JSON inputs, write a short description of the battle, with a max of about 250 characters, and a hard max of 300. The uploader has is_self set to true. The description should focus on the uploader. The description should be written from a 3rd person point of view. The uploader's team is marked with is_my_team set to true.
+Using JSON inputs of Splatoon 3 battles, write a short description of the battle, with a max of about 250 characters, and a hard max of 300. The uploader has is_self set to true. The description should focus on the uploader. The description should be written from a 3rd person point of view. The uploader's team is marked with is_my_team set to true.
 
 Avoid talking about assists. Only use kills.
 
