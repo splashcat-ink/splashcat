@@ -30,7 +30,7 @@ def profile(request, username: str):
     splashtag = latest_battles[0].splashtag if latest_battles else None
 
     win_count = user.battles.filter(judgement='WIN').count()
-    lose_count = user.battles.exclude(judgement__in=['WIN', 'DRAW']).count()
+    lose_count = user.battles.filter(judgement__in=['LOSE', 'DEEMED_LOSE']).count()
     win_rate = win_count / (win_count + lose_count) * 100 if win_count + lose_count else 0
     aggregates = Player.objects.filter(team__battle__uploader=user, is_self=True).aggregate(
         average_kills=models.Avg('kills'),
@@ -42,7 +42,8 @@ def profile(request, username: str):
 
     period_ago = datetime.datetime.now() - datetime.timedelta(hours=24)
     period_ago_wins = user.battles.filter(judgement='WIN', played_time__gte=period_ago).count()
-    period_ago_loses = user.battles.exclude(judgement__in=['WIN', 'DRAW']).filter(played_time__gte=period_ago).count()
+    period_ago_loses = user.battles.filter(judgement__in=['LOSE', 'DEEMED_LOSE']).filter(played_time__gte=period_ago) \
+        .count()
     period_ago_win_rate = period_ago_wins / (period_ago_wins + period_ago_loses) * 100 if \
         period_ago_wins + period_ago_loses else None
 
@@ -73,12 +74,13 @@ def profile_opengraph(request, username: str):
     splashtag = latest_battles[0].splashtag if latest_battles else None
 
     win_count = user.battles.filter(judgement='WIN').count()
-    lose_count = user.battles.exclude(judgement__in=['WIN', 'DRAW']).count()
+    lose_count = user.battles.filter(judgement__in=['LOSE', 'DEEMED_LOSE']).count()
     win_rate = win_count / (win_count + lose_count) * 100 if win_count + lose_count else 0
 
     period_ago = datetime.datetime.now() - datetime.timedelta(hours=24)
     period_ago_wins = user.battles.filter(judgement='WIN', played_time__gte=period_ago).count()
-    period_ago_loses = user.battles.exclude(judgement__in=['WIN', 'DRAW']).filter(played_time__gte=period_ago).count()
+    period_ago_loses = user.battles.filter(judgement__in=['LOSE', 'DEEMED_LOSE']).filter(played_time__gte=period_ago) \
+        .count()
     period_ago_win_rate = period_ago_wins / (period_ago_wins + period_ago_loses) * 100 if \
         period_ago_wins + period_ago_loses else None
 
