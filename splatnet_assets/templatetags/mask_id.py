@@ -15,9 +15,10 @@ def mask_id(weapon_object: SubWeapon | SpecialWeapon):
 
 @register.simple_tag(takes_context=True)
 def get_color(context, uploader: User):
+    user = context.get('user')
     if uploader.sponsor_tiers[SponsorshipTiers.SPONSOR]:
         context['color'] = uploader.favorite_color
-    elif hasattr(context, 'user') and context['user'].is_authenticated:
+    elif user and user.is_authenticated:
         context['color'] = context['user'].favorite_color
     if not context.get('color'):
         context['color'] = uploader.battles.latest("played_time").teams.first().color
