@@ -36,7 +36,7 @@ def view_group(request, group_id):
     battles = Battle.objects.filter(uploader__in=group_all_members)
 
     win_count = battles.filter(judgement='WIN').count()
-    lose_count = battles.exclude(judgement__in=['WIN', 'DRAW']).count()
+    lose_count = battles.filter(judgement__in=['LOSE', 'DEEMED_LOSE']).count()
     win_rate = win_count / (win_count + lose_count) * 100 if win_count + lose_count else 0
 
     return render(request, 'groups/view.html', {
