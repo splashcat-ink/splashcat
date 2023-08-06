@@ -20,6 +20,7 @@
     <meta name="description"
           content="{% block description %}Splashcat records battle data for later analysis.{% endblock %}">
     <meta name="keywords" content="splashcat,splatoon,battle,stats,statistics">
+    <link rel="canonical" href="https://splashcat.ink{{ request.get_full_path }}"/>
     <link rel="icon" href="{% static 'images/judd-pride.png' %}?height=256"/>
     <script src="{% static 'js/index.js' %}" defer></script>
     {% django_htmx_script %}
