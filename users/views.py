@@ -17,6 +17,7 @@ from battles.models import Player
 from battles.tasks import user_request_data_export
 from splashcat.decorators import github_webhook
 from splatnet_assets.models import Weapon
+from . import tasks
 from .forms import RegisterForm, AccountSettingsForm, ResendVerificationEmailForm
 from .models import User, GitHubLink, ApiKey
 
@@ -145,6 +146,7 @@ def register(request):
             user = form.save()
 
             user.send_verification_email()
+            tasks.generate_user_profile_picture.delay(user.pk)
 
             messages.success(request, 'Your account has been created. Please check your email to verify your account.')
             return redirect('home')

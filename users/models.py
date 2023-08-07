@@ -1,10 +1,14 @@
 import datetime
+import hashlib
 from datetime import timedelta
 from enum import Enum
+from io import BytesIO
 
+import requests
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import Site
+from django.core.files.base import ContentFile
 from django.db import models
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -134,6 +138,15 @@ class User(AbstractUser):
 
     def get_groups(self):
         return list(self.groups_owned.all()) + list(self.group_set.all())
+
+    def save_splatoon_identicon(self):
+        response = requests.get('https://fancy.org.uk/api/nxapi/lhub-icon/cfdaba16-92b9-40f9-bb6f-6f5e399b2eaa')
+        image_data = BytesIO(response.content)
+        image = ContentFile(image_data.getvalue())
+
+        image_hash = hashlib.sha256(image_data.getvalue()).hexdigest()
+
+        self.profile_picture.save(f'identicon-{image_hash}.png', image, save=True)
 
 
 def generate_key():
