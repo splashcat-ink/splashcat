@@ -1,7 +1,7 @@
 {% load static %}
 <div class="card-mask bg-splatoon-battle-league p-4 pt-12 rounded-lg rotate-1">
     {% if profile.profile_picture %}
-        <img src="{{ profile.profile_picture.url }}"
+        <img src="{{ profile.profile_picture.url }}?width=512"
              alt="{{ profile.display_name }}'s profile picture"
              class="aspect-square max-w-full object-contain rounded-sm bg-gray-500/50">
     {% endif %}
