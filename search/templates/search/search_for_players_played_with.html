@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="font-splatoon1 text-3xl">
+        {% block title %}Battles you've had with {{ player.name }}#{{ player.name_id }}{% endblock %}
+    </h1>
+    <div class="text-sm font-mono">{{ player.npln_id }}</div>
+
+    <table class="table-auto w-full border border-slate-600 border-collapse border-spacing-2">
+        <thead>
+        <tr>
+            <th class="border border-slate-600">Mode</th>
+            <th class="border border-slate-600">Rule</th>
+            <th class="border border-slate-600">Stage</th>
+            <th class="border border-slate-600">Played Time</th>
+            <th class="border border-slate-600">Judgement</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for battle in battles %}
+            <tr class="odd:bg-gray-500/25 even:bg-gray-900/25">
+                <td class="border border-slate-600">{{ battle.get_vs_mode_display }}</td>
+                <td class="border border-slate-600">{{ battle.get_vs_rule_display }}</td>
+                <td class="border border-slate-600">{{ battle.vs_stage.name.string }}</td>
+                <td class="border border-slate-600">{{ battle.played_time }}</td>
+                <td class="border border-slate-600">{{ battle.get_judgement_display }}</td>
+                <td class="border border-slate-600 p-2">
+                    <a href="{% url 'battles:view_battle' battle.id %}"
+                       class="px-2 bg-purple-700 text-white rounded-lg">
+                        View Battle
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

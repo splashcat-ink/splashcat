@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     'notifications',
     'groups',
     'videos',
+    'search',
 ]
 
 MIDDLEWARE = [
