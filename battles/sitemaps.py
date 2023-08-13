@@ -4,6 +4,8 @@ from battles.models import Battle
 
 
 class BattlesSitemap(Sitemap):
+    protocol = 'https'
+    
     def items(self):
         return Battle.objects.exclude(vs_mode=Battle.VsMode.PRIVATE)
 
