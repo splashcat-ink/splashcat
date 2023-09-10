@@ -139,6 +139,11 @@
 
     <div class="max-w-[1200px] bg-[url:var(--stage-image)] h-fit bg-cover grid grid-cols-1 auto-rows-auto lg:grid-cols-5 lg:grid-rows-5 relative pt-2 lg:pt-0"
          style="--stage-image: url({{ battle.vs_stage.image.url }});">
+
+        {% if battle.vs_mode == "FEST" and battle.splatfest_clout_multiplier != "NONE" %}
+            {% include "splatnet_assets/squid_tape.html" with bg="bg-purple-600 -rotate-6 left-4 top-4 scale-[1.5] lg:scale-[2] absolute" content=battle.get_splatfest_clout_multiplier_display %}
+        {% endif %}
+
         <div class="row-start-3 row-end-6 lg:col-start-4 lg:col-end-6 lg:row-span-full bg-gray-800/70 bg-[url('../images/tapes-transparent.png')] bg-contain px-4 lg:px-8 flex flex-col lg:flex-col {% if battle.teams.count > 2 %}gap-2 py-2 lg:py-4{% else %}gap-8 py-6 lg:py-12 md:flex-row{% endif %}">
             {% for team in battle.teams.all|dictsort:"order" %}
                 {% include "battles/components/team_card.html" with team=team %}

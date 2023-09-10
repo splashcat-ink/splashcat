@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+import socket
 import sys
 from pathlib import Path
 from socket import gethostname, gethostbyname
@@ -40,7 +41,10 @@ GITHUB_PERSONAL_ACCESS_TOKEN = os.environ.get('GITHUB_PERSONAL_ACCESS_TOKEN')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-ALLOWED_HOSTS += [gethostname(), gethostbyname(gethostname()), ]
+try:
+    ALLOWED_HOSTS += [gethostname(), gethostbyname(gethostname()), ]
+except socket.gaierror:
+    pass
 CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink']
 
 FLY_REGION = os.environ.get('FLY_REGION')
