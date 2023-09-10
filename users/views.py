@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.db import models
+from django.forms import inlineformset_factory
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -19,7 +20,7 @@ from splashcat.decorators import github_webhook
 from splatnet_assets.models import Weapon
 from . import tasks
 from .forms import RegisterForm, AccountSettingsForm, ResendVerificationEmailForm
-from .models import User, GitHubLink, ApiKey
+from .models import User, GitHubLink, ApiKey, ProfileUrl
 
 
 # Create your views here.
@@ -183,15 +184,21 @@ def github_sponsors_webhook(request):
 
 @login_required
 def user_settings(request):
+    profile_url_form_set = inlineformset_factory(User, ProfileUrl, fields=["url"], can_delete_extra=False)
     if request.method == 'POST':
         form = AccountSettingsForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
+        formset = profile_url_form_set(request.POST, instance=request.user)
+        if form.is_valid() and formset.is_valid():
             form.save()
+            formset.save()
+            tasks.validate_rel_me_links.delay(request.user.id)
             return redirect('users:settings')
     else:
         form = AccountSettingsForm(instance=request.user)
+        formset = profile_url_form_set(instance=request.user)
     return render(request, 'users/settings.html', {
         'form': form,
+        'formset': formset,
     })
 
 

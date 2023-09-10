@@ -71,6 +71,16 @@
                     {{ form.preferred_pronouns }}
                 </div>
 
+                <div>
+                    {% for error in formset.errors %}
+                        {{ error }}
+                    {% endfor %}
+                    <label class="text-xl">Profile URLs</label>
+                    <p>Link to accounts on other platforms. Links will have <code class="font-mono">`rel="me"`</code>
+                        added.</p>
+                    {{ formset.as_div }}
+                </div>
+
                 <input type="submit" value="Update">
             </form>
         </div>

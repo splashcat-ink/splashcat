@@ -174,3 +174,9 @@ class GitHubLink(models.Model):
     is_sponsor = models.BooleanField(default=False)
     is_sponsor_public = models.BooleanField(default=False)
     sponsorship_amount_usd = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+
+
+class ProfileUrl(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile_urls")
+    url = models.URLField()
+    is_rel_me_verified = models.BooleanField(default=False)
