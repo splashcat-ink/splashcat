@@ -125,6 +125,12 @@ class User(AbstractUser):
         except Battle.DoesNotExist:
             return None
 
+    def get_npln_id(self):
+        try:
+            return self.battles.with_prefetch().latest('played_time').player.npln_id
+        except Battle.DoesNotExist:
+            return None
+
     def send_verification_email(self):
         if not self.verified_email:
             site = Site.objects.get_current()

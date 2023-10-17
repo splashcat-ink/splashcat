@@ -56,6 +56,13 @@
             {% endif %}
         </a>
     {% endfor %}
+    {% with npln_id=profile.get_npln_id %}
+        {% if npln_id %}
+            <a href="https://splat.top/player/{{ npln_id }}" class="block hover:underline" rel="noopener">
+                Search on splat.top
+            </a>
+        {% endif %}
+    {% endwith %}
 </div>
 {% if splashtag %}
     <div class="-rotate-[0.5deg] shadow-lg w-fit">
