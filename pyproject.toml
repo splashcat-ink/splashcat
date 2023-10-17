@@ -31,7 +31,7 @@ boto3 = "^1.28.3"
 django-anymail = { extras = ["postmark"], version = "^10.1" }
 django-storages = "^1.13.2"
 eventlet = "^0.33.3"
-django-unicorn = "^0.52.0"
+django-unicorn = "^0.56.1"
 psycopg = { extras = ["binary"], version = "^3.1.9" }
 django-oidc-provider = "^0.8.0"
 openai = "^0.27.8"
