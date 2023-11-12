@@ -15,4 +15,8 @@ urlpatterns = [
     path('htmx/latest/', get_latest_battles, name='htmx_latest_battles'),
     path('global-data-export/', global_data_export, name='global_data_export'),
     path('global-data-export/redirect/', redirect_global_data_export, name='redirect_global_data_export'),
+    path('groups/<int:group_id>/', view_battle_group, name='view_battle_group'),
+    path('groups/<int:group_id>/opengraph/', battle_group_opengraph, name='battle_group_opengraph'),
+    path('groups/create/', create_battle_group, name='create_battle_group'),
+    path('groups/create/htmx/preview/', create_group_preview, name='create_group_preview')
 ]

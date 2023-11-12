@@ -17,6 +17,7 @@ from battles.parsers.splatnet3 import parse_splatnet3
 from battles.tasks import generate_battle_description
 from battles.utils import BattleAlreadyExistsError
 from splashcat.decorators import api_auth_required
+from splatnet_assets.models import Weapon
 from users.models import User, SponsorshipTiers
 
 
@@ -256,3 +257,94 @@ def get_latest_battles(request):
     return render(request, 'battles/htmx/latest_battles.html', {
         'battles': battles,
     })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def create_battle_group(request):
+    if request.method == 'POST':
+        new_group = BattleGroup()
+        new_group.creator = request.user
+        new_group.save()
+
+        query_battles = request.POST.keys()
+        battle_ids = []
+        key: str
+        for key in query_battles:
+            if key.startswith('battle-'):
+                battle_ids.append(key.removeprefix('battle-'))
+
+        battles = [Battle.objects.get(id=battle_id) for battle_id in battle_ids]
+
+        if len(battles) < 2:
+            return HttpResponseBadRequest()
+
+        for battle in battles:
+            if battle.uploader_id != request.user.id:
+                return HttpResponseBadRequest()
+
+        new_group.battles.add(*battles)
+
+        new_group.save()
+
+        return redirect('battles:view_battle_group', new_group.id)
+
+    battles = Battle.objects.with_prefetch().filter(uploader=request.user).order_by('-id')[:50]
+    return render(request, 'battles/groups/create.html', {
+        'battles': battles,
+    })
+
+
+@login_required
+def create_group_preview(request):
+    query_battles = request.GET.keys()
+    battle_ids = []
+    key: str
+    for key in query_battles:
+        if key.startswith('battle-'):
+            battle_ids.append(key.removeprefix('battle-'))
+
+    battles = [Battle.objects.get(id=battle_id) for battle_id in battle_ids]
+
+    return render(request, 'battles/groups/preview.html', {
+        'battles': battles,
+    })
+
+
+def view_battle_group(request, group_id):
+    battle_group = get_object_or_404(BattleGroup, id=group_id)
+
+    win_count = battle_group.battles.filter(judgement='WIN').count()
+    lose_count = battle_group.battles.filter(judgement__in=['LOSE', 'DEEMED_LOSE']).count()
+    win_rate = win_count / (win_count + lose_count) * 100 if win_count + lose_count else 0
+
+    return render(request, 'battles/groups/view.html', {
+        'battle_group': battle_group,
+        'win_count': win_count,
+        'lose_count': lose_count,
+        'win_rate': win_rate,
+        'battles': battle_group.battles.order_by('-played_time'),
+    })
+
+
+def battle_group_opengraph(request, group_id):
+    battle_group = get_object_or_404(BattleGroup, id=group_id)
+    splashtag = battle_group.battles.latest('played_time').splashtag
+
+    win_count = battle_group.battles.filter(judgement='WIN').count()
+    lose_count = battle_group.battles.filter(judgement__in=['LOSE', 'DEEMED_LOSE']).count()
+    win_rate = win_count / (win_count + lose_count) * 100 if win_count + lose_count else 0
+
+    most_used_weapons = Player.objects.filter(team__battle__in=battle_group.battles.all(), is_self=True) \
+                            .values('weapon').annotate(count=models.Count('weapon')).order_by('-count')[:3]
+    most_used_weapons = Weapon.objects.filter(pk__in=[weapon['weapon'] for weapon in most_used_weapons])
+
+    return render(request, 'battles/groups/opengraph.html',
+                  {
+                      'battle_group': battle_group,
+                      'splashtag': splashtag,
+                      'win_count': win_count,
+                      'lose_count': lose_count,
+                      'win_rate': win_rate,
+                      'most_used_weapons': most_used_weapons,
+                  })
