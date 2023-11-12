@@ -464,3 +464,9 @@ class PlayerGear(models.Model):
 class BattleGroup(models.Model):
     creator = models.ForeignKey('users.User', on_delete=models.CASCADE)
     battles = models.ManyToManyField(Battle)
+
+    def __str__(self):
+        return f'Battle Group {self.id} - @{self.creator.username}'
+
+    def get_absolute_url(self):
+        return reverse('battles:view_battle_group', args=[str(self.id)])
