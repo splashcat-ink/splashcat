@@ -459,3 +459,8 @@ class PlayerGear(models.Model):
                 self.secondary_abilities[2].internal_id if self.secondary_abilities[2] else None,
             ],
         }
+
+
+class BattleGroup(models.Model):
+    creator = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    battles = models.ManyToManyField(Battle)

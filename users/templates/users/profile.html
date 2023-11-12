@@ -95,9 +95,15 @@
                 </div>
             </div>
 
-            <div class="flex flex-row">
+            <div class="flex flex-ror gap-4">
                 <h2 class="text-3xl font-splatoon1">Latest Battles</h2>
                 <div class="grow"></div>
+
+                {% if profile_user == user %}
+                    <a href="{% url 'battles:create_battle_group' %}"
+                       class="text-lg bg-pink-600 hover:bg-pink-700 p-2 rounded">Share Battles</a>
+                {% endif %}
+
                 {% if latest_battles|length == 0 %}
                     <span class="text-lg bg-pink-950 cursor-not-allowed p-2 rounded">View All</span>
                 {% else %}

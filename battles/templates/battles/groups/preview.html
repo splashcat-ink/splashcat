@@ -1,0 +1,5 @@
+<div class="grid grid-cols-1 gap-4">
+    {% for battle in battles %}
+        {% include "users/includes/battle-card.html" with battle=battle %}
+    {% endfor %}
+</div>
