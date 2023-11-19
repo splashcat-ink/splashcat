@@ -7,7 +7,6 @@ from urllib.parse import urljoin
 
 from openai import OpenAI
 
-client = OpenAI(api_key=settings.OPENAI_API_KEY)
 from anymail.message import AnymailMessage
 from celery import shared_task
 from django.conf import settings
@@ -21,6 +20,8 @@ from users.models import User
 
 SALT = 'battle-export'
 
+
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
 with open('battles/gpt_prompt.txt') as f:
