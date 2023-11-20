@@ -37,8 +37,7 @@ class BattleManager(models.Manager):
                               'nameplate_badge_3__description', 'weapon__name',
                               'weapon__flat_image', 'weapon__image_3d', 'weapon__sub__name',
                               'weapon__sub__overlay_image', 'weapon__sub__mask_image', 'weapon__special__name',
-                              'weapon__special__overlay_image', 'weapon__special__mask_image',
-                              'battlevideo')
+                              'weapon__special__overlay_image', 'weapon__special__mask_image')
 
         if include_player_gear:
             player_prefetch_queryset = player_prefetch_queryset \
@@ -80,7 +79,7 @@ class BattleManager(models.Manager):
         )
 
         return self.select_related('uploader__github_link', 'vs_stage__name', 'vs_stage__image') \
-            .prefetch_related('awards__name').prefetch_related(player_prefetch)
+            .prefetch_related('awards__name', 'battlevideo').prefetch_related(player_prefetch)
 
 
 class Battle(models.Model):
