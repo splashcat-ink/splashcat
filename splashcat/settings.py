@@ -154,7 +154,7 @@ elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
         "default": database_connection_details,
     }
 
-    CONN_MAX_AGE = 300
+    CONN_MAX_AGE = 600  # 10 minutes
     CONN_HEALTH_CHECKS = True
 
 # Password validation
