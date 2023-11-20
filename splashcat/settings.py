@@ -154,6 +154,9 @@ elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
         "default": database_connection_details,
     }
 
+    CONN_MAX_AGE = 300
+    CONN_HEALTH_CHECKS = True
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
