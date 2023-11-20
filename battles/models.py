@@ -37,7 +37,8 @@ class BattleManager(models.Manager):
                               'nameplate_badge_3__description', 'weapon__name',
                               'weapon__flat_image', 'weapon__image_3d', 'weapon__sub__name',
                               'weapon__sub__overlay_image', 'weapon__sub__mask_image', 'weapon__special__name',
-                              'weapon__special__overlay_image', 'weapon__special__mask_image')
+                              'weapon__special__overlay_image', 'weapon__special__mask_image',
+                              'battlevideo')
 
         if include_player_gear:
             player_prefetch_queryset = player_prefetch_queryset \
