@@ -72,9 +72,11 @@
 
     <h2 class="text-2xl font-splatoon1">Recent Battles</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {% for battle in recent_battles %}
-            {% include "users/includes/battle-card.html" with battle=battle display_uploader=True %}
-        {% endfor %}
+        {% cache 60 home_global_recent_battles %}
+            {% for battle in recent_battles %}
+                {% include "users/includes/battle-card.html" with battle=battle display_uploader=True %}
+            {% endfor %}
+        {% endcache %}
     </div>
 
     <h2 class="text-2xl font-splatoon1">Data</h2>
