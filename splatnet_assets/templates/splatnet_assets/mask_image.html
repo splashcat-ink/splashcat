@@ -1,5 +1,5 @@
 {% load mask_id %}
-{% get_color uploader %}
+{% get_color uploader use_random_color %}
 {% with object|mask_id as mask_id %}
     <svg
             class="{{ class }}" viewBox="0 0 {{ object.mask_image.width }} {{ object.mask_image.height }}"

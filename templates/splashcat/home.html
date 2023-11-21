@@ -74,7 +74,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {% cache 60 home_global_recent_battles %}
             {% for battle in recent_battles %}
-                {% include "users/includes/battle-card.html" with battle=battle display_uploader=True %}
+                {% include "users/includes/battle-card.html" with battle=battle display_uploader=True use_random_color=True %}
             {% endfor %}
         {% endcache %}
     </div>
