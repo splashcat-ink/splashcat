@@ -40,7 +40,7 @@
             {% with player=battle.player %}
                 <img src="{{ player.weapon.flat_image.url }}?height=80&width=80" class="inline-block h-10 w-10" alt="">
                 {{ player.weapon.name.string }}
-                {% get_color uploader use_random_color %}
+                {% get_color battle.uploader use_random_color %}
                 {% include "splatnet_assets/mask_image.html" with object=player.weapon.sub class="inline h-6 w-6" uploader=battle.uploader image_params="height=48&width=48" %}
                 {% include "splatnet_assets/mask_image.html" with object=player.weapon.special class="inline h-6 w-6" uploader=battle.uploader image_params="height=48&width=48" %}
             {% endwith %}
