@@ -18,11 +18,22 @@ def mask_id(weapon_object: SubWeapon | SpecialWeapon):
 
 random_color_options = [
     Color.from_hex("cd43a6"),
+    Color.from_hex("e1820d"),
+    Color.from_hex("31c4a9"),
+    Color.from_hex("cdcd34"),
+    Color.from_hex("94c921"),
+    Color.from_hex("3a28c4"),
+    Color.from_hex("4e4edd"),
+    Color.from_hex("0d0ddc"),
+    Color.from_hex("b62ea7"),
+    Color.from_hex("5dab21"),
 ]
 
 
 @register.simple_tag(takes_context=True)
 def get_color(context, uploader: User, use_random_color: bool):
+    if context.get('color'):
+        return ''
     user = context.get('user')
     if uploader.sponsor_tiers[SponsorshipTiers.SPONSOR]:
         context['color'] = uploader.favorite_color

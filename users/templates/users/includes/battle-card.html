@@ -1,3 +1,4 @@
+{% load mask_id %}
 {% load static %}
 <a class="group hover:z-10 card-mask rounded-2xl {% if battle.vs_mode == "BANKARA" %}bg-splatoon-battle-ranked{% elif battle.vs_mode == "X_MATCH" %}bg-splatoon-battle-xmatch{% elif battle.vs_mode == "CHALLENGE" %}bg-splatoon-battle-league{% else %}bg-splatoon-battle-regular{% endif %} battle-card-background transition duration-200 hover:rotate-2 odd:hover:-rotate-2 drop-shadow-lg hover:drop-shadow-2xl {% if battle.judgement != "WIN" %}brightness-[0.80]{% endif %}"
    href="{% url 'battles:view_battle' battle.id %}">
@@ -39,6 +40,7 @@
             {% with player=battle.player %}
                 <img src="{{ player.weapon.flat_image.url }}?height=80&width=80" class="inline-block h-10 w-10" alt="">
                 {{ player.weapon.name.string }}
+                {% get_color uploader use_random_color %}
                 {% include "splatnet_assets/mask_image.html" with object=player.weapon.sub class="inline h-6 w-6" uploader=battle.uploader image_params="height=48&width=48" %}
                 {% include "splatnet_assets/mask_image.html" with object=player.weapon.special class="inline h-6 w-6" uploader=battle.uploader image_params="height=48&width=48" %}
             {% endwith %}
