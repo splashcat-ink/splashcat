@@ -31,7 +31,7 @@ random_color_options = [
 
 
 @register.simple_tag(takes_context=True)
-def get_color(context, uploader: User, use_random_color: bool):
+def get_color(context, uploader: User, use_random_color: bool = False):
     if context.get('color'):
         return ''
     user = context.get('user')

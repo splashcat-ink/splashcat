@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load mask_id %}
 {% load i18n %}
 {% load static %}
 {% load duration %}
@@ -145,6 +146,7 @@
         {% endif %}
 
         <div class="row-start-3 row-end-6 lg:col-start-4 lg:col-end-6 lg:row-span-full bg-gray-800/70 bg-[url('../images/tapes-transparent.png')] bg-contain px-4 lg:px-8 flex flex-col lg:flex-col {% if battle.teams.count > 2 %}gap-2 py-2 lg:py-4{% else %}gap-8 py-6 lg:py-12 md:flex-row{% endif %}">
+            {% get_color battle.uploader %}
             {% for team in battle.teams.all|dictsort:"order" %}
                 {% include "battles/components/team_card.html" with team=team %}
             {% endfor %}
