@@ -30,13 +30,15 @@ for (const button of shareButtons) {
         if (!navigator.share) {
             button.style.display = "none";
         }
-        button.addEventListener("click", () => {
-            window.plausible('Share', {props: {type: button.dataset.contentType, shareType: button.dataset.shareType}})
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            window.plausible('Share', {props: {type: button.dataset.contentType, shareType: button.dataset.shareType}});
             webShare(button.dataset.url);
         });
     } else if (button.dataset.shareType === "clipboard") {
-        button.addEventListener("click", async () => {
-            window.plausible('Share', {props: {type: button.dataset.contentType, shareType: button.dataset.shareType}})
+        button.addEventListener("click", async (event) => {
+            event.preventDefault();
+            window.plausible('Share', {props: {type: button.dataset.contentType, shareType: button.dataset.shareType}});
             await copyToClipboard(button.dataset.url);
             button.classList.add("copy-tooltipped");
         });

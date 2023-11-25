@@ -20,6 +20,7 @@
         @apply relative;
         @apply before:absolute;
         @apply before:inset-0;
+        @apply before:-left-1/2;
         @apply before:z-10;
         @apply before:content-['Copied!'];
         @apply before:-top-10;
