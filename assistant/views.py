@@ -2,11 +2,10 @@
 import json
 from io import StringIO, BytesIO
 
-from aiohttp.http_exceptions import HttpBadRequest
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, get_object_or_404, render
-from django.views.decorators.http import require_POST
 from openai import OpenAI
 
 from assistant.forms import CreateThreadForm
@@ -35,13 +34,18 @@ def threads(request):
 
 @login_required
 @require_s_plus_ponsor
-@require_POST
 def create_thread(request):
+    if request.method == "GET":
+        form = CreateThreadForm()
+        return render(request, "assistant/create_thread.html", {
+            'form': form,
+        })
+
     form = CreateThreadForm(request.POST)
     if not form.is_valid():
-        return HttpBadRequest("Invalid create thread form.")
+        return HttpResponseBadRequest("Invalid create thread form.")
 
-    battles = request.user.battles.with_prefetch().order_by('-played_time')
+    battles = request.user.battles.with_prefetch().order_by('-played_time')[:10]
 
     battle_array = []
 
@@ -66,7 +70,7 @@ def create_thread(request):
         messages=[
             {
                 "role": "user",
-                "content": form.initial_message,
+                "content": form.cleaned_data['initial_message'],
                 "file_ids": [openai_file.id]
             }
         ]
@@ -84,7 +88,7 @@ def view_thread(request, thread_id):
     openai_thread_id = thread.openai_thread_id
     openai_thread_messages = client.beta.threads.messages.list(openai_thread_id, order='asc')
 
-    return render('assistant/view_thread.html', {
+    return render(request, "assistant/view_thread.html", {
         'thread': thread,
-        'messages': openai_thread_messages,
+        'thread_messages': openai_thread_messages,
     })

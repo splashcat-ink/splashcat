@@ -5,5 +5,11 @@
         {% block title %}Viewing Thread from {{ thread.created_date }}{% endblock %}
     </h1>
 
-
+    <div class="flex flex-col gap-2">
+        {% for message in thread_messages %}
+            <div>
+                {{ message.content.0.text.value }}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
