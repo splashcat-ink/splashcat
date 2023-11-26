@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     'groups',
     'videos',
     'search',
+    'assistant',
 ]
 
 MIDDLEWARE = [
@@ -335,3 +336,7 @@ SILKY_AUTHORISATION = True  # User must have permissions
 SILKY_META = True
 SILKY_ANALYZE_QUERIES = True
 SILKY_PYTHON_PROFILER = True
+
+# Assistant
+
+OPENAI_ASSISTANT_ID = "asst_svRurlx2W6OeEuhVWi12JEwX"
