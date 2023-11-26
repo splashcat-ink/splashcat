@@ -23,9 +23,6 @@ from splatnet_assets.fields import ColorField
 # Create your models here.
 
 sponsor_perks = {
-    "no_ads": {
-        "minimum_tier": "sponsor",
-    },
     "badge": {
         "minimum_tier": "sponsor",
     },
@@ -156,10 +153,6 @@ class User(AbstractUser):
         image_hash = hashlib.sha256(image_data.getvalue()).hexdigest()
 
         self.profile_picture.save(f'identicon-{image_hash}.png', image, save=True)
-
-    @property
-    def should_hide_ads(self):
-        return self.sponsor_tiers[SponsorshipTiers.SPONSOR]
 
 
 def generate_key():
