@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="text-2xl font-splatoon1">
+        {% block title %}About{% endblock %}
+    </h1>
+
+    <p class="text-lg">
+        Splashcat tracks Splatoon 3 battle data uploaded by users with
+        <a class="underline text-blue-500" href="{% url 'uploaders_information' %}">compatible uploaders</a>. Splashcat
+        is primarily developed by
+        <a href="{% url 'profile' 'catgirl' %}" class="underline text-blue-500">Rosalina (@catgirl)</a>.
+    </p>
+
+    <h2 class="text-xl font-splatoon1">Contact</h2>
+
+    <p class="text-lg">
+        Creating a GitHub issue is the preferred method of contact. Rosalina can also be contacted privately at
+        <a href="mailto:%73%70%6c%61%73%68%63%61%74%40%73%6c%2e%6b%69%74%74%2e%69%6e%6b"
+           class="underline text-blue-500">
+            &#115;&#112;&#108;&#97;&#115;&#104;&#99;&#97;&#116;&#64;<span class="hidden">meow&#115;&#108;&#46;&#107;&#105;</span>&#115;&#108;&#46;&#107;&#105;&#116;&#116;&#46;&#105;&#110;&#107;
+        </a>.
+    </p>
+{% endblock %}

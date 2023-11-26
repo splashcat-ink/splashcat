@@ -34,6 +34,10 @@ def legal(request):
     return render(request, 'splashcat/legal.html')
 
 
+def about(request):
+    return render(request, 'splashcat/about.html')
+
+
 def uploaders_information(request):
     developer_usernames = ["Joy"]
     developer_users = User.objects.filter(username__in=developer_usernames)
