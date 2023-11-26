@@ -56,3 +56,10 @@ def robots_txt(request):
     abs_file_path = os.path.join(script_dir, 'robots.txt')
     with open(abs_file_path) as f:
         return HttpResponse(f.read(), content_type='text/plain', headers={'Cache-Control': 'public, max-age=86400'})
+
+
+def ads_txt(request):
+    script_dir = os.path.dirname(__file__)
+    abs_file_path = os.path.join(script_dir, 'ads.txt')
+    with open(abs_file_path) as f:
+        return HttpResponse(f.read(), content_type='text/plain', headers={'Cache-Control': 'public, max-age=86400'})
