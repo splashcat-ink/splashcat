@@ -1,8 +1,9 @@
 // Global JS ran on every page
-import "htmx.org";
+import * as htmx from "htmx.org";
 import {browserInit as initHyperscript} from "hyperscript.org";
 
 initHyperscript();
+window.htmx = htmx;
 
 async function webShare(url) {
     if (navigator.share) {
