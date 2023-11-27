@@ -32,17 +32,22 @@ sponsor_perks = {
     "gpt_description": {
         "minimum_tier": "s+ponsor",
     },
+    "assistant": {
+        "minimum_tier": "xponsor",
+    },
 }
 
 
 class SponsorshipTiers(Enum):
     SPONSOR = "sponsor"
     S_PLUS_PONSOR = "s+ponsor"
+    X_PONSOR = "xponsor"
 
 
 sponsorship_tier_costs = {
     SponsorshipTiers.SPONSOR: 5,
     SponsorshipTiers.S_PLUS_PONSOR: 10,
+    SponsorshipTiers.X_PONSOR: 15,
 }
 
 

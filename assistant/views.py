@@ -19,10 +19,10 @@ from users.models import User, SponsorshipTiers
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
-def require_s_plus_ponsor(view_func):
+def require_sponsor_tier(view_func):
     def _wrapper(request, *args, **kwargs):
         user: User = request.user
-        if not user.sponsor_tiers[SponsorshipTiers.S_PLUS_PONSOR]:
+        if not user.sponsor_tiers[SponsorshipTiers.X_PONSOR]:
             return redirect('sponsor')
         return view_func(request, *args, **kwargs)
 
@@ -30,9 +30,9 @@ def require_s_plus_ponsor(view_func):
 
 
 @login_required
-@require_s_plus_ponsor
+@require_sponsor_tier
 def threads(request):
-    user_threads = request.user.thread_set.all()
+    user_threads = request.user.thread_set.order_by('-created_date')
 
     return render(request, "assistant/list_threads.html", {
         'threads': user_threads,
@@ -40,7 +40,7 @@ def threads(request):
 
 
 @login_required
-@require_s_plus_ponsor
+@require_sponsor_tier
 def create_thread(request):
     if request.method == "GET":
         form = CreateThreadForm()
@@ -115,7 +115,8 @@ def create_thread(request):
             }
         ]
     )
-    thread = Thread(creator=request.user, openai_thread_id=openai_thread.id, openai_file_id=openai_file.id)
+    thread = Thread(creator=request.user, openai_thread_id=openai_thread.id, openai_file_id=openai_file.id,
+                    initial_message=form.cleaned_data['initial_message'])
     thread.save()
 
     run = client.beta.threads.runs.create(
@@ -127,7 +128,7 @@ def create_thread(request):
 
 
 @login_required
-@require_s_plus_ponsor
+@require_sponsor_tier
 def view_thread(request, thread_id):
     thread = get_object_or_404(Thread, id=thread_id, creator=request.user)
     openai_thread_id = thread.openai_thread_id
@@ -140,7 +141,7 @@ def view_thread(request, thread_id):
 
 
 @login_required
-@require_s_plus_ponsor
+@require_sponsor_tier
 def get_thread_messages(request, thread_id):
     thread = get_object_or_404(Thread, id=thread_id, creator=request.user)
     openai_thread_id = thread.openai_thread_id
@@ -176,7 +177,7 @@ def get_thread_messages(request, thread_id):
 
 
 @login_required
-@require_s_plus_ponsor
+@require_sponsor_tier
 @require_POST
 def send_message_to_thread(request, thread_id):
     thread = get_object_or_404(Thread, id=thread_id, creator=request.user)
