@@ -1,3 +1,4 @@
+{% load openai %}
 {% load static %}
 {% load markdownify %}
 <div class="flex flex-col gap-2" hx-get="{% url 'assistant:get_thread_messages' thread.id %}"
@@ -22,7 +23,15 @@
             </div>
             {% if message.role == 'assistant' %}
                 <div class="prose prose-invert max-w-none grow">
-                    {{ message.content.0.text.value|markdownify }}
+                    {% for content in message.content %}
+                        {% if content.type == 'text' %}
+                            {{ content.text.value|markdownify }}
+                        {% elif content.type == 'image_file' %}
+                            <div class="max-w-xl">
+                                {% get_openai_image content.image_file %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             {% else %}
                 <div class="grow">{{ message.content.0.text.value }}</div>
