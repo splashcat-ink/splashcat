@@ -229,6 +229,34 @@ class Battle(models.Model):
 
         return data
 
+    def to_gpt_dict(self):
+        data = {
+            'battle_id': self.id,
+            'uploader_id': self.uploader_id,
+            'vs_mode': self.get_vs_mode_display(),
+            'vs_rule': self.get_vs_rule_display(),
+            'stage_name': self.vs_stage.name.string,
+            'uploaded_at': self.uploaded_at.isoformat(),
+            'updated_at': self.updated_at.isoformat(),
+            'played_time': self.played_time.isoformat(),
+            'duration': self.duration.total_seconds(),
+            'judgement': self.get_judgement_display(),
+            'knockout': self.get_knockout_display(),
+            'awards': [],
+            'teams': [],
+        }
+
+        for award in self.awards.all():
+            data['awards'].append({
+                'name': award.name.string,
+                'order': BattleAward.objects.get(battle=self, award=award).order,
+            })
+
+        for team in self.teams.all():
+            data['teams'].append(team.to_gpt_dict())
+
+        return data
+
     def get_vs_rule_image_name(self):
         vs_rule_to_image_name = {
             self.VsRule.TURF_WAR: 'regular',
@@ -334,6 +362,28 @@ class Team(models.Model):
 
         return data
 
+    def to_gpt_dict(self):
+        data = {
+            'is_my_team': self.is_my_team,
+            'color': self.color.to_hex(),
+            'fest_streak_win_count': self.fest_streak_win_count,
+            'fest_team_name': self.fest_team_name,
+            'fest_uniform_bonus_rate': self.fest_uniform_bonus_rate,
+            'fest_uniform_name': self.fest_uniform_name,
+            'tricolor_role': self.get_tricolor_role_display(),
+            'judgement': self.get_judgement_display(),
+            'score': self.score,
+            'paint_ratio': self.paint_ratio,
+            'ultra_signals': self.noroshi,
+            'order': self.order,
+            'players': [],
+        }
+
+        for player in self.players.all():
+            data['players'].append(player.to_gpt_dict())
+
+        return data
+
 
 class PlayerManager(models.Manager):
     def with_prefetch(self):
@@ -434,6 +484,43 @@ class Player(models.Model):
 
         return data
 
+    def to_gpt_dict(self):
+        data = {
+            'is_self': self.is_self,
+            'species': self.get_species_display(),
+            'npln_id': self.npln_id,
+            'name': self.name,
+            'name_id': self.name_id,
+            'title': self.byname,
+            'nameplate_background_id': self.nameplate_background.internal_id,
+            'nameplate_badge_ids': [
+                self.nameplate_badge_1.internal_id if self.nameplate_badge_1 else None,
+                self.nameplate_badge_2.internal_id if self.nameplate_badge_2 else None,
+                self.nameplate_badge_3.internal_id if self.nameplate_badge_3 else None,
+            ],
+            'nameplate_badge_descriptions': [
+                self.nameplate_badge_1.description.string if self.nameplate_badge_1 else None,
+                self.nameplate_badge_2.description.string if self.nameplate_badge_2 else None,
+                self.nameplate_badge_3.description.string if self.nameplate_badge_3 else None,
+            ],
+            'weapon_name': self.weapon.name.string,
+            'sub_weapon_name': self.weapon.sub.name.string,
+            'special_weapon_name': self.weapon.special.name.string,
+            'head_gear': self.head_gear.to_gpt_dict(),
+            'clothing_gear': self.clothing_gear.to_gpt_dict(),
+            'shoes_gear': self.shoes_gear.to_gpt_dict(),
+            'disconnect': self.disconnect,
+            'kills': self.kills,
+            'assists': self.assists,
+            'deaths': self.deaths,
+            'specials': self.specials,
+            'paint': self.paint,
+            'ultra_signal_attempts': self.noroshi_try,
+            'order': self.order,
+        }
+
+        return data
+
 
 class PlayerGear(models.Model):
     gear = models.ForeignKey('splatnet_assets.Gear', on_delete=models.PROTECT)
@@ -457,6 +544,17 @@ class PlayerGear(models.Model):
                 self.secondary_abilities[0].internal_id if self.secondary_abilities[0] else None,
                 self.secondary_abilities[1].internal_id if self.secondary_abilities[1] else None,
                 self.secondary_abilities[2].internal_id if self.secondary_abilities[2] else None,
+            ],
+        }
+
+    def to_gpt_dict(self):
+        return {
+            'gear_name': self.gear.name.string,
+            'primary_ability_name': self.primary_ability.name.string,
+            'secondary_ability_names': [
+                self.secondary_abilities[0].name.string if self.secondary_abilities[0] else None,
+                self.secondary_abilities[1].name.string if self.secondary_abilities[1] else None,
+                self.secondary_abilities[2].name.string if self.secondary_abilities[2] else None,
             ],
         }
 

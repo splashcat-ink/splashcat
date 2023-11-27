@@ -1,5 +1,6 @@
 # Create your views here.
 import json
+from concurrent.futures import ThreadPoolExecutor
 from io import StringIO, BytesIO
 
 import django_htmx.http
@@ -12,7 +13,6 @@ from openai import OpenAI
 
 from assistant.forms import CreateThreadForm
 from assistant.models import Thread
-from battles.models import Battle
 from users.models import User, SponsorshipTiers
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
@@ -51,18 +51,17 @@ def create_thread(request):
     if not form.is_valid():
         return HttpResponseBadRequest("Invalid create thread form.")
 
-    battles = request.user.battles.with_prefetch().order_by('-played_time')[:10]
+    battles = request.user.battles.with_prefetch(True).order_by('-played_time')
 
-    battle_array = []
+    def to_gpt_dict_parallel(battle):
+        return json.dumps(battle.to_gpt_dict()) + '\n'
 
-    battle: Battle
-    for battle in battles:
-        battle_data = battle.to_dict()
-        battle_array.append(battle_data)
+    with ThreadPoolExecutor() as executor:
+        battle_array = list(executor.map(to_gpt_dict_parallel, battles))
 
-    json_data = json.dumps(battle_array, indent=4, ensure_ascii=False)
-
-    temp_file = StringIO(json_data)
+    temp_file = StringIO("")
+    temp_file.writelines(battle_array)
+    temp_file.seek(0)
     temp_file = BytesIO(temp_file.read().encode('utf-8'))
 
     temp_file.seek(0)
