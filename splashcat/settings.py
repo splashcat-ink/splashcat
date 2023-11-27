@@ -145,7 +145,7 @@ if database_url is None:
         }
     }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    database_connection_details = dj_database_url.parse(database_url, conn_max_age=None, conn_health_checks=True)
+    database_connection_details = dj_database_url.parse(database_url, conn_max_age=None, conn_health_checks=False)
 
     if FLY_REGION != FLY_PRIMARY_REGION:
         database_connection_details["PORT"] = 5433
@@ -155,7 +155,7 @@ elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
     }
 
     CONN_MAX_AGE = None
-    CONN_HEALTH_CHECKS = True
+    CONN_HEALTH_CHECKS = False
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
