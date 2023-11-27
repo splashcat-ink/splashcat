@@ -31,13 +31,13 @@ class BattleManager(models.Manager):
 
     def with_prefetch(self, include_player_gear=False):
         player_prefetch_queryset = Player.objects \
-            .prefetch_related('title_adjective__string', 'title_subject__string', 'nameplate_background__image',
-                              'nameplate_badge_1__image', 'nameplate_badge_2__image', 'nameplate_badge_3__image',
-                              'nameplate_badge_1__description', 'nameplate_badge_2__description',
-                              'nameplate_badge_3__description', 'weapon__name',
-                              'weapon__flat_image', 'weapon__image_3d', 'weapon__sub__name',
-                              'weapon__sub__overlay_image', 'weapon__sub__mask_image', 'weapon__special__name',
-                              'weapon__special__overlay_image', 'weapon__special__mask_image')
+            .select_related('title_adjective__string', 'title_subject__string', 'nameplate_background__image',
+                            'nameplate_badge_1__image', 'nameplate_badge_2__image', 'nameplate_badge_3__image',
+                            'nameplate_badge_1__description', 'nameplate_badge_2__description',
+                            'nameplate_badge_3__description', 'weapon__name',
+                            'weapon__flat_image', 'weapon__image_3d', 'weapon__sub__name',
+                            'weapon__sub__overlay_image', 'weapon__sub__mask_image', 'weapon__special__name',
+                            'weapon__special__overlay_image', 'weapon__special__mask_image')
 
         if include_player_gear:
             player_prefetch_queryset = player_prefetch_queryset \
@@ -221,7 +221,6 @@ class Battle(models.Model):
             data['awards'].append({
                 'id': award.id,
                 'name': award.name.string,
-                'order': BattleAward.objects.get(battle=self, award=award).order,
             })
 
         for team in self.teams.all():
@@ -233,15 +232,15 @@ class Battle(models.Model):
         data = {
             'battle_id': self.id,
             'uploader_id': self.uploader_id,
-            'vs_mode': self.get_vs_mode_display(),
-            'vs_rule': self.get_vs_rule_display(),
+            'vs_mode': self.vs_mode,
+            'vs_rule': self.vs_rule,
             'stage_name': self.vs_stage.name.string,
             'uploaded_at': self.uploaded_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
             'played_time': self.played_time.isoformat(),
             'duration': self.duration.total_seconds(),
-            'judgement': self.get_judgement_display(),
-            'knockout': self.get_knockout_display(),
+            'judgement': self.judgement,
+            'knockout': self.knockout,
             'awards': [],
             'teams': [],
         }
@@ -249,7 +248,6 @@ class Battle(models.Model):
         for award in self.awards.all():
             data['awards'].append({
                 'name': award.name.string,
-                'order': BattleAward.objects.get(battle=self, award=award).order,
             })
 
         for team in self.teams.all():
@@ -370,8 +368,8 @@ class Team(models.Model):
             'fest_team_name': self.fest_team_name,
             'fest_uniform_bonus_rate': self.fest_uniform_bonus_rate,
             'fest_uniform_name': self.fest_uniform_name,
-            'tricolor_role': self.get_tricolor_role_display(),
-            'judgement': self.get_judgement_display(),
+            'tricolor_role': self.tricolor_role,
+            'judgement': self.judgement,
             'score': self.score,
             'paint_ratio': self.paint_ratio,
             'ultra_signals': self.noroshi,
@@ -487,7 +485,7 @@ class Player(models.Model):
     def to_gpt_dict(self):
         data = {
             'is_self': self.is_self,
-            'species': self.get_species_display(),
+            'species': self.species,
             'npln_id': self.npln_id,
             'name': self.name,
             'name_id': self.name_id,

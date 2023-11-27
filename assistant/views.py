@@ -1,11 +1,11 @@
 # Create your views here.
 import json
-from concurrent.futures import ThreadPoolExecutor
 from io import StringIO, BytesIO
 
 import django_htmx.http
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.db.models import Prefetch
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, get_object_or_404, render
 from django.views.decorators.http import require_POST
@@ -13,6 +13,7 @@ from openai import OpenAI
 
 from assistant.forms import CreateThreadForm
 from assistant.models import Thread
+from battles.models import Battle, Player
 from users.models import User, SponsorshipTiers
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
@@ -51,13 +52,47 @@ def create_thread(request):
     if not form.is_valid():
         return HttpResponseBadRequest("Invalid create thread form.")
 
-    battles = request.user.battles.with_prefetch(True).order_by('-played_time')
+    player_query = Player.objects.select_related(
+        "title_adjective__string",
+        "title_subject__string",
+        "nameplate_background",
+        "nameplate_badge_1__description",
+        "nameplate_badge_2__description",
+        "nameplate_badge_3__description",
+        "weapon__name",
+        "weapon__sub__name",
+        "weapon__special__name",
+        "head_gear__gear__name",
+        "head_gear__primary_ability__name",
+        "head_gear__secondary_ability_1__name",
+        "head_gear__secondary_ability_2__name",
+        "head_gear__secondary_ability_3__name",
+        "clothing_gear__gear__name",
+        "clothing_gear__primary_ability__name",
+        "clothing_gear__secondary_ability_1__name",
+        "clothing_gear__secondary_ability_2__name",
+        "clothing_gear__secondary_ability_3__name",
+        "shoes_gear__gear__name",
+        "shoes_gear__primary_ability__name",
+        "shoes_gear__secondary_ability_1__name",
+        "shoes_gear__secondary_ability_2__name",
+        "shoes_gear__secondary_ability_3__name",
+    )
+    player_prefetch = Prefetch(
+        'teams__players',
+        queryset=player_query,
+    )
 
-    def to_gpt_dict_parallel(battle):
-        return json.dumps(battle.to_gpt_dict()) + '\n'
+    battles = request.user.battles.select_related("vs_stage__name").prefetch_related("awards__name",
+                                                                                     player_prefetch).order_by(
+        '-played_time')
 
-    with ThreadPoolExecutor() as executor:
-        battle_array = list(executor.map(to_gpt_dict_parallel, battles))
+    battle_array = []
+
+    battle: Battle
+    for battle in battles:
+        battle_data = battle.to_gpt_dict()
+        battle_array.append(json.dumps(battle_data) + '\n')
 
     temp_file = StringIO("")
     temp_file.writelines(battle_array)
