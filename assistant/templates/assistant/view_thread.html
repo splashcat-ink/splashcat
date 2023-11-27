@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="text-2xl font-splatoon1">
+        {% block title %}Viewing Thread from {{ thread.created_date }}{% endblock %}
+    </h1>
+
+    <div class="flex flex-col gap-2" id="entire-thread-container">
+        {% include 'assistant/htmx/thread_container.html' %}
+    </div>
+
+    <div class="text-sm text-gray-200">
+        <p>Thread ID: {{ thread.openai_thread_id }}</p>
+        <p>File ID: {{ thread.openai_file_id }}</p>
+    </div>
+
+    <script>
+        const element = document.getElementById("send-message-form");
+
+        element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+
+        window.keyUp = function (event) {
+            if (event.keyCode === 13 && event.shiftKey) {
+                event.preventDefault()
+                htmx.trigger("#send-message-form", "submit", {})
+            }
+        }
+    </script>
+{% endblock %}

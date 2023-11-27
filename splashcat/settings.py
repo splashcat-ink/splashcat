@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_htmx',
     'django_unicorn',
+    'markdownify.apps.MarkdownifyConfig',
     # 'silk',
     'splashcat.apps.PatchedOidcProvider',
     'anymail',
@@ -87,6 +88,7 @@ INSTALLED_APPS = [
     'groups',
     'videos',
     'search',
+    'assistant',
 ]
 
 MIDDLEWARE = [
@@ -335,3 +337,45 @@ SILKY_AUTHORISATION = True  # User must have permissions
 SILKY_META = True
 SILKY_ANALYZE_QUERIES = True
 SILKY_PYTHON_PROFILER = True
+
+# Assistant
+
+OPENAI_ASSISTANT_ID = "asst_svRurlx2W6OeEuhVWi12JEwX"
+
+# Markdown
+
+MARKDOWNIFY = {
+    "default": {
+        "MARKDOWN_EXTENSIONS": ['markdown.extensions.extra', ],
+        "WHITELIST_TAGS": [
+            'a',
+            'abbr',
+            'acronym',
+            'b',
+            'blockquote',
+            'em',
+            'i',
+            'li',
+            'ol',
+            'p',
+            'strong',
+            'ul',
+            'img',
+            'pre',
+            'code',
+            'table',
+            'thead',
+            'tbody',
+            'th',
+            'tr',
+            'td',
+        ],
+        "WHITELIST_ATTRS": [
+            'href',
+            'src',
+            'alt',
+            'height',
+            'width',
+        ]
+    }
+}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="text-2xl font-splatoon1">
+        {% block title %}Splashcat Assistant{% endblock %}
+    </h1>
+    <h2 class="text-xl font-splatoon1">Threads</h2>
+
+    <p>Get insights into your battle data with Splashcat Assistant.</p>
+
+    <div class="py-5">
+        <a href="{% url 'assistant:create_thread' %}" class="bg-pink-600 hover:bg-pink-700 p-4 rounded">
+            Start a new Thread
+        </a>
+    </div>
+    <p class="text-sm">Note: Battle data is updated when a new thread is created.</p>
+
+    {% if threads|length > 0 %}
+        <h2 class="text-xl font-splatoon1">Active Threads</h2>
+    {% endif %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for thread in threads %}
+            <a href="{% url 'assistant:view_thread' thread.id %}" class="p-4 rounded drop-shadow bg-purple-700">
+                <div class="text-xl">
+                    {{ thread.created_date }}
+                </div>
+                <div class="text-sm font-light">
+                    {{ thread.initial_message|truncatechars:100 }}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

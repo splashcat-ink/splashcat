@@ -106,6 +106,8 @@
     .form-css input[type=submit] {
         @apply bg-pink-600;
         @apply hover:bg-pink-700;
+        @apply disabled:bg-pink-900;
+        @apply disabled:hover:bg-pink-900;
         @apply text-purple-100;
         @apply font-bold;
         @apply cursor-pointer;

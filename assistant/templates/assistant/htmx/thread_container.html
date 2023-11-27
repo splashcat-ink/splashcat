@@ -1,0 +1,20 @@
+<div hx-get="{% url 'assistant:get_thread_messages' thread.id %}" hx-trigger="load"
+     hx-vals='{"isDisablingInput": "{{ message_sending_disabled }}"}' hx-indicator="#htmx-request-indicator">
+    {% include 'assistant/htmx/messages_list.html' %}
+</div>
+
+<div class="flex flex-row justify-start items-center gap-1 transition-opacity mr-4 htmx-indicator text-sm"
+     id="htmx-request-indicator">
+    {% include "splatnet_assets/squid_spinner.html" with class="h-6 w-6 animate-[spin_2s_linear_infinite]" %}
+    Refreshing messages...
+</div>
+
+<form class="flex flex-row gap-4 form-css" hx-target="#entire-thread-container" hx-swap="innerHTML"
+      hx-post="{% url 'assistant:send_message_to_thread' thread.id %}" hx-trigger="submit throttle:1s"
+      id="send-message-form">
+    <label for="send-message-input" class="hidden" style="display: none;">Send a message...</label>
+    <textarea name="message" id="send-message-input" rows="3" class="w-full"
+              {% if message_sending_disabled %}disabled{% endif %} hx-on="keypress: window.keyUp(event)"></textarea>
+    <input type="submit" value="Send" class="flex-shrink text-xl"
+           {% if message_sending_disabled %}disabled{% endif %}>
+</form>

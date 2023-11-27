@@ -1,0 +1,55 @@
+{% load openai %}
+{% load static %}
+{% load markdownify %}
+<div class="flex flex-col gap-2" hx-get="{% url 'assistant:get_thread_messages' thread.id %}"
+     hx-trigger="load delay:5s" hx-swap="outerHTML" id="messages-list" hx-indicator="#htmx-request-indicator"
+     hx-vals='{"isDisablingInput": "{{ message_sending_disabled }}"}'>
+    {% for message in thread_messages %}
+        <div class="w-full rounded bg-gray-800/90 p-4 flex flex-row gap-2 overflow-x-auto">
+            <div class="w-1/12 flex-none">
+                {% if message.role == 'assistant' %}
+                    <img src="{% static 'images/judd-pride.png' %}?optimizer=image&height=128&width=128"
+                         alt="Splashcat Assistant"
+                         class="h-16 w-16 object-cover rounded-lg aspect-square bg-gray-700"
+                         height="128" width="128">
+                {% else %}
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}?optimizer=image&height=128&width=128"
+                             alt="{{ user.display_name }}"
+                             class="h-16 w-16 object-cover rounded-lg aspect-square bg-gray-700"
+                             height="128" width="128">
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% if message.role == 'assistant' %}
+                <div class="prose prose-invert max-w-none grow">
+                    {% for content in message.content %}
+                        {% if content.type == 'text' %}
+                            {{ content.text.value|markdownify }}
+                        {% elif content.type == 'image_file' %}
+                            <div class="max-w-xl">
+                                {% get_openai_image content.image_file %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="grow">{{ message.content.0.text.value }}</div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    {% if gpt_processing %}
+        <div class="w-full rounded bg-gray-800/90 p-4 flex flex-row gap-2 overflow-x-auto">
+            <div class="w-1/12 flex-none">
+                <img src="{% static 'images/judd-pride.png' %}?optimizer=image&height=128&width=128"
+                     alt="Splashcat Assistant"
+                     class="h-16 w-16 object-cover rounded-lg aspect-square bg-gray-700"
+                     height="128" width="128">
+            </div>
+            <div class="flex justify-center py-2 w-full">
+                {% include "splatnet_assets/squid_spinner.html" with class="h-20 w-20 animate-[spin_2s_linear_infinite]" %}
+            </div>
+        </div>
+    {% endif %}
+</div>
