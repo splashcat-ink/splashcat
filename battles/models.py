@@ -232,8 +232,8 @@ class Battle(models.Model):
         data = {
             'battle_id': self.id,
             'uploader_id': self.uploader_id,
-            'vs_mode': self.vs_mode,
-            'vs_rule': self.vs_rule,
+            'vs_mode': self.get_vs_mode_display(),
+            'vs_rule': self.get_vs_rule_display(),
             'stage_name': self.vs_stage.name.string,
             'uploaded_at': self.uploaded_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
