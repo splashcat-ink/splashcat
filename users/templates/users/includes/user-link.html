@@ -1,5 +1,6 @@
 {% load static %}
-<a class="flex flex-col gap-2 items-center w-fit" href="{% url 'profile' user.username %}">
+<{% if no_links %}div{% else %}a{% endif %} class="flex flex-col gap-2 items-center w-fit"
+                                            href="{% url 'profile' user.username %}">
     <div class="flex flex-row gap-2 items-center w-fit">
         {% if user.profile_picture %}
             <img src="{{ user.profile_picture.url }}?height=96&width=96" alt="{{ user.display_name }}"
@@ -23,4 +24,4 @@
             {% endif %}
         {% endwith %}
     {% endif %}
-</a>
+</{% if no_links %}div{% else %}a{% endif %}>

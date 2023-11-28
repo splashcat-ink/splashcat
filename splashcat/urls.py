@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.sitemaps import views
 from django.urls import path, include
+from wagtail import urls as wagtail_urls
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.contrib.sitemaps import views
+from wagtail.documents import urls as wagtaildocs_urls
 
 import users.views as users_views
 from battles.sitemaps import BattlesSitemap
@@ -55,6 +58,9 @@ urlpatterns = [
     path('openid/', include('oidc_provider.urls', namespace='oidc_provider')),
     path('robots.txt', robots_txt, name='robots_txt'),
     path('ads.txt', ads_txt, name='ads_txt'),
+    # wagtail
+    path('cms/', include(wagtailadmin_urls)),
+    path('documents/', include(wagtaildocs_urls)),
     # path('silk/', include('silk.urls', namespace='silk')),
     path(
         "sitemap.xml",
@@ -68,6 +74,7 @@ urlpatterns = [
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
+    path('', include(wagtail_urls)),  # must be last
 ]
 
 if settings.DEBUG:
