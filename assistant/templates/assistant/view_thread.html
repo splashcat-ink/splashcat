@@ -11,7 +11,12 @@
 
     <div class="text-sm text-gray-200">
         <p>Thread ID: {{ thread.openai_thread_id }}</p>
-        <p>File ID: {{ thread.openai_file_id }}</p>
+        <p>File ID:
+            {% if thread.status == thread.Status.PENDING %}
+                Waiting for thread data...
+            {% else %}
+                {{ thread.openai_file_id }}
+            {% endif %}</p>
     </div>
 
     <script>
