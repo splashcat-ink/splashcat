@@ -33,6 +33,12 @@ def schedule_machine(thread: Thread):
                     'swap_size_mb': 1024 * 4,
                 },
                 'image': fly_image_ref,
+                'env': {
+                    'TASK_THREAD_ID': str(thread_id),
+                },
+                'restart': {
+                    'policy': 'no',
+                },
             }
         }
     )
