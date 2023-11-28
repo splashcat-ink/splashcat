@@ -148,7 +148,7 @@ if database_url is None:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+elif len(sys.argv) > 1 and sys.argv[1] != 'collectstatic':
     database_connection_details = dj_database_url.parse(database_url, conn_max_age=None, conn_health_checks=False)
 
     if FLY_REGION != FLY_PRIMARY_REGION:
