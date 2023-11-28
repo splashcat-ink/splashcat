@@ -19,7 +19,7 @@ def schedule_machine(thread: Thread):
         json={
             'region': fly_primary_region,
             'config': {
-                'auto_destroy': True,
+                # 'auto_destroy': True,
                 'guest': {
                     'cpu_kind': 'performance',
                     'cpus': 1,
