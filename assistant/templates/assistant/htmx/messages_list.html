@@ -39,7 +39,7 @@
         </div>
     {% endfor %}
 
-    {% if gpt_processing %}
+    {% if gpt_processing or thread.status == thread.Status.PENDING %}
         <div class="w-full rounded bg-gray-800/90 p-4 flex flex-row gap-2 overflow-x-auto">
             <div class="w-1/12 flex-none">
                 <img src="{% static 'images/judd-pride.png' %}?optimizer=image&height=128&width=128"

@@ -18,6 +18,7 @@ DJANGO_ALLOWED_HOSTS = "splashcat.fly.dev,splashcat.ink"
 DEBUG = "False"
 SENTRY_DSN = "https://9babb5ac79274bed8e3c56a222b44ab6@o4505055559352320.ingest.sentry.io/4505055561449472"
 BUNNY_VIDEO_LIBRARY_ID = "140045"
+FLY_API_HOSTNAME = "http://_api.internal:4280"
 
 [http_service]
 internal_port = 8080

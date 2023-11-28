@@ -25,5 +25,17 @@
                 htmx.trigger("#send-message-form", "submit", {})
             }
         }
+
+        document.body.addEventListener("htmx:sendError", function (event) {
+            // Process the error
+
+            if (event.detail.requestConfig.verb !== "GET") return;
+
+            // Retrieve which event fired the request, trigger it again
+            const eventType = event.detail.requestConfig.triggeringEvent.type
+            setTimeout(function () {
+                htmx.trigger(event.detail.elt, eventType, {})
+            }, 500) // Adjust the delay as you like
+        })
     </script>
 {% endblock %}

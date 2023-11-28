@@ -1,19 +1,16 @@
 # Create your views here.
-import json
-from io import StringIO, BytesIO
 
 import django_htmx.http
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.db.models import Prefetch
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, get_object_or_404, render
 from django.views.decorators.http import require_POST
 from openai import OpenAI
 
+from assistant import orchestrator
 from assistant.forms import CreateThreadForm
 from assistant.models import Thread
-from battles.models import Battle, Player
 from users.models import User, SponsorshipTiers
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
@@ -52,77 +49,12 @@ def create_thread(request):
     if not form.is_valid():
         return HttpResponseBadRequest("Invalid create thread form.")
 
-    player_query = Player.objects.select_related(
-        "title_adjective__string",
-        "title_subject__string",
-        "nameplate_background",
-        "nameplate_badge_1__description",
-        "nameplate_badge_2__description",
-        "nameplate_badge_3__description",
-        "weapon__name",
-        "weapon__sub__name",
-        "weapon__special__name",
-        "head_gear__gear__name",
-        "head_gear__primary_ability__name",
-        "head_gear__secondary_ability_1__name",
-        "head_gear__secondary_ability_2__name",
-        "head_gear__secondary_ability_3__name",
-        "clothing_gear__gear__name",
-        "clothing_gear__primary_ability__name",
-        "clothing_gear__secondary_ability_1__name",
-        "clothing_gear__secondary_ability_2__name",
-        "clothing_gear__secondary_ability_3__name",
-        "shoes_gear__gear__name",
-        "shoes_gear__primary_ability__name",
-        "shoes_gear__secondary_ability_1__name",
-        "shoes_gear__secondary_ability_2__name",
-        "shoes_gear__secondary_ability_3__name",
-    )
-    player_prefetch = Prefetch(
-        'teams__players',
-        queryset=player_query,
-    )
-
-    battles = request.user.battles.select_related("vs_stage__name").prefetch_related("awards__name",
-                                                                                     player_prefetch).order_by(
-        '-played_time')
-
-    battle_array = []
-
-    battle: Battle
-    for battle in battles:
-        battle_data = battle.to_gpt_dict()
-        battle_array.append(json.dumps(battle_data) + '\n')
-
-    temp_file = StringIO("")
-    temp_file.writelines(battle_array)
-    temp_file.seek(0)
-    temp_file = BytesIO(temp_file.read().encode('utf-8'))
-
-    temp_file.seek(0)
-
-    openai_file = client.files.create(
-        file=temp_file,
-        purpose='assistants'
-    )
-
-    openai_thread = client.beta.threads.create(
-        messages=[
-            {
-                "role": "user",
-                "content": form.cleaned_data['initial_message'],
-                "file_ids": [openai_file.id]
-            }
-        ]
-    )
-    thread = Thread(creator=request.user, openai_thread_id=openai_thread.id, openai_file_id=openai_file.id,
+    openai_thread = client.beta.threads.create()
+    thread = Thread(creator=request.user, openai_thread_id=openai_thread.id, status=Thread.Status.PENDING,
                     initial_message=form.cleaned_data['initial_message'])
     thread.save()
 
-    run = client.beta.threads.runs.create(
-        thread_id=openai_thread.id,
-        assistant_id=settings.OPENAI_ASSISTANT_ID,
-    )
+    orchestrator.schedule_machine(thread)
 
     return redirect("assistant:view_thread", thread.id)
 
@@ -152,10 +84,11 @@ def get_thread_messages(request, thread_id):
         limit=1,
         order='desc',
     )
-    latest_run = latest_run.data[0]
+    latest_run = latest_run.data[0] if len(latest_run.data) > 0 else None
     latest_status = latest_run.status if latest_run else 'completed'
 
-    is_currently_done = latest_status in ['completed', 'expired', 'cancelled', 'failed']
+    is_currently_done = latest_status in ['completed', 'expired', 'cancelled',
+                                          'failed'] and thread.status == thread.Status.CREATED
 
     is_disabling_input = request.GET.get('isDisablingInput', 'False') == 'True'
     if is_disabling_input == is_currently_done:

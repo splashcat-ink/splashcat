@@ -10,7 +10,7 @@
 </div>
 
 <form class="flex flex-row gap-4 form-css" hx-target="#entire-thread-container" hx-swap="innerHTML"
-      hx-post="{% url 'assistant:send_message_to_thread' thread.id %}" hx-trigger="submit throttle:1s"
+      hx-post="{% url 'assistant:send_message_to_thread' thread.id %}" hx-trigger="submit throttle:5s"
       id="send-message-form">
     <label for="send-message-input" class="hidden" style="display: none;">Send a message...</label>
     <textarea name="message" id="send-message-input" rows="3" class="w-full"
