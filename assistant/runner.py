@@ -1,6 +1,9 @@
 import os
 import sys
 
+if os.environ.get('FLY_MACHINE_ID'):
+    sys.path.insert(0, '/code/')
+
 import django
 from django.conf import settings
 from openai import OpenAI

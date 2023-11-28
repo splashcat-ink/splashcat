@@ -22,14 +22,14 @@ def schedule_machine(thread: Thread):
         json={
             'region': fly_primary_region,
             'config': {
-                'auto_destroy': True,
+                # 'auto_destroy': True,
                 'guest': {
                     'cpu_kind': 'performance',
                     'cpus': 1,
                     'memory_mb': 1024 * 2,
                 },
                 'init': {
-                    'cmd': ['python /code/assistant/runner.py'],
+                    'cmd': ['python', './assistant/runner.py'],
                     'swap_size_mb': 1024 * 4,
                 },
                 'image': fly_image_ref,
