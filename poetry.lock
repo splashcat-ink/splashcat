@@ -939,13 +939,13 @@ Django = ">=3.2,<5.0"
 
 [[package]]
 name = "django-unicorn"
-version = "0.52.0"
+version = "0.57.1"
 description = "A magical full-stack framework for Django."
 optional = false
-python-versions = ">=3.7,<4"
+python-versions = ">=3.8,<4"
 files = [
-    {file = "django_unicorn-0.52.0-py3-none-any.whl", hash = "sha256:ffaf2e16f73796286cf45631aef114753bdd7f8ae93a3a46c63a29c7e30c76c3"},
-    {file = "django_unicorn-0.52.0.tar.gz", hash = "sha256:7997efe8851c99859ac4307e1cb7f339d77382d0b180193f9099d080466d8816"},
+    {file = "django_unicorn-0.57.1-py3-none-any.whl", hash = "sha256:21a71bc99678f05f751adee53f5cc13bbf6ffbeb1eb60d81512b7f68c4d21696"},
+    {file = "django_unicorn-0.57.1.tar.gz", hash = "sha256:b25b6aadb63d380012ced87951951049ea1ff5f8dc17dda100bc118beca12cda"},
 ]
 
 [package.dependencies]
@@ -2687,4 +2687,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "ef0d0a2f054ca27434510d567f57be9628024fad62a6377e1e3fec5e81b492f7"
+content-hash = "3884cb57e5342d8b1b955d034d1db9bca8c2f266d85732fe2acdf4fe84fb2354"
