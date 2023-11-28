@@ -141,14 +141,14 @@ WSGI_APPLICATION = 'splashcat.wsgi.application'
 
 database_url = os.environ.get("DATABASE_URL")
 
-if database_url is None:
+if database_url is None or (len(sys.argv) > 1 and sys.argv[1] == 'collectstatic'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-elif len(sys.argv) > 1 and sys.argv[1] != 'collectstatic':
+else:
     database_connection_details = dj_database_url.parse(database_url, conn_max_age=None, conn_health_checks=False)
 
     if FLY_REGION != FLY_PRIMARY_REGION:
