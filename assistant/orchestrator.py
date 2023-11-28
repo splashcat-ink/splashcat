@@ -26,7 +26,7 @@ def schedule_machine(thread: Thread):
                 'guest': {
                     'cpu_kind': 'performance',
                     'cpus': 1,
-                    'memory_mb': 1024 * 2,
+                    'memory_mb': 1024 * 3,
                 },
                 'init': {
                     'cmd': ['python', './assistant/runner.py'],
