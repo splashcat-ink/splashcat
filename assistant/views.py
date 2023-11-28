@@ -8,6 +8,7 @@ from django.shortcuts import redirect, get_object_or_404, render
 from django.views.decorators.http import require_POST
 from openai import OpenAI
 
+from assistant import orchestrator
 from assistant.forms import CreateThreadForm
 from assistant.models import Thread
 from users.models import User, SponsorshipTiers
@@ -52,6 +53,8 @@ def create_thread(request):
     thread = Thread(creator=request.user, openai_thread_id=openai_thread.id, status=Thread.Status.PENDING,
                     initial_message=form.cleaned_data['initial_message'])
     thread.save()
+
+    orchestrator.schedule_machine(thread)
 
     return redirect("assistant:view_thread", thread.id)
 
