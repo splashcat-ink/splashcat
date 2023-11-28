@@ -81,7 +81,7 @@ def get_thread_messages(request, thread_id):
         limit=1,
         order='desc',
     )
-    latest_run = latest_run.data[0]
+    latest_run = latest_run.data[0] if len(latest_run.data) > 0 else None
     latest_status = latest_run.status if latest_run else 'completed'
 
     is_currently_done = latest_status in ['completed', 'expired', 'cancelled', 'failed']
