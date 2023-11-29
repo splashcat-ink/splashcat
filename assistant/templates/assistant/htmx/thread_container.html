@@ -13,8 +13,8 @@
       hx-post="{% url 'assistant:send_message_to_thread' thread.id %}" hx-trigger="submit throttle:5s"
       id="send-message-form">
     <label for="send-message-input" class="hidden" style="display: none;">Send a message...</label>
-    <textarea name="message" id="send-message-input" rows="3" class="w-full"
+    <textarea name="message" id="send-message-input" rows="3" class="w-full grow"
               {% if message_sending_disabled %}disabled{% endif %} hx-on="keypress: window.keyUp(event)"></textarea>
-    <input type="submit" value="Send" class="flex-shrink text-xl"
+    <input type="submit" value="Send" class="shrink text-xl min-w-fit"
            {% if message_sending_disabled %}disabled{% endif %}>
 </form>

@@ -47,7 +47,7 @@ except socket.gaierror:
     pass
 CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink']
 
-FLY_REGION = os.environ.get('FLY_REGION')
+FLY_REGION = os.environ.get('FLY_REGION', 'iad')
 FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION', 'iad')
 FLY_API_HOSTNAME = os.environ.get('FLY_API_HOSTNAME', 'https://api.machines.dev')
 FLY_API_TOKEN = os.environ.get('FLY_API_TOKEN')

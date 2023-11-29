@@ -38,7 +38,7 @@ def schedule_machine(thread: Thread):
                     'TASK_THREAD_ID': str(thread_id),
                 },
                 'restart': {
-                    'policy': 'on-fail',
+                    'policy': 'on-failure',
                     'max_retries': 10,
                 },
             }
@@ -48,4 +48,4 @@ def schedule_machine(thread: Thread):
         print(response.text)
     response.raise_for_status()
     data = json.loads(response.text)
-    return data.id
+    return data.get('id')
