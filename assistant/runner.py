@@ -21,7 +21,8 @@ thread_id = int(os.environ.get("TASK_THREAD_ID"))
 thread = Thread.objects.get(pk=thread_id)
 
 if thread.status == thread.Status.CREATED:
-    sys.exit("thread already started.")
+    print("thread already started.")
+    sys.exit()
 
 initial_prompt = thread.initial_message
 

@@ -38,7 +38,8 @@ def schedule_machine(thread: Thread):
                     'TASK_THREAD_ID': str(thread_id),
                 },
                 'restart': {
-                    'policy': 'no',
+                    'policy': 'on-fail',
+                    'max_retries': 10,
                 },
             }
         }
