@@ -13,7 +13,7 @@
         <p>Thread ID: {{ thread.openai_thread_id }}</p>
         <p>File ID:
             {% if thread.status == thread.Status.PENDING %}
-                Waiting for thread data...
+                Waiting for thread data... (Runner ID: {{ thread.runner_machine_id }})
             {% else %}
                 {{ thread.openai_file_id }}
             {% endif %}</p>

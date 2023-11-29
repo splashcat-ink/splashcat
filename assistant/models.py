@@ -14,3 +14,4 @@ class Thread(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     initial_message = models.TextField(default='')
     status = models.CharField(blank=True, choices=Status.choices, max_length=25)
+    runner_machine_id = models.CharField(blank=True, max_length=20)

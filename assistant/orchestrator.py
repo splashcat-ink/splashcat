@@ -1,3 +1,4 @@
+import json
 import os
 
 import requests
@@ -45,3 +46,5 @@ def schedule_machine(thread: Thread):
     if response.status_code != 200:
         print(response.text)
     response.raise_for_status()
+    data = json.loads(response.text)
+    return data.id

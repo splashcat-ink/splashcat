@@ -54,7 +54,10 @@ def create_thread(request):
                     initial_message=form.cleaned_data['initial_message'])
     thread.save()
 
-    orchestrator.schedule_machine(thread)
+    machine_id = orchestrator.schedule_machine(thread)
+
+    thread.runner_machine_id = machine_id
+    thread.save()
 
     return redirect("assistant:view_thread", thread.id)
 
