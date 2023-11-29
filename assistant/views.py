@@ -3,6 +3,7 @@
 import django_htmx.http
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, get_object_or_404, render
 from django.views.decorators.http import require_POST
@@ -38,6 +39,7 @@ def threads(request):
 
 @login_required
 @require_sponsor_tier
+@transaction.atomic
 def create_thread(request):
     if request.method == "GET":
         form = CreateThreadForm()
