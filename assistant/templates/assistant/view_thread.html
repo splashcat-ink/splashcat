@@ -5,7 +5,7 @@
         {% block title %}Viewing Thread from {{ thread.created_date }}{% endblock %}
     </h1>
 
-    <div class="flex flex-col gap-2" id="entire-thread-container">
+    <div class="flex flex-col gap-2" id="entire-thread-container" hx-ext="morph">
         {% include 'assistant/htmx/thread_container.html' %}
     </div>
 

@@ -124,7 +124,9 @@ def get_thread_messages(request, thread_id):
                            'message_sending_disabled': not is_currently_done, })
 
         django_htmx.http.retarget(response, '#entire-thread-container')
-        django_htmx.http.reswap(response, 'innerHTML')
+        # noinspection PyTypeChecker
+        # morph:innerHTML is allowed, just part of an extension
+        django_htmx.http.reswap(response, 'morph:innerHTML')
 
         return response
 
