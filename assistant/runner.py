@@ -27,10 +27,13 @@ if thread.status == thread.Status.CREATED:
 
 initial_prompt = thread.initial_message
 
-if thread.content_type.model_class() == Battle:
-    openai_file = upload_battle_to_openai(thread.content_object)
-elif thread.content_type.model_class() == BattleGroup:
-    openai_file = upload_battle_group_to_openai(thread.content_object)
+if thread.content_type:
+    if thread.content_type.model_class() == Battle:
+        openai_file = upload_battle_to_openai(thread.content_object)
+    elif thread.content_type.model_class() == BattleGroup:
+        openai_file = upload_battle_group_to_openai(thread.content_object)
+    else:
+        openai_file = upload_user_battles_to_openai(thread.creator)
 else:
     openai_file = upload_user_battles_to_openai(thread.creator)
 
