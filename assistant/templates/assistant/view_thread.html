@@ -14,7 +14,9 @@
         <a href="{% url 'battles:view_battle_group' thread.content_object.id %}" class="text-blue-500 underline">Battle
             Group #{{ thread.content_object.id }}</a>
     {% else %}
-        {% include "users/includes/user-link.html" with user=user show_splashtag=True %}
+        <div class="pt-1 pb-2">
+            {% include "users/includes/user-link.html" with user=user show_splashtag=True %}
+        </div>
     {% endif %}
 
     <div class="flex flex-col gap-2" id="entire-thread-container" hx-ext="morph">
