@@ -1,5 +1,6 @@
 // Global JS ran on every page
 import * as htmx from "htmx.org";
+import "./htmx-ext/loading-states.js";
 import {browserInit as initHyperscript} from "hyperscript.org";
 import Idiomorph from "idiomorph";
 
