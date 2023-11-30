@@ -42,7 +42,7 @@ def threads(request):
 @login_required
 @require_sponsor_tier
 @transaction.atomic
-def create_thread(request, app_label, model_name, object_id):
+def create_thread(request, app_label=None, model_name=None, object_id=None):
     found_object: None = None
     if app_label:
         if not model_name and not object_id:
