@@ -115,7 +115,7 @@ def get_thread_messages(request, thread_id):
     latest_status = latest_run.status if latest_run else 'completed'
 
     is_currently_done = latest_status in ['completed', 'expired', 'cancelled',
-                                          'failed'] and thread.status == thread.Status.CREATED
+                                          'failed'] and thread.status != thread.Status.PENDING
 
     is_disabling_input = request.GET.get('isDisablingInput', 'False') == 'True'
     if is_disabling_input == is_currently_done:
