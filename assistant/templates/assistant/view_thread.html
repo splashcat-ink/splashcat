@@ -7,7 +7,9 @@
 
     <h2 class="text-xl font-splatoon1">Thread data created from</h2>
     {% if thread.content_type.app_label == 'battles' and thread.content_type.model == 'battle' %}
-        {% include "users/includes/battle-card.html" with battle=thread.content_object display_uploader=True %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 pt-1 pb-2">
+            {% include "users/includes/battle-card.html" with battle=thread.content_object display_uploader=True %}
+        </div>
     {% elif thread.content_type.app_label == 'battles' and thread.content_type.model == 'battlegroup' %}
         <a href="{% url 'battles:view_battle_group' thread.content_object.id %}" class="text-blue-500 underline">Battle
             Group #{{ thread.content_object.id }}</a>
