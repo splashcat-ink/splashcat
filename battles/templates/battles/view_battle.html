@@ -80,12 +80,20 @@
         </div>
     </a>
 
-    {% if battle.gpt_description_generated %}
-        <details class="bg-purple-900 p-4 rounded w-fit max-w-prose group">
-            <summary class="group-open:border-b-2 group-open:mb-2 group-open:pb-1">AI Battle Description</summary>
-            {{ battle.gpt_description }}
-        </details>
-    {% endif %}
+    <div class="flex flex-row gap-4 flex-wrap">
+        {% if battle.gpt_description_generated %}
+            <details class="bg-purple-800 p-4 rounded w-fit max-w-prose group">
+                <summary class="group-open:border-b-2 group-open:mb-2 group-open:pb-1">AI Battle Description</summary>
+                {{ battle.gpt_description }}
+            </details>
+        {% endif %}
+        {% if battle.uploader_id == user.id and user.has_splashcat_assistant %}
+            <div>
+                <a href="{% url 'assistant:create_thread' 'battles' 'Battle' battle.id %}"
+                   class="bg-purple-800 p-4 rounded w-fit block">Create Assistant Thread</a>
+            </div>
+        {% endif %}
+    </div>
 
     <div class="flex flex-row flex-wrap gap-4 items-center">
         <div class="flex flex-wrap gap-4 py-2">

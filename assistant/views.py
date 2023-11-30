@@ -3,8 +3,9 @@
 import django_htmx.http
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.db import transaction
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import redirect, get_object_or_404, render
 from django.views.decorators.http import require_POST
 from openai import OpenAI
@@ -12,6 +13,7 @@ from openai import OpenAI
 from assistant import orchestrator
 from assistant.forms import CreateThreadForm
 from assistant.models import Thread
+from battles.models import Battle, BattleGroup
 from users.models import User, SponsorshipTiers
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
@@ -40,7 +42,25 @@ def threads(request):
 @login_required
 @require_sponsor_tier
 @transaction.atomic
-def create_thread(request):
+def create_thread(request, app_label, model_name, object_id):
+    found_object: None = None
+    if app_label:
+        if not model_name and not object_id:
+            return HttpResponseNotFound()
+        content_type = ContentType.objects.get(app_label__iexact=app_label, model__iexact=model_name)
+        found_object = content_type.get_object_for_this_type(pk=object_id)
+
+        if content_type.model_class() is Battle:
+            found_object: Battle
+            if found_object.uploader_id != request.user.id:
+                return HttpResponseBadRequest()
+        elif content_type.model_class() is BattleGroup:
+            found_object: BattleGroup
+            if found_object.creator_id != request.user.id:
+                return HttpResponseBadRequest()
+        else:
+            return HttpResponseBadRequest()
+
     if request.method == "GET":
         form = CreateThreadForm()
         return render(request, "assistant/create_thread.html", {
@@ -54,6 +74,8 @@ def create_thread(request):
     openai_thread = client.beta.threads.create()
     thread = Thread(creator=request.user, openai_thread_id=openai_thread.id, status=Thread.Status.PENDING,
                     initial_message=form.cleaned_data['initial_message'])
+    if found_object:
+        thread.content_object = found_object
     thread.save()
 
     machine_id = orchestrator.schedule_machine(thread)

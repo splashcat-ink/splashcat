@@ -5,7 +5,7 @@
         {% block title %}Create Thread{% endblock %}
     </h1>
 
-    <form action="{% url 'assistant:create_thread' %}" method="post" class="form-css">
+    <form action="" method="post" class="form-css">
         {% csrf_token %}
 
         {{ form.as_div }}

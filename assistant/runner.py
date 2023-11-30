@@ -11,7 +11,8 @@ from openai import OpenAI
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'splashcat.settings')
 django.setup()
 
-from assistant.data import upload_data_to_openai
+from battles.models import Battle, BattleGroup
+from assistant.data import upload_user_battles_to_openai, upload_battle_to_openai, upload_battle_group_to_openai
 from assistant.models import Thread
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
@@ -26,7 +27,12 @@ if thread.status == thread.Status.CREATED:
 
 initial_prompt = thread.initial_message
 
-openai_file = upload_data_to_openai(thread.creator)
+if thread.content_type.model_class() == Battle:
+    openai_file = upload_battle_to_openai(thread.content_object)
+elif thread.content_type.model_class() == BattleGroup:
+    openai_file = upload_battle_group_to_openai(thread.content_object)
+else:
+    openai_file = upload_user_battles_to_openai(thread.creator)
 
 thread.openai_file_id = openai_file.id
 thread.status = thread.Status.CREATED

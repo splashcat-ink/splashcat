@@ -1,3 +1,5 @@
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 
@@ -15,3 +17,11 @@ class Thread(models.Model):
     initial_message = models.TextField(default='')
     status = models.CharField(blank=True, choices=Status.choices, max_length=25)
     runner_machine_id = models.CharField(blank=True, max_length=20)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True, null=True)
+    object_id = models.PositiveIntegerField(blank=True, null=True)
+    content_object = GenericForeignKey("content_type", "object_id")
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_type", "object_id"]),
+        ]
