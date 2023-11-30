@@ -2,7 +2,7 @@
 {% load static %}
 {% load markdownify %}
 <div class="flex flex-col gap-2" hx-get="{% url 'assistant:get_thread_messages' thread.id %}"
-     hx-trigger="load delay:5s" hx-swap="morph:outerHTML" id="messages-list" hx-indicator="#htmx-request-indicator"
+     hx-trigger="every 5s" hx-swap="morph:outerHTML" id="messages-list" hx-indicator="#htmx-request-indicator"
      hx-vals='{"isDisablingInput": "{{ message_sending_disabled }}"}'>
     {% for message in thread_messages %}
         <div class="w-full rounded bg-gray-800/90 p-4 flex flex-row gap-2 overflow-x-auto">
