@@ -5,6 +5,16 @@
         {% block title %}Viewing Thread from {{ thread.created_date }}{% endblock %}
     </h1>
 
+    <h2 class="text-xl font-splatoon1">Thread data created from</h2>
+    {% if thread.content_type.app_label == 'battles' and thread.content_type.model == 'Battle' %}
+        {% include "users/includes/battle-card.html" with battle=thread.content_object display_uploader=True %}
+    {% elif thread.content_type.app_label == 'battles' and thread.content_type.model == 'BattleGroup' %}
+        <a href="{% url 'battles:view_battle_group' thread.content_object.id %}" class="text-blue-500 underline">Battle
+            Group #{{ thread.content_object.id }}</a>
+    {% else %}
+        {% include "users/includes/user-link.html" with user=user show_splashtag=True %}
+    {% endif %}
+
     <div class="flex flex-col gap-2" id="entire-thread-container" hx-ext="morph">
         {% include 'assistant/htmx/thread_container.html' %}
     </div>
@@ -20,27 +30,27 @@
     </div>
 
     <script>
-        const element = document.getElementById("send-message-form");
+		const element = document.getElementById("send-message-form");
 
-        element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+		element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
 
-        window.keyUp = function (event) {
-            if (event.keyCode === 13 && event.shiftKey) {
-                event.preventDefault()
-                htmx.trigger("#send-message-form", "submit", {})
-            }
-        }
+		window.keyUp = function (event) {
+			if (event.keyCode === 13 && event.shiftKey) {
+				event.preventDefault()
+				htmx.trigger("#send-message-form", "submit", {})
+			}
+		}
 
-        document.body.addEventListener("htmx:sendError", function (event) {
-            // Process the error
+		document.body.addEventListener("htmx:sendError", function (event) {
+			// Process the error
 
-            if (event.detail.requestConfig.verb !== "GET") return;
+			if (event.detail.requestConfig.verb !== "GET") return;
 
-            // Retrieve which event fired the request, trigger it again
-            const eventType = event.detail.requestConfig.triggeringEvent.type
-            setTimeout(function () {
-                htmx.trigger(event.detail.elt, eventType, {})
-            }, 500) // Adjust the delay as you like
-        })
+			// Retrieve which event fired the request, trigger it again
+			const eventType = event.detail.requestConfig.triggeringEvent.type
+			setTimeout(function () {
+				htmx.trigger(event.detail.elt, eventType, {})
+			}, 500) // Adjust the delay as you like
+		})
     </script>
 {% endblock %}
