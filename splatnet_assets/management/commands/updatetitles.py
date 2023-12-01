@@ -3,7 +3,7 @@ from django.core.management import BaseCommand
 
 from splatnet_assets.models import TitleAdjective, LocalizationString, TitleSubject
 
-prefix = 'https://gitlab.com/AeonSake/splat3-data/-/raw/master/MSBT/JSON_merged/CommonMsg/Byname'
+prefix = 'https://gitlab.com/AeonSake2/splat3-data/-/raw/master/MSBT/JSON_merged/CommonMsg/Byname'
 adjectives = f'{prefix}/BynameAdjective.msbt.json'
 subjects = f'{prefix}/BynameSubject.msbt.json'
 
@@ -51,5 +51,7 @@ class Command(BaseCommand):
         adjective_data = requests.get(adjectives).json()
         subject_data = requests.get(subjects).json()
 
+        print("doing adjectives")
         process_data(adjective_data, LocalizationString.Type.TITLE_ADJECTIVE, TitleAdjective)
+        print("doing subjects")
         process_data(subject_data, LocalizationString.Type.TITLE_SUBJECT, TitleSubject)
