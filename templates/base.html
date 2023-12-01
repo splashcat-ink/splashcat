@@ -35,17 +35,18 @@
             {% if share_query_param is not None %}event-share="{{ share_query_param }}"{% endif %}
             src="https://plausible.io/js/script.tagged-events.pageview-props.outbound-links.js"></script>
     <script>
-        window.plausible = window.plausible || function () {
-            (window.plausible.q = window.plausible.q || []).push(arguments)
-        }
+		window.plausible = window.plausible || function () {
+			(window.plausible.q = window.plausible.q || []).push(arguments)
+		}
     </script>
 
     {% if not user.should_hide_ads %}
         <script async
                 src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5620469587235062"
                 crossorigin="anonymous"></script>
+
         <script>window.msAdsQueue = window.msAdsQueue || [];</script>
-        <script async src="https://adsdk.microsoft.com/pubcenter/sdk.js?siteId=10321829&publisherId=253111645"
+        <script async src="https://adsdk.microsoft.com/pubcenter/sdk.js?siteId=10321842&publisherId=253111645"
                 crossorigin="anonymous"></script>
     {% endif %}
 
