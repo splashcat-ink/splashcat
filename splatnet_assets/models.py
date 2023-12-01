@@ -155,9 +155,9 @@ class NameplateBadge(models.Model):
 class Stage(models.Model):
     internal_id = models.CharField(max_length=100)
     splatnet_id = models.IntegerField()
-    name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
-    image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
-    image_banner = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    name = models.ForeignKey('LocalizationString', on_delete=models.PROTECT)
+    image = models.ForeignKey('Image', on_delete=models.PROTECT, related_name='+')
+    image_banner = models.ForeignKey('Image', on_delete=models.PROTECT, related_name='+')
 
     def __str__(self):
         return f'{self.internal_id} - {self.name.string_en_us}'
