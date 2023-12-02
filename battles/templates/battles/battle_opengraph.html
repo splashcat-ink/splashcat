@@ -104,12 +104,12 @@
             <div class="mt-1 w-full h-1/2 bg-black rounded-full overflow-hidden flex">
                 {% if battle.judgement == "DRAW" %}
                     <span class="text-2xl text-center align-middle w-full h-full pt-1">
-                No contest.
-            </span>
+                        No contest.
+                    </span>
                 {% elif battle.judgement == "DEEMED_LOSE" %}
                     <span class="text-2xl text-center align-middle w-full h-full pt-1">
-                The match was not fully completed.
-            </span>
+                        The match was not fully completed.
+                    </span>
                 {% else %}
                     {% if team_bar_display|length > 2 %}
                         {% for team in team_bar_display %}
