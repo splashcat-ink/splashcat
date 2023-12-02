@@ -13,7 +13,7 @@
     {% if team.fest_team_name %}<span class="text-xl">Team {{ team.fest_team_name }}</span>{% endif %}
     <div class="flex flex-col gap-1">
         {% with next_team=team.next_team %}
-            {% for player in team.players.all %}
+            {% for player in team.players.all|dictsort:"order" %}
                 {% include 'battles/components/player_row.html' with player=player next_team=next_team %}
             {% endfor %}
         {% endwith %}
