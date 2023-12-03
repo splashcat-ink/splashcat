@@ -39,7 +39,7 @@ def about(request):
 
 
 def uploaders_information(request):
-    developer_usernames = ["Joy"]
+    developer_usernames = ["Joy", "catgirl"]
     developer_users = User.objects.filter(username__in=developer_usernames)
 
     developers = {}
