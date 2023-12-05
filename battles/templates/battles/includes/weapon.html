@@ -6,6 +6,8 @@
             class="max-h-24"
             loading="lazy"
             data-tippy="{{ weapon.name.string }}"
+            width="96"
+            height="96"
     >
     <div class="flex flex-col gap-2">
         {% include "splatnet_assets/mask_image.html" with object=weapon.special class="inline h-8 w-8 p-1 rounded bg-gray-900/90" uploader=battle.uploader image_params="height=64&width=64" alt=weapon.special.name.string %}
