@@ -6,6 +6,8 @@
             data-tippy="{{ gear.gear.name.string }}"
             class="max-h-24 self-center"
             loading="lazy"
+            width="96"
+            height="96"
     >
     <div class="flex gap-0.5 justify-start items-center">
         <img
@@ -15,6 +17,8 @@
                 data-tippy="{{ gear.primary_ability.name.string }}"
                 class="rounded-full bg-black h-8 w-8"
                 loading="lazy"
+                width="32"
+                height="32"
         >
         {% for ability in gear.secondary_abilities %}
             {% if ability != None %}
@@ -25,6 +29,8 @@
                         data-tippy="{{ ability.name.string }}"
                         class="rounded-full bg-black h-6 w-6"
                         loading="lazy"
+                        width="24"
+                        height="24"
                 >
             {% endif %}
         {% endfor %}
