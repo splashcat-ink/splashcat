@@ -64,6 +64,8 @@ silver = [
     "SuperJumpTarget2",
     "Kill2",
     "KillAssist2",
+    "Chimney",
+    "Pogo",
 ]
 
 
