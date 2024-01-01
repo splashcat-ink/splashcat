@@ -940,26 +940,26 @@ Django = ">=3.2,<5.0"
 
 [[package]]
 name = "django-unicorn"
-version = "0.52.0"
+version = "0.58.0"
 description = "A magical full-stack framework for Django."
 optional = false
-python-versions = ">=3.7,<4"
+python-versions = ">=3.8,<4"
 files = [
-    {file = "django_unicorn-0.52.0-py3-none-any.whl", hash = "sha256:ffaf2e16f73796286cf45631aef114753bdd7f8ae93a3a46c63a29c7e30c76c3"},
-    {file = "django_unicorn-0.52.0.tar.gz", hash = "sha256:7997efe8851c99859ac4307e1cb7f339d77382d0b180193f9099d080466d8816"},
+    {file = "django_unicorn-0.58.0-py3-none-any.whl", hash = "sha256:1aff39a56e3737c57520a1c40f78c5b8c87dafec09a659538f25688773df2abb"},
+    {file = "django_unicorn-0.58.0.tar.gz", hash = "sha256:8450c89ae6214c17e8d78a4a709fed0243edbff56467cf83e1bf52583a4b96bb"},
 ]
 
 [package.dependencies]
 beautifulsoup4 = ">=4.8.0"
-cachetools = ">=4.1.1,<5.0.0"
-decorator = ">=4.4.2,<5.0.0"
+cachetools = ">=4.1.1"
+decorator = ">=4.4.2"
 django = ">=2.2"
-orjson = ">=3.6.0,<4.0.0"
-shortuuid = ">=1.0.1,<2.0.0"
+orjson = ">=3.6.0"
+shortuuid = ">=1.0.1"
 
 [package.extras]
-docs = ["Sphinx (>=4.3.2,<5.0.0)", "furo (>=2021.11.23,<2022.0.0)", "linkify-it-py (>=1.0.3,<2.0.0)", "myst-parser (>=0.16.1,<0.17.0)", "rst2pdf (>=0.98,<0.99)", "sphinx-autobuild (>=2021.3.14,<2022.0.0)", "sphinx-copybutton (>=0.4.0,<0.5.0)"]
-minify = ["htmlmin (>=0.1.12,<0.2.0)"]
+docs = ["Sphinx", "furo", "linkify-it-py", "myst-parser", "rst2pdf", "sphinx-autoapi", "sphinx-autobuild", "sphinx-copybutton", "sphinxext-opengraph"]
+minify = ["htmlmin (>=0,<1)"]
 
 [[package]]
 name = "dnspython"
@@ -2688,4 +2688,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "f5d0f1c8a32d1c48a957bd57cff297ea705f8847c3280ac1ae23b4b094429024"
+content-hash = "db8f4a12d4e4887f0952956d3b61aaec488a9897c103ba86e9535805a2878de9"
