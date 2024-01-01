@@ -40,16 +40,6 @@
 		}
     </script>
 
-    {% if not user.should_hide_ads %}
-        <script async
-                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5620469587235062"
-                crossorigin="anonymous"></script>
-
-        <script>window.msAdsQueue = window.msAdsQueue || [];</script>
-        <script async src="https://adsdk.microsoft.com/pubcenter/sdk.js?siteId=10321842&publisherId=253111645"
-                crossorigin="anonymous"></script>
-    {% endif %}
-
     <meta property="og:type" content="website">
     <meta property="twitter:site" content="@Splashcatink">
     {% block opengraph_head %}
@@ -99,17 +89,6 @@
                      height="16" width="16">
                 @splashcat@splashcat.social
             </a>
-        </div>
-        <div class="w-full flex flex-row justify-center">
-            <div id="ms-ad-2115093779"></div>
-            <script>
-				window.msAdsQueue.push(() => {
-					window.pubCenterSdk.render({
-						adUnitId: "2115093779",
-						elementId: "ms-ad-2115093779"
-					});
-				});
-            </script>
         </div>
     </div>
 </footer>
