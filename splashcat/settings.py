@@ -16,10 +16,8 @@ from pathlib import Path
 from socket import gethostname, gethostbyname
 
 import dj_database_url
-import sentry_sdk
 from django.conf import global_settings
 from dotenv import load_dotenv
-from sentry_sdk.integrations.django import DjangoIntegration
 
 load_dotenv()
 
@@ -261,6 +259,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SENTRY_DSN = os.environ.get('SENTRY_DSN')
 if SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
     print("Sentry enabled")
     sentry_sdk.init(
         dsn=SENTRY_DSN,
