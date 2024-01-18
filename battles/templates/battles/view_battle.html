@@ -215,8 +215,8 @@
                             {% endif %}
                         {% endfor %}
                     {% else %}
-                        <div class="h-full w-full relative before:block before:absolute before:w-full before:h-[40px] before:-left-[0.5px] before:-top-[5px] before:content-[''] before:bg-[url('/static/opengraph/waves.png')] before:bg-top before:bg-no-repeat before:bg-[length:100%_25px] before:z-10
-                                bg-[var(--last-team-color)] bg-[url('/static/opengraph/bubbles.png')] bg-contain"
+                        <div class="h-full w-full relative before:block before:absolute before:w-full before:h-[40px] before:-left-[0.5px] before:-top-[5px] before:content-[''] before:bg-[url('/static/opengraph/waves2.png')] before:[background-position-y:top] before:bg-repeat-x before:bg-[length:50%_30px] before:z-10
+                                bg-[var(--last-team-color)] bg-[url('/static/opengraph/bubbles.png')] bg-contain before:[animation:20s_linear_0s_infinite_battle-waves]"
                              style="--last-team-color:
                                  {% with team_bar_display|last as last %}{{ last.team_color.css }}{% endwith %}">
                             <div class="float-left text-left h-full flex items-center">
