@@ -126,8 +126,10 @@
         {% endif %}
 
         <div class="text-lg">
-            <img src="/static/images/rule-icons/{{ battle.get_vs_rule_image_name|lower }}.svg"
-                 class="inline-block h-8 w-8" alt="">
+            {% with image_name=battle.get_vs_rule_image_name|lower %}
+                <img src="{% static 'images/rule-icons/'|add:image_name|add:'.svg' %}"
+                     class="inline-block h-8 w-8" alt="">
+            {% endwith %}
             {{ battle.get_vs_rule_display }}
         </div>
     </div>
