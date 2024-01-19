@@ -195,10 +195,10 @@
     
     @keyframes battle-waves {
         0% {
-            background-position-x: 0;
+            background-position-x: 100%;
         }
         100% {
-            background-position-x: 100%;
+            background-position-x: 0;
         }
     }
 }
