@@ -1,6 +1,7 @@
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.urls import reverse
 
 
 # Create your models here.
@@ -25,3 +26,6 @@ class Thread(models.Model):
         indexes = [
             models.Index(fields=["content_type", "object_id"]),
         ]
+
+    def get_absolute_url(self):
+        return reverse('assistant:view_thread', args=[str(self.id)])

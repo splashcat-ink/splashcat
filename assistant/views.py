@@ -89,7 +89,10 @@ def create_thread(request, app_label=None, model_name=None, object_id=None):
 @login_required
 @require_sponsor_tier
 def view_thread(request, thread_id):
-    thread = get_object_or_404(Thread, id=thread_id, creator=request.user)
+    if request.user.is_superuser:
+        thread = get_object_or_404(Thread, id=thread_id)
+    else:
+        thread = get_object_or_404(Thread, id=thread_id, creator=request.user)
     openai_thread_id = thread.openai_thread_id
     openai_thread_messages = client.beta.threads.messages.list(openai_thread_id, order='asc', limit=100)
 
