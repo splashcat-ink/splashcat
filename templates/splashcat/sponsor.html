@@ -91,7 +91,7 @@
     {% if current_sponsors|length > 0 %}
         <h2 class="font-splatoon1 text-xl">Current Sponsors</h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div class="flex flex-row gap-2 flex-wrap">
             {% for sponsor in current_sponsors %}
                 {% include "users/includes/user-link.html" with user=sponsor show_splashtag=True %}
             {% endfor %}
