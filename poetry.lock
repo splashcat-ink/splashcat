@@ -993,19 +993,21 @@ files = [
 
 [[package]]
 name = "eventlet"
-version = "0.33.3"
+version = "0.35.0"
 description = "Highly concurrent networking library"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 files = [
-    {file = "eventlet-0.33.3-py2.py3-none-any.whl", hash = "sha256:e43b9ae05ba4bb477a10307699c9aff7ff86121b2640f9184d29059f5a687df8"},
-    {file = "eventlet-0.33.3.tar.gz", hash = "sha256:722803e7eadff295347539da363d68ae155b8b26ae6a634474d0a920be73cfda"},
+    {file = "eventlet-0.35.0-py3-none-any.whl", hash = "sha256:0cd273321ba26a4f717cc2ddbbf36c37cabee1fe7949de635a506c8bf9c06ce5"},
+    {file = "eventlet-0.35.0.tar.gz", hash = "sha256:5b8160016af202d74296f86b6e4143c86c377ae6e188fafbe567dd1a0b39123b"},
 ]
 
 [package.dependencies]
 dnspython = ">=1.15.0"
-greenlet = ">=0.3"
-six = ">=1.10.0"
+greenlet = ">=1.0"
+
+[package.extras]
+dev = ["black", "build", "commitizen", "isort", "pip-tools", "pre-commit", "twine"]
 
 [[package]]
 name = "future"
@@ -2707,4 +2709,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "3a1a4303c6fcad3a200b8e654a98cd6e11132202044e76e65a04ca75b926bd78"
+content-hash = "578c5767677f439df8add0e746f7e065d8aa5657e2487f8ff6362a8382d8f19b"
