@@ -4,7 +4,7 @@ from celery import shared_task
 from users.models import User, ProfileUrl
 
 
-@shared_task
+@shared_task(autoretry_for=(Exception,), retry_backoff=True)
 def generate_user_profile_picture(user_id):
     user = User.objects.get(pk=user_id)
 
