@@ -581,17 +581,21 @@ files = [
 
 [[package]]
 name = "crispy-tailwind"
-version = "0.5.0"
-description = "A tailwind package for Django Crispy Forms"
+version = "1.0.1"
+description = "Tailwind CSS for Django Crispy Forms"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.8"
 files = [
-    {file = "crispy-tailwind-0.5.0.tar.gz", hash = "sha256:0041c85b73b0a197e312ab969bd505aa1f96752a6a50324377287c2b6be3c0cb"},
-    {file = "crispy_tailwind-0.5.0-py3-none-any.whl", hash = "sha256:65cfcdf8dce96be37c99578e2688ed2d0067e6ff633baaf657358b3b3be052c7"},
+    {file = "crispy-tailwind-1.0.1.tar.gz", hash = "sha256:4f074d94f6cb7e3bbf8577005a739cd599974e27326f61e6c00ae3c4bacd39f1"},
+    {file = "crispy_tailwind-1.0.1-py3-none-any.whl", hash = "sha256:00022ebad08bc859bcbfb022af1aee9d245e74209aaccf5b33089b93f9226097"},
 ]
 
 [package.dependencies]
-django-crispy-forms = ">=1.11.2"
+django = ">=4.2"
+django-crispy-forms = ">=2.0"
+
+[package.extras]
+test = ["pytest", "pytest-django"]
 
 [[package]]
 name = "cron-descriptor"
@@ -2716,4 +2720,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "3a1a4303c6fcad3a200b8e654a98cd6e11132202044e76e65a04ca75b926bd78"
+content-hash = "8493f27541d0269b8b70b2e82ef4e102fe75fc6d0eb508d7ac3fcc365d8115ac"
