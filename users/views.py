@@ -53,6 +53,8 @@ def profile(request, username: str):
         .values('weapon').annotate(count=models.Count('weapon')).order_by('-count').first()
     most_used_weapon = Weapon.objects.get(pk=most_used_weapon['weapon']) if most_used_weapon else None
 
+    total_uploader_disconnects = Player.objects.filter(team__battle__uploader=user, is_self=True, disconnect=True).count()
+
     return render(request, 'users/profile.html',
                   {
                       'profile_user': user,
@@ -66,6 +68,7 @@ def profile(request, username: str):
                       'period_ago_win_rate': period_ago_win_rate,
                       'aggregates': aggregates,
                       'most_used_weapon': most_used_weapon,
+                      'total_uploader_disconnects': total_uploader_disconnects,
                   })
 
 
