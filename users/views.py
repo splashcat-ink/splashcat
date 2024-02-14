@@ -142,7 +142,7 @@ def profile_json(request, username: str):
     total_uploader_disconnects = Player.objects.filter(team__battle__uploader=user, is_self=True,
                                                        disconnect=True).count()
 
-    splashtag_badge_images = [(badge.image.url if badge else None) for badge in splashtag['badges']]
+    splashtag_badge_images = [(badge.image.url if badge else None) for badge in splashtag['badges']] if splashtag else None
 
     return JsonResponse({
         'splashtag': {
