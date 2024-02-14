@@ -323,6 +323,7 @@ if DEBUG:
 
 # OpenID Connect
 OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'
+OIDC_IDTOKEN_PROCESSING_HOOK = 'splashcat.oidc_provider_settings.idtoken_processing_hook'
 SITE_URL = 'https://splashcat.ink'
 
 # OpenAI

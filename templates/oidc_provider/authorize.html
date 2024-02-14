@@ -3,7 +3,7 @@
 {% block content %}
     <h1 class="text-3xl font-splatoon1">{% block title %}Request for Permission{% endblock %}</h1>
 
-    <p>Client <span class="font-bold">{{ client.name }}</span> would like to access your Splashcat account</p>
+    <h2 class="text-2xl py-2"><a class="font-bold underline text-blue-500" href="{{ client.website_url }}">{{ client.name }}</a> would like to access your Splashcat account</h2>
 
     <form method="post" action="{% url 'oidc_provider:authorize' %}">
 
@@ -11,17 +11,19 @@
 
         {{ hidden_inputs }}
 
-        <ul>
+        <h2 class="text-xl py-2">Requested Scopes</h2>
+        <ul class="list-inside list-disc">
             {% for scope in scopes %}
                 <li>
-                    <div class="font-bold">{{ scope.name }}</div>
-                    <i>{{ scope.description }}</i>
+                    <span class="font-bold text-lg">{{ scope.name }}</span>
+                    <br>
+                    <i class="pl-6">{{ scope.description }}</i>
                 </li>
             {% endfor %}
         </ul>
 
-        <input type="submit" value="Decline"/>
-        <input name="allow" type="submit" value="Authorize"/>
+        <input type="submit" value="Decline" class="p-4 rounded bg-red-700 mt-4" />
+        <input name="allow" type="submit" value="Authorize" class="p-4 rounded bg-purple-700 mt-4" />
 
     </form>
 {% endblock %}
