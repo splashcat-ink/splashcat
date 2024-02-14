@@ -116,7 +116,7 @@ def profile_json(request, username: str):
 
     win_count = user.battles.filter(judgement='WIN').count()
     lose_count = user.battles.filter(judgement__in=['LOSE', 'DEEMED_LOSE']).count()
-    win_rate = win_count / (win_count + lose_count) * 100 if win_count + lose_count else 0
+    win_rate = win_count / (win_count + lose_count) * 100 if win_count + lose_count else None
     aggregates = Player.objects.filter(team__battle__uploader=user, is_self=True).aggregate(
         average_kills=models.Avg('kills'),
         average_assists=models.Avg('assists'),
