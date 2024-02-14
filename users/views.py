@@ -14,7 +14,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-from battles.models import Player
+from battles.models import Player, Battle
 from battles.tasks import user_request_data_export
 from splashcat.decorators import github_webhook
 from splatnet_assets.models import Weapon
@@ -108,7 +108,10 @@ def profile_opengraph(request, username: str):
 
 def profile_json(request, username: str):
     user = get_object_or_404(User, username__iexact=username)
-    latest_battle = user.battles.with_prefetch().latest('played_time')
+    try:
+        latest_battle = user.battles.with_prefetch().latest('played_time')
+    except Battle.DoesNotExist:
+        latest_battle = None
     splashtag = latest_battle.splashtag if latest_battle else None
 
     win_count = user.battles.filter(judgement='WIN').count()
@@ -129,8 +132,11 @@ def profile_json(request, username: str):
     period_ago_win_rate = period_ago_wins / (period_ago_wins + period_ago_loses) * 100 if \
         period_ago_wins + period_ago_loses else None
 
-    most_used_weapon = Player.objects.filter(team__battle__uploader=user, is_self=True) \
-        .values('weapon').annotate(count=models.Count('weapon')).order_by('-count').first()
+    try:
+        most_used_weapon = Player.objects.filter(team__battle__uploader=user, is_self=True) \
+            .values('weapon').annotate(count=models.Count('weapon')).order_by('-count').first()
+    except Player.DoesNotExist:
+        most_used_weapon = None
     most_used_weapon = Weapon.objects.get(pk=most_used_weapon['weapon']) if most_used_weapon else None
 
     total_uploader_disconnects = Player.objects.filter(team__battle__uploader=user, is_self=True,
@@ -145,7 +151,7 @@ def profile_json(request, username: str):
             'title': latest_battle.player.byname,
             'background_url': splashtag['background'].image.url,
             'badge_urls': splashtag_badge_images,
-        },
+        } if splashtag else None,
         'win_count': win_count,
         'lose_count': lose_count,
         'win_rate': win_rate,
@@ -157,7 +163,7 @@ def profile_json(request, username: str):
             'name': most_used_weapon.name.string,
             'image': most_used_weapon.flat_image.url,
             'image_3d': most_used_weapon.image_3d.url,
-        },
+        } if most_used_weapon else None,
         'total_uploader_disconnects': total_uploader_disconnects,
         'profile_picture': user.profile_picture.url,
     })
