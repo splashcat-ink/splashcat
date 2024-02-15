@@ -1,5 +1,6 @@
 import datetime
 import json
+from typing import Optional
 
 import requests
 from django.conf import settings
@@ -109,7 +110,7 @@ def profile_opengraph(request, username: str):
 def profile_json(request, username: str):
     user = get_object_or_404(User, username__iexact=username)
     try:
-        latest_battle = user.battles.with_prefetch().latest('played_time')
+        latest_battle: Optional[Battle] = user.battles.with_prefetch().latest('played_time')
     except Battle.DoesNotExist:
         latest_battle = None
     splashtag = latest_battle.splashtag if latest_battle else None
@@ -131,6 +132,13 @@ def profile_json(request, username: str):
         .count()
     period_ago_win_rate = period_ago_wins / (period_ago_wins + period_ago_loses) * 100 if \
         period_ago_wins + period_ago_loses else None
+    period_ago_aggregates = Player.objects.filter(team__battle__uploader=user, is_self=True, team__battle__played_time__gt=period_ago).aggregate(
+        average_kills=models.Avg('kills'),
+        average_assists=models.Avg('assists'),
+        average_deaths=models.Avg('deaths'),
+        average_specials=models.Avg('specials'),
+        average_paint=models.Avg('paint'),
+    )
 
     try:
         most_used_weapon = Player.objects.filter(team__battle__uploader=user, is_self=True) \
@@ -160,13 +168,22 @@ def profile_json(request, username: str):
         '24h_loses': period_ago_loses,
         '24h_win_rate': period_ago_win_rate,
         'aggregates': aggregates,
+        '24h_aggregates': period_ago_aggregates,
         'most_used_weapon': {
             'name': most_used_weapon.name.string,
             'image': most_used_weapon.flat_image.url,
             'image_3d': most_used_weapon.image_3d.url,
+            'sub_name': most_used_weapon.sub.name.string,
+            'sub_overlay_image': most_used_weapon.sub.overlay_image.url,
+            'sub_mask_image': most_used_weapon.sub.mask_image.url,
+            'special_name': most_used_weapon.special.name.string,
+            'special_overlay_image': most_used_weapon.special.overlay_image.url,
+            'special_mask_image': most_used_weapon.special.mask_image.url,
         } if most_used_weapon else None,
         'total_uploader_disconnects': total_uploader_disconnects,
         'profile_picture': user.profile_picture.url,
+        'latest_battle_color': "#" + latest_battle.player.team.color.to_hex(),
+        'sponsor_favorite_color': f"#{user.favorite_color.to_hex()}" if user.favorite_color else None,
     })
 
 
