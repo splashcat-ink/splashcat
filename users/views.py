@@ -182,7 +182,7 @@ def profile_json(request, username: str):
         } if most_used_weapon else None,
         'total_uploader_disconnects': total_uploader_disconnects,
         'profile_picture': user.profile_picture.url,
-        'latest_battle_color': "#" + latest_battle.player.team.color.to_hex(),
+        'latest_battle_color': f"#{latest_battle.player.team.color.to_hex()}" if latest_battle else None,
         'sponsor_favorite_color': f"#{user.favorite_color.to_hex()}" if user.favorite_color else None,
     })
 
