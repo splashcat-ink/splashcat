@@ -151,6 +151,7 @@ def profile_json(request, username: str):
             'title': latest_battle.player.byname,
             'background_url': splashtag['background'].image.url,
             'badge_urls': splashtag_badge_images,
+            'text_color': "#" + splashtag['background'].text_color.to_hex(),
         } if splashtag else None,
         'win_count': win_count,
         'lose_count': lose_count,
