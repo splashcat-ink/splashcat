@@ -13,7 +13,7 @@ def generate_user_profile_picture(user_id):
         user.save_splatoon_identicon()
 
 
-@shared_task
+@shared_task(autoretry_for=(Exception,), retry_backoff=True)
 def validate_rel_me_links(user_id):
     user = User.objects.get(pk=user_id)
     links = ProfileUrl.objects.filter(user_id=user_id)
