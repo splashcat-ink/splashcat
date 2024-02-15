@@ -215,3 +215,12 @@ class Challenge(models.Model):
     name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT, related_name='+')
     description = models.OneToOneField('LocalizationString', on_delete=models.PROTECT, related_name='+')
     long_description = models.OneToOneField('LocalizationString', on_delete=models.PROTECT, related_name='+')
+
+
+class Splatfest(models.Model):
+    internal_id = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    team_1_color = ColorField()
+    team_2_color = ColorField()
+    team_3_color = ColorField()
