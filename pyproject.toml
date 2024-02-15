@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-Django = "^4.2"
+Django = "^5.0.2"
 django-htmx = "^1.17"
 django-allauth = "^0.54"
 django-debug-toolbar = "^4.2"
@@ -26,7 +26,7 @@ python-dotenv = "^1.0.0"
 dj-database-url = "^2.0.0"
 celery = { extras = ["redis"], version = "^5.3.6" }
 django-celery-results = "^2.5.1"
-django-celery-beat = "^2.5.0"
+django-celery-beat = {git = "https://github.com/celery/django-celery-beat.git"}
 boto3 = "^1.28.3"
 django-anymail = { extras = ["postmark"], version = "^10.1" }
 django-storages = "^1.13.2"
