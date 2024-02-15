@@ -218,6 +218,11 @@ class Challenge(models.Model):
 
 
 class Splatfest(models.Model):
+    class Meta:
+        indexes = [
+            models.Index(fields=['start_date', 'end_date']),
+        ]
+
     internal_id = models.CharField(max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()
