@@ -80,12 +80,20 @@
         </div>
     </a>
 
-    {% if battle.gpt_description_generated %}
-        <details class="bg-purple-900 p-4 rounded w-fit max-w-prose group">
-            <summary class="group-open:border-b-2 group-open:mb-2 group-open:pb-1">AI Battle Description</summary>
-            {{ battle.gpt_description }}
-        </details>
-    {% endif %}
+    <div class="flex flex-row gap-4 flex-wrap">
+        {% if battle.gpt_description_generated %}
+            <details class="bg-purple-800 p-4 rounded w-fit max-w-prose group">
+                <summary class="group-open:border-b-2 group-open:mb-2 group-open:pb-1">AI Battle Description</summary>
+                {{ battle.gpt_description }}
+            </details>
+        {% endif %}
+        {% if battle.uploader_id == user.id and user.has_splashcat_assistant %}
+            <div>
+                <a href="{% url 'assistant:create_thread' 'battles' 'Battle' battle.id %}"
+                   class="bg-purple-800 p-4 rounded w-fit block">Create Assistant Thread</a>
+            </div>
+        {% endif %}
+    </div>
 
     <div class="flex flex-row flex-wrap gap-4 items-center">
         <div class="flex flex-wrap gap-4 py-2">
@@ -118,15 +126,17 @@
         {% endif %}
 
         <div class="text-lg">
-            <img src="/static/images/rule-icons/{{ battle.get_vs_rule_image_name|lower }}.svg"
-                 class="inline-block h-8 w-8" alt="">
+            {% with image_name=battle.get_vs_rule_image_name|lower %}
+                <img src="{% static 'images/rule-icons/'|add:image_name|add:'.svg' %}"
+                     class="inline-block h-8 w-8" alt="">
+            {% endwith %}
             {{ battle.get_vs_rule_display }}
         </div>
     </div>
 
     {% if battle.judgement == "EXEMPTED_LOSE" %}
         <span class="bg-gray-700/60 text-xl p-4 rounded inline-block my-4">
-            Some players disconnected early on, so the match was a draw.
+            Because one or more players were not able to continue, the match will not count as a loss.
         </span>
     {% elif battle.judgement == "DEEMED_LOSE" %}
         <span class="bg-gray-700/60 text-xl p-4 rounded inline-block my-4">
@@ -180,7 +190,7 @@
                 <div class="grow min-w-0"></div>
                 <span class="text-lg md:text-2xl">
                     <img src="/static/images/rule-icons/{{ battle.get_vs_rule_image_name|lower }}.svg"
-                         class="inline-block h-10 w-10">
+                         class="inline-block h-10 w-10 -mr-2">
                     {{ battle.get_vs_rule_display }}
                 </span>
             </div>
@@ -207,8 +217,8 @@
                             {% endif %}
                         {% endfor %}
                     {% else %}
-                        <div class="h-full w-full relative before:block before:absolute before:w-full before:h-[40px] before:-left-[0.5px] before:-top-[5px] before:content-[''] before:bg-[url('/static/opengraph/waves.png')] before:bg-top before:bg-no-repeat before:bg-[length:100%_25px] before:z-10
-                                bg-[var(--last-team-color)] bg-[url('/static/opengraph/bubbles.png')] bg-contain"
+                        <div class="h-full w-full relative before:block before:absolute before:w-full before:h-[40px] before:-left-[0.5px] before:-top-[5px] before:content-[''] before:bg-[url('/static/opengraph/waves2.png')] before:[background-position-y:top] before:bg-repeat-x before:bg-[length:50%_30px] before:z-10
+                                bg-[var(--last-team-color)] bg-[url('/static/opengraph/bubbles.png')] bg-contain before:[animation:20s_linear_0s_infinite_battle-waves]"
                              style="--last-team-color:
                                  {% with team_bar_display|last as last %}{{ last.team_color.css }}{% endwith %}">
                             <div class="float-left text-left h-full flex items-center">

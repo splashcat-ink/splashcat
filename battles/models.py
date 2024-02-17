@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 from splatnet_assets.common_model_choices import XBattleDivisions
 from splatnet_assets.fields import ColorField
+from splatnet_assets.models import Splatfest
 
 
 # Create your models here.
@@ -296,6 +297,12 @@ class Battle(models.Model):
             battle_start_time__lte=self.played_time + timedelta(minutes=1),
             battle__isnull=True,
         ).first()
+
+    def find_current_splatfest(self):
+        try:
+            return Splatfest.objects.filter(start_date__lte=self.played_time, end_date__gte=self.played_time).first()
+        except Splatfest.DoesNotExist:
+            return None
 
 
 class BattleAward(models.Model):

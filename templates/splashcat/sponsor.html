@@ -12,9 +12,9 @@
     </h1>
 
     <p class="prose-xl max-w-prose prose-a:text-blue-500 prose-a:underline">
-        Splashcat is developed primarily by <a href="{% url 'profile' 'catgirl' %}">Kitt</a> (that's me!) with help from
+        Splashcat is developed primarily by <a href="{% url 'profile' 'catgirl' %}">Rosalina</a> (that's me!) with help from
         <a href="https://github.com/splashcat-ink">friends</a>. Please consider supporting my work by becoming a
-        sponsor!
+        sponsor! Splashcat is somewhat expensive for me to host so it helps me so much.
         It would mean a lot to me!! You also get this cool little badge on your profile page when you link your GitHub
         account!
     </p>
@@ -46,15 +46,6 @@
             <p class="text-md ml-8">
                 Set a favorite color to be used for sub and special weapon icons on your profile and elsewhere on
                 Splashcat.
-            </p>
-            <p class="text-sm ml-8 text-gray-500">
-                Sponsorship privacy does not affect this feature.
-            </p>
-        </li>
-        <li>
-            Hide Ads (soon)
-            <p class="text-md ml-8">
-                Ads on Splashcat will be hidden when signed in.
             </p>
             <p class="text-sm ml-8 text-gray-500">
                 Sponsorship privacy does not affect this feature.
@@ -100,7 +91,7 @@
     {% if current_sponsors|length > 0 %}
         <h2 class="font-splatoon1 text-xl">Current Sponsors</h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div class="flex flex-row gap-2 flex-wrap">
             {% for sponsor in current_sponsors %}
                 {% include "users/includes/user-link.html" with user=sponsor show_splashtag=True %}
             {% endfor %}

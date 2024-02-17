@@ -18,6 +18,7 @@
     "autoprefixer": "^10.4.14",
     "htmx.org": "^1.9.2",
     "hyperscript.org": "^0.9.8",
+    "idiomorph": "github:rzane/idiomorph#commonjs",
     "tailwindcss": "^3.3.1"
   },
   "devDependencies": {
@@ -25,7 +26,7 @@
     "chokidar": "^3.5.3",
     "cssnano": "^6.0.1",
     "esbuild": "^0.17.19",
-    "postcss": "^8.4.24",
+    "postcss": "^8.4.31",
     "tiny-throttle": "^1.0.4"
   }
 }

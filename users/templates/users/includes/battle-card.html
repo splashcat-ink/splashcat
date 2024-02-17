@@ -1,6 +1,6 @@
 {% load mask_id %}
 {% load static %}
-<a class="group hover:z-10 card-mask rounded-2xl {% if battle.vs_mode == "BANKARA" %}bg-splatoon-battle-ranked{% elif battle.vs_mode == "X_MATCH" %}bg-splatoon-battle-xmatch{% elif battle.vs_mode == "CHALLENGE" %}bg-splatoon-battle-league{% else %}bg-splatoon-battle-regular{% endif %} battle-card-background transition duration-200 hover:rotate-2 odd:hover:-rotate-2 drop-shadow-lg hover:drop-shadow-2xl {% if battle.judgement != "WIN" %}brightness-[0.80]{% endif %}"
+<a class="group hover:z-10 card-mask rounded-2xl {% if battle.vs_mode == "BANKARA" %}bg-splatoon-battle-ranked{% elif battle.vs_mode == "X_MATCH" %}bg-splatoon-battle-xmatch{% elif battle.vs_mode == "CHALLENGE" %}bg-splatoon-battle-league{% elif battle.vs_mode == "FEST" %}bg-purple-800{% else %}bg-splatoon-battle-regular{% endif %} battle-card-background transition duration-200 hover:rotate-2 odd:hover:-rotate-2 drop-shadow-lg hover:drop-shadow-2xl {% if battle.judgement != "WIN" %}brightness-[0.80]{% endif %}"
    href="{% url 'battles:view_battle' battle.id %}">
     {% if battle.vs_mode == "FEST" and battle.splatfest_clout_multiplier != "NONE" %}
         {% include "splatnet_assets/squid_tape.html" with bg="bg-purple-600 -rotate-6 left-1 top-1 absolute" content=battle.get_splatfest_clout_multiplier_display %}
@@ -15,7 +15,9 @@
     {% endif %}
 
     <div class="text-xl float-right p-1">{{ battle.played_time|date:"SHORT_DATE_FORMAT" }}</div>
-    <div class="bg-black/50 mt-8 p-2 h-full">
+    {% with splatfest=battle.find_current_splatfest %}
+    <div class="bg-black/50 mt-8 p-2 h-full" {% if splatfest and battle.vs_mode == "FEST" %}style="background: linear-gradient(105deg, {{ splatfest.team_1_color.css }}, {{ splatfest.team_1_color.css }} 33.2%, {{ splatfest.team_2_color.css }} 33.3%, {{ splatfest.team_2_color.css }} 66.6%, {{ splatfest.team_3_color.css }} 66.7%)"{% endif %}>
+    {% endwith %}
         <div class="flex flex-col gap-1 float-right items-end">
             <div class="text-lg block">{{ battle.vs_stage.name.string }}</div>
 

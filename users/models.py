@@ -99,6 +99,10 @@ class User(AbstractUser):
             sponsorship_amount = 0
         return {tier: sponsorship_amount >= amount for tier, amount in sponsorship_tier_costs.items()}
 
+    @property
+    def has_splashcat_assistant(self):
+        return self.sponsor_tiers[SponsorshipTiers.X_PONSOR]
+
     def get_full_name(self):
         return self.display_name.strip()
 

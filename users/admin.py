@@ -3,7 +3,7 @@ from django.contrib.admin import TabularInline
 from django.contrib.auth.admin import UserAdmin as AbstractUserAdmin
 
 from groups.admin import MembershipInline
-from .models import User, ApiKey, GitHubLink
+from .models import User, ApiKey, GitHubLink, ProfileUrl
 
 
 class ApiKeyInline(TabularInline):
@@ -21,12 +21,17 @@ class GitHubLinkInline(TabularInline):
     fields = ('github_id', 'github_username', 'is_sponsor', 'is_sponsor_public', 'sponsorship_amount_usd')
 
 
+class UrlInline(TabularInline):
+    model = ProfileUrl
+    fields = ('url', 'is_rel_me_verified')
+
+
 class UserAdmin(AbstractUserAdmin):
     fieldsets = AbstractUserAdmin.fieldsets + (
         (None, {"fields": ["profile_picture", "saved_favorite_color", "data_export_pending", "last_data_export",
                            "verified_email", "preferred_pronouns", "approved_to_upload_videos",
                            "video_collection_id"]}),)
-    inlines = [GitHubLinkInline, MembershipInline]
+    inlines = [GitHubLinkInline, MembershipInline, UrlInline]
     list_display = ("username", "display_name", "email", "is_staff", "date_joined", "verified_email",)
     search_fields = ("username", "display_name", "email")
 

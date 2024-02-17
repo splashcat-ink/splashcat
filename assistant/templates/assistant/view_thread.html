@@ -5,25 +5,56 @@
         {% block title %}Viewing Thread from {{ thread.created_date }}{% endblock %}
     </h1>
 
-    <div class="flex flex-col gap-2" id="entire-thread-container">
+    <h2 class="text-xl font-splatoon1">Thread data created from</h2>
+    {% if thread.content_type.app_label == 'battles' and thread.content_type.model == 'battle' %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 pt-1 pb-2">
+            {% include "users/includes/battle-card.html" with battle=thread.content_object display_uploader=True %}
+        </div>
+    {% elif thread.content_type.app_label == 'battles' and thread.content_type.model == 'battlegroup' %}
+        <a href="{% url 'battles:view_battle_group' thread.content_object.id %}" class="text-blue-500 underline">Battle
+            Group #{{ thread.content_object.id }}</a>
+    {% else %}
+        <div class="pt-1 pb-2">
+            {% include "users/includes/user-link.html" with user=user show_splashtag=True %}
+        </div>
+    {% endif %}
+
+    <div class="flex flex-col gap-2" id="entire-thread-container" hx-ext="morph">
         {% include 'assistant/htmx/thread_container.html' %}
     </div>
 
     <div class="text-sm text-gray-200">
         <p>Thread ID: {{ thread.openai_thread_id }}</p>
-        <p>File ID: {{ thread.openai_file_id }}</p>
+        <p>File ID:
+            {% if thread.status == thread.Status.PENDING %}
+                Waiting for thread data... (Runner ID: {{ thread.runner_machine_id }})
+            {% else %}
+                {{ thread.openai_file_id }}
+            {% endif %}</p>
     </div>
 
     <script>
-        const element = document.getElementById("send-message-form");
+		const element = document.getElementById("send-message-form");
 
-        element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+		element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
 
-        window.keyUp = function (event) {
-            if (event.keyCode === 13 && event.shiftKey) {
-                event.preventDefault()
-                htmx.trigger("#send-message-form", "submit", {})
-            }
-        }
+		window.keyUp = function (event) {
+			if (event.keyCode === 13 && event.shiftKey) {
+				event.preventDefault()
+				htmx.trigger("#send-message-form", "submit", {})
+			}
+		}
+
+		document.body.addEventListener("htmx:sendError", function (event) {
+			// Process the error
+
+			if (event.detail.requestConfig.verb !== "GET") return;
+
+			// Retrieve which event fired the request, trigger it again
+			const eventType = event.detail.requestConfig.triggeringEvent.type
+			setTimeout(function () {
+				htmx.trigger(event.detail.elt, eventType, {})
+			}, 500) // Adjust the delay as you like
+		})
     </script>
 {% endblock %}

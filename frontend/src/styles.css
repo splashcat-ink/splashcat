@@ -192,6 +192,15 @@
             display: block;
         }
     }
+    
+    @keyframes battle-waves {
+        0% {
+            background-position-x: 100%;
+        }
+        100% {
+            background-position-x: 0;
+        }
+    }
 }
 
 @font-face {

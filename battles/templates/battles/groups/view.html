@@ -42,6 +42,11 @@
         </button>
     </h1>
 
+    {% if battle_group.creator_id == user.id and user.has_splashcat_assistant %}
+        <a href="{% url 'assistant:create_thread' 'battles' 'BattleGroup' battle_group.id %}"
+           class="bg-purple-800 p-4 rounded w-fit max-h-fit block">Create Assistant Thread</a>
+    {% endif %}
+
     <h2 class="font-splatoon1 text-xl">Creator</h2>
     {% include "users/includes/user-link.html" with user=battle_group.creator show_splashtag=True %}
 

@@ -155,9 +155,9 @@ class NameplateBadge(models.Model):
 class Stage(models.Model):
     internal_id = models.CharField(max_length=100)
     splatnet_id = models.IntegerField()
-    name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
-    image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
-    image_banner = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
+    name = models.ForeignKey('LocalizationString', on_delete=models.PROTECT)
+    image = models.ForeignKey('Image', on_delete=models.PROTECT, related_name='+')
+    image_banner = models.ForeignKey('Image', on_delete=models.PROTECT, related_name='+')
 
     def __str__(self):
         return f'{self.internal_id} - {self.name.string_en_us}'
@@ -215,3 +215,17 @@ class Challenge(models.Model):
     name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT, related_name='+')
     description = models.OneToOneField('LocalizationString', on_delete=models.PROTECT, related_name='+')
     long_description = models.OneToOneField('LocalizationString', on_delete=models.PROTECT, related_name='+')
+
+
+class Splatfest(models.Model):
+    class Meta:
+        indexes = [
+            models.Index(fields=['start_date', 'end_date']),
+        ]
+
+    internal_id = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    team_1_color = ColorField()
+    team_2_color = ColorField()
+    team_3_color = ColorField()

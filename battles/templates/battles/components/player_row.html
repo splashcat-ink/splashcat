@@ -1,3 +1,4 @@
+{% load titles %}
 <div class="flex flex-nowrap gap-2 rounded-full bg-black/50 p-1 cursor-pointer relative"
      _="on click get the next <dialog/> then call it.showModal()">
     {% if player.is_self %}
@@ -13,7 +14,7 @@
     <img src="{{ player.weapon.flat_image.url }}"
          class="inline-block h-10 w-10" alt="">
     <div class="shrink min-w-0 flex flex-col whitespace-nowrap">
-        <div class="text-xs text-gray-300 truncate">{{ player.byname }}</div>
+        <div class="text-xs text-gray-300 truncate">{{ player.byname|strip_ruby }}</div>
         <div class="text-lg">{{ player.name }}</div>
     </div>
     <div class="grow"></div>

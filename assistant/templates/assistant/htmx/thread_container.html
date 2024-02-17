@@ -10,11 +10,12 @@
 </div>
 
 <form class="flex flex-row gap-4 form-css" hx-target="#entire-thread-container" hx-swap="innerHTML"
-      hx-post="{% url 'assistant:send_message_to_thread' thread.id %}" hx-trigger="submit throttle:1s"
+      hx-ext="loading-states" data-loading-states
+      hx-post="{% url 'assistant:send_message_to_thread' thread.id %}" hx-trigger="submit throttle:5s"
       id="send-message-form">
     <label for="send-message-input" class="hidden" style="display: none;">Send a message...</label>
-    <textarea name="message" id="send-message-input" rows="3" class="w-full"
+    <textarea name="message" id="send-message-input" rows="3" class="w-full grow placeholder:text-slate-200" data-loading-disable placeholder="shift+enter to send..."
               {% if message_sending_disabled %}disabled{% endif %} hx-on="keypress: window.keyUp(event)"></textarea>
-    <input type="submit" value="Send" class="flex-shrink text-xl"
+    <input type="submit" value="Send" class="shrink text-xl min-w-fit" data-loading-disable
            {% if message_sending_disabled %}disabled{% endif %}>
 </form>

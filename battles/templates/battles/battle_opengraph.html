@@ -18,7 +18,7 @@
                         DEFEAT{% else %}--{% endif %}</span>
                     {% if team.fest_team_name %}<span class="text-xl">Team {{ team.fest_team_name }}</span>{% endif %}
                     <div class="flex flex-col gap-1">
-                        {% for player in team.players.all %}
+                        {% for player in team.players.all|dictsort:"order" %}
                             <div class="flex flex-row grow relative gap-2 bg-black/50 rounded-full p-1">
                                 {% if player.is_self %}
                                     <svg class="fill-yellow-300 absolute -left-8 -top-1 w-10 h-10"
@@ -104,12 +104,12 @@
             <div class="mt-1 w-full h-1/2 bg-black rounded-full overflow-hidden flex">
                 {% if battle.judgement == "DRAW" %}
                     <span class="text-2xl text-center align-middle w-full h-full pt-1">
-                No contest.
-            </span>
+                        No contest.
+                    </span>
                 {% elif battle.judgement == "DEEMED_LOSE" %}
                     <span class="text-2xl text-center align-middle w-full h-full pt-1">
-                The match was not fully completed.
-            </span>
+                        The match was not fully completed.
+                    </span>
                 {% else %}
                     {% if team_bar_display|length > 2 %}
                         {% for team in team_bar_display %}

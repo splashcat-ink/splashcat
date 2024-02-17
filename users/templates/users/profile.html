@@ -20,6 +20,7 @@
     <div class="flex flex-col md:flex-row gap-4 overflow-x-clip">
         <div class="basis-2/5 xl:basis-1/4 flex flex-col gap-2">
             {% include 'users/profile_sidebar.html' with profile=profile_user %}
+        
             <button class="share-button inline w-fit"
                     data-url="https://splashcat.ink/@{{ profile_user.username }}/?share&cache={{ profile_user.battles.count }}"
                     data-content-type="Profile"
@@ -67,6 +68,7 @@
                     <div class="text-lg">Win Rate</div>
                     <div class="text-2xl">{{ win_rate|floatformat:1 }}%</div>
                 </div>
+                {% if period_ago_win_rate %}
                 <div class="px-4">
                     <div class="text-lg">24 Hour Win Rate</div>
                     <div class="text-2xl">
@@ -74,6 +76,7 @@
                         <span class="text-sm pl-2">({{ period_ago_wins }}/{{ period_ago_wins|add:period_ago_loses }})</span>
                     </div>
                 </div>
+                {% endif %}
                 <div class="px-4">
                     <div class="text-lg">Average Kills</div>
                     <div class="text-2xl">
@@ -87,11 +90,15 @@
                 </div>
                 <div class="px-4">
                     <div class="text-lg">Average Turfed</div>
-                    <div class="text-2xl">{{ aggregates.average_paint|default:0|floatformat:1 }}</div>
+                    <div class="text-2xl">{{ aggregates.average_paint|default:0|floatformat:1 }}p</div>
                 </div>
                 <div class="px-4">
                     <div class="text-lg">Favorite Weapon</div>
                     <div class="text-2xl">{{ most_used_weapon.name.string|default:"" }}</div>
+                </div>
+                <div class="px-4">
+                    <div class="text-lg">Disconnects</div>
+                    <div class="text-2xl">{{ total_uploader_disconnects|default:0 }}</div>
                 </div>
             </div>
 

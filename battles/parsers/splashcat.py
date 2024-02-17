@@ -25,7 +25,7 @@ def parse_splashcat(data, request):
     battle.splatnet_id = splashcat_battle.splatnet_id
     battle.vs_mode = splashcat_battle.vs_mode.value
     battle.vs_rule = splashcat_battle.vs_rule.value
-    battle.vs_stage = Stage.objects.get(splatnet_id=splashcat_battle.vs_stage_id)
+    battle.vs_stage = Stage.objects.filter(splatnet_id=splashcat_battle.vs_stage_id).order_by('-id')[0]
     battle.played_time = splashcat_battle.played_time
     battle.duration = timedelta(seconds=splashcat_battle.duration)
     battle.judgement = splashcat_battle.judgement.value

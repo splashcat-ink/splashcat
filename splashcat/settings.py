@@ -16,10 +16,8 @@ from pathlib import Path
 from socket import gethostname, gethostbyname
 
 import dj_database_url
-import sentry_sdk
 from django.conf import global_settings
 from dotenv import load_dotenv
-from sentry_sdk.integrations.django import DjangoIntegration
 
 load_dotenv()
 
@@ -47,8 +45,10 @@ except socket.gaierror:
     pass
 CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink']
 
-FLY_REGION = os.environ.get('FLY_REGION')
-FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION')
+FLY_REGION = os.environ.get('FLY_REGION', 'iad')
+FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION', 'iad')
+FLY_API_HOSTNAME = os.environ.get('FLY_API_HOSTNAME', 'https://api.machines.dev')
+FLY_API_TOKEN = os.environ.get('FLY_API_TOKEN')
 
 SITE_ID = 1
 
@@ -157,14 +157,14 @@ WSGI_APPLICATION = 'splashcat.wsgi.application'
 
 database_url = os.environ.get("DATABASE_URL")
 
-if database_url is None:
+if database_url is None or (len(sys.argv) > 1 and sys.argv[1] == 'collectstatic'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+else:
     database_connection_details = dj_database_url.parse(database_url, conn_max_age=None, conn_health_checks=False)
 
     if FLY_REGION != FLY_PRIMARY_REGION:
@@ -278,6 +278,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SENTRY_DSN = os.environ.get('SENTRY_DSN')
 if SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
     print("Sentry enabled")
     sentry_sdk.init(
         dsn=SENTRY_DSN,
@@ -340,6 +342,7 @@ if DEBUG:
 
 # OpenID Connect
 OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'
+OIDC_IDTOKEN_PROCESSING_HOOK = 'splashcat.oidc_provider_settings.idtoken_processing_hook'
 SITE_URL = 'https://splashcat.ink'
 
 # OpenAI
