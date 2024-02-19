@@ -11,7 +11,7 @@
 
     <div class="intro prose prose-invert">{{ page.intro|richtext }}</div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {% for post in blog_pages %}
             <a href="{% pageurl post %}"
                class="p-4 rounded drop-shadow bg-purple-700 hover:rotate-1 odd:hover:-rotate-1 transition-transform">
