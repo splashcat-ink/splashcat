@@ -178,7 +178,7 @@ def update_global_battle_data():
     client.upload_fileobj(zip_file, 'splashcat-data-exports', zip_file_path)
 
 
-@shared_task
+@shared_task(autoretry_for=(Exception,), retry_backoff=True)
 def user_request_data_export(user: User | int):
     if isinstance(user, int):
         user: User = User.objects.get(pk=user)
@@ -259,7 +259,7 @@ def cleanup_old_exports():
     return True
 
 
-@shared_task
+@shared_task(autoretry_for=(Exception,), retry_backoff=True)
 def generate_battle_description(battle_id: int):
     battle: Battle = Battle.objects.get(pk=battle_id)
 
