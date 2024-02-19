@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-splatoon1">
+        {% block title %}{{ page.title }}{% endblock %}
+    </h1>
+    <p class="py-1">{{ page.date }}</p>
+
+    {% with author=page.author %}
+        {% if author %}
+            <h3 class="text-lg">Posted by:</h3>
+            {% include 'users/includes/user-link.html' with user=author show_splashtag=True %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="font-bold text-2xl py-2">{{ page.intro }}</div>
+
+    <div class="prose prose-invert prose-lg font-sans">
+        {{ page.body|richtext }}
+    </div>
+{% endblock %}

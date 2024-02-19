@@ -78,6 +78,22 @@ INSTALLED_APPS = [
     'django_htmx',
     'django_unicorn',
     'markdownify.apps.MarkdownifyConfig',
+
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail',
+
+    'modelcluster',
+    'taggit',
+
     # 'silk',
     'splashcat.apps.PatchedOidcProvider',
     'anymail',
@@ -89,6 +105,7 @@ INSTALLED_APPS = [
     'videos',
     'search',
     'assistant',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -104,6 +121,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
     'splashcat.middleware.PostgresReadOnlyMiddleware',  # redirects to primary region when a read only error occurs
 ]
 
@@ -239,6 +257,7 @@ AWS_S3_ENDPOINT_URL = 'https://s3.us-west-004.backblazeb2.com'
 AWS_S3_CUSTOM_DOMAIN = 'cdn.splashcat.ink'
 AWS_STORAGE_BUCKET_NAME = 'splashcat-assets'
 AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
 
 B2_ENDPOINT_URL = 'https://s3.us-west-004.backblazeb2.com'
 B2_ACCESS_KEY_ID = os.environ.get('B2_ACCESS_KEY_ID')
@@ -382,3 +401,8 @@ MARKDOWNIFY = {
         ]
     }
 }
+
+# Wagtail
+
+WAGTAIL_SITE_NAME = 'Splashcat'
+WAGTAILADMIN_BASE_URL = 'https://splashcat.ink'

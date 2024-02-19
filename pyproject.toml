@@ -40,7 +40,8 @@ redis = { extras = ["hiredis"], version = "^4.6.0" }
 ronkyuu = "^0.9"
 html5lib = "^1.1"
 django-markdownify = "^0.9.3"
-beautifulsoup4 = "^4.12.3"
+beautifulsoup4 = "^4"
+wagtail = "^5.2.1"
 
 
 [build-system]

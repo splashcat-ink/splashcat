@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-splatoon1">
+        {% block title %}{{ page.title }}{% endblock %}
+    </h1>
+
+    <div class="intro prose prose-invert">{{ page.intro|richtext }}</div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {% for post in blog_pages %}
+            <a href="{% pageurl post %}"
+               class="p-4 rounded drop-shadow bg-purple-700 hover:rotate-1 odd:hover:-rotate-1 transition-transform">
+                <div class="text-xl font-splatoon1">{{ post.title }}</div>
+                <div class="text-lg">{{ post.specific.intro }}</div>
+                {% with author=post.blogpage.author %}
+                    {% if author %}
+                        {% include 'users/includes/user-link.html' with user=author no_links=True %}
+                    {% endif %}
+                {% endwith %}
+            </a>
+        {% endfor %}
+    </div>
+
+{% endblock %}
