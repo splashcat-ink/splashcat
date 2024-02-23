@@ -218,6 +218,9 @@ def upload_battle(request):
     battle.uploader_agent_extra = uploader_agent.get('extra')
     battle.save()
 
+    battle.splatfest = battle.find_current_splatfest()
+    battle.save()
+
     related_video = battle.find_related_battle_video()
     if related_video:
         related_video.battle = battle

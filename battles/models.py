@@ -80,7 +80,7 @@ class BattleManager(models.Manager):
             queryset=player_prefetch_queryset,
         )
 
-        return self.select_related('uploader__github_link', 'vs_stage__name', 'vs_stage__image') \
+        return self.select_related('uploader__github_link', 'vs_stage__name', 'vs_stage__image', 'splatfest') \
             .prefetch_related('awards__name', 'battlevideo').prefetch_related(player_prefetch)
 
 
