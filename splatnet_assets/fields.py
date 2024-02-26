@@ -1,12 +1,6 @@
-from typing import NewType
-
 from django import forms
 from django.db import models
 from django.forms import widgets
-
-import strawberry
-import strawberry_django
-from strawberry_django.fields.types import field_type_map
 
 
 class Color:
@@ -112,14 +106,3 @@ class ColorField(models.Field):
         defaults = {"form_class": ColorFormField}
         defaults.update(kwargs)
         return super().formfield(**defaults)
-
-
-StrawberryColor = strawberry.scalar(
-    NewType("Color", str),
-    serialize=lambda v: v.to_hex(),
-    parse_value=lambda v: Color.from_hex(v),
-)
-
-field_type_map.update({
-    ColorField: StrawberryColor,
-})

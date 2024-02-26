@@ -81,7 +81,7 @@ INSTALLED_APPS = [
     # 'silk',
     'splashcat.apps.PatchedOidcProvider',
     'anymail',
-    'graphene_django',
+    'strawberry_django',
     'django_filters',
     'battles',
     'users',
@@ -97,7 +97,7 @@ MIDDLEWARE = [
     'splashcat.middleware.FlyDotIoMiddleware',  # handles redirecting to the primary region based on cookie and method
     # 'silk.middleware.SilkyMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'strawberry_django.middlewares.debug_toolbar.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -386,9 +386,7 @@ MARKDOWNIFY = {
 }
 
 
-GRAPHENE = {
-    "SCHEMA": "splashcat.schema.schema",
-    'MIDDLEWARE': [
-        'graphene_django.debug.DjangoDebugMiddleware',
-    ],
+STRAWBERRY_DJANGO = {
+    "FIELD_DESCRIPTION_FROM_HELP_TEXT": True,
+    "TYPE_DESCRIPTION_FROM_MODEL_DOCSTRING": True,
 }

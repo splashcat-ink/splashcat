@@ -18,12 +18,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps import views
 from django.urls import path, include
-from django.views.decorators.csrf import csrf_exempt
-from graphene_django.views import GraphQLView
+from strawberry.django.views import AsyncGraphQLView
 
 import users.views as users_views
 from battles.sitemaps import BattlesSitemap
 from splashcat import settings
+from splashcat.schema import schema
 from splashcat.sitemaps import StaticViewSitemap
 from splashcat.views import home, sponsor, uploaders_information, health_check, robots_txt, legal, ads_txt, about
 from users.sitemaps import UsersSitemap
@@ -36,7 +36,7 @@ sitemaps = {
 
 urlpatterns = [
     path('', home, name='home'),
-    path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    path('graphql', AsyncGraphQLView.as_view(schema=schema)),
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
