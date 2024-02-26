@@ -1,6 +1,8 @@
+import graphene
 from django import forms
 from django.db import models
 from django.forms import widgets
+from graphene_django.converter import convert_django_field
 
 
 class Color:
@@ -37,6 +39,9 @@ class Color:
 
     def to_hex(self):
         return f'{self.r:02x}{self.g:02x}{self.b:02x}{self.a:02x}'
+
+    def __str__(self):
+        return f"#{self.to_hex().upper()}"
 
 
 class ColorWidget(widgets.Input):
@@ -103,3 +108,9 @@ class ColorField(models.Field):
         defaults = {"form_class": ColorFormField}
         defaults.update(kwargs)
         return super().formfield(**defaults)
+
+
+@convert_django_field.register(ColorField)
+def convert_color_field(field: ColorField, registry=None):
+    return graphene.String(description="A field that stores a hex string representing RGBA")
+

@@ -18,6 +18,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps import views
 from django.urls import path, include
+from django.views.decorators.csrf import csrf_exempt
+from graphene_django.views import GraphQLView
 
 import users.views as users_views
 from battles.sitemaps import BattlesSitemap
@@ -34,6 +36,7 @@ sitemaps = {
 
 urlpatterns = [
     path('', home, name='home'),
+    path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True))),
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),

@@ -81,6 +81,8 @@ INSTALLED_APPS = [
     # 'silk',
     'splashcat.apps.PatchedOidcProvider',
     'anymail',
+    'graphene_django',
+    'django_filters',
     'battles',
     'users',
     'splatnet_assets',
@@ -381,4 +383,9 @@ MARKDOWNIFY = {
             'width',
         ]
     }
+}
+
+
+GRAPHENE = {
+    "SCHEMA": "splashcat.schema.schema"
 }
