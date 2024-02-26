@@ -45,6 +45,7 @@ djangorestframework = "^3.14.0"
 markdown = "^3.5.2"
 django-filter = "^23.5"
 graphene-django = "^3.2.0"
+graphene-django-query-optimizer = "^0.1.11"
 
 
 [build-system]
