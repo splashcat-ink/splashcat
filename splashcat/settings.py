@@ -387,5 +387,8 @@ MARKDOWNIFY = {
 
 
 GRAPHENE = {
-    "SCHEMA": "splashcat.schema.schema"
+    "SCHEMA": "splashcat.schema.schema",
+    'MIDDLEWARE': [
+        'graphene_django.debug.DjangoDebugMiddleware',
+    ],
 }
