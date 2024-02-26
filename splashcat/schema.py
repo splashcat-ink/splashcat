@@ -1,27 +1,11 @@
-from typing import List
+import graphene
 
-import strawberry
-import strawberry_django
-from strawberry import relay
-from strawberry_django.optimizer import DjangoOptimizerExtension
-from strawberry_django.relay import ListConnectionWithTotalCount
-
-from battles.types import Battle
-from users.types import User
+import battles.schema
+import users.schema
 
 
-@strawberry.type
-class Query:
-    node: relay.Node = relay.node()
-    user: User = strawberry_django.field()
-    users: ListConnectionWithTotalCount[User] = strawberry_django.connection()
-    battle: Battle = strawberry_django.field()
-    battles: ListConnectionWithTotalCount[Battle] = strawberry_django.connection()
+class Query(users.schema.Query, battles.schema.Query, graphene.ObjectType):
+    pass
 
 
-schema = strawberry.Schema(
-    query=Query,
-    extensions=[
-        DjangoOptimizerExtension,
-    ],
-)
+schema = graphene.Schema(query=Query)
