@@ -1,12 +1,18 @@
-import graphene
-from graphene_django.debug import DjangoDebug
+import strawberry
+import strawberry_django
+from strawberry_django.optimizer import DjangoOptimizerExtension
 
-import battles.schema
-import users.schema
-
-
-class Query(users.schema.Query, battles.schema.Query, graphene.ObjectType):
-    debug = graphene.Field(DjangoDebug, name='_debug')
+from users.types import User
 
 
-schema = graphene.Schema(query=Query)
+@strawberry.type
+class Query:
+    users: list[User] = strawberry_django.field()
+
+
+schema = strawberry.Schema(
+    query=Query,
+    extensions=[
+        DjangoOptimizerExtension,
+    ],
+)
