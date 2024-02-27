@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from jsonschema import validate
+from sentry_sdk import capture_exception, capture_message
 
 from battles.data_exports import get_latest_export_download_url
 from battles.models import *
@@ -124,6 +125,7 @@ def upload_battle(request):
 
     # deny request if data is over 512KB
     if len(data) > 512 * 1024:
+        capture_message("request body too large")
         return HttpResponseBadRequest(
             json.dumps({
                 'error': 'request too large',
@@ -173,14 +175,17 @@ def upload_battle(request):
             'required': ['battle', 'data_type'],
         })
     except jsonschema.ValidationError as e:
+        capture_exception(e)
         return HttpResponseBadRequest(e, content_type='text/plain')
 
     if data['data_type'] == 'splatnet3':
         try:
             battle = parse_splatnet3(data, request)
         except jsonschema.ValidationError as e:
+            capture_exception(e)
             return HttpResponseBadRequest(e, content_type='text/plain')
-        except BattleAlreadyExistsError:
+        except BattleAlreadyExistsError as e:
+            capture_exception(e)
             return HttpResponseBadRequest(
                 json.dumps({
                     'status': 'error',
@@ -188,6 +193,7 @@ def upload_battle(request):
                 })
             )
         except NotImplementedError:
+            capture_exception(e)
             return HttpResponseBadRequest(
                 json.dumps({
                     'status': 'error',
@@ -198,8 +204,10 @@ def upload_battle(request):
         try:
             battle = parse_splashcat(data, request)
         except jsonschema.ValidationError as e:
+            capture_exception(e)
             return HttpResponseBadRequest(e, content_type='text/plain')
         except BattleAlreadyExistsError as e:
+            capture_exception(e)
             return HttpResponseBadRequest(
                 json.dumps({
                     'status': 'error',
