@@ -50,14 +50,18 @@ name = "asgiref"
 version = "3.7.2"
 description = "ASGI specs, helper code, and adapters"
 optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "asgiref-3.7.2-py3-none-any.whl", hash = "sha256:89b2ef2247e3b562a16eef663bc0e2e703ec6468e2fa8a5cd61cd449786d4f6e"},
-    {file = "asgiref-3.7.2.tar.gz", hash = "sha256:9e0ce3aa93a819ba5b45120216b23878cf6e8525eb3848653452b4192b92afed"},
-]
+python-versions = ">=3.8"
+files = []
+develop = false
 
 [package.extras]
 tests = ["mypy (>=0.800)", "pytest", "pytest-asyncio"]
+
+[package.source]
+type = "git"
+url = "https://github.com/django/asgiref.git"
+reference = "HEAD"
+resolved_reference = "8cf847a27da34e7d4490b41b682f657b4f302eaa"
 
 [[package]]
 name = "async-timeout"
@@ -827,6 +831,36 @@ files = [
 [package.dependencies]
 celery = ">=5.2.7,<6.0"
 Django = ">=3.2.18"
+
+[[package]]
+name = "django-choices-field"
+version = "2.2.2"
+description = "Django field that set/get django's new TextChoices/IntegerChoices enum."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "django_choices_field-2.2.2-py3-none-any.whl", hash = "sha256:bfdf5a8e098ead77eb1d5e32a85352af4a37a7b3f28fb5e74b8a17c1270a30bc"},
+    {file = "django_choices_field-2.2.2.tar.gz", hash = "sha256:1147a47d3972a49479be002c5c8ad0118863a8b936933597cfb3d8fcf257a578"},
+]
+
+[package.dependencies]
+django = ">=3.2"
+typing_extensions = ">=4.0.0"
+
+[[package]]
+name = "django-cors-headers"
+version = "4.3.1"
+description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django-cors-headers-4.3.1.tar.gz", hash = "sha256:0bf65ef45e606aff1994d35503e6b677c0b26cafff6506f8fd7187f3be840207"},
+    {file = "django_cors_headers-4.3.1-py3-none-any.whl", hash = "sha256:0b1fd19297e37417fc9f835d39e45c8c642938ddba1acce0c1753d3edef04f36"},
+]
+
+[package.dependencies]
+asgiref = ">=3.6"
+Django = ">=3.2"
 
 [[package]]
 name = "django-crispy-forms"
@@ -2805,4 +2839,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "5797c4856c4286d834403f38a8c17e1800866103bb0e4f25e9415f80ced44809"
+content-hash = "889fcd9205907b99afa991881d8fa72df093a264c341dc5c29f5262e33902307"

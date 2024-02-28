@@ -2,9 +2,10 @@ import hashlib
 import hmac
 from functools import wraps
 
+from asgiref.sync import iscoroutinefunction
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseForbidden, HttpResponse
+from django.http import HttpResponseForbidden, HttpResponse, HttpRequest
 
 from users.models import ApiKey
 from .settings import GITHUB_SPONSORS_WEBHOOK_TOKEN

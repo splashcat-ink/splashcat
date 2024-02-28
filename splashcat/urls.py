@@ -18,6 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps import views
 from django.urls import path, include
+from django.views.decorators.csrf import csrf_exempt
 from strawberry.django.views import AsyncGraphQLView
 
 import users.views as users_views
@@ -36,7 +37,7 @@ sitemaps = {
 
 urlpatterns = [
     path('', home, name='home'),
-    path('graphql', AsyncGraphQLView.as_view(schema=schema)),
+    path('graphql', csrf_exempt(AsyncGraphQLView.as_view(schema=schema))),
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),

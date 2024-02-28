@@ -44,6 +44,10 @@ try:
 except socket.gaierror:
     pass
 CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink']
+CORS_URLS_REGEX = r"^/graphql$"
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 FLY_REGION = os.environ.get('FLY_REGION', 'iad')
 FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION', 'iad')
@@ -77,12 +81,13 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_htmx',
     'django_unicorn',
+    'corsheaders',
     'markdownify.apps.MarkdownifyConfig',
     # 'silk',
     'splashcat.apps.PatchedOidcProvider',
     'anymail',
     'strawberry_django',
-    'django_filters',
+    # 'django_filters',
     'battles',
     'users',
     'splatnet_assets',
@@ -101,6 +106,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -263,6 +269,7 @@ SENTRY_DSN = os.environ.get('SENTRY_DSN')
 if SENTRY_DSN:
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
+
     print("Sentry enabled")
     sentry_sdk.init(
         dsn=SENTRY_DSN,
@@ -385,8 +392,8 @@ MARKDOWNIFY = {
     }
 }
 
-
 STRAWBERRY_DJANGO = {
     "FIELD_DESCRIPTION_FROM_HELP_TEXT": True,
     "TYPE_DESCRIPTION_FROM_MODEL_DOCSTRING": True,
+    "MAP_AUTO_ID_AS_GLOBAL_ID": True,
 }

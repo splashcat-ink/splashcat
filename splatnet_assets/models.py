@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import get_language
+from django_choices_field import TextChoicesField
 
 from splatnet_assets.fields import ColorField
 
@@ -59,7 +60,7 @@ class LocalizationString(models.Model):
         CHALLENGE_LONG_DESCRIPTION = 'CHALLENGE_LONG_DESCRIPTION', 'Challenge Long Description'
 
     internal_id = models.CharField(max_length=100)
-    type = models.CharField(max_length=50, choices=Type.choices)
+    type = TextChoicesField(choices_enum=Type)
     string_de_de = models.TextField(blank=True)
     string_en_gb = models.TextField(blank=True)
     string_en_us = models.TextField(blank=True)
@@ -104,7 +105,7 @@ class Gear(models.Model):
 
     internal_id = models.CharField(max_length=100)
     name = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
-    type = models.CharField(max_length=50, choices=GearType.choices)
+    type = TextChoicesField(choices_enum=GearType)
     brand = models.ForeignKey('Brand', on_delete=models.PROTECT)
     rarity = models.IntegerField()
     main_ability = models.ForeignKey('Ability', on_delete=models.PROTECT)
