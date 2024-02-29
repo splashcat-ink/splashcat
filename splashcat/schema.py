@@ -13,9 +13,9 @@ from users.types import User
 @strawberry.type
 class Query:
     node: relay.Node = relay.node()
-    user: User = strawberry_django.field()
+    user: User = strawberry_django.node()
     users: ListConnectionWithTotalCount[User] = strawberry_django.connection()
-    battle: Battle = strawberry_django.field()
+    battle: Battle = strawberry_django.node()
     battles: ListConnectionWithTotalCount[Battle] = strawberry_django.connection()
 
 
