@@ -5,7 +5,7 @@ from strawberry import auto, relay
 import strawberry
 
 from splatnet_assets.types import TitleAdjective, TitleSubject, NameplateBackground, NameplateBadge, Weapon, Gear, \
-    Stage, Challenge
+    Stage, Challenge, Ability
 from . import models
 
 if TYPE_CHECKING:
@@ -67,7 +67,7 @@ class Battle(relay.Node):
     teams: List["Team"]
 
 
-@strawberry_django.type(models.Team, filters=BattleFilter)
+@strawberry_django.type(models.Team)
 class Team(relay.Node):
     battle: Battle
     is_my_team: auto
@@ -85,7 +85,7 @@ class Team(relay.Node):
     players: List["Player"]
 
 
-@strawberry_django.type(models.Player, filters=BattleFilter)
+@strawberry_django.type(models.Player)
 class Player(relay.Node):
     team: Team
     is_self: auto
@@ -100,9 +100,9 @@ class Player(relay.Node):
     nameplate_badge_2: Optional[NameplateBadge]
     nameplate_badge_3: Optional[NameplateBadge]
     weapon: Weapon
-    head_gear: Gear
-    clothing_gear: Gear
-    shoes_gear: Gear
+    head_gear: 'PlayerGear'
+    clothing_gear: 'PlayerGear'
+    shoes_gear: 'PlayerGear'
     disconnect: auto
     kills: auto
     assists: auto
@@ -137,3 +137,12 @@ class Splashtag:
     title_subject: Optional[TitleSubject]
     badges: List[NameplateBadge | None]
     background: NameplateBackground
+
+
+@strawberry_django.type(models.PlayerGear)
+class PlayerGear(relay.Node):
+    gear: Gear
+    primary_ability: Ability
+    secondary_ability_1: Ability
+    secondary_ability_2: Ability
+    secondary_ability_3: Ability

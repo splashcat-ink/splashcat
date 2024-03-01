@@ -6,7 +6,7 @@ from strawberry import relay
 from strawberry_django.optimizer import DjangoOptimizerExtension
 from strawberry_django.relay import ListConnectionWithTotalCount
 
-from battles.types import Battle
+from battles.types import Battle, Player
 from users.types import User
 
 
@@ -17,6 +17,7 @@ class Query:
     users: ListConnectionWithTotalCount[User] = strawberry_django.connection()
     battle: Battle = strawberry_django.node()
     battles: ListConnectionWithTotalCount[Battle] = strawberry_django.connection()
+    player: Player = strawberry_django.node()
 
 
 schema = strawberry.Schema(

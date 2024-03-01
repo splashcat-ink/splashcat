@@ -18,6 +18,8 @@ class Color:
 
     @staticmethod
     def from_hex(hex_string):
+        if hex_string[0] == "#":
+            hex_string = hex_string[1:]
         return Color(
             int(hex_string[0:2], 16),
             int(hex_string[2:4], 16),
@@ -116,7 +118,7 @@ class ColorField(models.Field):
 
 StrawberryColor = strawberry.scalar(
     NewType("Color", str),
-    serialize=lambda v: v.to_hex(),
+    serialize=lambda v: f"#{v.to_hex()}",
     parse_value=lambda v: Color.from_hex(v),
 )
 
