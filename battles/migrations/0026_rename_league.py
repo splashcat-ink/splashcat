@@ -12,7 +12,7 @@ def forwards_func(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('battles', '0022_alter_battle_anarchy_mode_alter_battle_judgement_and_more'),
+        ('battles', '0025_alter_battle_anarchy_mode_alter_battle_judgement_and_more'),
     ]
 
     operations = [
