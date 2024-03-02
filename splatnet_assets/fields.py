@@ -1,6 +1,12 @@
+from typing import NewType
+
 from django import forms
 from django.db import models
 from django.forms import widgets
+
+import strawberry
+import strawberry_django
+from strawberry_django.fields.types import field_type_map
 
 
 class Color:
@@ -12,6 +18,8 @@ class Color:
 
     @staticmethod
     def from_hex(hex_string):
+        if hex_string[0] == "#":
+            hex_string = hex_string[1:]
         return Color(
             int(hex_string[0:2], 16),
             int(hex_string[2:4], 16),
@@ -37,6 +45,9 @@ class Color:
 
     def to_hex(self):
         return f'{self.r:02x}{self.g:02x}{self.b:02x}{self.a:02x}'
+
+    def __str__(self):
+        return f"#{self.to_hex().upper()}"
 
 
 class ColorWidget(widgets.Input):
@@ -103,3 +114,14 @@ class ColorField(models.Field):
         defaults = {"form_class": ColorFormField}
         defaults.update(kwargs)
         return super().formfield(**defaults)
+
+
+StrawberryColor = strawberry.scalar(
+    NewType("Color", str),
+    serialize=lambda v: f"#{v.to_hex()}",
+    parse_value=lambda v: Color.from_hex(v),
+)
+
+field_type_map.update({
+    ColorField: StrawberryColor,
+})

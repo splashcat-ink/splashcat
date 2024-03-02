@@ -14,6 +14,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
+from django_choices_field import TextChoicesField
 from oidc_provider.models import Token
 
 from battles.models import Battle
@@ -71,7 +72,7 @@ class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     preferred_pronouns = models.CharField(_("preferred pronouns"), max_length=20, blank=True, null=True)
 
-    x_battle_division = models.CharField(_("X Battle division"), max_length=20, choices=XBattleDivisions.choices,
+    x_battle_division = TextChoicesField(verbose_name=_("X Battle division"), choices_enum=XBattleDivisions,
                                          default=XBattleDivisions.UNSPECIFIED)
 
     last_data_export = models.DateTimeField(_("last data export"), blank=True, null=True)

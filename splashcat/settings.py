@@ -38,12 +38,16 @@ GITHUB_PERSONAL_ACCESS_TOKEN = os.environ.get('GITHUB_PERSONAL_ACCESS_TOKEN')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if not DEBUG else ["*"]
 try:
     ALLOWED_HOSTS += [gethostname(), gethostbyname(gethostname()), ]
 except socket.gaierror:
     pass
 CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink']
+CORS_URLS_REGEX = r"^/graphql$"
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 FLY_REGION = os.environ.get('FLY_REGION', 'iad')
 FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION', 'iad')
@@ -77,10 +81,13 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_htmx',
     'django_unicorn',
+    'corsheaders',
     'markdownify.apps.MarkdownifyConfig',
     # 'silk',
     'splashcat.apps.PatchedOidcProvider',
     'anymail',
+    'strawberry_django',
+    # 'django_filters',
     'battles',
     'users',
     'splatnet_assets',
@@ -95,10 +102,11 @@ MIDDLEWARE = [
     'splashcat.middleware.FlyDotIoMiddleware',  # handles redirecting to the primary region based on cookie and method
     # 'silk.middleware.SilkyMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'strawberry_django.middlewares.debug_toolbar.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -261,6 +269,7 @@ SENTRY_DSN = os.environ.get('SENTRY_DSN')
 if SENTRY_DSN:
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
+
     print("Sentry enabled")
     sentry_sdk.init(
         dsn=SENTRY_DSN,
@@ -381,4 +390,10 @@ MARKDOWNIFY = {
             'width',
         ]
     }
+}
+
+STRAWBERRY_DJANGO = {
+    "FIELD_DESCRIPTION_FROM_HELP_TEXT": True,
+    "TYPE_DESCRIPTION_FROM_MODEL_DOCSTRING": True,
+    "MAP_AUTO_ID_AS_GLOBAL_ID": True,
 }
