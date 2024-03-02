@@ -1,4 +1,5 @@
 from io import BytesIO
+from PIL import Image as PillowImage
 
 import requests
 from django.core.files.base import ContentFile
@@ -17,6 +18,11 @@ def download_image(asset_type: str, asset_name: str, asset_url: str) -> Image:
     image_data = BytesIO(response.content)
 
     image, _created = Image.objects.get_or_create(type=asset_type, asset_name=str(asset_name))
+
+    with PillowImage.open(image_data) as pillow_image:
+        width, height = pillow_image.size
+        image.width = width
+        image.height = height
 
     image.original_file_name = asset_url
     if image.image:
