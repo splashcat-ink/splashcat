@@ -156,7 +156,7 @@ class User(AbstractUser):
         return list(self.groups_owned.all()) + list(self.group_set.all())
 
     def save_splatoon_identicon(self):
-        response = requests.get('https://fancy.org.uk/api/nxapi/lhub-icon/cfdaba16-92b9-40f9-bb6f-6f5e399b2eaa')
+        response = requests.get('https://fancy.org.uk/api/nxapi/lhub-icon/splatoon-3')
         image_data = BytesIO(response.content)
         image = ContentFile(image_data.getvalue())
 

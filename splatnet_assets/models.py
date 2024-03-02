@@ -16,6 +16,8 @@ class Image(models.Model):
     type = models.CharField(max_length=50)  # e.g. "weapon", "stage", "headgear", etc.
     asset_name = models.CharField(max_length=100)  # weapon id, stage id, etc.
     original_file_name = models.CharField(max_length=500, blank=True)
+    width = models.PositiveIntegerField(default=0)
+    height = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.image.name
@@ -23,14 +25,6 @@ class Image(models.Model):
     @property
     def url(self):
         return self.image.url
-
-    @property
-    def width(self):
-        return 128
-
-    @property
-    def height(self):
-        return 128
 
 
 django_locale_to_splatnet_locale = {
