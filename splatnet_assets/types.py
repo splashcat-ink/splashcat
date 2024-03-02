@@ -13,6 +13,8 @@ class Image(relay.Node):
     type: auto
     asset_name: auto
     original_file_name: auto
+    width: auto
+    height: auto
 
     @strawberry_django.field(only=["image"])
     def url(self, root: models.Image) -> str:
