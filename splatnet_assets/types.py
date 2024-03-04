@@ -53,7 +53,7 @@ class Gear(relay.Node):
     brand: 'Brand'
     rarity: auto
     main_ability: 'Ability'
-    image: auto
+    image: Image
 
 
 @strawberry_django.type(models.Ability)

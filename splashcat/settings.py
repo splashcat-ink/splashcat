@@ -16,6 +16,7 @@ from pathlib import Path
 from socket import gethostname, gethostbyname
 
 import dj_database_url
+from corsheaders.defaults import default_headers as cors_default_headers
 from django.conf import global_settings
 from dotenv import load_dotenv
 
@@ -48,6 +49,10 @@ CORS_URLS_REGEX = r"^/graphql$"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+CORS_ALLOW_HEADERS = (
+    *cors_default_headers,
+    "splashcat-revision",
+)
 
 FLY_REGION = os.environ.get('FLY_REGION', 'iad')
 FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION', 'iad')

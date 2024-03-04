@@ -800,7 +800,7 @@ resend = ["svix"]
 
 [[package]]
 name = "django-celery-beat"
-version = "2.5.0"
+version = "2.6.0"
 description = "Database-backed Periodic Tasks."
 optional = false
 python-versions = "*"
@@ -819,7 +819,7 @@ tzdata = "*"
 type = "git"
 url = "https://github.com/celery/django-celery-beat.git"
 reference = "HEAD"
-resolved_reference = "cd41f68895ec114cd971479e2108c0f3c47554c7"
+resolved_reference = "f5eb92898637454343b177734b258f588dc2ca20"
 
 [[package]]
 name = "django-celery-results"
@@ -2548,15 +2548,13 @@ name = "strawberry-graphql"
 version = "0.219.2"
 description = "A library for creating GraphQL APIs"
 optional = false
-python-versions = ">=3.8,<4.0"
-files = [
-    {file = "strawberry_graphql-0.219.2-py3-none-any.whl", hash = "sha256:6b26994bcf092714dbd6def4c69a36c279fbdbfdc2390fb6294728dd076ba863"},
-    {file = "strawberry_graphql-0.219.2.tar.gz", hash = "sha256:b7a9b3115398402ec04fceb76b0dd3908dd90009cf20d344071be985c039aac7"},
-]
+python-versions = "^3.8"
+files = []
+develop = false
 
 [package.dependencies]
-graphql-core = ">=3.2.0,<3.3.0"
-python-dateutil = ">=2.7.0,<3.0.0"
+graphql-core = "~3.2.0"
+python-dateutil = "^2.7.0"
 typing-extensions = ">=4.5.0"
 
 [package.extras]
@@ -2578,6 +2576,12 @@ quart = ["quart (>=0.19.3)"]
 sanic = ["sanic (>=20.12.2)"]
 starlite = ["starlite (>=1.48.0)"]
 
+[package.source]
+type = "git"
+url = "https://github.com/strawberry-graphql/strawberry.git"
+reference = "HEAD"
+resolved_reference = "364d152551c72c122b05f874b53b9f6a67d06fca"
+
 [[package]]
 name = "strawberry-graphql-django"
 version = "0.32.2"
@@ -2596,6 +2600,40 @@ strawberry-graphql = ">=0.212.0"
 [package.extras]
 debug-toolbar = ["django-debug-toolbar (>=3.4)"]
 enum = ["django-choices-field (>=2.2.2)"]
+
+[[package]]
+name = "strawberry-persisted-queries"
+version = "1.0.0"
+description = ""
+optional = false
+python-versions = "^3.10"
+files = []
+develop = true
+
+[package.dependencies]
+strawberry-graphql = "^0.219.2"
+
+[package.extras]
+django = ["django (>=5.0.2,<6.0.0)"]
+
+[package.source]
+type = "directory"
+url = "../strawberryPersistedQueries"
+
+[[package]]
+name = "stripe"
+version = "8.5.0"
+description = "Python bindings for the Stripe API"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "stripe-8.5.0-py2.py3-none-any.whl", hash = "sha256:9022b8ae166a1cd83bb88f55a53418f64f67acb6be57504c7c8472dc8a443492"},
+    {file = "stripe-8.5.0.tar.gz", hash = "sha256:4ba0dfdaa37d20515511da868912064d68979d59a27ab0b074002d0c958e9117"},
+]
+
+[package.dependencies]
+requests = {version = ">=2.20", markers = "python_version >= \"3.0\""}
+typing-extensions = {version = ">=4.5.0", markers = "python_version >= \"3.7\""}
 
 [[package]]
 name = "tinycss2"
@@ -2846,4 +2884,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "4d41ec544b757b0f868fb1c00acf1c72b6afc956612f3c824bcfea5cab4ddb9e"
+content-hash = "f2c27c23baaf94bd1e3349bd953da3d0d633cd2908e12da6f2bd7b12aec854bf"

@@ -19,10 +19,14 @@ def download_image(asset_type: str, asset_name: str, asset_url: str) -> Image:
 
     image, _created = Image.objects.get_or_create(type=asset_type, asset_name=str(asset_name))
 
-    with PillowImage.open(image_data) as pillow_image:
-        width, height = pillow_image.size
-        image.width = width
-        image.height = height
+    if response.ok:
+        with PillowImage.open(image_data) as pillow_image:
+            width, height = pillow_image.size
+            image.width = width
+            image.height = height
+    else:
+        image.width = 0
+        image.height = 0
 
     image.original_file_name = asset_url
     if image.image:
