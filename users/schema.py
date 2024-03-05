@@ -16,7 +16,6 @@ class UsersQuery:
 class UsersMutation:
     @strawberry.mutation
     def begin_subscription(self, price_id: str) -> str:
-        stripe.api_key = 'sk_test_51Oq6GcCJmzupkZn7qaGHbXzeo1WVh2nyRDo0U43VeUFD9SaGdepn1wOSazY3QErGdXug5Abl48Ail9rcATyzvTfL00qMATY4e2'
         checkout_session = stripe.checkout.Session.create(
             line_items=[
                 {

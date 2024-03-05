@@ -146,3 +146,7 @@ class PlayerGear(relay.Node):
     secondary_ability_1: Ability
     secondary_ability_2: Ability
     secondary_ability_3: Ability
+
+    @strawberry_django.field
+    def secondary_abilities(self, root: models.PlayerGear) -> List[Ability | None]:
+        return root.secondary_abilities

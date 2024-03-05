@@ -60,7 +60,7 @@ class Gear(relay.Node):
 class Ability(relay.Node):
     internal_id: auto
     name: LocalizationString
-    image: auto
+    image: Image
     description: LocalizationString
 
 

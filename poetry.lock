@@ -2545,16 +2545,18 @@ test = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "strawberry-graphql"
-version = "0.219.2"
+version = "0.220.0.dev1709543239"
 description = "A library for creating GraphQL APIs"
 optional = false
-python-versions = "^3.8"
-files = []
-develop = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "strawberry_graphql-0.220.0.dev1709543239-py3-none-any.whl", hash = "sha256:ff96de8da794c0624165d1b0e95cf87e46fdde0730e895d68c244e9a449fbb74"},
+    {file = "strawberry_graphql-0.220.0.dev1709543239.tar.gz", hash = "sha256:233ff9dddfe49eb1d4ed0959db0cd76c05609e7e5c8da474b9ee9ea19aee4a6f"},
+]
 
 [package.dependencies]
-graphql-core = "~3.2.0"
-python-dateutil = "^2.7.0"
+graphql-core = ">=3.2.0,<3.3.0"
+python-dateutil = ">=2.7.0,<3.0.0"
 typing-extensions = ">=4.5.0"
 
 [package.extras]
@@ -2575,12 +2577,6 @@ pyinstrument = ["pyinstrument (>=4.0.0)"]
 quart = ["quart (>=0.19.3)"]
 sanic = ["sanic (>=20.12.2)"]
 starlite = ["starlite (>=1.48.0)"]
-
-[package.source]
-type = "git"
-url = "https://github.com/strawberry-graphql/strawberry.git"
-reference = "HEAD"
-resolved_reference = "364d152551c72c122b05f874b53b9f6a67d06fca"
 
 [[package]]
 name = "strawberry-graphql-django"
@@ -2603,22 +2599,20 @@ enum = ["django-choices-field (>=2.2.2)"]
 
 [[package]]
 name = "strawberry-persisted-queries"
-version = "1.0.0"
-description = ""
+version = "1.0.3"
+description = "Apollo-compatible persisted queries for Strawberry"
 optional = false
-python-versions = "^3.10"
-files = []
-develop = true
+python-versions = ">=3.10,<4.0"
+files = [
+    {file = "strawberry_persisted_queries-1.0.3-py3-none-any.whl", hash = "sha256:171f2a3ac06a715bd1611b0150f724aeba3788132ef1604a10e3bc9bdbe60cc8"},
+    {file = "strawberry_persisted_queries-1.0.3.tar.gz", hash = "sha256:bcf95e102b4ca1c17c06620732c1e3a0f9af4b624d455404d50ff267448fdd03"},
+]
 
 [package.dependencies]
-strawberry-graphql = "^0.219.2"
+strawberry-graphql = "0.220.0.dev.1709543239"
 
 [package.extras]
-django = ["django (>=5.0.2,<6.0.0)"]
-
-[package.source]
-type = "directory"
-url = "../strawberryPersistedQueries"
+django = ["django (>=5.0.3,<6.0.0)"]
 
 [[package]]
 name = "stripe"
@@ -2884,4 +2878,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "f2c27c23baaf94bd1e3349bd953da3d0d633cd2908e12da6f2bd7b12aec854bf"
+content-hash = "3570a2a955126f51c00b865e0725d948f0c16aa10a83be6ad0fcbffd714ad5cd"

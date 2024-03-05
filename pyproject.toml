@@ -48,8 +48,8 @@ asgiref = {git = "https://github.com/django/asgiref.git"}
 django-choices-field = "^2.2.2"
 django-cors-headers = "^4.3.1"
 stripe = "^8.5.0"
-strawberry-persisted-queries = {path = "../strawberryPersistedQueries", develop = true}
-strawberry-graphql = {git = "https://github.com/strawberry-graphql/strawberry.git"}
+strawberry-graphql = "0.220.0.dev.1709543239"
+strawberry-persisted-queries = "^1.0.3"
 
 
 [build-system]

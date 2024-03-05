@@ -16,9 +16,11 @@ from pathlib import Path
 from socket import gethostname, gethostbyname
 
 import dj_database_url
+import stripe
 from corsheaders.defaults import default_headers as cors_default_headers
-from django.conf import global_settings
+from django.conf import global_settings, settings
 from dotenv import load_dotenv
+from sentry_sdk.integrations.strawberry import StrawberryIntegration
 
 load_dotenv()
 
@@ -280,6 +282,9 @@ if SENTRY_DSN:
         dsn=SENTRY_DSN,
         integrations=[
             DjangoIntegration(),
+            StrawberryIntegration(
+                async_execution=True
+            ),
         ],
 
         # Set traces_sample_rate to 1.0 to capture 100%
@@ -334,6 +339,22 @@ if DEBUG:
             "BACKEND": "django.core.cache.backends.dummy.DummyCache",
         }
     }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": os.environ.get('REDIS_URL', 'redis://localhost:6379'),
+            "KEY_PREFIX": 'django_cache_',
+        }
+    }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.environ.get('REDIS_URL', 'redis://localhost:6379'),
+        "KEY_PREFIX": 'django_cache_',
+    }
+}
 
 # OpenID Connect
 OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'
@@ -402,3 +423,6 @@ STRAWBERRY_DJANGO = {
     "TYPE_DESCRIPTION_FROM_MODEL_DOCSTRING": True,
     "MAP_AUTO_ID_AS_GLOBAL_ID": True,
 }
+
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+stripe.api_key = STRIPE_SECRET_KEY

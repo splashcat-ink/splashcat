@@ -82,6 +82,7 @@ class User(AbstractUser):
     saved_favorite_color = ColorField(default="9333eaff")
     approved_to_upload_videos = models.BooleanField(_("approved to upload videos"), default=False)
     video_collection_id = models.CharField(_("video collection id"), max_length=100, blank=True, null=True)
+    stripe_customer_id = models.CharField(_("stripe customer id"), max_length=100, blank=True, null=True)
 
     @property
     def favorite_color(self):
