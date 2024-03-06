@@ -4,11 +4,12 @@ import strawberry
 import strawberry_django
 from strawberry import relay
 from strawberry.schema.config import StrawberryConfig
+from strawberry.types import Info
+from strawberry_django.auth.utils import get_current_user
 from strawberry_django.optimizer import DjangoOptimizerExtension
 from strawberry_django.relay import ListConnectionWithTotalCount
 from strawberry_persisted_queries import PersistedQueriesExtension
 from strawberry_persisted_queries.django_cache import DjangoPersistedQueryCache
-from strawberry_persisted_queries.safelisting import DictSafelist
 
 from battles.schema import BattlesQuery, BattlesMutation
 from users.schema import UsersQuery, UsersMutation
@@ -17,6 +18,11 @@ from users.schema import UsersQuery, UsersMutation
 @strawberry.type(name="Query")
 class Query(BattlesQuery, UsersQuery):
     node: relay.Node = relay.node()
+
+    @strawberry_django.field()
+    def current_username(self, info: Info) -> str | None:
+        user = get_current_user(info)
+        return user.username if user.is_authenticated else None
 
 
 @strawberry.type(name="Mutation")

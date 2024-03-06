@@ -15,7 +15,6 @@ from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from django_choices_field import TextChoicesField
-from oidc_provider.models import Token
 
 from battles.models import Battle
 from splatnet_assets.common_model_choices import XBattleDivisions
@@ -116,7 +115,7 @@ class User(AbstractUser):
 
     @property
     def has_mastodon_account(self):
-        return Token.objects.filter(user=self, client_id=1).exists()
+        return False  # Token.objects.filter(user=self, client_id=1).exists()
 
     @property
     def is_verified_for_export_download(self):
