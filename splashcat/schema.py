@@ -19,11 +19,6 @@ from users.schema import UsersQuery, UsersMutation
 class Query(BattlesQuery, UsersQuery):
     node: relay.Node = relay.node()
 
-    @strawberry_django.field()
-    def current_username(self, info: Info) -> str | None:
-        user = get_current_user(info)
-        return user.username if user.is_authenticated else None
-
 
 @strawberry.type(name="Mutation")
 class Mutation(BattlesMutation, UsersMutation):
