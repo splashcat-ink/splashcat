@@ -30,7 +30,7 @@ django-celery-beat = {git = "https://github.com/celery/django-celery-beat.git"}
 boto3 = "^1.34.60"
 django-anymail = { extras = ["postmark"], version = "^10.1" }
 django-storages = "^1.13.2"
-eventlet = "^0.35.1"
+eventlet = "^0.35.2"
 django-unicorn = "^0.58.1"
 psycopg = { extras = ["binary"], version = "^3.1.13" }
 django-oidc-provider = "^0.8.0"
