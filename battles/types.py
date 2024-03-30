@@ -66,6 +66,16 @@ class Battle(relay.Node):
     gpt_description_generated_at: auto
     teams: List["Team"]
 
+    @strawberry_django.field(
+        prefetch_related=["teams__players__weapon__name", "teams__players__weapon__flat_image",
+                          "teams__players__weapon__image_3d",
+                          "teams__players__weapon__sub__name", "teams__players__weapon__sub__mask_image",
+                          "teams__players__weapon__sub__overlay_image",
+                          "teams__players__weapon__special__name", "teams__players__weapon__special__mask_image",
+                          "teams__players__weapon__special__overlay_image", ])
+    def weapon(self, root) -> Weapon:
+        return root.player.weapon
+
 
 @strawberry_django.type(models.Team)
 class Team(relay.Node):
