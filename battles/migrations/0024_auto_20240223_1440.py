@@ -8,16 +8,16 @@ def update_splatfests(apps, schema_editor):
     Splatfest = apps.get_model("splatnet_assets", "Splatfest")
     for battle in Battle.objects.all():
         try:
-            battle.splatfest = Splatfest.objects.filter(start_date__lte=battle.played_time, end_date__gte=battle.played_time).first()
+            battle.splatfest = Splatfest.objects.filter(start_date__lte=battle.played_time,
+                                                        end_date__gte=battle.played_time).first()
         except Splatfest.DoesNotExist:
             return None
         battle.save()
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('battles', '0022_battle_splatfest'),
+        ('battles', '0023_battle_splatfest'),
         ('splatnet_assets', '0005_splatfest')
     ]
 

@@ -16,8 +16,11 @@ from pathlib import Path
 from socket import gethostname, gethostbyname
 
 import dj_database_url
-from django.conf import global_settings
+import stripe
+from corsheaders.defaults import default_headers as cors_default_headers
+from django.conf import global_settings, settings
 from dotenv import load_dotenv
+from sentry_sdk.integrations.strawberry import StrawberryIntegration
 
 load_dotenv()
 
@@ -38,12 +41,20 @@ GITHUB_PERSONAL_ACCESS_TOKEN = os.environ.get('GITHUB_PERSONAL_ACCESS_TOKEN')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if not DEBUG else ["*"]
 try:
     ALLOWED_HOSTS += [gethostname(), gethostbyname(gethostname()), ]
 except socket.gaierror:
     pass
 CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink']
+CORS_URLS_REGEX = r"^/graphql$|^/openid/.*"
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+CORS_ALLOW_HEADERS = (
+    *cors_default_headers,
+    "splashcat-revision",
+)
 
 FLY_REGION = os.environ.get('FLY_REGION', 'iad')
 FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION', 'iad')
@@ -77,10 +88,13 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_htmx',
     'django_unicorn',
+    'corsheaders',
     'markdownify.apps.MarkdownifyConfig',
     # 'silk',
     'splashcat.apps.PatchedOidcProvider',
     'anymail',
+    'strawberry_django',
+    # 'django_filters',
     'battles',
     'users',
     'splatnet_assets',
@@ -95,10 +109,11 @@ MIDDLEWARE = [
     'splashcat.middleware.FlyDotIoMiddleware',  # handles redirecting to the primary region based on cookie and method
     # 'silk.middleware.SilkyMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'strawberry_django.middlewares.debug_toolbar.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -261,11 +276,15 @@ SENTRY_DSN = os.environ.get('SENTRY_DSN')
 if SENTRY_DSN:
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
+
     print("Sentry enabled")
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[
             DjangoIntegration(),
+            StrawberryIntegration(
+                async_execution=True
+            ),
         ],
 
         # Set traces_sample_rate to 1.0 to capture 100%
@@ -320,11 +339,20 @@ if DEBUG:
             "BACKEND": "django.core.cache.backends.dummy.DummyCache",
         }
     }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": os.environ.get('REDIS_URL', 'redis://localhost:6379'),
+            "KEY_PREFIX": 'django_cache_',
+        }
+    }
 
 # OpenID Connect
 OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'
 OIDC_IDTOKEN_PROCESSING_HOOK = 'splashcat.oidc_provider_settings.idtoken_processing_hook'
 SITE_URL = 'https://splashcat.ink'
+OIDC_GRANT_TYPE_PASSWORD_ENABLE = True
 
 # OpenAI
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
@@ -382,3 +410,12 @@ MARKDOWNIFY = {
         ]
     }
 }
+
+STRAWBERRY_DJANGO = {
+    "FIELD_DESCRIPTION_FROM_HELP_TEXT": True,
+    "TYPE_DESCRIPTION_FROM_MODEL_DOCSTRING": True,
+    "MAP_AUTO_ID_AS_GLOBAL_ID": True,
+}
+
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+stripe.api_key = STRIPE_SECRET_KEY

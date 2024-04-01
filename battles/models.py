@@ -5,6 +5,7 @@ from django.db import models
 from django.db.models import Prefetch
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django_choices_field import TextChoicesField
 
 from splatnet_assets.common_model_choices import XBattleDivisions
 from splatnet_assets.fields import ColorField
@@ -91,6 +92,7 @@ class Battle(models.Model):
         BANKARA = 'BANKARA', _('Anarchy Battle')
         X_MATCH = 'X_MATCH', _('X Battle')
         PRIVATE = 'PRIVATE', _('Private Battle')
+        LEAGUE = 'LEAGUE', _('League')  # TODO: remove after the migration has ran on prod...
 
     class AnarchyMode(models.TextChoices):
         SERIES = 'SERIES', _('Anarchy Battle (Series)')
@@ -143,24 +145,23 @@ class Battle(models.Model):
     data_type = models.CharField(max_length=32)  # e.g. "splatnet3"
     uploaded_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    vs_mode = models.CharField(max_length=32, choices=VsMode.choices)
-    vs_rule = models.CharField(max_length=32, choices=VsRule.choices)
+    vs_mode = TextChoicesField(choices_enum=VsMode)
+    vs_rule = TextChoicesField(choices_enum=VsRule)
     vs_stage = models.ForeignKey('splatnet_assets.Stage', on_delete=models.PROTECT, null=True)
     played_time = models.DateTimeField()
     duration = models.DurationField()
-    judgement = models.CharField(max_length=32, choices=BattleJudgement.choices, db_index=True)
-    knockout = models.CharField(max_length=32, choices=KnockoutJudgement.choices, blank=True, null=True)
-    anarchy_mode = models.CharField(max_length=32, choices=AnarchyMode.choices, blank=True, null=True)
+    judgement = TextChoicesField(choices_enum=BattleJudgement, db_index=True)
+    knockout = TextChoicesField(choices_enum=KnockoutJudgement, blank=True, null=True)
+    anarchy_mode = TextChoicesField(choices_enum=AnarchyMode, blank=True, null=True)
     anarchy_point_change = models.IntegerField(blank=True, null=True)
     anarchy_rank = models.CharField(max_length=2, blank=True, null=True)
     anarchy_s_plus_number = models.IntegerField(blank=True, null=True,
                                                 validators=[MinValueValidator(0), MaxValueValidator(50)])
     anarchy_points = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
     x_battle_rank = models.IntegerField(blank=True, null=True)
-    x_battle_division = models.CharField(max_length=32, blank=True, null=True, choices=XBattleDivisions.choices)
-    splatfest_mode = models.CharField(max_length=32, choices=SplatfestBattleType.choices, blank=True, null=True)
-    splatfest_clout_multiplier = models.CharField(max_length=32, choices=SplatfestBattleCloutMultiplier.choices,
-                                                  blank=True, null=True)
+    x_battle_division = TextChoicesField(blank=True, null=True, choices_enum=XBattleDivisions)
+    splatfest_mode = TextChoicesField(choices_enum=SplatfestBattleType, blank=True, null=True)
+    splatfest_clout_multiplier = TextChoicesField(choices_enum=SplatfestBattleCloutMultiplier, blank=True, null=True)
     splatfest_clout_contribution = models.FloatField(blank=True, null=True)
     splatfest_festival_shells = models.IntegerField(blank=True, null=True)
     power = models.FloatField(blank=True, null=True)
@@ -327,7 +328,7 @@ class Team(models.Model):
     fest_team_name = models.CharField(max_length=50, blank=True, null=True)
     fest_uniform_bonus_rate = models.FloatField(blank=True, null=True)
     fest_uniform_name = models.CharField(max_length=100, blank=True, null=True)
-    judgement = models.CharField(max_length=32, choices=Judgement.choices, blank=True, null=True)
+    judgement = TextChoicesField(choices_enum=Judgement, blank=True, null=True)
     order = models.IntegerField()
     # players comes from a many-to-one relationship from the Player class
     noroshi = models.IntegerField(blank=True, null=True)
@@ -339,7 +340,7 @@ class Team(models.Model):
         ATTACK2 = 'ATTACK2', _('Attack 2')
         DEFENSE = 'DEFENSE', _('Defense')
 
-    tricolor_role = models.CharField(max_length=32, choices=TricolorRole.choices, blank=True, null=True)
+    tricolor_role = TextChoicesField(choices_enum=TricolorRole, blank=True, null=True)
 
     @property
     def next_team(self):
@@ -418,7 +419,7 @@ class Player(models.Model):
     npln_id = models.CharField(max_length=100)
     name = models.CharField(max_length=50)
     name_id = models.CharField(max_length=10, blank=True, null=True)
-    species = models.CharField(max_length=32, choices=Species.choices)
+    species = TextChoicesField(choices_enum=Species)
     title_adjective = models.ForeignKey('splatnet_assets.TitleAdjective', on_delete=models.PROTECT, null=True)
     title_subject = models.ForeignKey('splatnet_assets.TitleSubject', on_delete=models.PROTECT, null=True)
     nameplate_background = models.ForeignKey('splatnet_assets.NameplateBackground', on_delete=models.PROTECT)
