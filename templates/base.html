@@ -17,6 +17,7 @@
           crossorigin>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="darkreader-lock">
     <meta name="description"
           content="{% block description %}Splashcat is an award-winning service that records battle data for later analysis.{% endblock %}">
     <meta name="keywords" content="splashcat,splatoon,battle,stats,statistics">
@@ -35,9 +36,9 @@
             {% if share_query_param is not None %}event-share="{{ share_query_param }}"{% endif %}
             src="https://plausible.io/js/script.tagged-events.pageview-props.outbound-links.js"></script>
     <script>
-		window.plausible = window.plausible || function () {
-			(window.plausible.q = window.plausible.q || []).push(arguments)
-		}
+        window.plausible = window.plausible || function () {
+            (window.plausible.q = window.plausible.q || []).push(arguments)
+        }
     </script>
 
     <meta property="og:type" content="website">
