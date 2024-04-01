@@ -6,20 +6,29 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('splatnet_assets', '0006_splatfest_splatnet_as_start_d_1005d8_idx'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='gear',
             name='type',
-            field=django_choices_field.fields.TextChoicesField(choices=[('HEAD', 'Head'), ('CLOTHING', 'Clothing'), ('SHOES', 'Shoes')], choices_enum=splatnet_assets.models.Gear.GearType, max_length=8),
+            field=django_choices_field.fields.TextChoicesField(
+                choices=[('HEAD', 'Head'), ('CLOTHING', 'Clothing'), ('SHOES', 'Shoes')],
+                choices_enum=splatnet_assets.models.Gear.GearType, max_length=8),
         ),
         migrations.AlterField(
             model_name='localizationstring',
             name='type',
-            field=django_choices_field.fields.TextChoicesField(choices=[('OTHER', 'Other'), ('WEAPON_NAME', 'Weapon Name'), ('SUB_WEAPON_NAME', 'Sub Weapon Name'), ('SPECIAL_WEAPON_NAME', 'Special Weapon Name'), ('TITLE_ADJECTIVE', 'Title Adjective'), ('TITLE_SUBJECT', 'Title Subject'), ('HEAD_GEAR', 'Head Gear'), ('CLOTHING_GEAR', 'Clothing Gear'), ('SHOES_GEAR', 'Shoes Gear'), ('ABILITY', 'Ability'), ('ABILITY_DESCRIPTION', 'Ability Description'), ('BADGE_DESCRIPTION', 'Badge Description'), ('AWARD', 'Award'), ('BRAND', 'Brand'), ('STAGE', 'Stage'), ('CHALLENGE_NAME', 'Challenge Name'), ('CHALLENGE_DESCRIPTION', 'Challenge Description'), ('CHALLENGE_LONG_DESCRIPTION', 'Challenge Long Description')], choices_enum=splatnet_assets.models.LocalizationString.Type, max_length=26),
+            field=django_choices_field.fields.TextChoicesField(
+                choices=[('OTHER', 'Other'), ('WEAPON_NAME', 'Weapon Name'), ('SUB_WEAPON_NAME', 'Sub Weapon Name'),
+                         ('SPECIAL_WEAPON_NAME', 'Special Weapon Name'), ('TITLE_ADJECTIVE', 'Title Adjective'),
+                         ('TITLE_SUBJECT', 'Title Subject'), ('HEAD_GEAR', 'Head Gear'),
+                         ('CLOTHING_GEAR', 'Clothing Gear'), ('SHOES_GEAR', 'Shoes Gear'), ('ABILITY', 'Ability'),
+                         ('ABILITY_DESCRIPTION', 'Ability Description'), ('BADGE_DESCRIPTION', 'Badge Description'),
+                         ('AWARD', 'Award'), ('BRAND', 'Brand'), ('STAGE', 'Stage'),
+                         ('CHALLENGE_NAME', 'Challenge Name'), ('CHALLENGE_DESCRIPTION', 'Challenge Description'),
+                         ('CHALLENGE_LONG_DESCRIPTION', 'Challenge Long Description')],
+                choices_enum=splatnet_assets.models.LocalizationString.Type, max_length=26),
         ),
     ]
