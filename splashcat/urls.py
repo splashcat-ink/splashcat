@@ -38,7 +38,7 @@ sitemaps = {
 
 urlpatterns = [
     path('', home, name='home'),
-    path('graphql', csrf_exempt(openid_auth(AsyncGraphQLView.as_view(schema=schema)))),
+    path('graphql', csrf_exempt(openid_auth(AsyncGraphQLView.as_view(schema=schema, graphql_ide="apollo-sandbox")))),
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
