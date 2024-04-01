@@ -3,6 +3,7 @@ from typing import List
 import strawberry
 import strawberry_django
 from strawberry import relay
+from strawberry.extensions import QueryDepthLimiter, MaxTokensLimiter, ParserCache, ValidationCache
 from strawberry.schema.config import StrawberryConfig
 from strawberry.types import Info
 from strawberry_django.auth.utils import get_current_user
@@ -31,5 +32,9 @@ schema = strawberry.Schema(
     extensions=[
         DjangoOptimizerExtension,
         PersistedQueriesExtension(cache_backend=DjangoPersistedQueryCache()),
+        QueryDepthLimiter(max_depth=10),
+        MaxTokensLimiter(max_token_count=1000),
+        ParserCache(maxsize=100),
+        ValidationCache(maxsize=100),
     ],
 )
