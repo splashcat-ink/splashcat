@@ -4,7 +4,7 @@ import openai
 from django import template
 from django.conf import settings
 from django.utils.safestring import mark_safe
-from openai.types.beta.threads.message_content_image_file import ImageFile
+from openai.types.beta.threads.image_file import ImageFile
 
 register = template.Library()
 
