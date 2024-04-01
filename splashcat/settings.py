@@ -348,14 +348,6 @@ else:
         }
     }
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": os.environ.get('REDIS_URL', 'redis://localhost:6379'),
-        "KEY_PREFIX": 'django_cache_',
-    }
-}
-
 # OpenID Connect
 OIDC_USERINFO = 'splashcat.oidc_provider_settings.userinfo'
 OIDC_IDTOKEN_PROCESSING_HOOK = 'splashcat.oidc_provider_settings.idtoken_processing_hook'

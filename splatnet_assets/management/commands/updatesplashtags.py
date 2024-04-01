@@ -6,6 +6,9 @@ from django.core.management import BaseCommand
 from splatnet_assets.fields import Color
 from splatnet_assets.management.commands._private import download_image_from_path, get_latest_version
 from splatnet_assets.models import LocalizationString, NameplateBackground, NameplateBadge
+from splatnet_assets.badge_descriptions import level_regex, bad_badge_prefixes, salmon_run_badge_prefixes, has_prefix
+
+badge_prefixes = bad_badge_prefixes + salmon_run_badge_prefixes
 
 
 def get_urls(version: str):
@@ -27,12 +30,22 @@ class Command(BaseCommand):
 
             for item in data:
                 if url == urls['badges']:
+                    localization_id: str = item['Name']
+                    if has_prefix(localization_id, badge_prefixes):
+                        badge_prefix = None
+                        for prefix in badge_prefixes:
+                            if prefix in item['Name']:
+                                badge_prefix = prefix
+                                break
+                        level: str = level_regex.search(item['Name']).group()
+                        localization_id = f'{badge_prefix}{level.lstrip("_")}'
+
                     NameplateBadge.objects.update_or_create(
                         internal_id=item['Name'],
                         defaults={
                             'splatnet_id': item['Id'],
                             'description': LocalizationString.objects.get_or_create(
-                                internal_id=item['__RowId'], type=LocalizationString.Type.BADGE_DESCRIPTION)[0],
+                                internal_id=localization_id, type=LocalizationString.Type.BADGE_DESCRIPTION)[0],
                             'image': download_image_from_path('badge', item['Id'], f'badge/Badge_{item["Name"]}.png'),
                         }
                     )

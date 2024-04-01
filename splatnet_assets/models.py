@@ -71,7 +71,10 @@ class LocalizationString(models.Model):
     string_zh_tw = models.TextField(blank=True)
 
     @property
-    def string(self, locale: str = None):
+    def string(self):
+        return self.get_string()
+
+    def get_string(self, locale: str = None):
         if locale is None:
             locale = get_language()
 
@@ -144,7 +147,7 @@ class NameplateBadge(models.Model):
     internal_id = models.CharField(max_length=100)
     splatnet_id = models.IntegerField()
     image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
-    description = models.OneToOneField('LocalizationString', on_delete=models.PROTECT)
+    description = models.ForeignKey('LocalizationString', on_delete=models.PROTECT)
 
 
 class Stage(models.Model):

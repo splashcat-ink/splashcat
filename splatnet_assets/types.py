@@ -1,3 +1,4 @@
+import re
 from typing import List
 
 import strawberry_django
@@ -5,6 +6,7 @@ from strawberry import auto, relay
 import strawberry
 
 from . import models
+from .badge_descriptions import get_proper_badge_localization
 
 
 @strawberry_django.type(models.Image)
@@ -40,7 +42,7 @@ class LocalizationString(relay.Node):
     string_zh_cn: auto
     string_zh_tw: auto
 
-    @strawberry_django.field
+    @strawberry_django.field()
     def string(self, root) -> str:
         return root.string
 
@@ -85,7 +87,11 @@ class NameplateBadge(relay.Node):
     internal_id: auto
     splatnet_id: auto
     image: Image
-    description: LocalizationString
+
+    # description: LocalizationString
+    @strawberry_django.field()
+    def description(self, root) -> str:
+        return get_proper_badge_localization(root)
 
 
 @strawberry_django.type(models.Stage)
