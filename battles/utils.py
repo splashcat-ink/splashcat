@@ -5,6 +5,7 @@ from django.db.models.functions import Length
 
 from battles.formats.vs_history_detail import BaseGear, Badge
 from battles.models import PlayerGear
+from battles.types import PlayerGearInput
 from splatnet_assets.models import LocalizationString, Gear, Ability, NameplateBadge
 
 
@@ -50,6 +51,20 @@ def get_player_gear(gear: BaseGear):
         if len(gear.additional_gear_powers) > 1 else None,
         secondary_ability_3=get_ability(gear.additional_gear_powers[2].name)
         if len(gear.additional_gear_powers) > 2 else None,
+    )
+    gear.save()
+    return gear
+
+
+def get_player_gear_graphql(gear: PlayerGearInput):
+    gear = PlayerGear(
+        gear=Gear.objects.get(name__string_en_us=gear.name),
+        primary_ability=get_ability(gear.primary_ability_name),
+        secondary_ability_1=get_ability(gear.secondary_ability_names[0]),
+        secondary_ability_2=get_ability(gear.secondary_ability_names[1])
+        if len(gear.secondary_ability_names) > 1 else None,
+        secondary_ability_3=get_ability(gear.secondary_ability_names[2])
+        if len(gear.secondary_ability_names) > 2 else None,
     )
     gear.save()
     return gear

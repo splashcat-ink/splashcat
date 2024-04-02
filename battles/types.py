@@ -160,3 +160,118 @@ class PlayerGear(relay.Node):
     @strawberry_django.field
     def secondary_abilities(self, root: models.PlayerGear) -> List[Ability | None]:
         return root.secondary_abilities
+
+
+@strawberry.input()
+class ColorInput:
+    a: float
+    r: float
+    g: float
+    b: float
+
+    def to_dict(self):
+        return {
+            "a": self.a,
+            "r": self.r,
+            "g": self.g,
+            "b": self.b,
+        }
+
+
+@strawberry.input()
+class AnarchyInput:
+    mode: Optional[strawberry.enum(models.Battle.AnarchyMode)]
+    point_change: Optional[int]
+    rank: Optional[str]
+    s_plus_number: Optional[int]
+    points: Optional[int]
+    power: Optional[float]
+
+
+@strawberry.input()
+class XBattleInput:
+    power: Optional[int]
+    rank: Optional[float]
+
+
+@strawberry.input()
+class SplatfestInput:
+    mode: strawberry.enum(models.Battle.SplatfestBattleType)
+    clout_multiplier: strawberry.enum(models.Battle.SplatfestBattleCloutMultiplier)
+    power: Optional[float]
+
+
+@strawberry.input()
+class ChallengeInput:
+    id: Optional[str]
+    power: Optional[float]
+
+
+@strawberry_django.input(models.Battle)
+class BattleInput:
+    uploader_agent_name: auto
+    uploader_agent_version: auto
+    uploader_agent_extra: auto
+    splatnet_id: auto
+    # raw_data: auto
+    vs_mode: auto
+    vs_rule: auto
+    vs_stage: str
+    played_time: str
+    duration: int
+    judgement: auto
+    knockout: auto
+    anarchy: Optional[AnarchyInput]
+    x_battle: Optional[XBattleInput]
+    splatfest: Optional[SplatfestInput]
+    challenge: Optional[ChallengeInput]
+    award_names: list[str]
+    teams: list['TeamInput']
+
+
+@strawberry_django.input(models.Team)
+class TeamInput:
+    is_my_team: auto
+    color: ColorInput
+    fest_streak_win_count: auto
+    fest_team_name: auto
+    fest_uniform_bonus_rate: auto
+    fest_uniform_name: auto
+    judgement: auto
+    order: auto
+    noroshi: auto
+    paint_ratio: auto
+    score: auto
+    tricolor_role: auto
+    players: list['PlayerInput']
+
+
+@strawberry_django.input(models.Player)
+class PlayerInput:
+    is_self: auto
+    species: auto
+    npln_id: auto
+    name: auto
+    name_id: auto
+    byname: str
+    splashtag_background_id: int
+    splashtag_badge_ids: list[int]
+    weapon_id: int
+    head_gear: "PlayerGearInput"
+    clothing_gear: "PlayerGearInput"
+    shoes_gear: "PlayerGearInput"
+    disconnect: auto
+    kills: auto
+    assists: auto
+    deaths: auto
+    specials: auto
+    paint: auto
+    noroshi_try: auto
+    order: auto
+
+
+@strawberry_django.input(models.PlayerGear)
+class PlayerGearInput:
+    name: str
+    primary_ability_name: str
+    secondary_ability_names: list[str]
