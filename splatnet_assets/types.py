@@ -42,7 +42,22 @@ class LocalizationString(relay.Node):
     string_zh_cn: auto
     string_zh_tw: auto
 
-    @strawberry_django.field()
+    @strawberry_django.field(only=[
+        "string_de_de",
+        "string_en_gb",
+        "string_en_us",
+        "string_es_es",
+        "string_es_mx",
+        "string_fr_ca",
+        "string_fr_fr",
+        "string_it_it",
+        "string_ja_jp",
+        "string_ko_kr",
+        "string_nl_nl",
+        "string_ru_ru",
+        "string_zh_cn",
+        "string_zh_tw",
+    ])
     def string(self, root) -> str:
         return root.string
 
