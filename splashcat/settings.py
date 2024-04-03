@@ -20,6 +20,7 @@ import stripe
 from corsheaders.defaults import default_headers as cors_default_headers
 from django.conf import global_settings, settings
 from dotenv import load_dotenv
+from graphql import GraphQLError
 from sentry_sdk.integrations.strawberry import StrawberryIntegration
 
 load_dotenv()
@@ -284,6 +285,8 @@ if SENTRY_DSN:
                 async_execution=True
             ),
         ],
+
+        ignore_errors=[GraphQLError],
 
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for performance monitoring.
