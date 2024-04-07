@@ -14,7 +14,7 @@ strategy = "bluegreen"
 
 [env]
 PORT = "8080"
-DJANGO_ALLOWED_HOSTS = "splashcat.fly.dev,splashcat.ink,splashcat.internal"
+DJANGO_ALLOWED_HOSTS = "splashcat.fly.dev,splashcat.ink,splashcat.internal,splashcat.flycast"
 DEBUG = "False"
 SENTRY_DSN = "https://9babb5ac79274bed8e3c56a222b44ab6@o4505055559352320.ingest.sentry.io/4505055561449472"
 BUNNY_VIDEO_LIBRARY_ID = "140045"
