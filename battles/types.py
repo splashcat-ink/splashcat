@@ -45,7 +45,6 @@ class Battle(relay.Node):
     vs_rule: auto
     vs_stage: Stage
     played_time: auto
-    # duration: auto
     judgement: auto
     knockout: auto
     anarchy_mode: auto
@@ -65,6 +64,10 @@ class Battle(relay.Node):
     gpt_description_generated: auto
     gpt_description_generated_at: auto
     teams: List["Team"]
+
+    @strawberry_django.field()
+    def duration(self, root) -> int:
+        return root.duration.total_seconds()
 
     @strawberry_django.field(
         prefetch_related=["teams__players__weapon__name", "teams__players__weapon__flat_image",
