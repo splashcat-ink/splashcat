@@ -47,5 +47,5 @@ guest_path = "/code/battles/format_schemas"
 url_prefix = "/battles/api/schemas/"
 
 [processes]
-app = "daphne -e tcp:port=8080:interface=0.0.0.0 -e tcp:port=8080:interface=fly-local-6pn splashcat.asgi:application"
+app = "daphne -e tcp:port=8080:interface=0.0.0.0 -e tcp:port=8080:interface=\\:\\: splashcat.asgi:application"
 celery-worker = "celery -A splashcat worker -l INFO -B -P solo"
