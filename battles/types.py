@@ -219,7 +219,7 @@ class BattleInput:
     # raw_data: auto
     vs_mode: auto
     vs_rule: auto
-    vs_stage: str
+    vs_stage_id: int
     played_time: str
     duration: int
     judgement: auto
