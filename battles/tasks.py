@@ -20,9 +20,7 @@ from users.models import User
 
 SALT = 'battle-export'
 
-
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
-
 
 with open('battles/gpt_prompt.txt') as f:
     GPT_PROMPT = f.read()
@@ -84,6 +82,8 @@ player_fields = [
 
 @shared_task
 def update_global_battle_data():
+    return  # doing this until i actually fix it because rn it has the machine just stuck trying to process these...
+
     included_battles = Battle.objects.with_prefetch().exclude(
         vs_mode='PRIVATE',
     )
@@ -267,11 +267,11 @@ def generate_battle_description(battle_id: int):
     json_string = json.dumps(battle_dict, ensure_ascii=False)
 
     completion = client.chat.completions.create(model="gpt-3.5-turbo-0613",
-    messages=[
-        {"role": "system", "content": GPT_PROMPT},
-        {"role": "user", "content": json_string},
-    ],
-    temperature=0.2)
+                                                messages=[
+                                                    {"role": "system", "content": GPT_PROMPT},
+                                                    {"role": "user", "content": json_string},
+                                                ],
+                                                temperature=0.2)
     generated_description = completion.choices[0].message.content
 
     battle.gpt_description = generated_description
