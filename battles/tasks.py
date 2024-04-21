@@ -82,21 +82,19 @@ player_fields = [
 
 @shared_task
 def update_global_battle_data():
-    return  # doing this until i actually fix it because rn it has the machine just stuck trying to process these...
-
     included_battles = Battle.objects.with_prefetch().exclude(
         vs_mode='PRIVATE',
     )
 
-    battle_file = StringIO()
+    battle_file = tempfile.NamedTemporaryFile(mode="w+", delete=False)
     battle_data = csv.DictWriter(battle_file, fieldnames=battle_fields)
     battle_data.writeheader()
 
-    teams_file = StringIO()
+    teams_file = tempfile.NamedTemporaryFile(mode="w+", delete=False)
     teams_data = csv.DictWriter(teams_file, fieldnames=team_fields)
     teams_data.writeheader()
 
-    players_file = StringIO()
+    players_file = tempfile.NamedTemporaryFile(mode="w+", delete=False)
     players_data = csv.DictWriter(players_file, fieldnames=player_fields)
     players_data.writeheader()
 
@@ -160,22 +158,30 @@ def update_global_battle_data():
                     'noroshi_try': player.noroshi_try,
                 })
 
+    battle_file.close()
+    teams_file.close()
+    players_file.close()
+
+    zip_file_path = tempfile.NamedTemporaryFile(suffix=".zip", delete=False)
+    with zipfile.ZipFile(zip_file_path.name, 'w') as zf:
+        zf.write(battle_file.name, arcname='battles.csv')
+        zf.write(teams_file.name, arcname='teams.csv')
+        zf.write(players_file.name, arcname='players.csv')
+
     # upload files to Backblaze B2
-    client = get_boto3_client()
+    b2_client = get_boto3_client()
 
     current_date = datetime.now()
 
-    zip_file_path = f'global/{current_date.year}/{current_date.month}/{current_date.day}/{current_date.hour}.zip'
+    b2_path = f'global/{current_date.year}/{current_date.month}/{current_date.day}/{current_date.hour}.zip'
 
-    # zip up all three files together
-    zip_file = BytesIO()
-    with zipfile.ZipFile(zip_file, 'w') as zf:
-        zf.writestr('battles.csv', battle_file.getvalue())
-        zf.writestr('teams.csv', teams_file.getvalue())
-        zf.writestr('players.csv', players_file.getvalue())
+    with open(zip_file_path.name, 'rb') as data:
+        b2_client.upload_fileobj(data, 'splashcat-data-exports', b2_path)
 
-    zip_file.seek(0)
-    client.upload_fileobj(zip_file, 'splashcat-data-exports', zip_file_path)
+    os.remove(battle_file.name)
+    os.remove(teams_file.name)
+    os.remove(players_file.name)
+    os.remove(zip_file_path.name)
 
 
 @shared_task(autoretry_for=(Exception,), retry_backoff=True)
