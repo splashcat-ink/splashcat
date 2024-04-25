@@ -45,6 +45,13 @@
                          class="-rotate-6 drop-shadow z-10 mx-auto relative h-16 w-auto top-6">
                     <img src="{% static 'images/home/statistics.png' %}" alt="a player's statistics"
                          class="drop-shadow-lg border-4 rounded border-gray-700 h-auto w-full mx-auto" height="274"
+                         srcset="{% static 'images/home/statistics.png' %}?width=400 400w,
+                                 {% static 'images/home/statistics.png' %}?width=500 500w,
+                                 {% static 'images/home/statistics.png' %}?width=600 600w,
+                                 {% static 'images/home/statistics.png' %}?width=700 700w,
+                                 {% static 'images/home/statistics.png' %}?width=800 800w,
+                                 {% static 'images/home/statistics.png' %} 900w"
+                         sizes="(min-width: 768px) 40vw, 90vw"
                          width="900">
                     <img src="{% static 'images/tape/tape-1.png' %}?height=72" alt="" height="136" width="600"
                          class="relative z-10 drop-shadow h-10 w-auto bottom-8 left-[85%] -rotate-45">
