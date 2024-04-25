@@ -34,9 +34,9 @@
             {% if share_query_param is not None %}event-share="{{ share_query_param }}"{% endif %}
             src="https://plausible.io/js/script.tagged-events.pageview-props.outbound-links.js"></script>
     <script>
-        window.plausible = window.plausible || function () {
-            (window.plausible.q = window.plausible.q || []).push(arguments)
-        }
+		window.plausible = window.plausible || function () {
+			(window.plausible.q = window.plausible.q || []).push(arguments)
+		}
     </script>
 
     <meta property="og:type" content="website">
@@ -73,10 +73,10 @@
         <div class="text-sm">This website is not affiliated with Nintendo. All product names, logos, and brands are
             property of their respective owners.
         </div>
-        <a href="{% url 'uploaders_information' %}" class="text-blue-500 underline p-1">Information on Available
+        <a href="{% url 'uploaders_information' %}" class="text-blue-500 underline p-1.5 pl-0">Information on Available
             Uploaders</a>
-        <a href="{% url 'legal' %}" class="text-blue-500 underline p-1">Legal Stuff</a>
-        <a href="{% url 'about' %}" class="text-blue-500 underline p-1">About Splashcat</a>
+        <a href="{% url 'legal' %}" class="text-blue-500 underline p-1.5">Legal Stuff</a>
+        <a href="{% url 'about' %}" class="text-blue-500 underline p-1.5">About Splashcat</a>
         <div class="py-4 flex flex-row flex-wrap gap-4">
             <a href="https://github.com/splashcat-ink/splashcat"
                class="bg-purple-600 hover:bg-purple-700 rounded p-4 my-auto">GitHub</a>
