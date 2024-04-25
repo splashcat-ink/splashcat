@@ -16,87 +16,88 @@
 
     <div class="text-xl float-right p-1">{{ battle.played_time|date:"SHORT_DATE_FORMAT" }}</div>
     {% with splatfest=battle.splatfest %}
-    <div class="bg-black/50 mt-8 p-2 h-full" {% if splatfest and battle.vs_mode == "FEST" %}style="background: linear-gradient(105deg, {{ splatfest.team_1_color.css }}, {{ splatfest.team_1_color.css }} 33.2%, {{ splatfest.team_2_color.css }} 33.3%, {{ splatfest.team_2_color.css }} 66.6%, {{ splatfest.team_3_color.css }} 66.7%)"{% endif %}>
+        <div class="bg-black/50 mt-8 p-2 h-full"
+             {% if splatfest and battle.vs_mode == "FEST" %}style="background: linear-gradient(105deg, {{ splatfest.team_1_color.css }}, {{ splatfest.team_1_color.css }} 33.2%, {{ splatfest.team_2_color.css }} 33.3%, {{ splatfest.team_2_color.css }} 66.6%, {{ splatfest.team_3_color.css }} 66.7%)"{% endif %}>
     {% endwith %}
-        <div class="flex flex-col gap-1 float-right items-end">
-            <div class="text-lg block">{{ battle.vs_stage.name.string }}</div>
+    <div class="flex flex-col gap-1 float-right items-end">
+        <div class="text-lg block">{{ battle.vs_stage.name.string }}</div>
 
-            <button class="share-button block transition-transform scale-0 group-hover:scale-100"
-                    data-url="https://splashcat.ink/battles/{{ battle.id }}/?share"
-                    data-content-type="BattleCard"
-                    data-share-type="webShare"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-8 h-8 inline">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15"></path>
-                </svg>
-            </button>
+        <button class="share-button block transition-transform scale-0 group-hover:scale-100"
+                data-url="https://splashcat.ink/battles/{{ battle.id }}/?share" title="Share"
+                data-content-type="BattleCard"
+                data-share-type="webShare"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" class="w-8 h-8 inline">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15"></path>
+            </svg>
+        </button>
 
-            <button class="share-button block transition-transform scale-0 group-hover:scale-100"
-                    data-url="https://splashcat.ink/battles/{{ battle.id }}/?share"
-                    data-content-type="BattleCard"
-                    data-share-type="clipboard"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 inline">
-                    <path fill-rule="evenodd"
-                          d="M19.902 4.098a3.75 3.75 0 00-5.304 0l-4.5 4.5a3.75 3.75 0 001.035 6.037.75.75 0 01-.646 1.353 5.25 5.25 0 01-1.449-8.45l4.5-4.5a5.25 5.25 0 117.424 7.424l-1.757 1.757a.75.75 0 11-1.06-1.06l1.757-1.757a3.75 3.75 0 000-5.304zm-7.389 4.267a.75.75 0 011-.353 5.25 5.25 0 011.449 8.45l-4.5 4.5a5.25 5.25 0 11-7.424-7.424l1.757-1.757a.75.75 0 111.06 1.06l-1.757 1.757a3.75 3.75 0 105.304 5.304l4.5-4.5a3.75 3.75 0 00-1.035-6.037.75.75 0 01-.354-1z"
-                          clip-rule="evenodd"></path>
-                </svg>
-            </button>
-        </div>
+        <button class="share-button block transition-transform scale-0 group-hover:scale-100"
+                data-url="https://splashcat.ink/battles/{{ battle.id }}/?share" title="Copy Link"
+                data-content-type="BattleCard"
+                data-share-type="clipboard"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 inline">
+                <path fill-rule="evenodd"
+                      d="M19.902 4.098a3.75 3.75 0 00-5.304 0l-4.5 4.5a3.75 3.75 0 001.035 6.037.75.75 0 01-.646 1.353 5.25 5.25 0 01-1.449-8.45l4.5-4.5a5.25 5.25 0 117.424 7.424l-1.757 1.757a.75.75 0 11-1.06-1.06l1.757-1.757a3.75 3.75 0 000-5.304zm-7.389 4.267a.75.75 0 011-.353 5.25 5.25 0 011.449 8.45l-4.5 4.5a5.25 5.25 0 11-7.424-7.424l1.757-1.757a.75.75 0 111.06 1.06l-1.757 1.757a3.75 3.75 0 105.304 5.304l4.5-4.5a3.75 3.75 0 00-1.035-6.037.75.75 0 01-.354-1z"
+                      clip-rule="evenodd"></path>
+            </svg>
+        </button>
+    </div>
 
-        <div class="font-splatoon1 text-2xl {% if battle.judgement == "WIN" %}text-yellow-200{% else %}text-gray-300{% endif %}">
-            {{ battle.get_short_judgement_display }}
-        </div>
-        <div>
-            {{ battle.get_vs_mode_display }}
+    <div class="font-splatoon1 text-2xl {% if battle.judgement == "WIN" %}text-yellow-200{% else %}text-gray-300{% endif %}">
+        {{ battle.get_short_judgement_display }}
+    </div>
+    <div>
+        {{ battle.get_vs_mode_display }}
 
-            {% if battle.power is not None %}
-                <span class="text-base">
+        {% if battle.power is not None %}
+            <span class="text-base">
                     (Power: {{ battle.power|floatformat:1 }})
                 </span>
-            {% endif %}
-        </div>
-        <div class="text-lg">
-            {% with image_name=battle.get_vs_rule_image_name|lower %}
-                <img src="{% static 'images/rule-icons/'|add:image_name|add:'.svg' %}"
-                     class="inline-block h-8 w-8" alt="">
-            {% endwith %}
-            {{ battle.get_vs_rule_display }}
-        </div>
-        <div class="text-lg">
-            {% with player=battle.player %}
-                <img src="{{ player.weapon.flat_image.url }}?height=80&width=80" class="inline-block h-10 w-10" alt="">
-                {{ player.weapon.name.string }}
-                {% get_color battle.uploader use_random_color %}
-                {% include "splatnet_assets/mask_image.html" with object=player.weapon.sub class="inline h-6 w-6" uploader=battle.uploader image_params="height=48&width=48" %}
-                {% include "splatnet_assets/mask_image.html" with object=player.weapon.special class="inline h-6 w-6" uploader=battle.uploader image_params="height=48&width=48" %}
-            {% endwith %}
-        </div>
-        {% if display_uploader is True %}
-            {% with uploader=battle.uploader %}
-                <div class="flex flex-row gap-1 items-center my-0.5 w-fit">
-                    {% if uploader.profile_picture %}
-                        <img src="{{ battle.uploader.profile_picture.url }}?optimizer=image&height=96&width=96"
-                             alt="{{ battle.uploader.display_name }}"
-                             class="h-12 w-12 group-hover:scale-110 transition object-cover rounded-lg"
-                             height="96" width="96">
-                    {% endif %}
-                    <div class="flex flex-col">
-                        <div class="text-xl">
-                            {{ battle.uploader.display_name }}
-                            {% if battle.uploader.display_sponsor_badge %}
-                                <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png"
-                                     alt="Splashcat Sponsor"
-                                     class="h-6 w-6 inline-block [image-rendering:pixelated]" height="16" width="16">
-                            {% endif %}
-                        </div>
-                        <div class="text-sm text-gray-400 h-0 scale-y-0 group-hover:h-4 group-hover:scale-y-100 transition-[transform,_height]">
-                            @{{ battle.uploader.username }}</div>
-                    </div>
-                </div>
-            {% endwith %}
         {% endif %}
+    </div>
+    <div class="text-lg">
+        {% with image_name=battle.get_vs_rule_image_name|lower %}
+            <img src="{% static 'images/rule-icons/'|add:image_name|add:'.svg' %}"
+                 class="inline-block h-8 w-8" alt="">
+        {% endwith %}
+        {{ battle.get_vs_rule_display }}
+    </div>
+    <div class="text-lg">
+        {% with player=battle.player %}
+            <img src="{{ player.weapon.flat_image.url }}?height=80&width=80" class="inline-block h-10 w-10" alt="">
+            {{ player.weapon.name.string }}
+            {% get_color battle.uploader use_random_color %}
+            {% include "splatnet_assets/mask_image.html" with object=player.weapon.sub class="inline h-6 w-6" uploader=battle.uploader image_params="height=48&width=48" %}
+            {% include "splatnet_assets/mask_image.html" with object=player.weapon.special class="inline h-6 w-6" uploader=battle.uploader image_params="height=48&width=48" %}
+        {% endwith %}
+    </div>
+    {% if display_uploader is True %}
+        {% with uploader=battle.uploader %}
+            <div class="flex flex-row gap-1 items-center my-0.5 w-fit">
+                {% if uploader.profile_picture %}
+                    <img src="{{ battle.uploader.profile_picture.url }}?optimizer=image&height=96&width=96"
+                         alt="{{ battle.uploader.display_name }}"
+                         class="h-12 w-12 group-hover:scale-110 transition object-cover rounded-lg"
+                         height="96" width="96">
+                {% endif %}
+                <div class="flex flex-col">
+                    <div class="text-xl">
+                        {{ battle.uploader.display_name }}
+                        {% if battle.uploader.display_sponsor_badge %}
+                            <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png"
+                                 alt="Splashcat Sponsor"
+                                 class="h-6 w-6 inline-block [image-rendering:pixelated]" height="16" width="16">
+                        {% endif %}
+                    </div>
+                    <div class="text-sm text-gray-400 h-0 scale-y-0 group-hover:h-4 group-hover:scale-y-100 transition-[transform,_height]">
+                        @{{ battle.uploader.username }}</div>
+                </div>
+            </div>
+        {% endwith %}
+    {% endif %}
     </div>
 </a>
