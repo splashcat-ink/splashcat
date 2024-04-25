@@ -23,8 +23,16 @@
                     <img src="{% static 'images/tape/tape-1.png' %}?height=72" alt="" height="136" width="600"
                          class="rotate-6 drop-shadow z-10 mx-auto relative h-12 w-auto top-6">
                     <img src="{% static 'images/home/battles.png' %}?height=482" alt="battle cards"
-                         class="drop-shadow-lg border-4 rounded border-gray-700 h-auto w-full mx-auto" height="768"
-                         width="1542">
+                         class="drop-shadow-lg border-4 rounded border-gray-700 h-auto w-full mx-auto"
+                         height="768" width="1542"
+                         srcset="{% static 'images/home/battles.png' %}?width=400 400w,
+                                 {% static 'images/home/battles.png' %}?width=500 500w,
+                                 {% static 'images/home/battles.png' %}?width=600 600w,
+                                 {% static 'images/home/battles.png' %}?width=700 700w,
+                                 {% static 'images/home/battles.png' %}?width=716 716w,
+                                 {% static 'images/home/battles.png' %}?width=1000 1000w,
+                                 {% static 'images/home/battles.png' %} 1542w"
+                         sizes="(min-width: 768px) 40vw, 90vw">
                 </div>
                 <div class="basis-1/2 flex justify-center items-center">
                     {% include "splatnet_assets/squid_tape.html" with bg="bg-splatoon-blue rotate-1 font-splatoon1 text-3xl" content="Track your battles!" border="p-4" %}
