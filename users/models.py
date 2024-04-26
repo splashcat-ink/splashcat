@@ -3,12 +3,14 @@ import hashlib
 from datetime import timedelta
 from enum import Enum
 from io import BytesIO
+import re
 
 import requests
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import Site
 from django.core.files.base import ContentFile
+from django.core.validators import URLValidator
 from django.db import models
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -82,6 +84,18 @@ class User(AbstractUser):
     approved_to_upload_videos = models.BooleanField(_("approved to upload videos"), default=False)
     video_collection_id = models.CharField(_("video collection id"), max_length=100, blank=True, null=True)
     stripe_customer_id = models.CharField(_("stripe customer id"), max_length=100, blank=True, null=True)
+    coral_friend_url = models.URLField(_("Nintendo Switch Online app friend URL"), blank=True, null=True,
+                                       validators=[URLValidator(
+                                           regex=r"^https:\/\/lounge\.nintendo\.com\/friendcode\/\d{4}-\d{4}-\d{4}\/[A-Za-z0-9]{10}$")])
+
+    @property
+    def coral_friend_code(self):
+        if not self.coral_friend_url:
+            return None
+        matches = re.search(r"^https://lounge\.nintendo\.com/friendcode/(\d{4}-\d{4}-\d{4})/[A-Za-z0-9]{10}$",
+                            self.coral_friend_url)
+        if matches:
+            return matches.group(1)
 
     @property
     def favorite_color(self):

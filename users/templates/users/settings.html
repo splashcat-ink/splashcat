@@ -65,6 +65,14 @@
                 </div>
 
                 <div>
+                    {{ form.coral_friend_url.errors }}
+                    <label class="text-xl" for="{{ form.coral_friend_url.id_for_label }}">Nintendo Switch Friend
+                        URL</label>
+                    <p>Get this link from the Nintendo Switch Online app.</p>
+                    {{ form.coral_friend_url }}
+                </div>
+
+                <div>
                     {{ form.preferred_pronouns.errors }}
                     <label class="text-xl" for="{{ form.preferred_pronouns.id_for_label }}">Preferred Pronouns</label>
                     <p>Used for AI Battle Descriptions and shown on your profile.</p>

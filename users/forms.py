@@ -18,6 +18,7 @@ class AccountSettingsForm(forms.ModelForm):
             "saved_favorite_color",
             "x_battle_division",
             "preferred_pronouns",
+            "coral_friend_url",
         )
         labels = {
             "saved_favorite_color": _("Favorite Color"),
@@ -38,6 +39,13 @@ class AccountSettingsForm(forms.ModelForm):
                 "autocorrect": "off",
             }
         )
+    )
+
+    coral_friend_url = forms.URLField(
+        required=False,
+        error_messages={
+            'invalid': _("Enter a valid Nintendo Switch Friend URL from the Nintendo Switch Online app."),
+        }
     )
 
 
