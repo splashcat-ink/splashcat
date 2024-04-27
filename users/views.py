@@ -1,5 +1,6 @@
 import datetime
 import json
+import qrcode
 from typing import Optional
 
 import requests
@@ -54,7 +55,8 @@ def profile(request, username: str):
         .values('weapon').annotate(count=models.Count('weapon')).order_by('-count').first()
     most_used_weapon = Weapon.objects.get(pk=most_used_weapon['weapon']) if most_used_weapon else None
 
-    total_uploader_disconnects = Player.objects.filter(team__battle__uploader=user, is_self=True, disconnect=True).count()
+    total_uploader_disconnects = Player.objects.filter(team__battle__uploader=user, is_self=True,
+                                                       disconnect=True).count()
 
     return render(request, 'users/profile.html',
                   {
@@ -132,7 +134,8 @@ def profile_json(request, username: str):
         .count()
     period_ago_win_rate = period_ago_wins / (period_ago_wins + period_ago_loses) * 100 if \
         period_ago_wins + period_ago_loses else None
-    period_ago_aggregates = Player.objects.filter(team__battle__uploader=user, is_self=True, team__battle__played_time__gt=period_ago).aggregate(
+    period_ago_aggregates = Player.objects.filter(team__battle__uploader=user, is_self=True,
+                                                  team__battle__played_time__gt=period_ago).aggregate(
         average_kills=models.Avg('kills'),
         average_assists=models.Avg('assists'),
         average_deaths=models.Avg('deaths'),
@@ -150,7 +153,8 @@ def profile_json(request, username: str):
     total_uploader_disconnects = Player.objects.filter(team__battle__uploader=user, is_self=True,
                                                        disconnect=True).count()
 
-    splashtag_badge_images = [(badge.image.url if badge else None) for badge in splashtag['badges']] if splashtag else None
+    splashtag_badge_images = [(badge.image.url if badge else None) for badge in
+                              splashtag['badges']] if splashtag else None
 
     return JsonResponse({
         'splashtag': {
@@ -205,6 +209,16 @@ def profile_battle_list(request, username: str):
         'page': page,
         'splashtag': user.get_splashtag,
     })
+
+
+def profile_qr_code(request, username: str):
+    user = get_object_or_404(User, username__iexact=username)
+    if not user.coral_friend_url:
+        return HttpResponseBadRequest('User does not have coral friend url.')
+    qr_code = qrcode.make(user.coral_friend_url)
+    response = HttpResponse(content_type="image/png")
+    qr_code.save(response, "PNG")
+    return response
 
 
 def register(request):

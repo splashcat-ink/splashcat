@@ -50,6 +50,7 @@ django-cors-headers = "^4.3.1"
 stripe = "^8.5.0"
 strawberry-graphql = "0.220.0.dev.1709543239"
 strawberry-persisted-queries = "^1.0.3"
+qrcode = "^7.4.2"
 
 
 [build-system]
