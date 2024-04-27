@@ -57,9 +57,10 @@
                 </svg>
                 SW-{{ profile.coral_friend_code }}
             </a>
-            <div class="p-4 bg-gray-700 hidden group-hover:block bottom-full left-1 absolute rounded-lg w-min whitespace-nowrap z-10 shadow-lg">
+            <div class="p-4 bg-gray-700 hidden group-hover:block bottom-full left-1 absolute rounded-lg w-fit max-w[80vw] whitespace-nowrap z-10 shadow-lg">
                 <img src="https://cdn.splashcat.ink/users/coral/friendcode/qr/{{ profile.username }}/?friend-code={{ profile.coral_friend_code }}&optimizer=image&width=256&height=256"
-                     alt="Nintendo Switch Friend Code QR Code" class="w-full h-full rounded-lg" loading="lazy" width="256" height="256">
+                     alt="Nintendo Switch Friend Code QR Code" class="w-auto h-48 rounded-lg" loading="lazy"
+                     width="256" height="256">
             </div>
         </div>
     {% endif %}
