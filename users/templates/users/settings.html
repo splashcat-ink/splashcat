@@ -19,8 +19,8 @@
         <div>
             {{ form.non_field_errors }}
 
-            <div class="form-css form-div-cards" method="post" action="{% url "users:settings" %}"
-                 enctype="multipart/form-data">
+            <form class="form-css form-div-cards" method="post" action="{% url "users:settings" %}"
+                  enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div>
@@ -100,8 +100,7 @@
                 </div>
 
                 <input type="submit" value="Update">
-                </form>
-            </div>
+            </form>
 
             <div class="form-div-cards">
                 <div>
@@ -179,4 +178,5 @@
                 </div>
             </div>
         </div>
+    </div>
 {% endblock %}
