@@ -215,7 +215,7 @@ def profile_qr_code(request, username: str):
     user = get_object_or_404(User, username__iexact=username)
     if not user.coral_friend_url:
         return HttpResponseBadRequest('User does not have coral friend url.')
-    qr_code = qrcode.make(user.coral_friend_url)
+    qr_code = qrcode.make(f"{user.coral_friend_url}?via=qr")
     response = HttpResponse(content_type="image/png")
     qr_code.save(response, "PNG")
     return response
