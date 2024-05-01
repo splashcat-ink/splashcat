@@ -45,7 +45,12 @@ class AccountSettingsForm(forms.ModelForm):
         required=False,
         error_messages={
             'invalid': _("Enter a valid Nintendo Switch Friend URL from the Nintendo Switch Online app."),
-        }
+        },
+        widget=forms.URLInput(
+            attrs={
+                'class': '!w-full',
+            }
+        )
     )
 
 
