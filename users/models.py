@@ -142,6 +142,12 @@ class User(AbstractUser):
                     self.verified_email
             )
 
+    def get_latest_battle(self):
+        try:
+            return self.battles.with_prefetch().latest('played_time')
+        except Battle.DoesNotExist:
+            return None
+
     @property
     def get_splashtag(self):
         try:
