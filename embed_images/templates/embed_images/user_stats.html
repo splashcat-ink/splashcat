@@ -1,0 +1,77 @@
+{% extends "opengraph.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="w-[500px] h-[200px] relative">
+        <img src="{% static 'images/dark-bg.jpg' %}" class="w-full h-full absolute top-0 left-0">
+        <div class="flex gap-16 justify-center items-center w-full h-full absolute top-0 left-0">
+            <div class="flex flex-col items-center gap-6">
+                <div class="card-mask h-fit w-fit bg-gray-500 rotate-2 bg-[url('../images/tapes-transparent.png')] bg-contain rounded-lg pb-2 px-6 pt-6 text-center">
+                    <h1 class="font-splatoon1 text-xl pb-2">Lifetime Stats</h1>
+                    <div class="flex justify-center items-center gap-6">
+                        <div>
+                            <div>
+                                Victory
+                            </div>
+                            <div class="text-lg">
+                                {{ win_count }}
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                Defeat
+                            </div>
+                            <div class="text-lg">
+                                {{ lose_count }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center items-center gap-6 pt-2">
+                        <div>
+                            <div>
+                                Win Rate
+                            </div>
+                            <div class="text-lg">
+                                {{ win_rate|floatformat:1 }}%
+                            </div>
+                        </div>
+                        {% if period_ago_win_rate is not None %}
+                            <div>
+                                <div>
+                                    24 Hour Win Rate
+                                </div>
+                                <div class="text-lg">
+                                    {{ period_ago_win_rate|floatformat:1 }}%
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center gap-6">
+                {% with weapon=most_used_weapon %}
+                    <div class="p-2 pt-6 card-mask h-fit w-fit bg-gray-600 rotate-3 odd:-rotate-3 bg-[url('/images/tapes-transparent.png')] bg-contain rounded-lg">
+                        <div class="flex gap-1">
+                            <img
+                                    src="{{ weapon.flat_image.url }}"
+                                    alt="{{ weapon.name.string }}"
+                                    class="h-32"
+                            >
+                            <div class="flex flex-col gap-2">
+                                {% include "splatnet_assets/mask_image.html" with object=weapon.special class="inline h-10 w-10 p-1 rounded bg-gray-900/90" uploader=profile_user image_params="height=128&width=128" alt=weapon.special.name.string %}
+                                {% include "splatnet_assets/mask_image.html" with object=weapon.sub class="inline h-10 w-10 p-1 rounded bg-gray-900/90" uploader=profile_user image_params="height=128&width=128" alt=weapon.sub.name.string %}
+                            </div>
+                        </div>
+                    </div>
+                {% endwith %}
+            </div>
+        </div>
+        <div class="absolute bottom-1 right-1 opacity-50 flex flex-row gap-4 items-end">
+            <div>{{ splashtag.name }}#{{ splashtag.name_id }}</div>
+            <div>@{{ profile_user.username }}</div>
+            <div>splashcat.ink</div>
+        </div>
+    </div>
+{% endblock %}

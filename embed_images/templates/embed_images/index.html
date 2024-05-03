@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="text-2xl font-splatoon1">
+        {% block title %}Embed Images{% endblock %}
+    </h1>
+
+    <p class="text-lg">
+        Show off your Splatoon stats with embed images!
+    </p>
+
+    <h2 class="text-xl font-splatoon1">Profile Stats</h2>
+    {% with embeds='stats splashtag gear' %}
+        {% for embed_name in embeds.split %}
+            <h3 class="text-lg">{{ embed_name|capfirst }}</h3>
+            <img src="https://cdn.splashcat.ink/image-render/embeds/user/@{{ user.username }}/{{ embed_name }}/render.png?quality=100"
+                 alt="" height="200" class="w-auto h-[200px]">
+            <label for="url-{{ embed_name }}">Image URL</label>
+            <textarea name="" id="url-{{ embed_name }}" cols="30" readonly
+                      rows="1">https://cdn.splashcat.ink/image-render/embeds/user/@{{ user.username }}/{{ embed_name }}/render.png</textarea>
+            <label for="html-{{ embed_name }}">HTML</label>
+            <textarea name="" id="html-{{ embed_name }}" cols="30" readonly
+                      rows="1"><a href="https://splashcat.ink/@{{ user.username }}/"><img src="https://cdn.splashcat.ink/image-render/embeds/user/@{{ user.username }}/{{ embed_name }}/render.png" alt=""></a></textarea>
+            <label for="markdown-{{ embed_name }}">Markdown</label>
+            <textarea name="" id="markdown-{{ embed_name }}" cols="30" readonly
+                      rows="1">[![](https://cdn.splashcat.ink/image-render/embeds/user/@{{ user.username }}/{{ embed_name }}/render.png)](https://splashcat.ink/@{{ user.username }}/)</textarea>
+            <label for="bbcode-{{ embed_name }}">BBCode</label>
+            <textarea name="" id="bbcode-{{ embed_name }}" cols="30" readonly
+                      rows="1">[URL=https://splashcat.ink/@{{ user.username }}/][IMG]https://cdn.splashcat.ink/image-render/embeds/user/@{{ user.username }}/{{ embed_name }}/render.png[/IMG][/URL]</textarea>
+        {% endfor %}
+    {% endwith %}
+{% endblock %}

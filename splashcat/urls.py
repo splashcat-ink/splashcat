@@ -49,6 +49,7 @@ urlpatterns = [
     path('videos/', include('videos.urls')),
     path('search/', include('search.urls')),
     path('assistant/', include('assistant.urls')),
+    path('embeds/', include('embed_images.urls')),
     path('@<str:username>/', users_views.profile, name='profile'),
     path('@<str:username>.json', users_views.profile_json, name='profile_json'),
     path('@<str:username>/battles/', users_views.profile_battle_list, name='profile_battles_list'),

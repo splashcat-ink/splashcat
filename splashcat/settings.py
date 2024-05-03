@@ -102,7 +102,8 @@ INSTALLED_APPS = [
     'videos',
     'search',
     'assistant',
-    "splatnet_album.apps.SplatnetAlbumConfig"
+    "splatnet_album.apps.SplatnetAlbumConfig",
+    "embed_images.apps.EmbedImagesConfig"
 ]
 
 MIDDLEWARE = [
