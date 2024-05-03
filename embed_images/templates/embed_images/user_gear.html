@@ -2,12 +2,16 @@
 {% load static %}
 
 {% block content %}
-    <div class="w-[675px] h-[200px] relative">
+    <div class="w-[500px] h-[200px] relative">
         <img src="{% static 'images/dark-bg.jpg' %}" class="w-full h-full absolute top-0 left-0" alt="">
-        <div class="flex flex-row items-center justify-center gap-6 h-full scale-[1.9]">
-            {% include 'includes/splashtag.html' with splashtag=splashtag %}
+        <div class="flex flex-row items-center justify-center gap-6 h-full">
+            {% for gear in gears %}
+                <div class="p-2 pt-6 card-mask h-fit w-fit bg-gray-600 rotate-3 odd:-rotate-3 bg-[url('/images/tapes-transparent.png')] bg-contain rounded-lg">
+                    {% include "battles/includes/gear.html" with gear=gear %}
+                </div>
+            {% endfor %}
         </div>
-        <div class="absolute top-1 right-1 opacity-75 flex flex-row gap-4 items-end">
+        <div class="absolute bottom-1 right-1 opacity-50 flex flex-row gap-4 items-end">
             <div>{{ player.name }}#{{ player.name_id }}</div>
             <div>@{{ profile_user.username }}</div>
             <div>splashcat.ink</div>

@@ -67,7 +67,7 @@ def user_splashtag(request, username):
     player = latest_battle.player
     splashtag = player.splashtag
 
-    return render(request, "embed_images/user_gear.html", {
+    return render(request, "embed_images/user_splashtag.html", {
         'profile_user': user,
         'latest_battle': latest_battle,
         'player': player,
