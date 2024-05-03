@@ -43,7 +43,8 @@ class BattleManager(models.Manager):
 
         if include_player_gear:
             player_prefetch_queryset = player_prefetch_queryset \
-                .prefetch_related('head_gear__gear__name', 'head_gear__gear__image', 'head_gear__gear__brand',
+                .prefetch_related('head_gear__gear__name', 'head_gear__gear__image',
+                                  'head_gear__gear__brand',
                                   'head_gear__primary_ability__name',
                                   'head_gear__primary_ability__image',
                                   'head_gear__secondary_ability_1__name',

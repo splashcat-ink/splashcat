@@ -15,16 +15,17 @@ from strawberry_persisted_queries.django_cache import DjangoPersistedQueryCache
 from django.conf import settings
 
 from battles.schema import BattlesQuery, BattlesMutation
+from splatnet_album.schema import SplatNetAlbumQuery, SplatNetAlbumMutation
 from users.schema import UsersQuery, UsersMutation
 
 
 @strawberry.type(name="Query")
-class Query(BattlesQuery, UsersQuery):
+class Query(BattlesQuery, UsersQuery, SplatNetAlbumQuery):
     node: relay.Node = relay.node()
 
 
 @strawberry.type(name="Mutation")
-class Mutation(BattlesMutation, UsersMutation):
+class Mutation(BattlesMutation, UsersMutation, SplatNetAlbumMutation):
     pass
 
 
