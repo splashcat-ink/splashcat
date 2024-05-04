@@ -244,12 +244,14 @@ def cleanup_old_exports():
     )
 
     for page in page_iterator:
-        for item in page['Contents']:
-            if item['LastModified'] < datetime.now(timezone.utc) - timedelta(days=2):
-                client.delete_object(
-                    Bucket='splashcat-data-exports',
-                    Key=item['Key'],
-                )
+        contents = page.get('Contents')
+        if contents is not None:
+            for item in contents:
+                if item['LastModified'] < datetime.now(timezone.utc) - timedelta(days=2):
+                    client.delete_object(
+                        Bucket='splashcat-data-exports',
+                        Key=item['Key'],
+                    )
 
     page_iterator = paginator.paginate(
         Bucket='splashcat-data-exports',
@@ -257,12 +259,14 @@ def cleanup_old_exports():
     )
 
     for page in page_iterator:
-        for item in page['Contents']:
-            if item['LastModified'] < datetime.now(timezone.utc) - timedelta(days=7):
-                client.delete_object(
-                    Bucket='splashcat-data-exports',
-                    Key=item['Key'],
-                )
+        contents = page.get('Contents')
+        if contents is not None:
+            for item in contents:
+                if item['LastModified'] < datetime.now(timezone.utc) - timedelta(days=7):
+                    client.delete_object(
+                        Bucket='splashcat-data-exports',
+                        Key=item['Key'],
+                    )
 
     return True
 
