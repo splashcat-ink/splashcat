@@ -23,7 +23,9 @@ from strawberry.django.views import AsyncGraphQLView
 
 import users.views as users_views
 from battles.sitemaps import BattlesSitemap
-from splashcat import settings
+from django.conf import settings
+
+from indexnow.views import indexnow_api_key
 from splashcat.oidc_provider_settings import openid_auth
 from splashcat.schema import schema
 from splashcat.sitemaps import StaticViewSitemap
@@ -62,6 +64,7 @@ urlpatterns = [
     path('openid/', include('oidc_provider.urls', namespace='oidc_provider')),
     path('robots.txt', robots_txt, name='robots_txt'),
     path('ads.txt', ads_txt, name='ads_txt'),
+    path(f'{settings.INDEXNOW_API_KEY}.txt', indexnow_api_key, name='indexnow_api_key'),
     # path('silk/', include('silk.urls', namespace='silk')),
     path(
         "sitemap.xml",

@@ -103,7 +103,8 @@ INSTALLED_APPS = [
     'search',
     'assistant',
     "splatnet_album.apps.SplatnetAlbumConfig",
-    "embed_images.apps.EmbedImagesConfig"
+    "embed_images.apps.EmbedImagesConfig",
+    "indexnow.apps.IndexNowConfig"
 ]
 
 MIDDLEWARE = [
@@ -422,3 +423,5 @@ STRAWBERRY_DJANGO = {
 
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 stripe.api_key = STRIPE_SECRET_KEY
+
+INDEXNOW_API_KEY = os.environ.get('INDEXNOW_API_KEY', 'indexnow-key')
