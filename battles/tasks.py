@@ -160,6 +160,10 @@ def update_global_battle_data():
                     'noroshi_try': player.noroshi_try,
                 })
 
+        battle_file.flush()
+        teams_file.flush()
+        players_file.flush()
+
     battle_file.close()
     teams_file.close()
     players_file.close()
