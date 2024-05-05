@@ -11,7 +11,7 @@
         </svg>
     {% endif %}
 
-    <img src="{{ player.weapon.flat_image.url }}"
+    <img src="{{ player.weapon.flat_image.url }}?height=80&width=80"
          class="inline-block h-10 w-10" alt="">
     <div class="shrink min-w-0 flex flex-col whitespace-nowrap">
         <div class="text-xs text-gray-300 truncate">{{ player.byname|strip_ruby }}</div>

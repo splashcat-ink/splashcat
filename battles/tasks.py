@@ -88,15 +88,15 @@ def update_global_battle_data():
         vs_mode='PRIVATE',
     )
 
-    battle_file = tempfile.NamedTemporaryFile(mode="w+", delete=False, buffering=1)
+    battle_file = tempfile.NamedTemporaryFile(mode="w+", delete=False, dir="", newline="")
     battle_data = csv.DictWriter(battle_file, fieldnames=battle_fields)
     battle_data.writeheader()
 
-    teams_file = tempfile.NamedTemporaryFile(mode="w+", delete=False, buffering=1)
+    teams_file = tempfile.NamedTemporaryFile(mode="w+", delete=False, dir="", newline="")
     teams_data = csv.DictWriter(teams_file, fieldnames=team_fields)
     teams_data.writeheader()
 
-    players_file = tempfile.NamedTemporaryFile(mode="w+", delete=False, buffering=1)
+    players_file = tempfile.NamedTemporaryFile(mode="w+", delete=False, dir="", newline="")
     players_data = csv.DictWriter(players_file, fieldnames=player_fields)
     players_data.writeheader()
 

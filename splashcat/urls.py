@@ -22,7 +22,7 @@ from django.views.decorators.csrf import csrf_exempt
 from strawberry.django.views import AsyncGraphQLView
 
 import users.views as users_views
-from battles.sitemaps import BattlesSitemap
+from battles.sitemaps import BattlesSitemap, BattleGroupsSitemap
 from django.conf import settings
 
 from indexnow.views import indexnow_api_key
@@ -36,6 +36,7 @@ sitemaps = {
     'static': StaticViewSitemap,
     'users': UsersSitemap,
     'battles': BattlesSitemap,
+    'battle-groups': BattleGroupsSitemap,
 }
 
 urlpatterns = [

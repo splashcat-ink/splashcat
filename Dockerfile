@@ -10,7 +10,7 @@ COPY . /app/
 
 RUN npm run build
 
-FROM python:3.11
+FROM python:3.11-alpine
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1

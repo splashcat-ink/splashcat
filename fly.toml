@@ -6,7 +6,7 @@
 app = "splashcat"
 primary_region = "iad"
 console_command = "/code/manage.py shell"
-swap_size_mb = 4096
+swap_size_mb = 1024
 
 [deploy]
 release_command = "python manage.py migrate"
@@ -47,5 +47,5 @@ guest_path = "/code/battles/format_schemas"
 url_prefix = "/battles/api/schemas/"
 
 [processes]
-app = "daphne -b :: -p 8080 splashcat.asgi:application"
+app = "daphne -b :: -p 8080 --proxy-headers --proxy-headers-host Fly-Client-IP --proxy-headers-port Fly-Forwarded-Port splashcat.asgi:application"
 celery-worker = "celery -A splashcat worker -l INFO -B -P solo"
