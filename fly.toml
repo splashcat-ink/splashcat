@@ -6,7 +6,7 @@
 app = "splashcat"
 primary_region = "iad"
 console_command = "/code/manage.py shell"
-swap_size_mb = 1024
+swap_size_mb = 8192
 
 [deploy]
 release_command = "python manage.py migrate"
