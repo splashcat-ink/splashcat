@@ -65,7 +65,8 @@
 
     <a class="flex flex-row gap-2 items-center my-3 w-fit" href="{% url 'profile' battle.uploader.username %}">
         {% if battle.uploader.profile_picture %}
-            <img src="{{ battle.uploader.profile_picture.url }}" alt="{{ battle.uploader.display_name }}"
+            <img src="{{ battle.uploader.profile_picture.url }}?optimizer=image&height=72&width=72"
+                 alt="{{ battle.uploader.display_name }}"
                  class="h-12 w-12 object-cover rounded-lg">
         {% endif %}
         <div class="flex flex-col">

@@ -48,4 +48,4 @@ url_prefix = "/battles/api/schemas/"
 
 [processes]
 app = "daphne -b :: -p 8080 --proxy-headers --proxy-headers-host Fly-Client-IP --proxy-headers-port Fly-Forwarded-Port splashcat.asgi:application"
-celery-worker = "celery -A splashcat worker -l INFO -B -P solo"
+celery-worker = "celery -A splashcat worker -l DEBUG -B -P solo"

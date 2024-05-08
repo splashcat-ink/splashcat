@@ -2,7 +2,7 @@
 <a class="flex flex-col gap-2 items-center w-fit" href="{% url 'profile' user.username %}">
     <div class="flex flex-row gap-2 items-center w-fit">
         {% if user.profile_picture %}
-            <img src="{{ user.profile_picture.url }}?height=96&width=96" alt="{{ user.display_name }}"
+            <img src="{{ user.profile_picture.url }}?optimizer=image&height=72&width=72" alt="{{ user.display_name }}"
                  class="h-12 w-12 object-cover rounded-lg">
         {% endif %}
         <div class="flex flex-col">
