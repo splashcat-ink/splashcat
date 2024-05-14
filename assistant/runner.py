@@ -1,5 +1,10 @@
 import os
 import sys
+import sentry_sdk
+
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_DSN"),
+)
 
 if os.environ.get('FLY_MACHINE_ID'):
     sys.path.insert(0, '/code/')
@@ -45,7 +50,16 @@ client.beta.threads.messages.create(
     thread_id=thread.openai_thread_id,
     role='user',
     content=thread.initial_message,
-    file_ids=[openai_file.id]
+    attachments=[
+        {
+            'file_id': openai_file.id,
+            'tools': [
+                {
+                    'type': 'code_interpreter',
+                },
+            ],
+        }
+    ]
 )
 
 client.beta.threads.runs.create(
