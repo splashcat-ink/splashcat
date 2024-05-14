@@ -6,7 +6,19 @@
     </h1>
     <h2 class="text-xl font-splatoon1">Threads</h2>
 
-    <p>Get insights into your battle data with Splashcat Assistant.</p>
+    <p class="py-1">Get insights into your battle data with Splashcat Assistant.</p>
+
+    <p class="py-1 max-w-prose">
+        Splashcat Assistant uses <a href="https://openai.com/index/hello-gpt-4o/" target="_blank" rel="noopener"
+                                    class="text-blue-500 underline">OpenAI GPT-4o</a>. The knowledge cutoff is October
+        2023. Splashcat Assistant may make mistakes and responses should
+        always be checked for accuracy.
+    </p>
+
+    <p class="py-1 max-w-prose">
+        When interacting with Splashcat Assistant, prefer using the exact names of weapons over shortened names for
+        better results.
+    </p>
 
     <div class="py-5">
         <a href="{% url 'assistant:create_thread' %}" class="bg-pink-600 hover:bg-pink-700 p-4 rounded">
