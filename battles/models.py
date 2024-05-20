@@ -240,6 +240,7 @@ class Battle(models.Model):
             'vs_mode': self.get_vs_mode_display(),
             'vs_rule': self.get_vs_rule_display(),
             'stage_name': self.vs_stage.name.string,
+            'splatfest_id': self.splatfest.internal_id if self.splatfest else None,
             'uploaded_at': self.uploaded_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
             'played_time': self.played_time.isoformat(),
