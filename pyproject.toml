@@ -34,7 +34,7 @@ eventlet = "^0.35.2"
 django-unicorn = "^0.60.0"
 psycopg = { extras = ["binary"], version = "^3.1.13" }
 django-oidc-provider = "^0.8.0"
-openai = "^1.9.0"
+openai = "^1.30.5"
 django-silk = "^5.0.3"
 redis = { extras = ["hiredis"], version = "^5.0.3" }
 ronkyuu = "^0.9"
