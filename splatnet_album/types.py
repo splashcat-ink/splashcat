@@ -11,6 +11,7 @@ from users.types import User
 @strawberry_django.type(models.AlbumImage)
 class AlbumImage(relay.Node):
     splatnet_url: auto
+    npln_image_id: auto
     image: auto
     height: auto
     width: auto
