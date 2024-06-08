@@ -1,4 +1,4 @@
-from typing import List
+from typing import TYPE_CHECKING, Annotated
 
 import strawberry.relay
 import strawberry_django
@@ -7,6 +7,9 @@ from strawberry_django.relay import ListConnectionWithTotalCount
 
 from battles.types import Battle
 from . import models
+
+if TYPE_CHECKING:
+    from splatnet_album.types import AlbumImage
 
 
 @strawberry_django.type(models.User)
@@ -18,3 +21,5 @@ class User(relay.Node):
     x_battle_division: auto
     profile_picture: auto
     battles: ListConnectionWithTotalCount[Battle] = strawberry_django.connection()
+    album_images: ListConnectionWithTotalCount[
+        Annotated["AlbumImage", strawberry.lazy("splatnet_album.types")]] = strawberry_django.connection()

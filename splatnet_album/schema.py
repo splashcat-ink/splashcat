@@ -19,7 +19,7 @@ from users.models import User
 
 @strawberry.type(name="Query")
 class SplatNetAlbumQuery:
-    userAlbum: ListConnectionWithTotalCount[AlbumImage] = strawberry_django.connection()
+    user_album: ListConnectionWithTotalCount[AlbumImage] = strawberry_django.connection()
 
 
 def check_url(url):
