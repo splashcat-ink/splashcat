@@ -142,7 +142,9 @@ class Battle(models.Model):
     uploader_agent_extra = models.CharField(max_length=100, blank=True, null=True)
     splatfest = models.ForeignKey('splatnet_assets.Splatfest', on_delete=models.PROTECT, related_name='battles',
                                   blank=True, null=True)
-    splatnet_id = models.CharField(max_length=100)
+    splatnet_id = models.CharField(max_length=100, blank=True, null=True)
+    statink_id = models.CharField(max_length=100, blank=True, null=True)
+    statink_username = models.CharField(max_length=100, blank=True, null=True)
     raw_data = models.JSONField()
     data_type = models.CharField(max_length=32)  # e.g. "splatnet3"
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -283,7 +285,10 @@ class Battle(models.Model):
             return _('Defeat')
 
     def get_related_battles(self):
-        return Battle.objects.filter(splatnet_id=self.splatnet_id).exclude(id=self.id)
+        if self.splatnet_id and self.splatnet_id != '':
+            return Battle.objects.filter(splatnet_id=self.splatnet_id).exclude(id=self.id)
+        else:
+            return []
 
     def get_player_next_battle(self):
         try:

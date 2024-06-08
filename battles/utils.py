@@ -1,5 +1,6 @@
 import base64
 from typing import Optional
+from datetime import datetime, timedelta
 
 from django.db.models.functions import Length
 
@@ -7,6 +8,8 @@ from battles.formats.vs_history_detail import BaseGear, Badge
 from battles.models import PlayerGear
 from battles.types import PlayerGearInput
 from splatnet_assets.models import LocalizationString, Gear, Ability, NameplateBadge
+from battles.models import Battle
+from users.models import User
 
 
 def get_splatnet_int_id(splatnet_id: str):
@@ -82,3 +85,9 @@ def get_nameplate_badge(badge: Optional[Badge]):
 
 class BattleAlreadyExistsError(Exception):
     pass
+
+
+def find_existing_battle(uploader: User, battle_start_time: datetime) -> Battle:
+    return uploader.battles.filter(played_time__gte=battle_start_time - timedelta(seconds=15),
+                                   played_time__lte=battle_start_time + timedelta(seconds=15),
+                                   ).order_by('played_time').first()

@@ -104,7 +104,8 @@ INSTALLED_APPS = [
     'assistant',
     "splatnet_album.apps.SplatnetAlbumConfig",
     "embed_images.apps.EmbedImagesConfig",
-    "indexnow.apps.IndexNowConfig"
+    "indexnow.apps.IndexNowConfig",
+    "statink_importer.apps.StatInkImporterConfig"
 ]
 
 MIDDLEWARE = [
