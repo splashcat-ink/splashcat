@@ -29,6 +29,14 @@ def check_url(url):
         raise GraphQLError('URL isn\'t a valid NPLN UGC store URL. Are you sure it\'s from SplatNet 3?')
 
 
+def get_image_id(url):
+    pattern = r"https://storage\.googleapis\.com/ugcstore-toyohr-lp1-persistent/npln_ugcstore_toyohr_lp1/(\w+)\?"
+    match = re.search(pattern, url)
+    if match is None:
+        raise GraphQLError('URL isn\'t a valid NPLN UGC store URL. Are you sure it\'s from SplatNet 3?')
+    return match.group(1)
+
+
 @strawberry.type(name="Mutation")
 class SplatNetAlbumMutation:
     @strawberry_django.mutation(extensions=[IsAuthenticated()])
@@ -41,6 +49,7 @@ class SplatNetAlbumMutation:
         image_content = ContentFile(image_response.content)
 
         album_image = models.AlbumImage(
+            npln_image_id=get_image_id(splatnet_url),
             user=current_user,
             splatnet_url=splatnet_url,
         )

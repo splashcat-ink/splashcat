@@ -7,7 +7,8 @@ from users.models import User
 
 
 class AlbumImage(models.Model):
-    splatnet_url = models.URLField(unique=True)
+    splatnet_url = models.URLField(unique=True, max_length=750)
+    npln_image_id = models.CharField(max_length=50)
     image = models.ImageField(upload_to='splatnet_album/images/', height_field='height', width_field='width')
     height = models.IntegerField()
     width = models.IntegerField()
