@@ -32,6 +32,16 @@ processes = ["app"]
 grace_period = "5s"
 interval = "5s"
 method = "get"
+path = "/"
+protocol = "http"
+restart_limit = 5
+timeout = "5s"
+tls_skip_verify = false
+
+[[http_service.checks]]
+grace_period = "5s"
+interval = "5s"
+method = "get"
 path = "/health-check/"
 protocol = "http"
 restart_limit = 5
