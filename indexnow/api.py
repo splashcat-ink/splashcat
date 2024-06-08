@@ -5,6 +5,8 @@ host = "splashcat.ink"
 
 
 def send_indexnow_request(path: str):
+    if settings.DEBUG:
+        return
     print("sending indexnow request", path)
     response = requests.get("https://api.indexnow.org/indexnow", params={
         "url": f"https://{host}{path}",
