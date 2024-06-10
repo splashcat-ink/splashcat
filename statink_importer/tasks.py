@@ -59,7 +59,7 @@ def import_statink(import_id):
         if not (data.get('lobby') and data.get('rule') and data.get('stage') and data.get(
                 'result') and not find_existing_battle(uploader, played_time)):
             # battle is likely a weird broken one or already exists, skip
-            print(f'skipping battle {data.get('id')}')
+            print(f'skipping battle {data.get("id")}')
             continue
 
         with transaction.atomic():
