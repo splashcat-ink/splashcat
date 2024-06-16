@@ -2610,16 +2610,17 @@ starlite = ["starlite (>=1.48.0)"]
 
 [[package]]
 name = "strawberry-graphql-django"
-version = "0.32.2"
+version = "0.38.0"
 description = "Strawberry GraphQL Django extension"
 optional = false
-python-versions = ">=3.8,<4.0"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "strawberry_graphql_django-0.32.2-py3-none-any.whl", hash = "sha256:b59da6ebef3f6e3b9ec0407cc5f0990169363ee7ff529ab23034f7513d5611ca"},
-    {file = "strawberry_graphql_django-0.32.2.tar.gz", hash = "sha256:a209dcaa8164552d39010ca18a2d909d0191520c294e08b1124cfd797d43e1a0"},
+    {file = "strawberry_graphql_django-0.38.0-py3-none-any.whl", hash = "sha256:28f8416197d43f83314390eed7c8f2597406bf696b9195371cec37e4f56d70c6"},
+    {file = "strawberry_graphql_django-0.38.0.tar.gz", hash = "sha256:5682442734d6e3908bfac5c2d7dcd6d4635865acb57585f2e5a509fa2ba97970"},
 ]
 
 [package.dependencies]
+asgiref = ">=3.8"
 django = ">=3.2"
 strawberry-graphql = ">=0.212.0"
 
@@ -2908,4 +2909,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "3c6e5aa21bb4e7b6fbc34c69abb198dd1239123f5d77b8e09c6914263ddbf705"
+content-hash = "e866d7b7e71e080ee19bbbac13e8c3bce28dfd427ba5307763cd6386779334d2"

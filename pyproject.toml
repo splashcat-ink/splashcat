@@ -43,7 +43,7 @@ django-markdownify = "^0.9.3"
 beautifulsoup4 = "^4.12.3"
 markdown = "^3.5.2"
 django-filter = "^23.5"
-strawberry-graphql-django = "^0.32.1"
+strawberry-graphql-django = "^0.38.0"
 asgiref = {git = "https://github.com/django/asgiref.git"}
 django-choices-field = "^2.2.2"
 django-cors-headers = "^4.3.1"
