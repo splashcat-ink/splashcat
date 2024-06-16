@@ -12,6 +12,8 @@
 {% endblock %}
 
 {% block content %}
+    {% include "users/includes/page-background.html" with profile=battle_group.creator %}
+
     <h1 class="font-splatoon1 text-3xl pb-2">
         {% block title %}
             {{ battle_group.creator.display_name }}'s Shared Battle Group

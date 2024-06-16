@@ -29,6 +29,8 @@
 {% block title %}{{ battle.uploader.display_name }}'s battle on {{ battle.played_time }}{% endblock %}
 
 {% block content %}
+    {% include "users/includes/page-background.html" with profile=battle.uploader %}
+
     <h1 class="text-3xl font-splatoon1">
         <a href="{% url 'profile' battle.uploader.username %}">{{ battle.uploader.display_name }}</a>'s battle on
         <time datetime="{{ battle.played_time }}">{{ battle.played_time }}</time>

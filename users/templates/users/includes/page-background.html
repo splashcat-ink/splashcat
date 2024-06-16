@@ -1,0 +1,11 @@
+{% if profile.page_background.url and profile.github_link.is_sponsor %}
+    <style>
+        body {
+            background-image: url({{ profile.page_background.url }});
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            backdrop-filter: brightness(35%);
+        }
+    </style>
+{% endif %}

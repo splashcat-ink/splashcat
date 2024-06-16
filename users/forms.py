@@ -15,6 +15,8 @@ class AccountSettingsForm(forms.ModelForm):
         fields = (
             "display_name",
             "profile_picture",
+            "profile_cover",
+            "page_background",
             "saved_favorite_color",
             "x_battle_division",
             "preferred_pronouns",
@@ -27,8 +29,15 @@ class AccountSettingsForm(forms.ModelForm):
             "saved_favorite_color": _("Shown when you sponsor Splashcat."),
         }
         widgets = {
-            "profile_picture": ImageWidget,
+            "profile_cover": ImageWidget,
+            "page_background": ImageWidget,
         }
+
+    profile_picture = forms.ImageField(
+        label=_("Profile Picture"),
+        required=True,
+        widget=ImageWidget()
+    )
 
     # override the attributes on the preferred_pronouns field to prevent autocomplete
     preferred_pronouns = forms.CharField(

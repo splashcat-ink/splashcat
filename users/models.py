@@ -80,6 +80,8 @@ class User(AbstractUser):
     data_export_pending = models.BooleanField(_("data export pending"), default=False)
 
     profile_picture = models.ImageField(_("profile picture"), upload_to='profile_pictures', blank=True, null=True)
+    profile_cover = models.ImageField(_("profile cover"), upload_to='profile_covers', blank=True, null=True)
+    page_background = models.ImageField(_("page background"), upload_to='page_backgrounds', blank=True, null=True)
     saved_favorite_color = ColorField(default="9333eaff")
     approved_to_upload_videos = models.BooleanField(_("approved to upload videos"), default=False)
     video_collection_id = models.CharField(_("video collection id"), max_length=100, blank=True, null=True)

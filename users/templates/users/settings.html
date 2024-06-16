@@ -36,6 +36,30 @@
                 </div>
 
                 <div>
+                    {{ form.profile_cover.errors }}
+                    <label class="text-xl" for="{{ form.profile_cover.id_for_label }}">Profile Cover</label>
+                    {{ form.profile_cover }}
+                </div>
+
+                <div>
+                    {{ form.page_background.errors }}
+                    <label class="text-xl" for="{{ form.page_background.id_for_label }}">Page Background</label>
+                    <p class="text-lg max-w-sm">
+                        Shown in the background of your profile and on battles. Note that backgrounds will be darkened
+                        when shown.
+                    </p>
+                    {{ form.page_background }}
+                    {% if not user.github_link.is_sponsor %}
+                        <div class="w-72"></div>
+                        <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/50 pt-10 p-6">
+                            <a class="text-center text-gray-200 text-lg" href="{% url 'sponsor' %}">
+                                Become a sponsor to customize your page background.
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div>
                     {{ form.saved_favorite_color.errors }}
                     <label class="text-xl" for="{{ form.saved_favorite_color.id_for_label }}">Favorite Color</label>
                     <p class="text-lg max-w-sm">
