@@ -56,6 +56,7 @@ urlpatterns = [
     path('@<str:username>/', users_views.profile, name='profile'),
     path('@<str:username>.json', users_views.profile_json, name='profile_json'),
     path('@<str:username>/battles/', users_views.profile_battle_list, name='profile_battles_list'),
+    path('@<str:username>/album/', users_views.profile_album, name='profile_album'),
     path('sponsor/', sponsor, name='sponsor'),
     path('legal/', legal, name='legal'),
     path('about/', about, name='about'),

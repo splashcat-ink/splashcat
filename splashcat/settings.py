@@ -60,6 +60,8 @@ FLY_PRIMARY_REGION = os.environ.get('PRIMARY_REGION', 'iad')
 FLY_API_HOSTNAME = os.environ.get('FLY_API_HOSTNAME', 'https://api.machines.dev')
 FLY_API_TOKEN = os.environ.get('FLY_API_TOKEN')
 
+NUXT_IFRAME_HOST = os.environ.get('NUXT_IFRAME_HOST', 'https://new.splashcat.ink')
+
 SITE_ID = 1
 
 INTERNAL_IPS = [
@@ -182,6 +184,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
                 'splashcat.context_processors.share_query_param',
+                'splashcat.context_processors.nuxt_iframe_host',
             ],
         },
     },

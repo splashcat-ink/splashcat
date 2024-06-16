@@ -211,6 +211,15 @@ def profile_battle_list(request, username: str):
     })
 
 
+def profile_album(request, username: str):
+    user = get_object_or_404(User, username__iexact=username)
+
+    return render(request, 'users/profile_album.html', {
+        'profile_user': user,
+        'splashtag': user.get_splashtag,
+    })
+
+
 def profile_qr_code(request, username: str):
     user = get_object_or_404(User, username__iexact=username)
     if not user.coral_friend_url:

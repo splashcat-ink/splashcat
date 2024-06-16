@@ -13,6 +13,18 @@
         background-image: url("../images/information-bg.jpg");
         background-size: 600px;
     }
+
+    @media (prefers-color-scheme: light) {
+        html {
+            color-scheme: light;
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html {
+            color-scheme: dark;
+        }
+    }
 }
 
 @layer components {
@@ -192,7 +204,7 @@
             display: block;
         }
     }
-    
+
     @keyframes battle-waves {
         0% {
             background-position-x: 100%;
