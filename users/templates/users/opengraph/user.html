@@ -3,7 +3,12 @@
 
 {% block content %}
     <div class="w-[1200px] h-[630px] relative">
-        <img src="{% static 'images/dark-bg.jpg' %}" class="w-full h-full absolute top-0 left-0">
+        {% if profile_user.page_background and profile_user.github_link.is_sponsor %}
+            <img src="{{ profile_user.page_background.url }}"
+                 class="w-full h-full absolute top-0 left-0 object-cover brightness-[.35]">
+        {% else %}
+            <img src="{% static 'images/dark-bg.jpg' %}" class="w-full h-full absolute top-0 left-0">
+        {% endif %}
         <div class="flex gap-16 justify-center items-center w-full h-full absolute top-0 left-0">
             <div class="flex flex-col items-center gap-6">
                 <div class="card-mask h-fit w-fit bg-gray-500 rotate-2 bg-[url('../images/tapes-transparent.png')] bg-contain rounded-lg pb-3 px-6 pt-8 text-center">

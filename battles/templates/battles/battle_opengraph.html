@@ -2,7 +2,6 @@
 {% load duration %}
 
 {% block content %}
-
     <div class="w-[1200px] h-[630px] relative">
         {% if battle.vs_mode == "FEST" and battle.splatfest_clout_multiplier != "NONE" %}
             {% include "splatnet_assets/squid_tape.html" with bg="bg-purple-600 -rotate-6 left-16 top-12 scale-[2.5] z-10 absolute" content=battle.get_splatfest_clout_multiplier_display %}
