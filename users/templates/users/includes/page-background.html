@@ -1,11 +1,17 @@
 {% if profile.page_background.url and profile.github_link.is_sponsor %}
+    <div id="page-background"></div>
     <style>
-        body {
+        #page-background {
             background-image: url({{ profile.page_background.url }});
-            background-attachment: fixed;
             background-size: cover;
             background-repeat: no-repeat;
-            backdrop-filter: brightness(35%);
+            filter: brightness(35%);
+            width: 100vw;
+            height: 100lvh;
+            z-index: -1000;
+            position: fixed;
+            left: 0;
+            top: 0;
         }
     </style>
 {% endif %}
