@@ -29,6 +29,8 @@ class Image(models.Model):
 
 django_locale_to_splatnet_locale = {
     'ja': 'ja-JP',
+    'es': 'es-ES',
+    'ru': 'ru-RU',
 }
 
 
@@ -148,6 +150,11 @@ class NameplateBadge(models.Model):
     splatnet_id = models.IntegerField()
     image = models.OneToOneField('Image', on_delete=models.PROTECT, related_name='+')
     description = models.ForeignKey('LocalizationString', on_delete=models.PROTECT)
+
+    @property
+    def translated_description(self):
+        from splatnet_assets.badge_descriptions import get_proper_badge_localization
+        return get_proper_badge_localization(self)
 
 
 class Stage(models.Model):

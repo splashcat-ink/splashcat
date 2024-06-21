@@ -40,7 +40,7 @@
 
     {% if group.members.count > 0 %}
         <h2 class="font-splatoon1 text-xl">Members</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {% for member in group.members.all %}
                 {% include "users/includes/user-link.html" with user=member show_splashtag=True %}
             {% endfor %}

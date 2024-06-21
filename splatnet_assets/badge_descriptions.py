@@ -1,6 +1,10 @@
 import re
+import typing
 
-from splatnet_assets.models import NameplateBadge, LocalizationString
+from splatnet_assets.models import LocalizationString
+
+if typing.TYPE_CHECKING:
+    from splatnet_assets.models import NameplateBadge
 
 level_regex = re.compile(r"_Lv\d{2}")
 group_regex = re.compile(r"\[group=0004.+]")
@@ -25,7 +29,7 @@ def has_prefix(s, prefixes):
     return any(s.startswith(prefix) for prefix in prefixes)
 
 
-def get_proper_badge_localization(badge: NameplateBadge, locale: str = None) -> str:
+def get_proper_badge_localization(badge: "NameplateBadge", locale: str = None) -> str:
     localization_string = badge.description.get_string(locale)
     if has_prefix(badge.internal_id, bad_badge_prefixes):
         # find replacement string and replace
