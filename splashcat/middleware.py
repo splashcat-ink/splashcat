@@ -20,7 +20,7 @@ class FlyDotIoMiddleware:
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest):
-        if (request.method != 'GET' or request.method != 'HEAD') and settings.FLY_REGION != settings.FLY_PRIMARY_REGION:
+        if request.method not in ['GET', 'HEAD'] and settings.FLY_REGION != settings.FLY_PRIMARY_REGION:
             response = HttpResponse(f'Replaying in {settings.FLY_PRIMARY_REGION} because of http method', status=409,
                                     headers={
                                         'fly-replay': f'region={settings.FLY_PRIMARY_REGION};state=http_method',
