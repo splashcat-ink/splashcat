@@ -20,7 +20,7 @@ class FlyDotIoMiddleware:
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest):
-        if request.method != 'GET' and settings.FLY_REGION != settings.FLY_PRIMARY_REGION:
+        if (request.method != 'GET' or request.method != 'HEAD') and settings.FLY_REGION != settings.FLY_PRIMARY_REGION:
             response = HttpResponse(f'Replaying in {settings.FLY_PRIMARY_REGION} because of http method', status=409,
                                     headers={
                                         'fly-replay': f'region={settings.FLY_PRIMARY_REGION};state=http_method',
@@ -71,3 +71,17 @@ class PostgresReadOnlyMiddleware:
                                     })
         else:
             return None
+
+
+class NoIndexMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request: HttpRequest):
+        response = self.get_response(request)
+
+        host = request.get_host()
+        if "fly.dev" in host:
+            response.headers['X-Robots-Tag'] = 'noindex'
+
+        return response

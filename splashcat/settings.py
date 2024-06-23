@@ -125,6 +125,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'splashcat.middleware.PostgresReadOnlyMiddleware',  # redirects to primary region when a read only error occurs
+    'splashcat.middleware.NoIndexMiddleware',  # don't index fly.dev
 ]
 
 LOGGING = {
