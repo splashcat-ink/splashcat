@@ -113,7 +113,13 @@
         </div>
 
         <div class="text-lg">
-            {{ battle.get_vs_mode_display }}
+            {% if battle.vs_mode == battle.VsMode.BANKARA and battle.anarchy_mode %}
+                {{ battle.get_anarchy_mode_display }}
+            {% elif battle.vs_mode == battle.VsMode.FEST and battle.splatfest_mode %}
+                {{ battle.get_splatfest_mode_display }}
+            {% else %}
+                {{ battle.get_vs_mode_display }}
+            {% endif %}
 
             {% if battle.power is not None %}
                 <span class="text-base">
