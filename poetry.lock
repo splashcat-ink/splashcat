@@ -1596,13 +1596,13 @@ signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
 
 [[package]]
 name = "openai"
-version = "1.29.0"
+version = "1.35.3"
 description = "The official Python library for the openai API"
 optional = false
 python-versions = ">=3.7.1"
 files = [
-    {file = "openai-1.29.0-py3-none-any.whl", hash = "sha256:c61cd12376c84362d406341f9e2f9a9d6b81c082b133b44484dc0f43954496b1"},
-    {file = "openai-1.29.0.tar.gz", hash = "sha256:d5a769f485610cff8bae14343fa45a8b1d346be3d541fa5b28ccd040dbc8baf8"},
+    {file = "openai-1.35.3-py3-none-any.whl", hash = "sha256:7b26544cef80f125431c073ffab3811d2421fbb9e30d3bd5c2436aba00b042d5"},
+    {file = "openai-1.35.3.tar.gz", hash = "sha256:d6177087f150b381d49499be782d764213fdf638d391b29ca692b84dd675a389"},
 ]
 
 [package.dependencies]
@@ -2909,4 +2909,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "e866d7b7e71e080ee19bbbac13e8c3bce28dfd427ba5307763cd6386779334d2"
+content-hash = "bff3c75e7fdb13aae52cc6616ed3e8b98fc98a00ffd070adcbee441f5d3984ba"
