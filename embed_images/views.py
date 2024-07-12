@@ -13,7 +13,25 @@ from users.models import User
 
 @login_required
 def index(request):
-    return render(request, "embed_images/index.html")
+    return render(request, "embed_images/index.html", {
+        "embed_types": [
+            {
+                "name": "stats",
+                "width": 500,
+                "height": 200,
+            },
+            {
+                "name": "splashtag",
+                "width": 675,
+                "height": 200,
+            },
+            {
+                "name": "gear",
+                "width": 500,
+                "height": 200,
+            }
+        ]
+    })
 
 
 def user_stats(request, username):
