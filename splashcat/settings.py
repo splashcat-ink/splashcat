@@ -107,7 +107,8 @@ INSTALLED_APPS = [
     "splatnet_album.apps.SplatnetAlbumConfig",
     "embed_images.apps.EmbedImagesConfig",
     "indexnow.apps.IndexNowConfig",
-    "statink_importer.apps.StatInkImporterConfig"
+    "statink_importer.apps.StatInkImporterConfig",
+    "grizzco_jobs.apps.GrizzcoJobsConfig"
 ]
 
 MIDDLEWARE = [
