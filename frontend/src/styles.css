@@ -28,8 +28,12 @@
 }
 
 @layer components {
-    .splatfest-battle-card > * {
+    .splatfest-battle-card * {
         text-shadow: 1px 1px 0 black;
+    }
+
+    .splatfest-battle-card img, .splatfest-battle-card svg {
+        filter: drop-shadow(1px 1px black);
     }
 
     .copy-tooltipped {
