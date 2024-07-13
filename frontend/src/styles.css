@@ -28,6 +28,10 @@
 }
 
 @layer components {
+    .splatfest-battle-card > * {
+        text-shadow: 1px 1px 0 black;
+    }
+
     .copy-tooltipped {
         @apply relative;
         @apply before:absolute;

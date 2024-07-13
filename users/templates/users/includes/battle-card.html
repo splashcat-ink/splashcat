@@ -16,7 +16,7 @@
 
     <div class="text-xl float-right p-1">{{ battle.played_time|date:"SHORT_DATE_FORMAT" }}</div>
     {% with splatfest=battle.splatfest %}
-        <div class="bg-black/50 mt-8 p-2 h-full"
+        <div class="bg-black/50 mt-8 p-2 h-full {% if splatfest and battle.vs_mode == "FEST" %}splatfest-battle-card{% endif %}"
              {% if splatfest and battle.vs_mode == "FEST" %}style="background: linear-gradient(105deg, {{ splatfest.team_1_color.css }}, {{ splatfest.team_1_color.css }} 33.2%, {{ splatfest.team_2_color.css }} 33.3%, {{ splatfest.team_2_color.css }} 66.6%, {{ splatfest.team_3_color.css }} 66.7%)"{% endif %}>
     {% endwith %}
     <div class="flex flex-col gap-1 float-right items-end">
@@ -68,7 +68,8 @@
     </div>
     <div class="text-lg">
         {% with player=battle.player %}
-            <img src="{{ player.weapon.flat_image.url }}?height=80&width=80" class="inline-block h-10 w-10" alt="" width="80" height="80">
+            <img src="{{ player.weapon.flat_image.url }}?height=80&width=80" class="inline-block h-10 w-10" alt=""
+                 width="80" height="80">
             {{ player.weapon.name.string }}
             {% get_color battle.uploader use_random_color %}
             {% include "splatnet_assets/mask_image.html" with object=player.weapon.sub class="inline h-6 w-6" uploader=battle.uploader image_params="height=48&width=48" %}
