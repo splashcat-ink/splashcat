@@ -16,7 +16,7 @@
 
     <div class="text-xl float-right p-1">{{ battle.played_time|date:"SHORT_DATE_FORMAT" }}</div>
     {% with splatfest=battle.splatfest %}
-        <div class="bg-black/50 mt-8 p-2 h-full {% if splatfest and battle.vs_mode == "FEST" %}splatfest-battle-card{% endif %}"
+        <div class="bg-black/50 mt-8 p-2 h-full splashcat-battle-card"
              {% if splatfest and battle.vs_mode == "FEST" %}style="background: linear-gradient(105deg, {{ splatfest.team_1_color.css }}, {{ splatfest.team_1_color.css }} 33.2%, {{ splatfest.team_2_color.css }} 33.3%, {{ splatfest.team_2_color.css }} 66.6%, {{ splatfest.team_3_color.css }} 66.7%)"{% endif %}>
     {% endwith %}
     <div class="flex flex-col gap-1 float-right items-end">
@@ -91,7 +91,7 @@
                         {% if battle.uploader.display_sponsor_badge %}
                             <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png"
                                  alt="Splashcat Sponsor"
-                                 class="h-6 w-6 inline-block [image-rendering:pixelated]" height="16" width="16">
+                                 class="h-6 w-6 inline-block [image-rendering:pixelated] splashcat-sponsor-badge" height="16" width="16">
                         {% endif %}
                     </div>
                     <div class="text-sm text-gray-400 h-0 scale-y-0 group-hover:h-4 group-hover:scale-y-100 transition-[transform,_height]">

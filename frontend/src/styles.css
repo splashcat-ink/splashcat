@@ -28,11 +28,11 @@
 }
 
 @layer components {
-    .splatfest-battle-card * {
+    .splashcat-battle-card * {
         text-shadow: 1px 1px 0 black;
     }
 
-    .splatfest-battle-card img, .splatfest-battle-card svg {
+    .splashcat-battle-card img:not(.splashcat-sponsor-badge), .splashcat-battle-card svg {
         filter: drop-shadow(1px 1px black);
     }
 
