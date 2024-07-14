@@ -33,7 +33,10 @@
             "NONE",
             "DECUPLE",
             "DRAGON",
-            "DOUBLE_DRAGON"
+            "DOUBLE_DRAGON",
+            "CONCH_SHELL_SCRAMBLE",
+            "CONCH_SHELL_SCRAMBLE_10",
+            "CONCH_SHELL_SCRAMBLE_33"
           ]
         },
         "power": {

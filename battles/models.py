@@ -108,6 +108,9 @@ class Battle(models.Model):
         DECUPLE = 'DECUPLE', _('10x')
         DRAGON = 'DRAGON', _('100x')
         DOUBLE_DRAGON = 'DOUBLE_DRAGON', _('333x')
+        CONCH_SHELL_SCRAMBLE = 'CONCH_SHELL_SCRAMBLE', _('Conch Clash')
+        CONCH_SHELL_SCRAMBLE_10 = 'CONCH_SHELL_SCRAMBLE_10', _('10x Conch Clash')
+        CONCH_SHELL_SCRAMBLE_33 = 'CONCH_SHELL_SCRAMBLE_33', _('33x Conch Clash')
 
     class VsRule(models.TextChoices):
         TURF_WAR = 'TURF_WAR', _('Turf War')
