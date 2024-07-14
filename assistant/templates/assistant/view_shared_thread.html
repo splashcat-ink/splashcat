@@ -38,7 +38,7 @@
                              class="h-16 w-16 object-cover rounded-lg aspect-square bg-gray-700"
                              height="128" width="128">
                     {% else %}
-                        {% if user.profile_picture %}
+                        {% if thread.creator.profile_picture %}
                             <img src="{{ thread.creator.profile_picture.url }}?optimizer=image&height=128&width=128"
                                  alt="{{ thread.creator.display_name }}"
                                  class="h-16 w-16 object-cover rounded-lg aspect-square bg-gray-700"
