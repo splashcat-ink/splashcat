@@ -33,7 +33,7 @@ class Thread(models.Model):
 
 
 class SharedThread(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True, unique=True)
     creator = models.ForeignKey('users.User', on_delete=models.CASCADE)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     data = models.JSONField()
