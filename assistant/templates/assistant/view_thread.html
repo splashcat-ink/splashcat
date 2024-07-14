@@ -34,7 +34,7 @@
     </div>
 
     <form class="flex flex-row gap-4 form-css" hx-target="#share-thread-result" hx-swap="innerHTML"
-          hx-post="{% url 'assistant:share_thread' thread.id %}" hx-trigger="submit throttle:5s"
+          hx-post="{% url 'assistant:share_thread' thread.id %}" hx-trigger="submit"
           hx-ext="loading-states" data-loading-states
           hx-confirm="Create a shared link for this thread? Shared links reflect the current state and any new messages will not be included."
           id="share-thread-form">
