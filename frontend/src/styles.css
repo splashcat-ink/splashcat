@@ -223,6 +223,12 @@
     }
 }
 
+@layer utilities {
+    .splatoon-text-shadow {
+        text-shadow: 1px 1px 0 black;
+    }
+}
+
 @font-face {
     font-family: Splatoon1;
     src: url("../fonts/splatnet3/Splatoon1-cjk-common.woff2");

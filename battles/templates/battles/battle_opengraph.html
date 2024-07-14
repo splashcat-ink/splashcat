@@ -12,10 +12,11 @@
             {% for team in battle.teams.all|dictsort:"order" %}
                 <div class="w-full h-min px-2 py-1 {% if battle.teams.count > 2 %}rotate-1 odd:-rotate-1{% else %}rotate-2 odd:-rotate-2{% endif %} rounded-lg bg-[color:var(--team-color)]"
                      style="--team-color: {{ team.color.css }}">
-                    <span class="font-splatoon1 text-3xl">{% if team.judgement == "WIN" %}
+                    <span class="font-splatoon1 text-3xl splatoon-text-shadow">{% if team.judgement == "WIN" %}
                         VICTORY{% elif team.judgement == "DRAW" %}DRAW{% elif team.judgement == "LOSE" %}
                         DEFEAT{% else %}--{% endif %}</span>
-                    {% if team.fest_team_name %}<span class="text-xl">Team {{ team.fest_team_name }}</span>{% endif %}
+                    {% if team.fest_team_name %}
+                        <span class="text-xl splatoon-text-shadow">Team {{ team.fest_team_name }}</span>{% endif %}
                     <div class="flex flex-col gap-1">
                         {% for player in team.players.all|dictsort:"order" %}
                             <div class="flex flex-row grow relative gap-2 bg-black/50 rounded-full p-1">
@@ -35,51 +36,51 @@
                                 <div class="flex flex-row gap-4 px-4 justify-end rounded-full bg-black/50">
                                     <span class="text-xl w-9 whitespace-nowrap pt-1">{{ player.paint }}p</span>
                                     <span class="text-lg w-7 whitespace-nowrap pt-[2px]">
-                            {% if player.species == "OCTOLING" %}
-                                {% include "battles/svg/octoling_splat.html" with color=team.color %}
-                            {% else %}
-                                {% include "battles/svg/inkling_splat.html" with color=team.color %}
-                            {% endif %}
+                                        {% if player.species == "OCTOLING" %}
+                                            {% include "battles/svg/octoling_splat.html" with color=team.color %}
+                                        {% else %}
+                                            {% include "battles/svg/inkling_splat.html" with color=team.color %}
+                                        {% endif %}
                                         x{{ player.kills|default_if_none:"--" }}
                                         {% if player.assists and player.assists != 0 %}
                                             <sub class="text-xs text-gray-300 -ml-1.5">
-                                                    ({{ player.assists }})
-                                                </sub>
+                                                ({{ player.assists }})
+                                            </sub>
                                         {% endif %}
-                        </span>
+                                    </span>
                                     <span class="text-lg w-4 whitespace-nowrap pt-[2px]">
-                            {% if player.species == "OCTOLING" %}
-                                {% include "battles/svg/octoling_splatted.html" with color=next_team.color %}
-                            {% else %}
-                                {% include "battles/svg/inkling_splatted.html" with color=next_team.color %}
-                            {% endif %}
+                                        {% if player.species == "OCTOLING" %}
+                                            {% include "battles/svg/octoling_splatted.html" with color=next_team.color %}
+                                        {% else %}
+                                            {% include "battles/svg/inkling_splatted.html" with color=next_team.color %}
+                                        {% endif %}
                                         x{{ player.deaths|default_if_none:"--" }}
-                        </span>
+                                    </span>
                                     <span class="text-lg w-6 whitespace-nowrap">
-                        {% with maskingId=player.npln_id %}
-                            <svg width="24" class="h-4 w-4 relative top-0" viewBox="0 0 128 128"
-                                 fill="none"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 role="img" aria-label="Special-Weapon Uses"
-                                 preserveAspectRatio="xMidYMid slice">
-                                    <mask id="__{{ maskingId }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
-                                        <image x="0" y="0" width="{{ player.weapon.special.mask_image.width }}"
-                                               height="{{ player.weapon.special.mask_image.height }}"
-                                               href="{{ player.weapon.special.mask_image.url }}">
-                                        </image>
-                                    </mask>
-                                    <rect x="0" y="0" width="{{ player.weapon.special.mask_image.width }}"
-                                          height="{{ player.weapon.special.mask_image.height }}"
-                                          fill="{{ team.color.css }}"
-                                          mask="url(#__{{ maskingId }})"></rect>
-                                    <image x="0" y="0" width="{{ player.weapon.special.overlay_image.width }}"
-                                           height="{{ player.weapon.special.overlay_image.height }}"
-                                           href="{{ player.weapon.special.overlay_image.url }}">
-                                    </image>
-                                </svg>
-                        {% endwith %}
+                                        {% with maskingId=player.npln_id %}
+                                            <svg width="24" class="h-4 w-4 relative top-0" viewBox="0 0 128 128"
+                                                 fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg"
+                                                 role="img" aria-label="Special-Weapon Uses"
+                                                 preserveAspectRatio="xMidYMid slice">
+                                                    <mask id="__{{ maskingId }}" maskUnits="userSpaceOnUse" style="mask-type: alpha;">
+                                                        <image x="0" y="0" width="{{ player.weapon.special.mask_image.width }}"
+                                                               height="{{ player.weapon.special.mask_image.height }}"
+                                                               href="{{ player.weapon.special.mask_image.url }}">
+                                                        </image>
+                                                    </mask>
+                                                    <rect x="0" y="0" width="{{ player.weapon.special.mask_image.width }}"
+                                                          height="{{ player.weapon.special.mask_image.height }}"
+                                                          fill="{{ team.color.css }}"
+                                                          mask="url(#__{{ maskingId }})"></rect>
+                                                    <image x="0" y="0" width="{{ player.weapon.special.overlay_image.width }}"
+                                                           height="{{ player.weapon.special.overlay_image.height }}"
+                                                           href="{{ player.weapon.special.overlay_image.url }}">
+                                                    </image>
+                                                </svg>
+                                        {% endwith %}
                                         x{{ player.specials|default_if_none:"--" }}
-                        </span>
+                                    </span>
                                 </div>
                             </div>
                         {% endfor %}
@@ -115,7 +116,7 @@
                             {% if team.team_value != 0 %}
                                 <div
                                         class="w-[var(--bar-width)] h-full bg-[color:var(--team-color)] text-4xl font-splatoon1 align-middle text-center
-                                first:text-left last:text-right first:pl-4 last:pr-4 overflow-visible whitespace-nowrap {% if team.width < 50 %}z-10{% endif %}"
+                                first:text-left last:text-right first:pl-4 last:pr-4 overflow-visible whitespace-nowrap {% if team.width < 50 %}z-10{% endif %} splatoon-text-shadow"
                                         style="--team-color: {{ team.team_color.css }}; --bar-width: {{ team.width }}%">
                                     {{ team.display_text }}</div>
                             {% else %}
@@ -131,12 +132,12 @@
                                 <div class="absolute h-full bg-[var(--team-color)] bg-[url('/static/opengraph/bubbles.png')] bg-contain [mask-image:url('/static/opengraph/cutout.png')] [mask-repeat:no-repeat] [mask-size:cover] [mask-position:right_center]"
                                      style="width: {{ team_bar_display.0.width }}%; --team-color: {{ team_bar_display.0.team_color.css }};"
                                 ></div>
-                                <div class="font-splatoon1 relative text-3xl px-3 whitespace-nowrap z-20">
+                                <div class="font-splatoon1 relative text-3xl px-3 whitespace-nowrap z-20 splatoon-text-shadow">
                                     {{ team_bar_display.0.display_text }}
                                 </div>
                             </div>
                             <div class="float-right text-right h-full flex items-center">
-                                <div class="font-splatoon1 relative text-3xl px-3 whitespace-nowrap z-20">
+                                <div class="font-splatoon1 relative text-3xl px-3 whitespace-nowrap z-20 splatoon-text-shadow">
                                     {{ team_bar_display.1.display_text }}
                                 </div>
                             </div>

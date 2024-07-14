@@ -220,7 +220,7 @@
                             {% if team.team_value != 0 %}
                                 <div
                                         class="w-[var(--bar-width)] h-full bg-[color:var(--team-color)] text-3xl md:text-4xl font-splatoon1 align-middle text-center
-                                first:text-left last:text-right first:pl-4 last:pr-4 overflow-visible whitespace-nowrap {% if team.width < 50 %}z-10{% endif %}"
+                                first:text-left last:text-right first:pl-4 last:pr-4 overflow-visible whitespace-nowrap {% if team.width < 50 %}z-10{% endif %} splatoon-text-shadow"
                                         style="--team-color: {{ team.team_color.css }}; --bar-width: {{ team.width }}%">
                                     {{ team.display_text }}</div>
                             {% else %}
@@ -236,12 +236,12 @@
                                 <div class="absolute h-full bg-[var(--team-color)] bg-[url('/static/opengraph/bubbles.png')] bg-contain [mask-image:url('/static/opengraph/cutout.png')] [mask-repeat:no-repeat] [mask-size:cover] [mask-position:right_center]"
                                      style="width: {{ team_bar_display.0.width }}%; --team-color: {{ team_bar_display.0.team_color.css }};"
                                 ></div>
-                                <div class="font-splatoon1 relative text-2xl md:text-3xl px-3 whitespace-nowrap z-20">
+                                <div class="font-splatoon1 relative text-2xl md:text-3xl px-3 whitespace-nowrap z-20 splatoon-text-shadow">
                                     {{ team_bar_display.0.display_text }}
                                 </div>
                             </div>
                             <div class="float-right text-right h-full flex items-center">
-                                <div class="font-splatoon1 relative text-2xl md:text-3xl px-3 whitespace-nowrap z-20">
+                                <div class="font-splatoon1 relative text-2xl md:text-3xl px-3 whitespace-nowrap z-20 splatoon-text-shadow">
                                     {{ team_bar_display.1.display_text }}
                                 </div>
                             </div>
