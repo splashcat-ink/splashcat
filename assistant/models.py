@@ -1,3 +1,4 @@
+import uuid
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -29,3 +30,10 @@ class Thread(models.Model):
 
     def get_absolute_url(self):
         return reverse('assistant:view_thread', args=[str(self.id)])
+
+
+class SharedThread(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    creator = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    data = models.JSONField()

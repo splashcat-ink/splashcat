@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load markdownify %}
+{% load static %}
+{% load openai %}
+
+{% block title %}Viewing Shared Thread from {{ thread.creator.display_name }} (@{{ thread.creator.username }}
+    ){% endblock %}
+
+{% block content %}
+    <h1 class="text-2xl font-splatoon1">
+        Viewing Shared Thread from
+        <a href="{% url 'profile' thread.creator.username %}" class="text-blue-500 underline">
+            {{ thread.creator.display_name }} <span
+                class="text-lg font-splatoon2">(@{{ thread.creator.username }})</span>
+        </a>
+    </h1>
+
+    <h2 class="text-xl font-splatoon1">Thread data created from</h2>
+    {% if thread.content_type.app_label == 'battles' and thread.content_type.model == 'battle' %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 pt-1 pb-2">
+            {% include "users/includes/battle-card.html" with battle=thread.content_object display_uploader=True %}
+        </div>
+    {% elif thread.content_type.app_label == 'battles' and thread.content_type.model == 'battlegroup' %}
+        <a href="{% url 'battles:view_battle_group' thread.content_object.id %}" class="text-blue-500 underline">Battle
+            Group #{{ thread.content_object.id }}</a>
+    {% else %}
+        <div class="pt-1 pb-2">
+            {% include "users/includes/user-link.html" with user=thread.creator show_splashtag=True %}
+        </div>
+    {% endif %}
+
+    <div class="flex flex-col gap-2">
+        {% for message in thread_messages %}
+            <div class="w-full rounded bg-gray-800/90 p-4 flex flex-row gap-2 overflow-x-auto">
+                <div class="w-1/12 flex-none">
+                    {% if message.role == 'assistant' %}
+                        <img src="{% static 'images/judd-pride.png' %}?optimizer=image&height=128&width=128"
+                             alt="Splashcat Assistant"
+                             class="h-16 w-16 object-cover rounded-lg aspect-square bg-gray-700"
+                             height="128" width="128">
+                    {% else %}
+                        {% if user.profile_picture %}
+                            <img src="{{ thread.creator.profile_picture.url }}?optimizer=image&height=128&width=128"
+                                 alt="{{ thread.creator.display_name }}"
+                                 class="h-16 w-16 object-cover rounded-lg aspect-square bg-gray-700"
+                                 height="128" width="128">
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% if message.role == 'assistant' %}
+                    <div class="prose prose-invert max-w-none grow">
+                        {% for content in message.content %}
+                            {% if content.type == 'text' %}
+                                {{ content.text.value|markdownify }}
+                            {% elif content.type == 'image_file' %}
+                                <div class="max-w-xl">
+                                    {% get_openai_image content.image_file %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="grow">{{ message.content.0.text.value }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

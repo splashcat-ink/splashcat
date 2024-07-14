@@ -12,7 +12,7 @@ from openai import OpenAI
 
 from assistant import orchestrator
 from assistant.forms import CreateThreadForm
-from assistant.models import Thread
+from assistant.models import Thread, SharedThread
 from battles.models import Battle, BattleGroup
 from users.models import User, SponsorshipTiers
 
@@ -167,4 +167,29 @@ def send_message_to_thread(request, thread_id):
         'thread_messages': openai_thread_messages,
         'message_sending_disabled': True,
         'gpt_processing': True,
+    })
+
+
+@login_required
+@require_sponsor_tier
+@require_POST
+def share_thread(request, thread_id):
+    thread = get_object_or_404(Thread, id=thread_id, creator=request.user)
+    new_shared_thread = SharedThread(creator=request.user, thread=thread)
+    openai_thread_id = thread.openai_thread_id
+    openai_thread_messages = client.beta.threads.messages.list(openai_thread_id, order='asc', limit=100)
+    new_shared_thread.data = openai_thread_messages.to_dict()['data']
+    new_shared_thread.save()
+
+    return render(request, "assistant/htmx/share_result.html", {
+        'shared_thread': new_shared_thread,
+    })
+
+
+def view_shared_thread(request, shared_thread_id):
+    thread = get_object_or_404(SharedThread, uuid=shared_thread_id)
+
+    return render(request, "assistant/view_shared_thread.html", {
+        'thread': thread,
+        'thread_messages': thread.data,
     })

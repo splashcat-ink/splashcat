@@ -1,0 +1,31 @@
+Your shared link has been created! <a class="text-blue-500 underline"
+                                      href="{% url 'assistant:view_shared_thread' shared_thread.uuid %}">https://splashcat.ink{% url 'assistant:view_shared_thread' shared_thread.uuid %}</a>
+
+<button class="share-button inline-block"
+        data-url="https://splashcat.ink{% url 'assistant:view_shared_thread' shared_thread.uuid %}"
+        data-content-type="SharedThread"
+        data-share-type="webShare"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+         stroke="currentColor" class="w-8 h-8 inline">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15"></path>
+    </svg>
+</button>
+
+<button class="share-button inline-block"
+        data-url="https://splashcat.ink{% url 'assistant:view_shared_thread' shared_thread.uuid %}"
+        data-content-type="SharedThread"
+        data-share-type="clipboard"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 inline">
+        <path fill-rule="evenodd"
+              d="M19.902 4.098a3.75 3.75 0 00-5.304 0l-4.5 4.5a3.75 3.75 0 001.035 6.037.75.75 0 01-.646 1.353 5.25 5.25 0 01-1.449-8.45l4.5-4.5a5.25 5.25 0 117.424 7.424l-1.757 1.757a.75.75 0 11-1.06-1.06l1.757-1.757a3.75 3.75 0 000-5.304zm-7.389 4.267a.75.75 0 011-.353 5.25 5.25 0 011.449 8.45l-4.5 4.5a5.25 5.25 0 11-7.424-7.424l1.757-1.757a.75.75 0 111.06 1.06l-1.757 1.757a3.75 3.75 0 105.304 5.304l4.5-4.5a3.75 3.75 0 00-1.035-6.037.75.75 0 01-.354-1z"
+              clip-rule="evenodd"></path>
+    </svg>
+</button>
+
+<script>
+	// get the two share buttons and call initShareButton() on each
+	document.querySelectorAll('.share-button').forEach(window.initShareButton);
+</script>

@@ -15,7 +15,7 @@
             Group #{{ thread.content_object.id }}</a>
     {% else %}
         <div class="pt-1 pb-2">
-            {% include "users/includes/user-link.html" with user=user show_splashtag=True %}
+            {% include "users/includes/user-link.html" with user=thread.creator show_splashtag=True %}
         </div>
     {% endif %}
 
@@ -32,6 +32,15 @@
                 {{ thread.openai_file_id }}
             {% endif %}</p>
     </div>
+
+    <form class="flex flex-row gap-4 form-css" hx-target="#share-thread-result" hx-swap="innerHTML"
+          hx-post="{% url 'assistant:share_thread' thread.id %}" hx-trigger="submit throttle:5s"
+          hx-ext="loading-states" data-loading-states
+          hx-confirm="Create a shared link for this thread? Shared links reflect the current state and any new messages will not be included."
+          id="share-thread-form">
+        <input type="submit" value="Share" class="shrink text-xl min-w-fit" data-loading-disable>
+    </form>
+    <div id="share-thread-result"></div>
 
     <script>
 		const element = document.getElementById("send-message-form");
