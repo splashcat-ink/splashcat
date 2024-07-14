@@ -33,7 +33,10 @@ class Thread(models.Model):
 
 
 class SharedThread(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
     creator = models.ForeignKey('users.User', on_delete=models.CASCADE)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     data = models.JSONField()
+
+    def get_absolute_url(self):
+        return reverse('assistant:view_shared_thread', args=[str(self.uuid)])
