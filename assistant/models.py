@@ -31,6 +31,9 @@ class Thread(models.Model):
     def get_absolute_url(self):
         return reverse('assistant:view_thread', args=[str(self.id)])
 
+    def __str__(self):
+        return f"Thread {self.id} - {self.openai_thread_id} - @{self.creator.username}"
+
 
 class SharedThread(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True, unique=True)
