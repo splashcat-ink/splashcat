@@ -270,7 +270,7 @@ def check_if_battle_exists(request, splatnet_id):
 
 @login_required
 def get_latest_battles(request):
-    battles = request.user.battles.order_by('-id')[:10]
+    battles = request.user.battles.with_prefetch().order_by('-id')[:10]
     return render(request, 'battles/htmx/latest_battles.html', {
         'battles': battles,
     })

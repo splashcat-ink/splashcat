@@ -82,7 +82,7 @@ class BattleManager(models.Manager):
         )
 
         return self.select_related('uploader__github_link', 'vs_stage__name', 'vs_stage__image', 'splatfest') \
-            .prefetch_related('awards__name', 'battlevideo').prefetch_related(player_prefetch)
+            .prefetch_related('awards__name', 'battlevideo', 'teams').prefetch_related(player_prefetch)
 
 
 class Battle(models.Model):
@@ -357,7 +357,9 @@ class Team(models.Model):
     @property
     def next_team(self):
         # get the next team, looping back to the beginning if necessary. used by the template to display colors
-        return self.battle.teams.get(order=(self.order % self.battle.teams.count()) + 1)
+        # return self.battle.teams.get(order=(self.order % self.battle.teams.count()) + 1)
+        teams = list(self.battle.teams.all())
+        return teams[(self.order % len(teams))]
 
     def to_dict(self):
         data = {
