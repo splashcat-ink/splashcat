@@ -7,6 +7,8 @@ urlpatterns = [
     path('api/upload/', upload_battle, name='upload_battle'),
     path('<int:battle_id>/', view_battle, name='view_battle'),
     path('<int:battle_id>/opengraph/', battle_opengraph, name='battle_opengraph'),
+    path('redir/<str:uploader_username>/latest/', redirect_to_user_latest_battle,
+         name='redirect_to_user_latest_battle'),
     path('redir/<str:uploader_username>/<str:splatnet_id>/', redirect_from_splatnet_id,
          name='redirect_from_splatnet_id'),
     path('api/<int:battle_id>/json/', get_battle_json, name='get_battle_json'),

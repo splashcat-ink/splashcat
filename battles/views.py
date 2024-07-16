@@ -28,11 +28,9 @@ def view_battle(request, battle_id):
     battle: Battle = get_object_or_404(Battle.objects.with_prefetch(True), id=battle_id)
 
     team_bar_display = make_team_bar_display(battle)
-    uploader_latest_battle = battle.uploader.battles.latest("played_time")
 
     return render(request, 'battles/view_battle.html', {
         'battle': battle,
-        'latest_battle': uploader_latest_battle,
         'team_bar_display': team_bar_display,
     })
 
@@ -81,6 +79,14 @@ def make_team_bar_display(battle):
 def redirect_from_splatnet_id(request, uploader_username, splatnet_id):
     battle = get_object_or_404(Battle, splatnet_id=splatnet_id, uploader__username=uploader_username)
     return redirect('battles:view_battle', battle_id=battle.id)
+
+
+def redirect_to_user_latest_battle(request, uploader_username):
+    uploader = get_object_or_404(User, username=uploader_username)
+
+    uploader_latest_battle = uploader.battles.only("id").latest("played_time")
+
+    return redirect('battles:view_battle', battle_id=uploader_latest_battle.id)
 
 
 def get_battle_json(request, battle_id):
