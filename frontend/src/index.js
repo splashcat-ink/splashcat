@@ -83,3 +83,17 @@ window.addEventListener(
 		}
 	},
 );
+
+document.querySelectorAll(".battle-pagination-button").forEach(button => button.addEventListener("click", event => {
+	const direction = event.target.dataset.direction ?? "unknown";
+
+	sessionStorage.setItem("direction", direction);
+	console.log("wrote direction", direction)
+}))
+
+window.addEventListener("pageswap", e => {
+	if (e.viewTransition) {
+		console.log("swap", e.viewTransition, sessionStorage.getItem("direction"))
+		e.viewTransition.types.add(sessionStorage.getItem("direction"));
+	}
+})

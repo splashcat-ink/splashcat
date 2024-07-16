@@ -10,7 +10,8 @@
             DEFEAT
         {% else %}--{% endif %}
     </span>
-    {% if team.fest_team_name %}<span class="text-xl splatoon-text-shadow">Team {{ team.fest_team_name }}</span>{% endif %}
+    {% if team.fest_team_name %}
+        <span class="text-xl splatoon-text-shadow">Team {{ team.fest_team_name }}</span>{% endif %}
     <div class="flex flex-col gap-1">
         {% with next_team=team.next_team %}
             {% for player in team.players.all|dictsort:"order" %}

@@ -157,11 +157,11 @@
         </span>
     {% endif %}
 
-    <div class="max-w-[1200px] bg-[url:var(--stage-image)] h-fit bg-cover grid grid-cols-1 auto-rows-auto lg:grid-cols-5 lg:grid-rows-5 relative pt-2 lg:pt-0"
+    <div class="max-w-[1200px] bg-[url:var(--stage-image)] h-fit bg-cover grid grid-cols-1 auto-rows-auto lg:grid-cols-5 lg:grid-rows-5 relative pt-2 lg:pt-0 [view-transition-name:battle-card]"
          style="--stage-image: url({{ battle.vs_stage.image.url }});">
 
         {% if battle.vs_mode == "FEST" and battle.splatfest_clout_multiplier != "NONE" %}
-            {% include "splatnet_assets/squid_tape.html" with bg="bg-purple-600 -rotate-6 left-4 top-4 scale-[1.5] lg:scale-[2] absolute" content=battle.get_splatfest_clout_multiplier_display %}
+            {% include "splatnet_assets/squid_tape.html" with bg="bg-purple-600 -rotate-6 left-4 top-4 scale-[1.5] lg:scale-[2] absolute [view-transition-name:clout-multiplier] clout-multiplier-tape" content=battle.get_splatfest_clout_multiplier_display %}
         {% endif %}
 
         <div class="row-start-3 row-end-6 lg:col-start-4 lg:col-end-6 lg:row-span-full bg-gray-800/70 bg-[url('../images/tapes-transparent.png')] bg-contain px-4 lg:px-8 flex flex-col lg:flex-col {% if battle.teams.count > 2 %}gap-2 py-2 lg:py-4{% else %}gap-8 py-6 lg:py-12 md:flex-row{% endif %}">
@@ -301,7 +301,7 @@
             <span class="text-lg pt-2">Other Splashcat users have uploaded this same battle!</span>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pt-2">
                 {% for related_battle in related_battles %}
-                    {% include 'users/includes/battle-card.html' with battle=related_battle display_uploader=True %}
+                    {% include 'users/includes/battle-card.html' with battle=related_battle display_uploader=True disable_view_transition=True %}
                 {% endfor %}
             </div>
         {% endif %}
@@ -319,19 +319,19 @@
         {% endif %}
     {% endif %}
 
-    <div class="sticky left-0 bottom-0 w-full flex gap-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-2 mt-4 -mb-3 sm:rounded-t-xl bg-gray-700 whitespace-nowrap text-xs sm:text-sm md:text-base z-40">
-        <a href="{% url 'battles:redirect_to_user_latest_battle' battle.uploader.username %}"
-           class="py-2 px-4 rounded-full bg-gray-600">Latest Battle</a>
+    <div class="sticky left-0 bottom-0 w-full flex gap-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-2 mt-4 -mb-3 sm:rounded-t-xl bg-gray-700 whitespace-nowrap text-xs sm:text-sm md:text-base z-40 [view-transition-name:battle-navigation]">
+        <a href="{% url 'battles:redirect_to_user_latest_battle' battle.uploader.username %}" data-direction="forwards"
+           class="battle-pagination-button py-2 px-4 rounded-full bg-gray-600">Latest Battle</a>
         <div class="grow"></div>
         {% with next_battle=battle.get_player_next_battle %}
-            <a href="{{ next_battle.get_absolute_url }}"
-               class="py-2 px-4 rounded-full {% if next_battle %}bg-gray-600{% else %}bg-gray-600/50 text-gray-400{% endif %}">
+            <a href="{{ next_battle.get_absolute_url }}" data-direction="forwards"
+               class="battle-pagination-button py-2 px-4 rounded-full {% if next_battle %}bg-gray-600{% else %}bg-gray-600/50 text-gray-400{% endif %}">
                 Next
             </a>
         {% endwith %}
         {% with previous_battle=battle.get_player_previous_battle %}
-            <a href="{{ previous_battle.get_absolute_url }}"
-               class="py-2 px-4 rounded-full {% if previous_battle %}bg-gray-600{% else %}bg-gray-800 text-gray-400{% endif %}">
+            <a href="{{ previous_battle.get_absolute_url }}" data-direction="backwards"
+               class="battle-pagination-button py-2 px-4 rounded-full {% if previous_battle %}bg-gray-600{% else %}bg-gray-800 text-gray-400{% endif %}">
                 Previous
             </a>
         {% endwith %}
