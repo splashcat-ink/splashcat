@@ -1,4 +1,5 @@
 # Create your views here.
+import json
 
 import django_htmx.http
 from django.conf import settings
@@ -10,7 +11,7 @@ from django.shortcuts import redirect, get_object_or_404, render
 from django.views.decorators.http import require_POST
 from openai import OpenAI
 
-from assistant import orchestrator
+from assistant import orchestrator, functions
 from assistant.forms import CreateThreadForm
 from assistant.models import Thread, SharedThread
 from battles.models import Battle, BattleGroup
@@ -116,6 +117,25 @@ def get_thread_messages(request, thread_id):
     )
     latest_run = latest_run.data[0] if len(latest_run.data) > 0 else None
     latest_status = latest_run.status if latest_run else 'completed'
+
+    if latest_status == 'requires_action' and latest_run.required_action:
+        # need to call functions
+        outputs = []
+
+        required_action = latest_run.required_action
+        tools = required_action.submit_tool_outputs.tool_calls
+        for tool in tools:
+            function_name = tool.function.name
+            python_function = getattr(functions, function_name)
+            if python_function:
+                result = python_function(thread.creator, params=json.loads(tool.function.arguments))
+                outputs.append({
+                    'tool_call_id': tool.id,
+                    'output': str(result),
+                })
+
+        latest_run = client.beta.threads.runs.submit_tool_outputs(thread_id=openai_thread_id, run_id=latest_run.id,
+                                                                  tool_outputs=outputs)
 
     is_currently_done = latest_status in ['completed', 'expired', 'cancelled',
                                           'failed'] and thread.status != thread.Status.PENDING

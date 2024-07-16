@@ -340,7 +340,7 @@ def view_battle_group(request, group_id):
         'win_count': win_count,
         'lose_count': lose_count,
         'win_rate': win_rate,
-        'battles': battle_group.battles.order_by('-played_time'),
+        'battles': battle_group.battles.with_prefetch().order_by('-played_time'),
     })
 
 
