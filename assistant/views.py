@@ -194,7 +194,10 @@ def send_message_to_thread(request, thread_id):
 @require_sponsor_tier
 @require_POST
 def share_thread(request, thread_id):
-    thread = get_object_or_404(Thread, id=thread_id, creator=request.user)
+    if request.user.is_superuser:
+        thread = get_object_or_404(Thread, id=thread_id)
+    else:
+        thread = get_object_or_404(Thread, id=thread_id, creator=request.user)
     new_shared_thread = SharedThread(creator=request.user, thread=thread)
     openai_thread_id = thread.openai_thread_id
     openai_thread_messages = client.beta.threads.messages.list(openai_thread_id, order='asc', limit=100)
