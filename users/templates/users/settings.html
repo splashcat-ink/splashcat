@@ -13,6 +13,12 @@
             {% csrf_token %}
             <input type="submit" value="Request Data Export" class="p-4 bg-pink-600 hover:bg-pink-700 rounded">
         </form>
+        {% if user.stripe_customer_id %}
+            <form action="{% url 'sponsors:redirect_to_portal' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Stripe Customer Portal" class="p-4 bg-pink-600 hover:bg-pink-700 rounded">
+            </form>
+        {% endif %}
     </div>
 
     <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
@@ -49,7 +55,7 @@
                         when shown.
                     </p>
                     {{ form.page_background }}
-                    {% if not user.github_link.is_sponsor %}
+                    {% if not "page-backgrounds" in user.entitlements %}
                         <div class="w-72"></div>
                         <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/65 pt-10 p-6">
                             <a class="text-center text-gray-200 text-lg h-full" href="{% url 'sponsor' %}">
@@ -66,7 +72,7 @@
                         Sub and special weapon icons will use this color on your profile and elsewhere on Splashcat.
                     </p>
                     {{ form.saved_favorite_color }}
-                    {% if not user.github_link.is_sponsor %}
+                    {% if not "favorite-color" in user.entitlements %}
                         <div class="w-72"></div>
                         <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/65 pt-10 p-6">
                             <a class="text-center text-gray-200 text-lg h-full" href="{% url 'sponsor' %}">

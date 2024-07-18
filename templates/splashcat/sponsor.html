@@ -12,7 +12,8 @@
     </h1>
 
     <p class="prose-xl max-w-prose prose-a:text-blue-500 prose-a:underline">
-        Splashcat is developed primarily by <a href="{% url 'profile' 'catgirl' %}">Rosalina</a> (that's me!) with help from
+        Splashcat is developed primarily by <a href="{% url 'profile' 'catgirl' %}">Rosalina</a> (that's me!) with help
+        from
         <a href="https://github.com/splashcat-ink">friends</a>. Please consider supporting my work by becoming a
         sponsor! Splashcat is somewhat expensive for me to host so it helps me so much.
         It would mean a lot to me!! You also get this cool little badge on your profile page when you link your GitHub
@@ -25,13 +26,21 @@
         <-- that's the cool badge!
     </div>
 
-    <iframe src="https://github.com/sponsors/catgirlinspace/card" title="Sponsor catgirlinspace" height="175"
-            width="600" style="border: 0;" class="max-w-full"></iframe>
-
     <h2 class="text-xl font-splatoon1">Sponsor Features</h2>
-    <p class="text-lg py-2">
-        $5/month
-    </p>
+    <div class="flex flex-row gap-2">
+        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6QeCJmzupkZn7tS58WNCG" %}">
+            {% csrf_token %}
+            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+                $5/month
+            </button>
+        </form>
+        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6SlCJmzupkZn745HUIbFJ" %}">
+            {% csrf_token %}
+            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+                $50/year
+            </button>
+        </form>
+    </div>
     <ul class="list-disc list-inside text-lg max-w-prose">
         <li>
             Sponsor Badge
@@ -63,9 +72,20 @@
     </ul>
 
     <h2 class="text-xl font-splatoon1">S+ponsor Features</h2>
-    <p class="text-lg py-2">
-        $10/month
-    </p>
+    <div class="flex flex-row gap-2">
+        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6TJCJmzupkZn7Zc0DIimS" %}">
+            {% csrf_token %}
+            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+                $10/month
+            </button>
+        </form>
+        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6TTCJmzupkZn7TcGChz6l" %}">
+            {% csrf_token %}
+            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+                $100/year
+            </button>
+        </form>
+    </div>
     <ul class="list-disc list-inside text-lg max-w-prose">
         <li>
             AI Battle Descriptions
@@ -81,15 +101,27 @@
     </ul>
 
     <h2 class="text-xl font-splatoon1">Xponsor Features</h2>
-    <p class="text-lg py-2">
-        $15/month
-    </p>
+    <div class="flex flex-row gap-2">
+        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6UMCJmzupkZn7pwnBvGVG" %}">
+            {% csrf_token %}
+            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+                $15/month
+            </button>
+        </form>
+        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6UaCJmzupkZn7DRvUZR1l" %}">
+            {% csrf_token %}
+            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+                $150/year
+            </button>
+        </form>
+    </div>
     <ul class="list-disc list-inside text-lg max-w-prose">
         <li>
             Splashcat Assistant
             <p class="text-md ml-8">
                 Receive insights on your battle data and create new battle groups with Splashcat Assistant.
-                <a href="https://splashcat.ink/assistant/threads/shared/7a6226d0-083c-47af-97de-be2f20aca86c/" class="text-blue-500 underline text-base">Example Thread</a>
+                <a href="https://splashcat.ink/assistant/threads/shared/7a6226d0-083c-47af-97de-be2f20aca86c/"
+                   class="text-blue-500 underline text-base">Example Thread</a>
             </p>
             <p class="text-sm ml-8 text-gray-500">
                 Sponsorship privacy does not affect this feature.

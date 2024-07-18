@@ -34,7 +34,7 @@
 
     <script defer
             data-domain="splashcat.ink"
-            event-user_type="{% if user.is_authenticated and user.github_link.is_sponsor %}sponsor{% elif user.is_authenticated %}user{% else %}guest{% endif %}"
+            event-user_type="{% if user.is_authenticated and "sponsor-badge" in user.entitlements %}sponsor{% elif user.is_authenticated %}user{% else %}guest{% endif %}"
             {% if share_query_param is not None %}event-share="{{ share_query_param }}"{% endif %}
             src="https://plausible.io/js/script.tagged-events.pageview-props.outbound-links.js"></script>
     <script>

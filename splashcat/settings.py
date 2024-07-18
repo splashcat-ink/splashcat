@@ -107,7 +107,8 @@ INSTALLED_APPS = [
     "splatnet_album.apps.SplatnetAlbumConfig",
     "embed_images.apps.EmbedImagesConfig",
     "indexnow.apps.IndexNowConfig",
-    "statink_importer.apps.StatInkImporterConfig"
+    "statink_importer.apps.StatInkImporterConfig",
+    "sponsors.apps.SponsorsConfig"
 ]
 
 MIDDLEWARE = [
@@ -465,6 +466,8 @@ STRAWBERRY_DJANGO = {
 }
 
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = None
+# STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 stripe.api_key = STRIPE_SECRET_KEY
 
 INDEXNOW_API_KEY = os.environ.get('INDEXNOW_API_KEY', 'indexnow-key')

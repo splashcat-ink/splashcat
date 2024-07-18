@@ -1,5 +1,6 @@
 import os
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -25,8 +26,12 @@ def sponsor(request):
     current_sponsors = User.objects.filter(github_link__is_sponsor=True, github_link__is_sponsor_public=True,
                                            github_link__sponsorship_amount_usd__gte=5) \
         .order_by('github_link__sponsorship_amount_usd').reverse()
+    if settings.DEBUG:
+        stripe_sponsors = User.objects.filter(stripe_customer_id__isnull=False)
+    else:
+        stripe_sponsors = User.objects.filter(_stripe_entitlements__contains="sponsor-badge")
     return render(request, 'splashcat/sponsor.html', {
-        'current_sponsors': current_sponsors,
+        'current_sponsors': list(stripe_sponsors) + list(current_sponsors),
     })
 
 

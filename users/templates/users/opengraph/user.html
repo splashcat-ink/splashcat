@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="w-[1200px] h-[630px] relative">
-        {% if profile_user.page_background and profile_user.github_link.is_sponsor %}
+        {% if profile_user.page_background and "page-backgrounds" in profile.entitlements %}
             <img src="{{ profile_user.page_background.url }}"
                  class="w-full h-full absolute top-0 left-0 object-cover brightness-[.35]">
         {% else %}

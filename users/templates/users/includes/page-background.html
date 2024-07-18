@@ -1,4 +1,4 @@
-{% if profile.page_background.url and profile.github_link.is_sponsor %}
+{% if profile.page_background.url and "page-backgrounds" in profile.entitlements %}
     <div id="page-background"></div>
     <style>
         #page-background {
