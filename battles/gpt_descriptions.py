@@ -58,5 +58,7 @@ def player_to_gpt_dict(player):
 
     if player.is_self and player.team.battle.uploader.preferred_pronouns is not None:
         data['pronouns'] = player.team.battle.uploader.preferred_pronouns
+    else:
+        data['pronouns'] = "they/them"
 
     return data
