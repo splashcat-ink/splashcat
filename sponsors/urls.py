@@ -8,4 +8,5 @@ urlpatterns = [
     path('create-checkout-session/<str:price_id>/', create_checkout_session, name='create_checkout_session'),
     path('webhook/', webhook_received, name='webhook_received'),
     path('portal/', redirect_to_portal, name='redirect_to_portal'),
+    path('success/', checkout_success, name='checkout_success'),
 ]

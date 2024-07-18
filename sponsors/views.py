@@ -2,6 +2,7 @@ import json
 
 import stripe
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -103,3 +104,8 @@ def redirect_to_portal(request):
         return_url="https://splashcat.ink/users/settings/",
     )
     return redirect(session.url)
+
+
+def checkout_success(request):
+    messages.success(request, 'Thank you for supporting Splashcat!')
+    return redirect('home')
