@@ -23,7 +23,7 @@ client = OpenAI(api_key=settings.OPENAI_API_KEY)
 def require_sponsor_tier(view_func):
     def _wrapper(request, *args, **kwargs):
         user: User = request.user
-        if not user.sponsor_tiers[SponsorshipTiers.X_PONSOR]:
+        if not "assistant" in user.entitlements:
             return redirect('sponsor')
         return view_func(request, *args, **kwargs)
 

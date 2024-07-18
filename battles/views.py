@@ -241,7 +241,7 @@ def upload_battle(request):
         related_video.save()
         related_video.update_video_thumbnail()
 
-    if user.sponsor_tiers[SponsorshipTiers.S_PLUS_PONSOR]:
+    if "ai-battle-descriptions" in user.entitlements:
         generate_battle_description.delay(battle.id)
 
     return JsonResponse({

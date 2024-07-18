@@ -35,7 +35,7 @@ def get_color(context, uploader: User, use_random_color: bool = False):
     if context.get('color'):
         return ''
     user = context.get('user')
-    if uploader.sponsor_tiers[SponsorshipTiers.SPONSOR]:
+    if "favorite-color" in user.entitlements:
         context['color'] = uploader.favorite_color
     elif user and user.is_authenticated:
         context['color'] = context['user'].favorite_color

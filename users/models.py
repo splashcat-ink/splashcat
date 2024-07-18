@@ -1,5 +1,6 @@
 import datetime
 import hashlib
+from array import array
 from datetime import timedelta
 from enum import Enum
 from io import BytesIO
@@ -52,6 +53,13 @@ sponsorship_tier_costs = {
     SponsorshipTiers.X_PONSOR: 15,
 }
 
+github_sponsors_to_entitlements = {
+    SponsorshipTiers.SPONSOR: ["sponsor-badge", "favorite-color", "page-backgrounds", ],
+    SponsorshipTiers.S_PLUS_PONSOR: ["sponsor-badge", "favorite-color", "page-backgrounds", "ai-battle-descriptions", ],
+    SponsorshipTiers.X_PONSOR: ["sponsor-badge", "favorite-color", "page-backgrounds", "ai-battle-descriptions",
+                                "assistant"],
+}
+
 
 class User(AbstractUser):
     username = models.CharField(
@@ -86,9 +94,23 @@ class User(AbstractUser):
     approved_to_upload_videos = models.BooleanField(_("approved to upload videos"), default=False)
     video_collection_id = models.CharField(_("video collection id"), max_length=100, blank=True, null=True)
     stripe_customer_id = models.CharField(_("stripe customer id"), max_length=100, blank=True, null=True)
+    _stripe_entitlements = models.JSONField(_("stripe entitlements"), default=list)
     coral_friend_url = models.URLField(_("Nintendo Switch Online app friend URL"), blank=True, null=True,
                                        validators=[URLValidator(
                                            regex=r"^https:\/\/lounge\.nintendo\.com\/friendcode\/\d{4}-\d{4}-\d{4}\/[A-Za-z0-9]{10}$")])
+
+    @property
+    def entitlements(self):
+        entitlements = set(self._stripe_entitlements)
+
+        github_sponsorship_tiers = self.sponsor_tiers
+        for tier, active in github_sponsorship_tiers.items():
+            if active:
+                tier_entitlements = github_sponsors_to_entitlements[tier]
+                for entitlement in tier_entitlements:
+                    entitlements.add(entitlement)
+
+        return entitlements
 
     @property
     def coral_friend_code(self):
@@ -101,12 +123,15 @@ class User(AbstractUser):
 
     @property
     def favorite_color(self):
-        if self.sponsor_tiers[SponsorshipTiers.SPONSOR] is True:
+        if "favorite-color" in self.entitlements:
             return self.saved_favorite_color
 
     @property
     def display_sponsor_badge(self):
-        return self.sponsor_tiers[SponsorshipTiers.SPONSOR] and self.github_link.is_sponsor_public
+        if self.github_link and self.github_link.is_sponsor:
+            return self.sponsor_tiers[SponsorshipTiers.SPONSOR] and self.github_link.is_sponsor_public
+        else:
+            return "sponsor-badge" in self.entitlements
 
     @property
     def sponsor_tiers(self) -> dict[SponsorshipTiers, bool]:
@@ -118,7 +143,7 @@ class User(AbstractUser):
 
     @property
     def has_splashcat_assistant(self):
-        return self.sponsor_tiers[SponsorshipTiers.X_PONSOR]
+        return "assistant" in self.entitlements
 
     def get_full_name(self):
         return self.display_name.strip()
@@ -137,7 +162,7 @@ class User(AbstractUser):
     def is_verified_for_export_download(self):
         # used for data exports
         # verified users have been on splashcat for at least 24 hours and have at least 5 battles, or are a sponsor
-        return self.sponsor_tiers[SponsorshipTiers.SPONSOR] or \
+        return ("sponsor-badge" in self.entitlements) or \
             (
                     self.date_joined < datetime.datetime.now(datetime.timezone.utc) - timedelta(days=1) and
                     self.battles.count() >= 5 and

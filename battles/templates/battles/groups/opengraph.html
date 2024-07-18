@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="w-[1200px] h-[630px] relative">
-        {% if battle_group.creator.page_background and battle_group.creator.github_link.is_sponsor %}
+        {% if battle_group.creator.page_background and "page-backgrounds" in battle_group.creator.entitlements %}
             <img src="{{ battle_group.creator.page_background.url }}"
                  class="w-full h-full absolute top-0 left-0 object-cover brightness-[.35]">
         {% else %}
