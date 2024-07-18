@@ -19,6 +19,8 @@ from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from django_choices_field import TextChoicesField
 
+import django.contrib.auth.models as django_auth_models
+
 from battles.models import Battle
 from splatnet_assets.common_model_choices import XBattleDivisions
 from splatnet_assets.fields import ColorField
@@ -243,3 +245,12 @@ class ProfileUrl(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile_urls")
     url = models.URLField()
     is_rel_me_verified = models.BooleanField(default=False)
+
+
+class CustomAnonymousUser(django_auth_models.AnonymousUser):
+    @property
+    def entitlements(self):
+        return set()
+
+
+django_auth_models.AnonymousUser = CustomAnonymousUser
