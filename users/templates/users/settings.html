@@ -16,7 +16,7 @@
         {% if user.stripe_customer_id %}
             <form action="{% url 'sponsors:redirect_to_portal' %}" method="post">
                 {% csrf_token %}
-                <input type="submit" value="Stripe Customer Portal" class="p-4 bg-pink-600 hover:bg-pink-700 rounded">
+                <input type="submit" value="Stripe Customer Portal" class="p-4 bg-pink-600 hover:bg-pink-700 rounded plausible-event-name=Stripe+Customer+Portal">
             </form>
         {% endif %}
     </div>
