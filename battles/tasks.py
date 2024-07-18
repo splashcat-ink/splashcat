@@ -282,7 +282,7 @@ def generate_battle_description(battle_id: int):
     battle_dict = battle_to_gpt_dict(battle)
     json_string = json.dumps(battle_dict, ensure_ascii=False)
 
-    completion = client.chat.completions.create(model="gpt-3.5-turbo-0613",
+    completion = client.chat.completions.create(model="gpt-4o-mini",
                                                 messages=[
                                                     {"role": "system", "content": GPT_PROMPT},
                                                     {"role": "user", "content": json_string},
