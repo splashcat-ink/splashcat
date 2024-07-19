@@ -197,7 +197,7 @@ def user_request_data_export(user: User | int):
     user.data_export_pending = False
     user.save()
 
-    battles = user.battles.with_prefetch().order_by('-played_time')
+    battles = user.battles.with_prefetch(True).order_by('-played_time')
 
     battle_array = []
 
