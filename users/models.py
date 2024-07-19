@@ -96,7 +96,7 @@ class User(AbstractUser):
     approved_to_upload_videos = models.BooleanField(_("approved to upload videos"), default=False)
     video_collection_id = models.CharField(_("video collection id"), max_length=100, blank=True, null=True)
     stripe_customer_id = models.CharField(_("stripe customer id"), max_length=100, blank=True, null=True)
-    _stripe_entitlements = models.JSONField(_("stripe entitlements"), default=list)
+    _stripe_entitlements = models.JSONField(_("stripe entitlements"), default=list, blank=True)
     coral_friend_url = models.URLField(_("Nintendo Switch Online app friend URL"), blank=True, null=True,
                                        validators=[URLValidator(
                                            regex=r"^https:\/\/lounge\.nintendo\.com\/friendcode\/\d{4}-\d{4}-\d{4}\/[A-Za-z0-9]{10}$")])
