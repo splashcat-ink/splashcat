@@ -9,3 +9,4 @@ node_modules/
 !/static/js/.gitkeep
 .env
 staticfiles/
+data.json
