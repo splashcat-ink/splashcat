@@ -14,7 +14,7 @@ def send_indexnow_on_model_save(sender, instance, **kwargs):
         send_indexnow_request(path)
 
 
-@receiver(models.signals.post_delete, dispatch_uid='indexnow_model_save')
+@receiver(models.signals.post_delete, dispatch_uid='indexnow_model_delete')
 def send_indexnow_on_model_delete(sender, instance, **kwargs):
     if sender in [User, Battle, BattleGroup, Group]:
         path = instance.get_absolute_url()
