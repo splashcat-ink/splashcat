@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-Django = "^5.0.3"
+Django = "^5.1"
 django-htmx = "^1.17"
 django-allauth = "^0.63"
 django-debug-toolbar = "4.4.6"
