@@ -223,6 +223,7 @@ class Battle(models.Model):
             'duration': self.duration.total_seconds(),
             'judgement': self.judgement,
             'knockout': self.knockout,
+            'power': self.power,
             'awards': [],
             'teams': [],
         }
