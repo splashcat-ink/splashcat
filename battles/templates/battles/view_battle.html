@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load power %}
 {% load mask_id %}
 {% load i18n %}
 {% load static %}
@@ -123,7 +124,7 @@
 
             {% if battle.power is not None %}
                 <span class="text-base">
-                    (Power: {{ battle.power|floatformat:1 }})
+                    (Power: {{ battle.power|format_power }})
                 </span>
             {% endif %}
         </div>
@@ -180,7 +181,7 @@
             <span>
                 <span>{{ battle.player.paint }}p</span>
                 {% if battle.power %}
-                    Power: {{ battle.power|floatformat:1 }}
+                    Power: {{ battle.power|format_power }}
                 {% endif %}
                 {% if battle.splatfest_clout_contribution %}
                     <span>Clout: {{ battle.splatfest_clout_contribution }}</span>
