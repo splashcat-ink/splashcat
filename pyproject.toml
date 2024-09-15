@@ -47,7 +47,7 @@ strawberry-graphql-django = "^0.47.1"
 asgiref = {git = "https://github.com/django/asgiref.git"}
 django-choices-field = "^2.2.2"
 django-cors-headers = "^4.3.1"
-stripe = "^8.5.0"
+stripe = "^10.11.0"
 strawberry-graphql = "^0.237.3"
 strawberry-persisted-queries = "^1.0.3"
 qrcode = "^7.4.2"
