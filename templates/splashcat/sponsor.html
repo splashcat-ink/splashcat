@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="text-2xl">
+    <h1 class="text-4xl">
         Heya!
     </h1>
 
@@ -33,13 +33,13 @@
     <div class="flex flex-row gap-2">
         <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6QeCJmzupkZn7tS58WNCG" %}">
             {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+            <button type="submit" class="py-3 px-4 rounded bg-pink-600 hover:bg-pink-700">
                 $5/month
             </button>
         </form>
         <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6SlCJmzupkZn745HUIbFJ" %}">
             {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+            <button type="submit" class="py-3 px-4 rounded bg-pink-600 hover:bg-pink-700">
                 $50/year
             </button>
         </form>
@@ -78,13 +78,13 @@
     <div class="flex flex-row gap-2">
         <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6TJCJmzupkZn7Zc0DIimS" %}">
             {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+            <button type="submit" class="py-3 px-4 rounded bg-pink-600 hover:bg-pink-700">
                 $10/month
             </button>
         </form>
         <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6TTCJmzupkZn7TcGChz6l" %}">
             {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+            <button type="submit" class="py-3 px-4 rounded bg-pink-600 hover:bg-pink-700">
                 $100/year
             </button>
         </form>
@@ -107,13 +107,13 @@
     <div class="flex flex-row gap-2">
         <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6UMCJmzupkZn7pwnBvGVG" %}">
             {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+            <button type="submit" class="py-3 px-4 rounded bg-pink-600 hover:bg-pink-700">
                 $15/month
             </button>
         </form>
         <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6UaCJmzupkZn7DRvUZR1l" %}">
             {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
+            <button type="submit" class="py-3 px-4 rounded bg-pink-600 hover:bg-pink-700">
                 $150/year
             </button>
         </form>
