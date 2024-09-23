@@ -1,48 +1,52 @@
 {% load static %}
-<a class="flex flex-col gap-2 items-center w-fit" href="{% url 'profile' user.username %}">
-    {% if user.profile_cover and user.profile_picture %}
-        <div class="relative w-full pb-12">
-            <img src="{{ user.profile_cover.url }}?width=700"
-                 alt="{{ user.display_name }}'s profile cover"
-                 class="max-w-[350px] max-h-56 w-full object-cover rounded">
-            <img src="{{ user.profile_picture.url }}?width=256"
-                 alt="{{ user.display_name }}'s profile picture"
-                 class="aspect-square w-1/5 object-cover rounded-xl shadow-2xl bottom-0 left-3 absolute">
-            <div class="flex flex-col absolute bottom-0 left-1/4">
-                <div class="text-xl">
-                    {{ user.display_name }}
-                    {% if user.display_sponsor_badge %}
-                        <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
-                             class="h-6 inline-block [image-rendering:pixelated]">
-                    {% endif %}
+{% if user.username %}
+    <a class="flex flex-col gap-2 items-center w-fit" href="{% url 'profile' user.username %}">
+        {% if user.profile_cover and user.profile_picture %}
+            <div class="relative w-full pb-12">
+                <img src="{{ user.profile_cover.url }}?width=700"
+                    alt="{{ user.display_name }}'s profile cover"
+                    class="max-w-[350px] max-h-56 w-full object-cover rounded">
+                <img src="{{ user.profile_picture.url }}?width=256"
+                    alt="{{ user.display_name }}'s profile picture"
+                    class="aspect-square w-1/5 object-cover rounded-xl shadow-2xl bottom-0 left-3 absolute">
+                <div class="flex flex-col absolute bottom-0 left-1/4">
+                    <div class="text-xl">
+                        {{ user.display_name }}
+                        {% if user.display_sponsor_badge %}
+                            <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                                class="h-6 inline-block [image-rendering:pixelated]">
+                        {% endif %}
+                    </div>
+                    <div class="text-sm text-gray-400">@{{ user.username }}</div>
                 </div>
-                <div class="text-sm text-gray-400">@{{ user.username }}</div>
             </div>
-        </div>
-    {% else %}
-        <div class="flex flex-row gap-2 items-center w-fit">
-            {% if user.profile_picture %}
-                <img src="{{ user.profile_picture.url }}?optimizer=image&height=72&width=72"
-                     alt="{{ user.display_name }}"
-                     class="h-12 w-12 object-cover rounded-lg">
-            {% endif %}
-            <div class="flex flex-col">
-                <div class="text-xl">
-                    {{ user.display_name }}
-                    {% if user.display_sponsor_badge %}
-                        <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
-                             class="h-6 inline-block [image-rendering:pixelated]">
-                    {% endif %}
+        {% else %}
+            <div class="flex flex-row gap-2 items-center w-fit">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}?optimizer=image&height=72&width=72"
+                        alt="{{ user.display_name }}"
+                        class="h-12 w-12 object-cover rounded-lg">
+                {% endif %}
+                <div class="flex flex-col">
+                    <div class="text-xl">
+                        {{ user.display_name }}
+                        {% if user.display_sponsor_badge %}
+                            <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
+                                class="h-6 inline-block [image-rendering:pixelated]">
+                        {% endif %}
+                    </div>
+                    <div class="text-sm text-gray-400">@{{ user.username }}</div>
                 </div>
-                <div class="text-sm text-gray-400">@{{ user.username }}</div>
             </div>
-        </div>
-    {% endif %}
-    {% if show_splashtag == True %}
-        {% with user.get_splashtag as splashtag %}
-            {% if splashtag %}
-                {% include "includes/splashtag.html" with splashtag=splashtag %}
-            {% endif %}
-        {% endwith %}
-    {% endif %}
-</a>
+        {% endif %}
+        {% if show_splashtag == True %}
+            {% with user.get_splashtag as splashtag %}
+                {% if splashtag %}
+                    {% include "includes/splashtag.html" with splashtag=splashtag %}
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+    </a>
+{% else %}
+    <p>No username available</p>
+{% endif %}

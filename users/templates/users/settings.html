@@ -9,10 +9,6 @@
         <h1 class="text-3xl font-splatoon1 mb-2">
             Settings
         </h1>
-        <form action="{% url 'users:request_data_export' %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Request Data Export" class="p-4 bg-pink-600 hover:bg-pink-700 rounded">
-        </form>
         {% if user.stripe_customer_id %}
             <form action="{% url 'sponsors:redirect_to_portal' %}" method="post">
                 {% csrf_token %}
@@ -31,51 +27,51 @@
 
                 <div>
                     {{ form.display_name.errors }}
-                    <label class="text-xl" for="{{ form.display_name.id_for_label }}">Display Name</label>
+                    <label class="text-xl pt-2" for="{{ form.display_name.id_for_label }}">Display Name</label>
                     {{ form.display_name }}
                 </div>
 
                 <div>
                     {{ form.profile_picture.errors }}
-                    <label class="text-xl" for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
+                    <label class="text-xl pt-2" for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
                     {{ form.profile_picture }}
                 </div>
 
                 <div>
                     {{ form.profile_cover.errors }}
-                    <label class="text-xl" for="{{ form.profile_cover.id_for_label }}">Profile Cover</label>
+                    <label class="text-xl pt-2" for="{{ form.profile_cover.id_for_label }}">Profile Cover</label>
                     {{ form.profile_cover }}
                 </div>
 
                 <div>
-                    {{ form.page_background.errors }}
-                    <label class="text-xl" for="{{ form.page_background.id_for_label }}">Page Background</label>
-                    <p class="text-lg max-w-sm">
-                        Shown in the background of your profile and on battles. Note that backgrounds will be darkened
-                        when shown.
-                    </p>
-                    {{ form.page_background }}
-                    {% if not "page-backgrounds" in user.entitlements %}
-                        <div class="w-72"></div>
-                        <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/65 pt-10 p-6">
-                            <a class="text-center text-gray-200 text-lg h-full" href="{% url 'sponsor' %}">
+                    {% if "page-backgrounds" in user.entitlements %}
+                        {{ form.page_background.errors }}
+                        <label class="text-xl" for="{{ form.page_background.id_for_label }}">Page Background</label>
+                        <p class="text-lg max-w-sm">
+                            Shown in the background of your profile and on battles. Note that backgrounds will be darkened
+                            when shown.
+                        </p>
+                        {{ form.page_background }}
+                    {% else %}
+                        <div class="w-full h-full flex flex-col items-center bg-black/65 pt-10 p-6">
+                            <a class="text-center text-gray-200 text-lg" href="{% url 'sponsor' %}">
                                 Become a sponsor to customize your page background.
                             </a>
                         </div>
                     {% endif %}
-                </div>
+                </div>                
 
                 <div>
-                    {{ form.saved_favorite_color.errors }}
-                    <label class="text-xl" for="{{ form.saved_favorite_color.id_for_label }}">Favorite Color</label>
-                    <p class="text-lg max-w-sm">
-                        Sub and special weapon icons will use this color on your profile and elsewhere on Splashcat.
-                    </p>
-                    {{ form.saved_favorite_color }}
-                    {% if not "favorite-color" in user.entitlements %}
-                        <div class="w-72"></div>
-                        <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/65 pt-10 p-6">
-                            <a class="text-center text-gray-200 text-lg h-full" href="{% url 'sponsor' %}">
+                    {% if "favorite-color" in user.entitlements %}
+                        {{ form.saved_favorite_color.errors }}
+                        <label class="text-xl" for="{{ form.saved_favorite_color.id_for_label }}">Favorite Color</label>
+                        <p class="text-lg max-w-sm">
+                            Sub and special weapon icons will use this color on your profile and elsewhere on Splashcat.
+                        </p>
+                        {{ form.saved_favorite_color }}
+                    {% else %}
+                        <div class="w-full h-full flex flex-col items-center bg-black/65 pt-10 p-6">
+                            <a class="text-center text-gray-200 text-lg" href="{% url 'sponsor' %}">
                                 Become a sponsor to change your favorite color.
                             </a>
                         </div>
@@ -117,7 +113,7 @@
                 <div>
                     {{ form.preferred_pronouns.errors }}
                     <label class="text-xl" for="{{ form.preferred_pronouns.id_for_label }}">Preferred Pronouns</label>
-                    <p>Used for AI Battle Descriptions and shown on your profile.</p>
+                    <p>Used for AI Generated Battle Descriptions and shown on your profile.</p>
                     {{ form.preferred_pronouns }}
                 </div>
 
@@ -174,7 +170,7 @@
                 </div>
 
                 <div>
-                    <h1 class="text-xl font-splatoon1">API Keys</h1>
+                    <h1 class="text-xl font-splatoon1 pt-2">API Keys</h1>
                     <p>
                         Create API keys to upload data to Splashcat.
                     </p>
@@ -183,32 +179,46 @@
                         <input type="text" name="note" placeholder="Note">
                         <input type="submit" value="Create API Key">
                     </form>
-
-                    <table class="w-max table-auto border-collapse">
-                        <thead>
-                        <tr>
-                            <th class="border border-slate-200 p-1">Key</th>
-                            <th class="border border-slate-200 p-1">Note</th>
-                            <th class="border border-slate-200 p-1">Created</th>
-                            <th class="border border-slate-200 p-1">Delete</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for api_key in user.api_keys.all %}
+                    
+                    {% if user.api_keys.all %}
+                        <table class="w-max table-auto border-collapse">
+                            <thead>
                             <tr>
-                                <td class="border border-slate-200 p-1 font-mono">{{ api_key.key }}</td>
-                                <td class="border border-slate-200 p-1">{{ api_key.note }}</td>
-                                <td class="border border-slate-200 p-1">{{ api_key.created }}</td>
-                                <td class="border border-slate-200 p-1">
-                                    <form action="{% url 'users:delete_api_key' api_key.key %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="submit" value="❌">
-                                    </form>
-                                </td>
+                                <th class="border border-slate-200 p-1">Key</th>
+                                <th class="border border-slate-200 p-1">Note</th>
+                                <th class="border border-slate-200 p-1">Created</th>
+                                <th class="border border-slate-200 p-1">Delete</th>
                             </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {% for api_key in user.api_keys.all %}
+                                <tr>
+                                    <td class="border border-slate-200 p-1 font-mono">{{ api_key.key }}</td>
+                                    <td class="border border-slate-200 p-1">{{ api_key.note }}</td>
+                                    <td class="border border-slate-200 p-1">{{ api_key.created }}</td>
+                                    <td class="border border-slate-200 p-1">
+                                        <form action="{% url 'users:delete_api_key' api_key.key %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="submit" value="❌">
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <h1 class="text-xl font-splatoon1 pt-2">Request Data Export</h1>
+                    <p>
+                        Request a copy of your data from Splashcat.
+                    </p>
+
+                    <form action="{% url 'users:request_data_export' %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Request Data Export" class="py-3 px-4 pt-2 bg-pink-600 hover:bg-pink-700 rounded">
+                    </form>
                 </div>
             </div>
         </div>
