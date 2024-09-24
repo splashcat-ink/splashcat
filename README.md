@@ -1,6 +1,7 @@
 <h1 align='center'>
 <img src="https://raw.githubusercontent.com/splashcat-ink/splashcat/refs/heads/main/static/images/judd-pride.png" width="150">
-Splashcat
+<br>
+<b>Splashcat</b>
 </h1>
 
 [Splashcat](http://splashcat.ink "Splashcat") is an award-winning service to track Splatoon 3 battles. Built upon Django, HTMX, _hyperscript, and Tailwind.CSS.
@@ -20,7 +21,7 @@ Required Dependencies: [Python](https://www.python.org/downloads/ "Python"), [Po
     git clone https://github.com/your-username/your-repo-name.git
     ```
 3.  cd into the directory:
-```bash
+    ```bash
     cd *file path*
     ```
 4. Install dependencies:
