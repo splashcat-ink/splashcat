@@ -1,5 +1,5 @@
 <h1 align='center'>
-<img src="http://127.0.0.1:8000/static/images/judd-pride.png?height=128" width="150">
+<img src="https://raw.githubusercontent.com/splashcat-ink/splashcat/refs/heads/main/static/images/judd-pride.png" width="150">
 Splashcat
 </h1>
 
