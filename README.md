@@ -6,7 +6,7 @@
 
 [Splashcat](http://splashcat.ink "Splashcat") is an award-winning service to track Splatoon 3 battles. Built upon Django, HTMX, _hyperscript, and Tailwind.CSS.
 
-##How to contribute
+## How to contribute
 Thank you for taking the time to contribute to Splashcat! We appreciate your help. There are multiple ways you can help:
 - [Getting Started](#getting-started)
 - [Contributing to the codebase](#contributing)
@@ -15,10 +15,10 @@ Thank you for taking the time to contribute to Splashcat! We appreciate your hel
 
 ## Getting Started
 Required Dependencies: [Python](https://www.python.org/downloads/ "Python"), [Poetry](http://python-poetry.org/docs "Poetry") & [NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm "NPM")
-1. Fork the repository.
+1. Fork the repository
 2. Clone the repo:
     ```bash
-    git clone https://github.com/your-username/your-repo-name.git
+    git clone https://github.com/your-username/splashcat.git
     ```
 3.  cd into the directory:
     ```bash
@@ -32,16 +32,17 @@ Required Dependencies: [Python](https://www.python.org/downloads/ "Python"), [Po
 	npm run build
     ```
 5. Run the website:
-	macOS/Linux:
-```bash
-poetry shell
-./manage.py runserver
-```
-Windows:
-```bash
-poetry shell
-python manage.py runserver
-```
+   <br>
+   macOS/Linux:
+	```bash
+	poetry shell
+	./manage.py runserver
+	```
+   Windows:
+	```bash
+	poetry shell
+	python manage.py runserver
+	```
 
 ## Contributing to the codebase
 1. **Create a branch** for your feature or fix:
@@ -65,7 +66,7 @@ If it's a security vulnerability please contact splashcat@rosalina.saige.ink or 
 ## Donating
 Sponsoring me will support Splashcat and its server costs. Getting $5+ monthly tier also gives you some little additional features in Splashcat! For more details, see [here](https://splashcat.ink/sponsor/ "here") and to donate click [here](https://github.com/sponsors/catgirlinspace "here")!
 
-##Contact
+## Contact
 Want to get in touch with us you can join the Discord server [here!](https://discord.gg/JPFwvbSWMS "here!") 
 
 ## License
