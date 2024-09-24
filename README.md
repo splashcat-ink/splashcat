@@ -9,7 +9,7 @@
 ## How to contribute
 Thank you for taking the time to contribute to Splashcat! We appreciate your help. There are multiple ways you can help:
 - [Getting Started](#getting-started)
-- [Contributing to the codebase](#contributing)
+- [Contributing to the codebase](#contributing-to-the-codebase)
 - [Reporting bugs](#reporting-bugs)
 - [Donating](https://github.com/sponsors/catgirlinspace)
 
