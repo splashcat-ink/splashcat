@@ -68,50 +68,52 @@
     {% endblock %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-{% csrf_token %}
-<header>
-    {% include 'includes/navbar.html' %}
-</header>
+    {% csrf_token %}
+    <header>
+        {% include 'includes/navbar.html' %}
+    </header>
 
-<div class="container">
-    {% if messages %}
-        <div class="flex flex-col gap-2 py-2">
-            {% for message in messages %}
-                <div class="p-2 bg-purple-800 rounded
-                        {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <main role="main" class="py-3">
-        {% block content %}{% endblock %}
-    </main>
-</div>
-
-<footer class="border-top footer text-muted bg-gray-800/70 py-4">
     <div class="container">
-        <img src="{% static 'images/judd-pride.png' %}?height=192" alt="Judd with a LGBTQ and transgender pride flag"
-             class="float-right h-32 w-auto" height="2048" width="2048" loading="lazy">
-        <div class="text-lg">Splashcat</div>
-        <div class="text-sm">This website is not affiliated with Nintendo. All product names, logos, and brands are
-            property of their respective owners.
-        </div>
-        <a href="{% url 'uploaders_information' %}" class="text-blue-500 underline p-2 pl-0">Information on Available
-            Uploaders</a>
-        <a href="{% url 'legal' %}" class="text-blue-500 underline p-2">Legal Stuff</a>
-        <a href="{% url 'about' %}" class="text-blue-500 underline p-2">About Splashcat</a>
-        <div class="py-4 flex flex-row flex-wrap gap-4">
-            <a href="https://github.com/splashcat-ink/splashcat"
-               class="my-auto">
-                <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/splashcat-ink/splashcat"
-                     loading="lazy" decoding="async">
-            </a>
-            <a href="https://github.com/splashcat-ink/splashcat"
-               class="bg-purple-600 hover:bg-purple-700 rounded px-4 py-2 my-auto">GitHub</a>
-            <a href="https://discord.gg/JPFwvbSWMS"
-               class="bg-purple-600 hover:bg-purple-700 rounded px-4 py-2 my-auto">Discord</a>
-        </div>
+        {% if messages %}
+            <div class="flex flex-col gap-2 py-2">
+                {% for message in messages %}
+                    <div class="p-2 bg-purple-800 rounded
+                            {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <main role="main" class="py-3">
+            {% block content %}{% endblock %}
+        </main>
     </div>
-</footer>
+
+    <footer class="border-top footer text-muted bg-gray-800/70 py-4 fixed bottom-0 w-full">
+        <div class="container">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/judd-pride.png' %}?height=192" alt="Judd with a LGBTQ and transgender pride flag"
+                    class="float-right h-32 w-auto" height="2048" width="2048" loading="lazy">
+            </a>
+            <div class="text-lg">Splashcat</div>
+            <div class="text-sm">This website is not affiliated with Nintendo. All product names, logos, and brands are
+                property of their respective owners.
+            </div>
+            <a href="{% url 'uploaders_information' %}" class="text-blue-500 underline p-2 pl-0">Information on Available
+                Uploaders</a>
+            <a href="{% url 'legal' %}" class="text-blue-500 underline p-2">Legal Stuff</a>
+            <a href="{% url 'about' %}" class="text-blue-500 underline p-2">About Splashcat</a>
+            <div class="py-4 flex flex-row flex-wrap gap-4">
+                <a href="https://github.com/splashcat-ink/splashcat"
+                class="my-auto">
+                    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/splashcat-ink/splashcat"
+                        loading="lazy" decoding="async">
+                </a>
+                <a href="https://github.com/splashcat-ink/splashcat"
+                class="bg-purple-600 hover:bg-purple-700 rounded px-4 py-2 my-auto">GitHub</a>
+                <a href="https://discord.gg/JPFwvbSWMS"
+                class="bg-purple-600 hover:bg-purple-700 rounded px-4 py-2 my-auto">Discord</a>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
