@@ -151,7 +151,7 @@
                     {% endif %}
 
                     <form action="{% url 'users:link_github_account' %}" method="post"
-                          class="form-css flex flex-row gap-4">
+                          class="form-css flex flex-row gap-4 pt-1">
                         {% csrf_token %}
                         <input
                                 type="submit"
@@ -215,9 +215,9 @@
                         Request a copy of your data from Splashcat.
                     </p>
 
-                    <form action="{% url 'users:request_data_export' %}" method="post">
+                    <form action="{% url 'users:request_data_export' %}" method="post" class="form-css pt-1">
                         {% csrf_token %}
-                        <input type="submit" value="Request Data Export" class="py-2 px-4 pt-2 bg-pink-600 hover:bg-pink-700 rounded">
+                        <input type="submit" value="Request Data Export">
                     </form>
                 </div>
             </div>
