@@ -22,7 +22,7 @@ from splashcat.decorators import github_webhook
 from splatnet_assets.models import Weapon
 from . import tasks
 from .forms import RegisterForm, AccountSettingsForm, ResendVerificationEmailForm
-from .models import User, GitHubLink, ApiKey, ProfileUrl, Follower
+from .models import User, GitHubLink, ApiKey, ProfileUrl, Follow
 
 
 # Create your views here.
@@ -476,7 +476,7 @@ def request_data_export(request):
 
 def profile_following(request, username: str):
     user = get_object_or_404(User, username__iexact=username)
-    following_list = Follower.objects.filter(follower=user).select_related('followed').order_by('-followed_on')
+    following_list = Follow.objects.filter(follower=user).select_related('followed').order_by('-followed_on')
 
     return render(request, 'users/profile_following.html', {
         'profile_user': user,

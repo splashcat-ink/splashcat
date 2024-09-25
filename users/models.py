@@ -257,7 +257,7 @@ class CustomAnonymousUser(django_auth_models.AnonymousUser):
 django_auth_models.AnonymousUser = CustomAnonymousUser
 
 
-class Follower(models.Model):
+class Follow(models.Model):
     follower = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='following',
