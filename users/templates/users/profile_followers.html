@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ profile_user.display_name }} @{{ profile_user.username }} Following
+    {{ profile_user.display_name }} @{{ profile_user.username }} {{ user.followers.count|pluralize:"follower,followers" }}
 {% endblock %}
 
 {% block content %}
@@ -43,9 +43,9 @@
         </div>
 
         <div class="flex grow flex-col gap-2">
-            {% if following_list %}
+            {% if followers_list %}
                 <ul>
-                    {% for follow in following_list %}
+                    {% for follow in followers_list %}
                         <li>
                             {% if follow.followed %}
                                 <a href="{% url 'profile' follow.followed.username %}">
@@ -63,7 +63,7 @@
                     {% endfor %}
                 </ul>
             {% else %}
-                <p>No users are being followed.</p>
+                <p>No one follows {{ profile_user.display_name }}</p>
             {% endif %}
         </div>
     </div>

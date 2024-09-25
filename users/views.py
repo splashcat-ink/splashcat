@@ -57,6 +57,10 @@ def profile(request, username: str):
 
     total_uploader_disconnects = Player.objects.filter(team__battle__uploader=user, is_self=True,
                                                        disconnect=True).count()
+    
+    following_list = Follow.objects.filter(follower=user).select_related('followed').order_by('-followed_on')
+    followers_list = Follow.objects.filter(followed=user).select_related('follower').order_by('-followed_on')
+    followed_user = user
 
     return render(request, 'users/profile.html',
                   {
@@ -72,6 +76,9 @@ def profile(request, username: str):
                       'aggregates': aggregates,
                       'most_used_weapon': most_used_weapon,
                       'total_uploader_disconnects': total_uploader_disconnects,
+                      'following_list': following_list,
+                      'followers_list': followers_list,
+                      'followed_user': followed_user,
                   })
 
 
@@ -483,3 +490,43 @@ def profile_following(request, username: str):
         'splashtag': user.get_splashtag,
         'following_list': following_list,
     })
+
+def profile_followers(request, username: str):
+    user = get_object_or_404(User, username__iexact=username)
+    followers_list = Follow.objects.filter(followed=user).select_related('follower').order_by('-followed_on')
+
+    return render(request, 'users/profile_followers.html', {
+        'profile_user': user,
+        'splashtag': user.get_splashtag,
+        'followers_list': followers_list,
+    })
+
+@login_required
+def follow_user(request, username):
+    followed_user = get_object_or_404(User, username__iexact=username)
+
+    if request.user == followed_user:
+        messages.error(request, "You cannot follow yourself.")
+        return redirect('profile', username=username)
+    
+    if Follow.objects.filter(follower=request.user, followed=followed_user).exists():
+        messages.error(request, f"You are already following {followed_user.username}.")
+        return redirect('profile', username=username)
+    
+
+    Follow.objects.create(follower=request.user, followed=followed_user)
+    messages.success(request, f"You are now following {followed_user.username}.")
+    return redirect('profile', username=username)
+
+@login_required
+def unfollow_user(request, username):
+    followed_user = get_object_or_404(User, username=username)
+
+    follow_instance = Follow.objects.filter(follower=request.user, followed=followed_user).first()
+    if follow_instance:
+        follow_instance.delete()
+        messages.success(request, f"You have unfollowed {followed_user.username}.")
+    else:
+        messages.error(request, "You are not following this user.")
+
+    return redirect('profile', username=username)

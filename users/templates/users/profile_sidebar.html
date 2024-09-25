@@ -99,11 +99,39 @@
         {% endif %}
     {% endwith %}
 </div>
+
+<p>
+    {% if user.following.count > 0 %}
+        <a href="{% url 'profile_following' user.username %}">{{ user.following.count }} following</a>
+    {% else %}
+        {{ user.following.count }} following
+    {% endif %}
+    |
+    {% if user.followers.count > 0 %}
+        <a href="{% url 'profile_followers' user.username %}">{{ user.followers.count }} {{ user.followers.count|pluralize:"follower,followers" }}</a>
+    {% else %}
+        {{ user.followers.count }} {{ user.followers.count|pluralize:"follower,followers" }}
+    {% endif %}
+</p>
+
+{% if user != profile %}
+    <form action="{% url 'follow_user' followed_user.username %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Follow</button>
+    </form>
+
+    <form action="{% url 'unfollow_user' followed_user.username %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Unfollow</button>
+    </form>
+{% endif %}
+
 {% if splashtag %}
     <div class="-rotate-[0.5deg] shadow-lg w-fit">
         {% include "includes/splashtag.html" with splashtag=splashtag only %}
     </div>
 {% endif %}
+
 {% if user.is_staff %}
     <a href="{% url 'admin:users_user_change' profile.id %}"
        class="bg-red-700 p-2 rounded w-fit">Admin</a>
