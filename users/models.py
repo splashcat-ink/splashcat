@@ -18,6 +18,7 @@ from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from django_choices_field import TextChoicesField
+from django.conf import settings
 
 import django.contrib.auth.models as django_auth_models
 
@@ -254,3 +255,28 @@ class CustomAnonymousUser(django_auth_models.AnonymousUser):
 
 
 django_auth_models.AnonymousUser = CustomAnonymousUser
+
+
+class Follower(models.Model):
+    follower = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='following',
+        on_delete=models.CASCADE,
+        verbose_name=_('follower'),
+    )
+
+    followed = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='followers',
+        on_delete=models.CASCADE,
+        verbose_name=_('followed'),
+    )
+    followed_on = models.DateTimeField(auto_now_add=True, verbose_name=_('followed on'))
+
+    class Meta:
+        unique_together = ('follower', 'followed')
+        verbose_name = _('Follower')
+        verbose_name_plural = _('Followers')
+
+    def __str__(self):
+        return f'{self.follower} follows {self.followed}'

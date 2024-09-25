@@ -3,7 +3,7 @@ from django.contrib.admin import TabularInline
 from django.contrib.auth.admin import UserAdmin as AbstractUserAdmin
 
 from groups.admin import MembershipInline
-from .models import User, ApiKey, GitHubLink, ProfileUrl
+from .models import User, ApiKey, GitHubLink, ProfileUrl, Follower
 
 
 class ApiKeyInline(TabularInline):
@@ -26,13 +26,35 @@ class UrlInline(TabularInline):
     fields = ('url', 'is_rel_me_verified')
 
 
+class FollowingInline(TabularInline):
+    model = Follower
+    fk_name = 'follower'
+    fields = ('followed', 'followed_on')
+    readonly_fields = ('followed', 'followed_on')
+    extra = 0
+    can_delete = True
+    verbose_name = "Following"
+    verbose_name_plural = "Following"
+
+
+class FollowersInline(TabularInline):
+    model = Follower
+    fk_name = 'followed'
+    fields = ('follower', 'followed_on')
+    readonly_fields = ('follower', 'followed_on')
+    extra = 0
+    can_delete = True
+    verbose_name = "Follower"
+    verbose_name_plural = "Followers"
+
+
 class UserAdmin(AbstractUserAdmin):
     fieldsets = AbstractUserAdmin.fieldsets + (
         (None, {"fields": ["profile_picture", "saved_favorite_color", "data_export_pending", "last_data_export",
                            "verified_email", "preferred_pronouns", "approved_to_upload_videos",
                            "video_collection_id", "coral_friend_url", "stripe_customer_id",
                            "_stripe_entitlements", ]}),)
-    inlines = [GitHubLinkInline, MembershipInline, UrlInline]
+    inlines = [GitHubLinkInline, MembershipInline, UrlInline, FollowingInline, FollowersInline]
     list_display = ("username", "display_name", "email", "is_staff", "date_joined", "verified_email",)
     search_fields = ("username", "display_name", "email")
 
@@ -41,6 +63,13 @@ class UserAdmin(AbstractUserAdmin):
         self.fieldsets[1][1]["fields"] = ("display_name", "email")
 
 
+class FollowerAdmin(admin.ModelAdmin):
+    list_display = ('follower', 'followed', 'followed_on')
+    search_fields = ('follower__username', 'followed__username')
+    list_filter = ('followed_on',)
+
+
 admin.site.register(User, UserAdmin)
+admin.site.register(Follower, FollowerAdmin)
 admin.site.register(ApiKey)
 admin.site.register(GitHubLink)
