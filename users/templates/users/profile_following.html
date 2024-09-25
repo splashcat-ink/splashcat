@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ profile_user.display_name }} is Following</h1>
+
+    {% if following_list %}
+        <ul>
+            {% for follow in following_list %}
+                <li>
+                    <a href="{% url 'profile' follow.following.username %}">
+                        {{ follow.following.display_name }} ({{ follow.following.username }})
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>{{ profile_user.display_name }} is not following anyone yet.</p>
+    {% endif %}
+
+    <a href="{% url 'profile' user.username %}">Back to Profile</a>
+{% endblock %}

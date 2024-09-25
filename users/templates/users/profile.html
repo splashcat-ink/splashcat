@@ -19,9 +19,16 @@
 {% block content %}
     {% include "users/includes/page-background.html" with profile=profile_user %}
 
+    {% comment %}
+    TEST VIEW FOLLOWER CODE
+    {% endcomment %}
+    <a href="{% url 'profile_following' user.username %}">Following</a>
+
+
     <div class="flex flex-col md:flex-row gap-4 overflow-x-clip">
         <div class="basis-2/5 xl:basis-1/4 flex flex-col gap-2">
             {% include 'users/profile_sidebar.html' with profile=profile_user %}
+
         
             <button class="share-button inline w-fit"
                     data-url="https://splashcat.ink/@{{ profile_user.username }}/?share&cache={{ profile_user.battles.count }}"
