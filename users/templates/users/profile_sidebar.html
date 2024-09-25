@@ -101,31 +101,32 @@
 </div>
 
 <p>
-    {% if user.following.count > 0 %}
-        <a href="{% url 'profile_following' user.username %}">{{ user.following.count }} following</a>
+    {% if profile_user.following.count > 0 %}
+        <a href="{% url 'profile_following' profile_user.username %}">{{ profile_user.following.count }} following</a>
     {% else %}
-        {{ user.following.count }} following
+        {{ profile_user.following.count }} following
     {% endif %}
     |
-    {% if user.followers.count > 0 %}
-        <a href="{% url 'profile_followers' user.username %}">{{ user.followers.count }} {{ user.followers.count|pluralize:"follower,followers" }}</a>
+    {% if profile_user.followers.count > 0 %}
+        <a href="{% url 'profile_followers' profile_user.username %}">{{ profile_user.followers.count }} {{ profile_user.followers.count|pluralize:"follower,followers" }}</a>
     {% else %}
-        {{ user.followers.count }} {{ user.followers.count|pluralize:"follower,followers" }}
+        {{ profile_user.followers.count }} {{ profile_user.followers.count|pluralize:"follower,followers" }}
     {% endif %}
 </p>
 
 {% if user != profile %}
-    <form action="{% url 'follow_user' followed_user.username %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Follow</button>
-    </form>
-
-    <form action="{% url 'unfollow_user' followed_user.username %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Unfollow</button>
-    </form>
+    {% if is_following %}
+        <form action="{% url 'unfollow_user' profile.username %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Unfollow</button>
+        </form>
+    {% else %}
+        <form action="{% url 'follow_user' profile.username %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Follow</button>
+        </form>
+    {% endif %}
 {% endif %}
-
 {% if splashtag %}
     <div class="-rotate-[0.5deg] shadow-lg w-fit">
         {% include "includes/splashtag.html" with splashtag=splashtag only %}

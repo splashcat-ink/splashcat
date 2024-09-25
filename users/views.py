@@ -61,6 +61,7 @@ def profile(request, username: str):
     following_list = Follow.objects.filter(follower=user).select_related('followed').order_by('-followed_on')
     followers_list = Follow.objects.filter(followed=user).select_related('follower').order_by('-followed_on')
     followed_user = user
+    is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
 
     return render(request, 'users/profile.html',
                   {
@@ -79,6 +80,7 @@ def profile(request, username: str):
                       'following_list': following_list,
                       'followers_list': followers_list,
                       'followed_user': followed_user,
+                      'is_following': is_following,
                   })
 
 
