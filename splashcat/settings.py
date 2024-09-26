@@ -287,10 +287,11 @@ STORAGES = global_settings.STORAGES | {
     },
 }
 
-if not DEBUG or True:
-    STORAGES |= {"default": {
-        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
-    }
+if not DEBUG:
+    STORAGES |= {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
+        }
     }
 
 AWS_S3_ACCESS_KEY_ID = os.environ.get('B2_ACCESS_KEY_ID')
