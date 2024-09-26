@@ -483,24 +483,24 @@ def request_data_export(request):
                          )
     return redirect('users:settings')
 
-def profile_following(request, username: str):
+def profile_follows(request, username: str, view_type: str):
     user = get_object_or_404(User, username__iexact=username)
-    following_list = Follow.objects.filter(follower=user).select_related('followed').order_by('-followed_on')
 
-    return render(request, 'users/profile_following.html', {
+    if view_type == 'followers':
+        follow_list = Follow.objects.filter(followed=user).select_related('follower').order_by('-followed_on')
+        follow_type = 'followers'
+    elif view_type == 'following':
+        follow_list = Follow.objects.filter(follower=user).select_related('followed').order_by('-followed_on')
+        follow_type = 'following'
+    else:
+        # Handle invalid view_type, such as redirect or 404
+        return redirect('profile', username=user.username)  # Or another appropriate response
+
+    return render(request, 'users/profile_follows.html', {
         'profile_user': user,
         'splashtag': user.get_splashtag,
-        'following_list': following_list,
-    })
-
-def profile_followers(request, username: str):
-    user = get_object_or_404(User, username__iexact=username)
-    followers_list = Follow.objects.filter(followed=user).select_related('follower').order_by('-followed_on')
-
-    return render(request, 'users/profile_followers.html', {
-        'profile_user': user,
-        'splashtag': user.get_splashtag,
-        'followers_list': followers_list,
+        'follow_list': follow_list,
+        'follow_type': follow_type,
     })
 
 @login_required

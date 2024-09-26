@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ profile_user.display_name }} @{{ profile_user.username }} 
+    {% if follow_type == 'followers' %}
+        {{ user.followers.count|pluralize:"follower,followers" }}
+    {% else %}
+        {{ user.following.count|pluralize:"following,following" }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="flex flex-col md:flex-row gap-4 overflow-x-clip">
+        <div class="basis-2/5 xl:basis-1/4 flex flex-col gap-2">
+            {% include 'users/profile_sidebar.html' with profile=profile_user %}
+        </div>
+
+        <div class="flex grow flex-col gap-2">
+            {% if follow_list %}
+                <ul>
+                    {% for follow in follow_list %}
+                        <li>
+                            {% if follow_type == 'followers' %}
+                                <a href="{% url 'profile' follow.follower.username %}">
+                                    {{ follow.follower.display_name }} (@{{ follow.follower.username }})
+                                </a>
+                            {% else %}
+                                <a href="{% url 'profile' follow.followed.username %}">
+                                    {{ follow.followed.display_name }} (@{{ follow.followed.username }})
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>
+                    {% if follow_type == 'followers' %}
+                        No one follows {{ profile_user.display_name }}
+                    {% else %}
+                        {{ profile_user.display_name }} is not following anyone
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
