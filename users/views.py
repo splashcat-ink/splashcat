@@ -514,16 +514,13 @@ def follow_user(request, username):
 
     if request.user == followed_user:
         messages.error(request, "You cannot follow yourself.")
-        return redirect('profile', username=username)
-    
-    if Follow.objects.filter(follower=request.user, followed=followed_user).exists():
+    elif Follow.objects.filter(follower=request.user, followed=followed_user).exists():
         messages.error(request, f"You are already following {followed_user.username}.")
-        return redirect('profile', username=username)
+    else:
+        Follow.objects.create(follower=request.user, followed=followed_user)
+        messages.success(request, f"You are now following {followed_user.username}.")
     
-
-    Follow.objects.create(follower=request.user, followed=followed_user)
-    messages.success(request, f"You are now following {followed_user.username}.")
-    return redirect('profile', username=username)
+    return redirect(request.META.get('HTTP_REFERER', 'profile'))
 
 @login_required
 def unfollow_user(request, username):
@@ -536,4 +533,4 @@ def unfollow_user(request, username):
     else:
         messages.error(request, "You are not following this user.")
 
-    return redirect('profile', username=username)
+    return redirect(request.META.get('HTTP_REFERER', 'profile'))
