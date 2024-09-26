@@ -32,6 +32,12 @@
                 </div>
 
                 <div>
+                    {{ form.bio.errors }}
+                    <label class="text-xl pt-2" for="{{ form.bio.id_for_label }}">Bio</label>
+                    {{ form.bio }}
+                </div>
+
+                <div>
                     {{ form.profile_picture.errors }}
                     <label class="text-xl pt-2" for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
                     {{ form.profile_picture }}

@@ -84,6 +84,8 @@ class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     preferred_pronouns = models.CharField(_("preferred pronouns"), max_length=20, blank=True, null=True)
 
+    bio = models.CharField(_("bio"), blank=True, null=True, max_length=200)
+
     x_battle_division = TextChoicesField(verbose_name=_("X Battle division"), choices_enum=XBattleDivisions,
                                          default=XBattleDivisions.UNSPECIFIED)
 

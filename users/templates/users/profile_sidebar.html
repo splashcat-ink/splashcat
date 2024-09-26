@@ -125,6 +125,10 @@
             </a>
         {% endif %}
     {% endwith %}
+
+    {% if profile.bio %}
+        <p class="pt-4">{{ profile.bio }}</p>
+    {% endif %}
 </div>
 
 <p>

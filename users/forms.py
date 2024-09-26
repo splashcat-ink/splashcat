@@ -14,6 +14,7 @@ class AccountSettingsForm(forms.ModelForm):
         model = User
         fields = (
             "display_name",
+            "bio",
             "profile_picture",
             "profile_cover",
             "page_background",
@@ -37,6 +38,15 @@ class AccountSettingsForm(forms.ModelForm):
         label=_("Profile Picture"),
         required=True,
         widget=ImageWidget()
+    )
+
+    bio = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={
+                'rows': 5,  # Initial height of 5 rows
+            }
+        )
     )
 
     # override the attributes on the preferred_pronouns field to prevent autocomplete
