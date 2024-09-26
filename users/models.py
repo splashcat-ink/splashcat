@@ -211,8 +211,10 @@ class User(AbstractUser):
         image = ContentFile(image_data.getvalue())
 
         image_hash = hashlib.sha256(image_data.getvalue()).hexdigest()
-
         self.profile_picture.save(f'identicon-{image_hash}.png', image, save=True)
+        self.save()
+
+
 
 
 def generate_key():

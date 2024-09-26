@@ -367,7 +367,10 @@ CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379')
 ANYMAIL = {
     'POSTMARK_SERVER_TOKEN': os.environ.get('POSTMARK_SERVER_TOKEN'),
 }
-EMAIL_BACKEND = 'anymail.backends.postmark.EmailBackend'
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'anymail.backends.postmark.EmailBackend'
 DEFAULT_FROM_EMAIL = 'Splashcat <grizzco@splashcat.ink>'
 SERVER_EMAIL = 'server@splashcat.ink'
 
