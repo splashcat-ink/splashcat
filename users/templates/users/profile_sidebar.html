@@ -155,3 +155,14 @@
     <a href="{% url 'admin:users_user_change' profile.id %}"
        class="bg-red-700 p-2 rounded w-fit">Admin</a>
 {% endif %}
+
+{% with groups=profile_user.get_groups %}
+    {% if groups|length > 0 %}
+        <a href="{% url 'groups:index' %}">
+            <h2 class="text-2xl font-splatoon1 pt-3">Groups</h2>
+        </a>
+        {% for group in groups %}
+            {% include 'groups/includes/card.html' with group=group %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}

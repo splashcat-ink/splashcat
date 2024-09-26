@@ -47,14 +47,6 @@
                           clip-rule="evenodd"></path>
                 </svg>
             </button>
-            {% with groups=profile_user.get_groups %}
-                {% if groups|length > 0 %}
-                    <h2 class="text-2xl font-splatoon1">Groups</h2>
-                    {% for group in groups %}
-                        {% include 'groups/includes/card.html' with group=group %}
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
         </div>
 
         <div class="flex grow flex-col gap-2">
