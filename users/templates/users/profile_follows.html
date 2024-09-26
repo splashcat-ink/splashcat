@@ -13,21 +13,31 @@
     <div class="flex flex-col md:flex-row gap-4 overflow-x-clip">
         <div class="basis-2/5 xl:basis-1/4 flex flex-col gap-2">
             {% include 'users/profile_sidebar.html' with profile=profile_user %}
+            {% with groups=profile_user.get_groups %}
+                {% if groups|length > 0 %}
+                    <h2 class="text-xl font-splatoon1">Groups</h2>
+                    {% for group in groups %}
+                        {% include 'groups/includes/card.html' with group=group %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
 
         <div class="flex grow flex-col gap-2">
+            {% if follow_type == 'followers' %}
+                <h1 class="text-3xl font-splatoon1">Followers</h1>
+            {% elif follow_type == 'following' %}
+                <h1 class="text-3xl font-splatoon1">Following</h1>
+            {% endif %}
+
             {% if follow_list %}
-                <ul>
+                <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {% for follow in follow_list %}
-                        <li>
+                        <li class="py-4">
                             {% if follow_type == 'followers' %}
-                                <a href="{% url 'profile' follow.follower.username %}">
-                                    {{ follow.follower.display_name }} (@{{ follow.follower.username }})
-                                </a>
-                            {% else %}
-                                <a href="{% url 'profile' follow.followed.username %}">
-                                    {{ follow.followed.display_name }} (@{{ follow.followed.username }})
-                                </a>
+                                {% include "users/includes/user-link.html" with user=follow.follower show_splashtag=True %}
+                            {% elif follow_type == 'following' %}
+                                {% include "users/includes/user-link.html" with user=follow.followed show_splashtag=True %}
                             {% endif %}
                         </li>
                     {% endfor %}
@@ -36,7 +46,7 @@
                 <p>
                     {% if follow_type == 'followers' %}
                         No one follows {{ profile_user.display_name }}
-                    {% else %}
+                    {% elif follow_type == 'following' %}
                         {{ profile_user.display_name }} is not following anyone
                     {% endif %}
                 </p>

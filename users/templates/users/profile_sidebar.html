@@ -15,7 +15,9 @@
              class="aspect-square max-w-full object-contain rounded-sm bg-gray-500/50">
     {% endif %}
     <h1 class="text-2xl">
-        {{ profile.display_name }}
+        <a href="{% url 'profile' profile.username %}">
+            {{ profile.display_name }}
+        </a>
         {% if profile.display_sponsor_badge %}
             <a href="{% url 'sponsor' %}">
                 <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png" alt="Splashcat Sponsor"
@@ -23,7 +25,9 @@
             </a>
         {% endif %}
     </h1>
-    <p class="text-lg text-gray-300">@{{ profile.username }}</p>
+    <a href="{% url 'profile' profile.username %}">
+        <p class="text-lg text-gray-300">@{{ profile.username }}</p>
+    </a>
 
     {% if profile.has_mastodon_account %}
         <div class="pt-4 pb-2">
