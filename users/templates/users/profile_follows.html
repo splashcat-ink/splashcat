@@ -35,9 +35,9 @@
                     {% for follow in follow_list %}
                         <li class="py-4">
                             {% if follow_type == 'followers' %}
-                                {% include "users/includes/user-link.html" with user=follow.follower show_splashtag=True %}
+                                {% include "users/includes/user-link.html" with user=follow.follower show_splashtag=True show_follow=True %}
                             {% elif follow_type == 'following' %}
-                                {% include "users/includes/user-link.html" with user=follow.followed show_splashtag=True %}
+                                {% include "users/includes/user-link.html" with user=follow.followed show_splashtag=True show_follow=True %}
                             {% endif %}
                         </li>
                     {% endfor %}

@@ -2,6 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.admin import TabularInline
 from django.contrib.auth.admin import UserAdmin as AbstractUserAdmin
+from django.db import models
 
 from groups.admin import MembershipInline
 from .models import User, ApiKey, GitHubLink, ProfileUrl, Follow
@@ -57,7 +58,17 @@ class FollowersInline(TabularInline):
     verbose_name = "Follower"
     verbose_name_plural = "Followers"
 
+class UserAdminForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = "__all__"
+        widgets = {
+            'bio': forms.Textarea(attrs={'rows': 5}),
+        }
+
 class UserAdmin(AbstractUserAdmin):
+    form = UserAdminForm  # Use the custom form
+
     fieldsets = AbstractUserAdmin.fieldsets + (
         (None, {"fields": ["profile_picture", "profile_cover", "bio", "saved_favorite_color", "data_export_pending", 
                            "last_data_export", "verified_email", "preferred_pronouns", 

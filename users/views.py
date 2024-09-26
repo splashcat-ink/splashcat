@@ -495,12 +495,17 @@ def profile_follows(request, username: str, view_type: str):
     else:
         # Handle invalid view_type, such as redirect or 404
         return redirect('profile', username=user.username)  # Or another appropriate response
+    
+    followed_user = user
+    is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
 
     return render(request, 'users/profile_follows.html', {
         'profile_user': user,
         'splashtag': user.get_splashtag,
         'follow_list': follow_list,
         'follow_type': follow_type,
+        'followed_user': followed_user,
+        'is_following': is_following,
     })
 
 @login_required

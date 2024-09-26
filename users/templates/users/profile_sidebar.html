@@ -45,20 +45,11 @@
         </div>
     {% endif %}
 
-    <div class="pt-4 pb-2 flex items-center space-x-2">
-        {% if profile.preferred_pronouns %}
-            <span class="bg-pink-700 rounded pl-2 py-0.5 pr-3 shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6 inline-block">
-                    <path d="M10 8a3 3 0 100-6 3 3 0 000 6zM3.465 14.493a1.23 1.412 0 00.41 1.412A9.957 9.957 0 0010 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 00-13.074.003z"></path>
-                </svg>
-                <span class="ml-2">{{ profile.preferred_pronouns }}</span>
-            </span>
-        {% endif %}
-        
+    <div class="py-2 flex items-center space-x-2">
         {% if user != profile %}
             <form action="{% if is_following %}{% url 'unfollow_user' profile.username %}{% else %}{% url 'follow_user' profile.username %}{% endif %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="bg-pink-700 text-white rounded pl-2.5 py-1 pr-3.5 shadow flex items-center space-x-2 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500">
+                <button type="submit" class="bg-pink-700 rounded pl-2 py-0.5 pr-3 shadow text-white">
                     {% if is_following %}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6 inline-block">
                             <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM2.046 15.253c-.058.468.172.92.57 1.175A9.953 9.953 0 0 0 8 18c1.982 0 3.83-.578 5.384-1.573.398-.254.628-.707.57-1.175a6.001 6.001 0 0 0-11.908 0ZM12.75 7.75a.75.75 0 0 0 0 1.5h5.5a.75.75 0 0 0 0-1.5h-5.5Z" />
@@ -73,7 +64,20 @@
                 </button>
             </form>
         {% endif %}
-    </div>    
+
+        {% if profile.preferred_pronouns %}
+            <span class="bg-pink-700 rounded pl-2 py-0.5 pr-3 shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6 inline-block">
+                    <path d="M10 8a3 3 0 100-6 3 3 0 000 6zM3.465 14.493a1.23 1.412 0 00.41 1.412A9.957 9.957 0 0010 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 00-13.074.003z"></path>
+                </svg>
+                <span class="ml-2">{{ profile.preferred_pronouns }}</span>
+            </span>
+        {% endif %}
+    </div>
+    
+    {% if profile.bio %}
+        <p class="py-2">{{ profile.bio }}</p>
+    {% endif %}
     
     {% if profile.coral_friend_code %}
         <div class="group relative block">
@@ -125,10 +129,6 @@
             </a>
         {% endif %}
     {% endwith %}
-
-    {% if profile.bio %}
-        <p class="pt-4">{{ profile.bio }}</p>
-    {% endif %}
 </div>
 
 <p>

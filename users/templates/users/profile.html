@@ -49,7 +49,7 @@
             </button>
             {% with groups=profile_user.get_groups %}
                 {% if groups|length > 0 %}
-                    <h2 class="text-xl font-splatoon1">Groups</h2>
+                    <h2 class="text-2xl font-splatoon1">Groups</h2>
                     {% for group in groups %}
                         {% include 'groups/includes/card.html' with group=group %}
                     {% endfor %}
