@@ -488,25 +488,24 @@ def profile_follows(request, username: str, view_type: str):
 
     if view_type == 'followers':
         follow_list = Follow.objects.filter(followed=user).select_related('follower').order_by('-followed_on')
-        follow_type = 'followers'
     elif view_type == 'following':
         follow_list = Follow.objects.filter(follower=user).select_related('followed').order_by('-followed_on')
-        follow_type = 'following'
     else:
-        # Handle invalid view_type, such as redirect or 404
-        return redirect('profile', username=user.username)  # Or another appropriate response
-    
-    followed_user = user
-    is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
+        return redirect('profile', username=user.username)  # Invalid view_type
+
+    # Check if logged-in user is following each user in follow_list
+    is_following_list = [
+        Follow.objects.filter(follower=request.user, followed=follow.follower if view_type == 'followers' else follow.followed).exists()
+        for follow in follow_list
+    ]
 
     return render(request, 'users/profile_follows.html', {
         'profile_user': user,
         'splashtag': user.get_splashtag,
-        'follow_list': follow_list,
-        'follow_type': follow_type,
-        'followed_user': followed_user,
-        'is_following': is_following,
+        'follow_list': zip(follow_list, is_following_list),  # Send follow_list with is_following flags
+        'follow_type': view_type,
     })
+
 
 @login_required
 def follow_user(request, username):

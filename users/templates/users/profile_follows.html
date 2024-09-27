@@ -24,12 +24,12 @@
 
             {% if follow_list %}
                 <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {% for follow in follow_list %}
+                    {% for follow, is_following in follow_list %}
                         <li class="py-4">
                             {% if follow_type == 'followers' %}
-                                {% include "users/includes/user-link.html" with user=follow.follower show_splashtag=True show_follow=True %}
+                                {% include "users/includes/user-link.html" with user=follow.follower show_splashtag=True show_follow=True is_following=is_following %}
                             {% elif follow_type == 'following' %}
-                                {% include "users/includes/user-link.html" with user=follow.followed show_splashtag=True show_follow=True %}
+                                {% include "users/includes/user-link.html" with user=follow.followed show_splashtag=True show_follow=True is_following=is_following %}
                             {% endif %}
                         </li>
                     {% endfor %}
