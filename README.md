@@ -63,6 +63,9 @@ Required Dependencies: [Python](https://www.python.org/downloads/ "Python"), [Po
 If you've found a bug in Splashcat please [report it! ](https://github.com/splashcat-ink/splashcat/issues/new "report it! ")
 If it's a security vulnerability please contact splashcat@rosalina.saige.ink or use GitHub's tools for reporting security issues. Do **not** use a public GitHub issue.
 
+## Upload battles to local instance of Splashcat
+To upload battle data to a local debug instance of splashcat follow [this guide](https://github.com/splashcat-ink/splashcat/blob/main/UPLOADING-BATTLES.md)
+
 ## Donating
 Sponsoring me will support Splashcat and its server costs. Getting $5+ monthly tier also gives you some little additional features in Splashcat! For more details, see [here](https://splashcat.ink/sponsor/ "here") and to donate click [here](https://github.com/sponsors/catgirlinspace "here")!
 
