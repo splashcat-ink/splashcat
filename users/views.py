@@ -491,19 +491,21 @@ def profile_follows(request, username: str, view_type: str):
     elif view_type == 'following':
         follow_list = Follow.objects.filter(follower=user).select_related('followed').order_by('-followed_on')
     else:
-        return redirect('profile', username=user.username)  # Invalid view_type
+        return redirect('profile', username=user.username)
 
-    # Check if logged-in user is following each user in follow_list
     is_following_list = [
         Follow.objects.filter(follower=request.user, followed=follow.follower if view_type == 'followers' else follow.followed).exists()
         for follow in follow_list
     ]
 
+    is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
+
     return render(request, 'users/profile_follows.html', {
         'profile_user': user,
         'splashtag': user.get_splashtag,
-        'follow_list': zip(follow_list, is_following_list),  # Send follow_list with is_following flags
+        'follow_list': zip(follow_list, is_following_list),
         'follow_type': view_type,
+        'is_following': is_following
     })
 
 
