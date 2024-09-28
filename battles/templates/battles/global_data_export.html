@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1 class="text-3xl font-splatoon1">
+    <h1 class="text-3xl font-splatoon1 ">
         {% block title %}
             Global Data Exports
         {% endblock %}
@@ -12,7 +12,7 @@
 
     {% if user.is_verified_for_export_download %}
         <a href="{% url 'battles:redirect_global_data_export' %}"
-           class="p-4 rounded bg-pink-600 hover:bg-pink-700 block w-fit">Download</a>
+           class="px-4 py-2 my-3 rounded bg-pink-600 hover:bg-pink-700 block w-fit">Download</a>
     {% else %}
         <div>
             Your account does not meet the requirements to download the data. Splashcat has some basic requirements for
@@ -191,7 +191,7 @@
         </tbody>
     </table>
 
-    <h3 class="text-lg">
+    <h3 class="text-lg mt-4">
         Players
     </h3>
 

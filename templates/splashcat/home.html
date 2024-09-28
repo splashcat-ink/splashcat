@@ -10,7 +10,7 @@
     <p class="text-xl">An award-winning service to track Splatoon 3 battles</p>
 
     {% if user.is_authenticated and user_recent_battles|length > 0 %}
-        <h2 class="text-2xl font-splatoon1">Your Recent Battles</h2>
+        <h2 class="text-2xl font-splatoon1 mt-2">Your Recent Battles</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {% for battle in user_recent_battles %}
                 {% include "users/includes/battle-card.html" with battle=battle %}
@@ -86,14 +86,14 @@
         </div>
     {% endif %}
 
-    <h2 class="text-2xl font-splatoon1">Recent Battles</h2>
+    <h2 class="text-2xl font-splatoon1 pt-8">Recent Battles</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {% for battle in recent_battles %}
             {% include "users/includes/battle-card.html" with battle=battle display_uploader=True use_random_color=True %}
         {% endfor %}
     </div>
 
-    <h2 class="text-2xl font-splatoon1 pt-2">Data</h2>
+    <h2 class="text-2xl font-splatoon1 pt-8">Data</h2>
     <div class="flex flex-row gap-4">
         <a href="{% url 'battles:global_data_export' %}" class="py-2 px-3 rounded bg-pink-700 hover:bg-pink-800">Global Battle
             Data</a>
