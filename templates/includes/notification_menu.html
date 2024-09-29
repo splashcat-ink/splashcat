@@ -43,8 +43,7 @@
              settle
                remove .ease-in .duration-75 .opacity-0 .scale-95
                add .hidden
-               fetch POST '/mark-as-read/' with { headers: { 'X-CSRFToken': '{{ csrf_token }}' } }
-           end">
+               call markNotificationsAsRead()">
         <!-- Notifications content -->
         <div class="flex flex-col gap-2">
             {% if notifications %}
@@ -67,3 +66,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    function markNotificationsAsRead() {
+        fetch('/mark-as-read/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        }).then(response => {
+            if (!response.ok) {
+                console.error("Failed to mark notifications as read.");
+            }
+        }).catch(error => {
+            console.error("Error in marking notifications as read:", error);
+        });
+    }
+</script>

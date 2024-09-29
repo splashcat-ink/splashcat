@@ -544,15 +544,7 @@ def unfollow_user(request, username):
     return redirect(request.META.get('HTTP_REFERER', 'profile'))
 
 @login_required
-def notifications(request):
-    notifications = Notification.objects.filter(recipient=request.user, is_read=False).order_by('-created_at')
-    return render(request, 'users/notifications.html', {
-        'notifications': notifications,
-    })
-
-@login_required
 @require_POST
 def mark_notifications_as_read(request):
     Notification.objects.filter(recipient=request.user, is_read=False).update(is_read=True)
-    print("got here")
     return JsonResponse({'status': 'success'})
