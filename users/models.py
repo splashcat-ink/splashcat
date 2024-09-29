@@ -281,3 +281,21 @@ class Follow(models.Model):
 
     def __str__(self):
         return f'{self.follower} follows {self.followed}'
+    
+class Notification(models.Model):
+    recipient = models.ForeignKey(
+        User, related_name = 'notifications', on_delete=models.CASCADE
+    )
+    sender = models.ForeignKey(
+        User, related_name = 'sent_notifications', on_delete=models.CASCADE
+    )
+    message = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _('Notification')
+        verbose_name_plural = _('Notifications')
+    
+    def __str__(self):
+        return f'Notification for {self.recipeint} from {self.sender}'

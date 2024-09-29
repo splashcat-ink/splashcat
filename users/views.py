@@ -14,7 +14,7 @@ from django.forms import inlineformset_factory
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
 
 from battles.models import Player, Battle
 from battles.tasks import user_request_data_export
@@ -22,7 +22,7 @@ from splashcat.decorators import github_webhook
 from splatnet_assets.models import Weapon
 from . import tasks
 from .forms import RegisterForm, AccountSettingsForm, ResendVerificationEmailForm
-from .models import User, GitHubLink, ApiKey, ProfileUrl, Follow
+from .models import User, GitHubLink, ApiKey, ProfileUrl, Follow, Notification
 
 
 # Create your views here.
@@ -519,6 +519,13 @@ def follow_user(request, username):
         messages.error(request, f"You are already following {followed_user.username}.")
     else:
         Follow.objects.create(follower=request.user, followed=followed_user)
+
+        Notification.objects.create(
+            recipient=followed_user,
+            sender=request.user,
+            message=f'@{request.user.username} is now following you.',
+        )
+
         messages.success(request, f"You are now following {followed_user.username}.")
     
     return redirect(request.META.get('HTTP_REFERER', 'profile'))
@@ -535,3 +542,17 @@ def unfollow_user(request, username):
         messages.error(request, "You are not following this user.")
 
     return redirect(request.META.get('HTTP_REFERER', 'profile'))
+
+@login_required
+def notifications(request):
+    notifications = Notification.objects.filter(recipient=request.user, is_read=False).order_by('-created_at')
+    return render(request, 'users/notifications.html', {
+        'notifications': notifications,
+    })
+
+@login_required
+@require_POST
+def mark_notifications_as_read(request):
+    Notification.objects.filter(recipient=request.user, is_read=False).update(is_read=True)
+    print("got here")
+    return JsonResponse({'status': 'success'})
