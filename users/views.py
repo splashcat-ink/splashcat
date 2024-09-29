@@ -61,7 +61,11 @@ def profile(request, username: str):
     following_list = Follow.objects.filter(follower=user).select_related('followed').order_by('-followed_on')
     followers_list = Follow.objects.filter(followed=user).select_related('follower').order_by('-followed_on')
     followed_user = user
-    is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
+
+    if request.user.is_authenticated:
+        is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
+    else:
+        is_following = False
 
     return render(request, 'users/profile.html',
                   {
@@ -493,12 +497,15 @@ def profile_follows(request, username: str, view_type: str):
     else:
         return redirect('profile', username=user.username)
 
-    is_following_list = [
-        Follow.objects.filter(follower=request.user, followed=follow.follower if view_type == 'followers' else follow.followed).exists()
-        for follow in follow_list
-    ]
-
-    is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
+    if request.user.is_authenticated:
+        is_following_list = [
+            Follow.objects.filter(follower=request.user, followed=follow.follower if view_type == 'followers' else follow.followed).exists()
+            for follow in follow_list
+        ]
+        is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
+    else:
+        is_following_list = [False] * follow_list.count()
+        is_following = False
 
     return render(request, 'users/profile_follows.html', {
         'profile_user': user,
@@ -523,7 +530,8 @@ def follow_user(request, username):
         Notification.objects.create(
             recipient=followed_user,
             sender=request.user,
-            message=f'@{request.user.username} is now following you.',
+            message=f'followed you.',
+            is_read=False
         )
 
         messages.success(request, f"You are now following {followed_user.username}.")
@@ -544,7 +552,21 @@ def unfollow_user(request, username):
     return redirect(request.META.get('HTTP_REFERER', 'profile'))
 
 @login_required
-@require_POST
 def mark_notifications_as_read(request):
-    Notification.objects.filter(recipient=request.user, is_read=False).update(is_read=True)
-    return JsonResponse({'status': 'success'})
+    if request.method == "GET":
+        unread_notifications = request.user.notifications.filter(is_read=False)
+        unread_notifications.update(is_read=True)
+
+        notifications = request.user.notifications.filter(is_read=False).order_by('-created_at')
+
+        return render(request, 'includes/notification_menu.html', {
+            'notifications': notifications
+        })
+    return JsonResponse({'success': False}, status=400)
+
+@login_required
+def get_notifications(request):
+    notifications = request.user.notifications.filter(is_read=False).order_by('-created_at')
+    return render(request, 'includes/notification_menu.html', {
+        'notifications': notifications
+    })

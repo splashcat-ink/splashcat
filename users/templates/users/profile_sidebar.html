@@ -46,7 +46,7 @@
     {% endif %}
 
     <div class="py-2 flex items-center space-x-2">
-        {% if user != profile %}
+        {% if user.is_authenticated and user != profile_user %}
             <form action="{% if is_following %}{% url 'unfollow_user' profile.username %}{% else %}{% url 'follow_user' profile.username %}{% endif %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="bg-pink-700 rounded pl-2 py-0.5 pr-3 shadow text-white">

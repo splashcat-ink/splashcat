@@ -51,6 +51,18 @@
 		})
     </script>
 
+    <script>
+        document.addEventListener("htmx:load-notifications", function () {
+            function fetchNotifications() {
+                htmx.ajax('GET', '/notifications/fetch', '#notifications-container');
+                print("Fetching notifications");
+            }
+    
+            setInterval(fetchNotifications, 10000);
+            fetchNotifications();
+        });
+    </script>
+
     <script type="speculationrules">
         {
           "prefetch": [{

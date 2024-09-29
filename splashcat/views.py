@@ -16,7 +16,10 @@ def home(request):
     user_recent_battles = request.user.battles.with_prefetch().select_related('vs_stage__name') \
                               .order_by('-uploaded_at')[:12] if request.user.is_authenticated else None
     
-    notifications = Notification.objects.filter(recipient=request.user, is_read=False).order_by('-created_at')
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(recipient=request.user, is_read=False).order_by('-created_at')
+    else:
+        notifications = None
 
     return render(request, 'splashcat/home.html', {
         'recent_battles': recent_battles,
