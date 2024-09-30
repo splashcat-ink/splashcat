@@ -181,33 +181,35 @@
                         <input type="submit" value="Create API Key">
                     </form>
 
-                    {% if user.api_keys.all %}
-                        <table class="w-max table-auto border-collapse">
-                            <thead>
-                            <tr>
-                                <th class="border border-slate-200 p-1">Key</th>
-                                <th class="border border-slate-200 p-1">Note</th>
-                                <th class="border border-slate-200 p-1">Created</th>
-                                <th class="border border-slate-200 p-1">Delete</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for api_key in user.api_keys.all %}
+                    {% with api_keys=user.api_keys.all %}
+                        {% if api_keys %}
+                            <table class="w-max table-auto border-collapse">
+                                <thead>
                                 <tr>
-                                    <td class="border border-slate-200 p-1 font-mono">{{ api_key.key }}</td>
-                                    <td class="border border-slate-200 p-1">{{ api_key.note }}</td>
-                                    <td class="border border-slate-200 p-1">{{ api_key.created }}</td>
-                                    <td class="border border-slate-200 p-1">
-                                        <form action="{% url 'users:delete_api_key' api_key.key %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="submit" value="❌">
-                                        </form>
-                                    </td>
+                                    <th class="border border-slate-200 p-1">Key</th>
+                                    <th class="border border-slate-200 p-1">Note</th>
+                                    <th class="border border-slate-200 p-1">Created</th>
+                                    <th class="border border-slate-200 p-1">Delete</th>
                                 </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    {% endif %}
+                                </thead>
+                                <tbody>
+                                {% for api_key in api_keys %}
+                                    <tr>
+                                        <td class="border border-slate-200 p-1 font-mono">{{ api_key.key }}</td>
+                                        <td class="border border-slate-200 p-1">{{ api_key.note }}</td>
+                                        <td class="border border-slate-200 p-1">{{ api_key.created }}</td>
+                                        <td class="border border-slate-200 p-1">
+                                            <form action="{% url 'users:delete_api_key' api_key.key %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="submit" value="❌">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    {% endwith %}
                 </div>
 
                 <div>
