@@ -70,20 +70,32 @@
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="h-full flex flex-col">
     <script>
         function fetchNotifications() {
-            htmx.ajax('GET', '/notifications/fetch', '#notifications-container');
-            console.log("Fetching notifications");
+            if (document.visibilityState === 'visible') {
+                htmx.ajax('GET', '/notifications/fetch', '#notifications-container');
+                console.log("Fetching notifications");
+            }
         }
     
         window.onload = function() {
             fetchNotifications();
             setInterval(fetchNotifications, 15000);
         };
-
+    
+        document.addEventListener("visibilitychange", function() {
+            if (document.visibilityState === 'visible') {
+                console.log("Tab is active, fetching notifications");
+                fetchNotifications();
+            } else {
+                console.log("Tab is not active, skipping notification fetch");
+            }
+        });
+    
         document.addEventListener("htmx:load-notifications", function () {
             console.log("Notification dropdown opened, loading notifications");
             fetchNotifications();
         });
     </script>
+    
 
     {% csrf_token %}
     <header>
