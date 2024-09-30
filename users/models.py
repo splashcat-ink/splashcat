@@ -20,6 +20,9 @@ from django.utils.translation import gettext_lazy as _
 from django_choices_field import TextChoicesField
 from django.conf import settings
 
+from better_profanity import profanity
+from django.core.exceptions import ValidationError
+
 import django.contrib.auth.models as django_auth_models
 
 from battles.models import Battle
@@ -27,6 +30,10 @@ from splatnet_assets.common_model_choices import XBattleDivisions
 from splatnet_assets.fields import ColorField
 
 # Create your models here.
+
+def validate_no_profanity(value):
+        if profanity.contains_profanity(value):
+            raise ValidationError(_("This text contains inappropriate language."))
 
 sponsor_perks = {
     "badge": {
@@ -72,19 +79,19 @@ class User(AbstractUser):
         help_text=_(
             "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
         ),
-        validators=[AbstractUser.username_validator],
+        validators=[AbstractUser.username_validator, validate_no_profanity],  # Added profanity validator
         error_messages={
             "unique": _("A user with that username already exists."),
         },
     )
-    display_name = models.CharField(_("display name"), max_length=30)
+    display_name = models.CharField(_("display name"), max_length=30, validators=[validate_no_profanity])
     first_name = None
     last_name = None
     verified_email = models.BooleanField(_("verified email"), default=False)
     email = models.EmailField(_("email address"), unique=True)
-    preferred_pronouns = models.CharField(_("preferred pronouns"), max_length=20, blank=True, null=True)
+    preferred_pronouns = models.CharField(_("preferred pronouns"), max_length=20, blank=True, null=True, validators=[validate_no_profanity])
 
-    bio = models.CharField(_("bio"), blank=True, null=True, max_length=200)
+    bio = models.CharField(_("bio"), blank=True, null=True, max_length=200, validators=[validate_no_profanity])
 
     x_battle_division = TextChoicesField(verbose_name=_("X Battle division"), choices_enum=XBattleDivisions,
                                          default=XBattleDivisions.UNSPECIFIED)
