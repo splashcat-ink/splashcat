@@ -51,18 +51,6 @@
 		})
     </script>
 
-    <script>
-        document.addEventListener("htmx:load-notifications", function () {
-            function fetchNotifications() {
-                htmx.ajax('GET', '/notifications/fetch', '#notifications-container');
-                print("Fetching notifications");
-            }
-    
-            setInterval(fetchNotifications, 10000);
-            fetchNotifications();
-        });
-    </script>
-
     <script type="speculationrules">
         {
           "prefetch": [{
@@ -80,12 +68,29 @@
     {% endblock %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="h-full flex flex-col">
+    <script>
+        function fetchNotifications() {
+            htmx.ajax('GET', '/notifications/fetch', '#notifications-container');
+            console.log("Fetching notifications");
+        }
+    
+        window.onload = function() {
+            fetchNotifications();
+            setInterval(fetchNotifications, 15000);
+        };
+
+        document.addEventListener("htmx:load-notifications", function () {
+            console.log("Notification dropdown opened, loading notifications");
+            fetchNotifications();
+        });
+    </script>
+
     {% csrf_token %}
     <header>
         {% include 'includes/navbar.html' %}
     </header>
 
-    <div class="container flex-grow"> <!-- Add flex-grow here -->
+    <div class="container flex-grow">
         {% if messages %}
             <div class="flex flex-col gap-2 py-2">
                 {% for message in messages %}
@@ -95,7 +100,7 @@
             </div>
         {% endif %}
 
-        <main role="main" class="py-3 flex-grow"> <!-- Add flex-grow here -->
+        <main role="main" class="py-3 flex-grow">
             {% block content %}{% endblock %}
         </main>
     </div>

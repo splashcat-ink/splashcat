@@ -566,7 +566,9 @@ def mark_notifications_as_read(request):
 
 @login_required
 def get_notifications(request):
+    unread_notifications = request.user.notifications.filter(is_read=False).exists()
     notifications = request.user.notifications.filter(is_read=False).order_by('-created_at')
     return render(request, 'includes/notification_menu.html', {
-        'notifications': notifications
+        'notifications': notifications,
+        'unread_notifications': unread_notifications
     })
