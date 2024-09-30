@@ -10,13 +10,13 @@
     </p>
 
     <div class="py-4">
-        <a href="{% url 'groups:create_group' %}" class="bg-purple-700 hover:bg-purple-800 p-2 rounded">
+        <a href="{% url 'groups:create_group' %}" class="bg-purple-700 hover:bg-purple-800 py-2 px-4 rounded">
             Create Group
         </a>
     </div>
 
     {% if member_groups|length > 0 %}
-        <h2 class="font-splatoon1 text-2xl py-1">Joined Groups</h2>
+        <h2 class="font-splatoon1 text-2xl py-2">Joined Groups</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {% for group in member_groups %}
                 {% include "groups/includes/card.html" with group=group %}
@@ -25,7 +25,7 @@
     {% endif %}
 
     {% if random_public_groups|length > 0 %}
-        <h2 class="font-splatoon1 text-2xl py-1">Discover</h2>
+        <h2 class="font-splatoon1 text-2xl py-2">Discover</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {% for group in random_public_groups %}
                 {% include "groups/includes/card.html" with group=group %}

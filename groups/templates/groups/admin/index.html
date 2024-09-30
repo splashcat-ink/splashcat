@@ -33,7 +33,7 @@
 
                 <div>
                     {{ form.privacy_level.errors }}
-                    <label class="text-xl" for="{{ form.privacy_level.id_for_label }}">Privacy Level</label>
+                    <label class="text-xl pt-2" for="{{ form.privacy_level.id_for_label }}">Privacy Level</label>
                     {{ form.privacy_level }}
                 </div>
 
@@ -95,7 +95,7 @@
 
                         {{ group_invite_form.as_div }}
 
-                        <input type="submit" value="Update">
+                        <input type="submit" value="Invite">
                     </form>
 
                     {% if group.pending_invites.count > 0 %}

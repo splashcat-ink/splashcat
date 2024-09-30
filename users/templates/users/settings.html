@@ -9,14 +9,11 @@
         <h1 class="text-3xl font-splatoon1 mb-2">
             Settings
         </h1>
-        <form action="{% url 'users:request_data_export' %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Request Data Export" class="p-4 bg-pink-600 hover:bg-pink-700 rounded">
-        </form>
         {% if user.stripe_customer_id %}
             <form action="{% url 'sponsors:redirect_to_portal' %}" method="post">
                 {% csrf_token %}
-                <input type="submit" value="Stripe Customer Portal" class="p-4 bg-pink-600 hover:bg-pink-700 rounded plausible-event-name=Stripe+Customer+Portal">
+                <input type="submit" value="Stripe Customer Portal"
+                       class="p-4 bg-pink-600 hover:bg-pink-700 rounded plausible-event-name=Stripe+Customer+Portal">
             </form>
         {% endif %}
     </div>
@@ -31,19 +28,19 @@
 
                 <div>
                     {{ form.display_name.errors }}
-                    <label class="text-xl" for="{{ form.display_name.id_for_label }}">Display Name</label>
+                    <label class="text-xl pt-2" for="{{ form.display_name.id_for_label }}">Display Name</label>
                     {{ form.display_name }}
                 </div>
 
                 <div>
                     {{ form.profile_picture.errors }}
-                    <label class="text-xl" for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
+                    <label class="text-xl pt-2" for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
                     {{ form.profile_picture }}
                 </div>
 
                 <div>
                     {{ form.profile_cover.errors }}
-                    <label class="text-xl" for="{{ form.profile_cover.id_for_label }}">Profile Cover</label>
+                    <label class="text-xl pt-2" for="{{ form.profile_cover.id_for_label }}">Profile Cover</label>
                     {{ form.profile_cover }}
                 </div>
 
@@ -57,7 +54,7 @@
                     {{ form.page_background }}
                     {% if not "page-backgrounds" in user.entitlements %}
                         <div class="w-72"></div>
-                        <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/65 pt-10 p-6">
+                        <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/60 pt-10 p-6">
                             <a class="text-center text-gray-200 text-lg h-full" href="{% url 'sponsor' %}">
                                 Become a sponsor to customize your page background.
                             </a>
@@ -74,7 +71,7 @@
                     {{ form.saved_favorite_color }}
                     {% if not "favorite-color" in user.entitlements %}
                         <div class="w-72"></div>
-                        <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/65 pt-10 p-6">
+                        <div class="w-full h-full flex flex-col absolute left-0 top-0 items-center bg-black/60 pt-10 p-6">
                             <a class="text-center text-gray-200 text-lg h-full" href="{% url 'sponsor' %}">
                                 Become a sponsor to change your favorite color.
                             </a>
@@ -101,7 +98,7 @@
                             <label class="text-xl" for="{{ form.coral_friend_url.id_for_label }}">Nintendo Switch Friend
                                 URL</label>
                             <p>
-                                Get this link from the 
+                                Get this link from the
                                 <a href="https://lounge.nintendo.com/" class="underline text-blue-500">
                                     Nintendo Switch Online app
                                 </a>. This link and your friend code are shown on your profile.
@@ -117,7 +114,7 @@
                 <div>
                     {{ form.preferred_pronouns.errors }}
                     <label class="text-xl" for="{{ form.preferred_pronouns.id_for_label }}">Preferred Pronouns</label>
-                    <p>Used for AI Battle Descriptions and shown on your profile.</p>
+                    <p>Used for AI Generated Battle Descriptions and shown on your profile.</p>
                     {{ form.preferred_pronouns }}
                 </div>
 
@@ -155,7 +152,7 @@
                     {% endif %}
 
                     <form action="{% url 'users:link_github_account' %}" method="post"
-                          class="form-css flex flex-row gap-4">
+                          class="form-css flex flex-row gap-4 pt-1">
                         {% csrf_token %}
                         <input
                                 type="submit"
@@ -174,7 +171,7 @@
                 </div>
 
                 <div>
-                    <h1 class="text-xl font-splatoon1">API Keys</h1>
+                    <h1 class="text-xl font-splatoon1 pt-2">API Keys</h1>
                     <p>
                         Create API keys to upload data to Splashcat.
                     </p>
@@ -184,31 +181,47 @@
                         <input type="submit" value="Create API Key">
                     </form>
 
-                    <table class="w-max table-auto border-collapse">
-                        <thead>
-                        <tr>
-                            <th class="border border-slate-200 p-1">Key</th>
-                            <th class="border border-slate-200 p-1">Note</th>
-                            <th class="border border-slate-200 p-1">Created</th>
-                            <th class="border border-slate-200 p-1">Delete</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for api_key in user.api_keys.all %}
-                            <tr>
-                                <td class="border border-slate-200 p-1 font-mono">{{ api_key.key }}</td>
-                                <td class="border border-slate-200 p-1">{{ api_key.note }}</td>
-                                <td class="border border-slate-200 p-1">{{ api_key.created }}</td>
-                                <td class="border border-slate-200 p-1">
-                                    <form action="{% url 'users:delete_api_key' api_key.key %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="submit" value="❌">
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                    {% with api_keys=user.api_keys.all %}
+                        {% if api_keys %}
+                            <table class="w-max table-auto border-collapse">
+                                <thead>
+                                <tr>
+                                    <th class="border border-slate-200 p-1">Key</th>
+                                    <th class="border border-slate-200 p-1">Note</th>
+                                    <th class="border border-slate-200 p-1">Created</th>
+                                    <th class="border border-slate-200 p-1">Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for api_key in api_keys %}
+                                    <tr>
+                                        <td class="border border-slate-200 p-1 font-mono">{{ api_key.key }}</td>
+                                        <td class="border border-slate-200 p-1">{{ api_key.note }}</td>
+                                        <td class="border border-slate-200 p-1">{{ api_key.created }}</td>
+                                        <td class="border border-slate-200 p-1">
+                                            <form action="{% url 'users:delete_api_key' api_key.key %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="submit" value="❌">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <div>
+                    <h1 class="text-xl font-splatoon1 pt-2">Request Data Export</h1>
+                    <p>
+                        Request a copy of your data from Splashcat.
+                    </p>
+
+                    <form action="{% url 'users:request_data_export' %}" method="post" class="form-css pt-1">
+                        {% csrf_token %}
+                        <input type="submit" value="Request Data Export">
+                    </form>
                 </div>
             </div>
         </div>

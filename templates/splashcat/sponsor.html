@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="text-2xl">
+    <h1 class="text-4xl">
         Heya!
     </h1>
 
@@ -29,109 +29,116 @@
         Payments are processed through <a href="https://stripe.com/" class="underline text-blue-500">Stripe</a>.
     </div>
 
-    <h2 class="text-xl font-splatoon1">Sponsor Features</h2>
-    <div class="flex flex-row gap-2">
-        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6QeCJmzupkZn7tS58WNCG" %}">
-            {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
-                $5/month
-            </button>
-        </form>
-        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6SlCJmzupkZn745HUIbFJ" %}">
-            {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
-                $50/year
-            </button>
-        </form>
+    <div class="py-5">
+        <h2 class="text-2xl font-splatoon1">Sponsor Features</h2>
+        <ul class="list-disc list-inside text-lg max-w-prose">
+            <li>
+                Sponsor Badge
+                <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png" alt="Splashcat Sponsor"
+                     class="h-8 w-8 inline-block [image-rendering:pixelated]">
+                <p class="text-sm ml-8 text-gray-500">
+                    Must configure GitHub sponsorship privacy as public to display.
+                </p>
+            </li>
+            <li>
+                Favorite Color
+                <p class="text-md ml-8">
+                    Set a favorite color to be used for sub and special weapon icons on your profile and elsewhere on
+                    Splashcat.
+                </p>
+                <p class="text-sm ml-8 text-gray-500">
+                    Sponsorship privacy does not affect this feature.
+                </p>
+            </li>
+            <li>
+                Page Backgrounds
+                <p class="text-md ml-8">
+                    Configure a background image to be shown on your profile and battle pages!
+                </p>
+                <p class="text-sm ml-8 text-gray-500">
+                    Sponsorship privacy does not affect this feature.
+                </p>
+            </li>
+        </ul>
+        <div class="flex flex-row gap-2 pt-2">
+            <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6QeCJmzupkZn7tS58WNCG" %}">
+                {% csrf_token %}
+                <button type="submit" class="py-2 px-4 rounded bg-pink-600 hover:bg-pink-700">
+                    $5/month
+                </button>
+            </form>
+            <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6SlCJmzupkZn745HUIbFJ" %}">
+                {% csrf_token %}
+                <button type="submit" class="py-2 px-4 rounded bg-pink-600 hover:bg-pink-700">
+                    $50/year
+                </button>
+            </form>
+        </div>
     </div>
-    <ul class="list-disc list-inside text-lg max-w-prose">
-        <li>
-            Sponsor Badge
-            <img src="{% static 'images/splashcat-sponsor-badge.png' %}?format=png" alt="Splashcat Sponsor"
-                 class="h-8 w-8 inline-block [image-rendering:pixelated]">
-            <p class="text-sm ml-8 text-gray-500">
-                Must configure GitHub sponsorship privacy as public to display.
-            </p>
-        </li>
-        <li>
-            Favorite Color
-            <p class="text-md ml-8">
-                Set a favorite color to be used for sub and special weapon icons on your profile and elsewhere on
-                Splashcat.
-            </p>
-            <p class="text-sm ml-8 text-gray-500">
-                Sponsorship privacy does not affect this feature.
-            </p>
-        </li>
-        <li>
-            Page Backgrounds
-            <p class="text-md ml-8">
-                Configure a background image to be shown on your profile and battle pages!
-            </p>
-            <p class="text-sm ml-8 text-gray-500">
-                Sponsorship privacy does not affect this feature.
-            </p>
-        </li>
-    </ul>
 
-    <h2 class="text-xl font-splatoon1">S+ponsor Features</h2>
-    <div class="flex flex-row gap-2">
-        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6TJCJmzupkZn7Zc0DIimS" %}">
-            {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
-                $10/month
-            </button>
-        </form>
-        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6TTCJmzupkZn7TcGChz6l" %}">
-            {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
-                $100/year
-            </button>
-        </form>
+    <div class="py-5">
+        <h2 class="text-2xl font-splatoon1">S+ponsor Features</h2>
+        <ul class="list-disc list-inside text-lg max-w-prose">
+            <li>
+                AI Battle Descriptions
+                <p class="text-md ml-8">
+                    Battles uploaded to Splashcat will have a short AI generated description added to them. Perfect for
+                    sharing your battles on social media!
+                </p>
+                <p class="text-sm ml-8 text-gray-500">
+                    Sponsorship privacy does not affect this feature.
+                </p>
+            </li>
+            <li><span class="font-splatoon1">+</span> All Sponsor Features</li>
+        </ul>
+        <div class="flex flex-row gap-2 pt-2">
+            <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6TJCJmzupkZn7Zc0DIimS" %}">
+                {% csrf_token %}
+                <button type="submit" class="py-2 px-4 rounded bg-pink-600 hover:bg-pink-700">
+                    $10/month
+                </button>
+            </form>
+            <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6TTCJmzupkZn7TcGChz6l" %}">
+                {% csrf_token %}
+                <button type="submit" class="py-2 px-4 rounded bg-pink-600 hover:bg-pink-700">
+                    $100/year
+                </button>
+            </form>
+        </div>
     </div>
-    <ul class="list-disc list-inside text-lg max-w-prose">
-        <li>
-            AI Battle Descriptions
-            <p class="text-md ml-8">
-                Battles uploaded to Splashcat will have a short AI generated description added to them. Perfect for
-                sharing your battles on social media!
-            </p>
-            <p class="text-sm ml-8 text-gray-500">
-                Sponsorship privacy does not affect this feature.
-            </p>
-        </li>
-        <li><span class="font-splatoon1">+</span> All Sponsor Features</li>
-    </ul>
 
-    <h2 class="text-xl font-splatoon1">Xponsor Features</h2>
-    <div class="flex flex-row gap-2">
-        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6UMCJmzupkZn7pwnBvGVG" %}">
-            {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
-                $15/month
-            </button>
-        </form>
-        <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6UaCJmzupkZn7DRvUZR1l" %}">
-            {% csrf_token %}
-            <button type="submit" class="p-4 rounded bg-pink-600 hover:bg-pink-700">
-                $150/year
-            </button>
-        </form>
+    <div class="py-5">
+        <h2 class="text-2xl font-splatoon1">Xponsor Features</h2>
+        <ul class="list-disc list-inside text-lg max-w-prose">
+            <li>
+                Splashcat Assistant
+                <p class="text-md ml-8">
+                    Receive insights on your battle data and create new battle groups with Splashcat Assistant.
+                    <a href="https://splashcat.ink/assistant/threads/shared/7a6226d0-083c-47af-97de-be2f20aca86c/"
+                       class="text-blue-500 underline text-base">Example Thread</a>
+                </p>
+                <p class="text-sm ml-8 text-gray-500">
+                    Sponsorship privacy does not affect this feature.
+                </p>
+            </li>
+            <li><span class="font-splatoon1">+</span> All Sponsor and S+ponsor Features</li>
+        </ul>
+
+        <div class="flex flex-row gap-2 pt-2">
+            <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6UMCJmzupkZn7pwnBvGVG" %}">
+                {% csrf_token %}
+                <button type="submit" class="py-2 px-4 rounded bg-pink-600 hover:bg-pink-700">
+                    $15/month
+                </button>
+            </form>
+            <form method="post" action="{% url 'sponsors:create_checkout_session' "price_1Oq6UaCJmzupkZn7DRvUZR1l" %}">
+                {% csrf_token %}
+                <button type="submit" class="py-2 px-4 rounded bg-pink-600 hover:bg-pink-700">
+                    $150/year
+                </button>
+            </form>
+        </div>
     </div>
-    <ul class="list-disc list-inside text-lg max-w-prose">
-        <li>
-            Splashcat Assistant
-            <p class="text-md ml-8">
-                Receive insights on your battle data and create new battle groups with Splashcat Assistant.
-                <a href="https://splashcat.ink/assistant/threads/shared/7a6226d0-083c-47af-97de-be2f20aca86c/"
-                   class="text-blue-500 underline text-base">Example Thread</a>
-            </p>
-            <p class="text-sm ml-8 text-gray-500">
-                Sponsorship privacy does not affect this feature.
-            </p>
-        </li>
-        <li><span class="font-splatoon1">+</span> All Sponsor and S+ponsor Features</li>
-    </ul>
 
     <a href="https://climate.stripe.com/cLg3Ag" class="text-md py-2 font-semibold underline">
         <img src="{% static 'images/stripe-climate-badge.svg' %}" alt="Stripe Climate Badge"
