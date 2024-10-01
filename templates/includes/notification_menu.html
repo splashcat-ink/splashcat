@@ -3,7 +3,7 @@
         {% for notification in notifications %}
             <li class="flex flex-col gap-1 bg-gray-900 rounded-lg px-2 py-1">
                 <div class="font-splatoon1 text-md text-white whitespace-nowrap">
-                    {{ notification.sender.username }} {{ notification.message }}
+                    <a href="{% url 'profile' notification.sender.username %}">{{ notification.sender.display_name }}</a> {{ notification.message }}
                 </div>
                 <div class="text-sm text-gray-500">
                     {{ notification.created_at|date:"M d, Y H:i" }}
