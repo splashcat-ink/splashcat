@@ -29,6 +29,12 @@
     <link rel="webmention" href="https://webmention.io/catgirlin.space/webmention"/>
     <link rel="pingback" href="https://webmention.io/catgirlin.space/xmlrpc"/>
 
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Splashcat">
+    <link rel="apple-touch-icon" href="{% static 'images/splashcat-icon.png' %}">
+
     <script src="{% static 'js/index.js' %}" defer></script>
     {% django_htmx_script %}
 
@@ -68,34 +74,35 @@
     {% endblock %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="h-full flex flex-col">
-    <script>
-        function fetchNotifications() {
-            if (document.visibilityState === 'visible') {
-                htmx.ajax('GET', '/notifications/fetch', '#notifications-container');
-                console.log("Fetching notifications");
+    {% if user.is_authenticated %}
+        <script>
+            function fetchNotifications() {
+                if (document.visibilityState === 'visible') {
+                    htmx.ajax('GET', '/notifications/fetch', '#notifications-container');
+                    console.log("Fetching notifications");
+                }
             }
-        }
-    
-        window.onload = function() {
-            fetchNotifications();
-            setInterval(fetchNotifications, 60000);
-        };
-    
-        document.addEventListener("visibilitychange", function() {
-            if (document.visibilityState === 'visible') {
-                console.log("Tab is active, fetching notifications");
+        
+            window.onload = function() {
                 fetchNotifications();
-            } else {
-                console.log("Tab is not active, skipping notification fetch");
-            }
-        });
-    
-        document.addEventListener("htmx:load-notifications", function () {
-            console.log("Notification dropdown opened, loading notifications");
-            fetchNotifications();
-        });
-    </script>
-    
+                setInterval(fetchNotifications, 60000);
+            };
+        
+            document.addEventListener("visibilitychange", function() {
+                if (document.visibilityState === 'visible') {
+                    console.log("Tab is active, fetching notifications");
+                    fetchNotifications();
+                } else {
+                    console.log("Tab is not active, skipping notification fetch");
+                }
+            });
+        
+            document.addEventListener("htmx:load-notifications", function () {
+                console.log("Notification dropdown opened, loading notifications");
+                fetchNotifications();
+            });
+        </script>
+    {% endif %}
 
     {% csrf_token %}
     <header>
