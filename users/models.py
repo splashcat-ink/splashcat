@@ -5,6 +5,8 @@ from datetime import timedelta
 from enum import Enum
 from io import BytesIO
 import re
+import pytz
+from datetime import datetime
 
 import requests
 from django.contrib.auth.models import AbstractUser
@@ -92,6 +94,7 @@ class User(AbstractUser):
     preferred_pronouns = models.CharField(_("preferred pronouns"), max_length=20, blank=True, null=True, validators=[validate_no_profanity])
 
     bio = models.CharField(_("bio"), blank=True, null=True, max_length=200, validators=[validate_no_profanity])
+    timezone = models.CharField(_("timezone"), max_length=50, null=True, blank=True)
 
     x_battle_division = TextChoicesField(verbose_name=_("X Battle division"), choices_enum=XBattleDivisions,
                                          default=XBattleDivisions.UNSPECIFIED)
@@ -221,6 +224,12 @@ class User(AbstractUser):
 
         image_hash = hashlib.sha256(image_data.getvalue()).hexdigest()
         self.profile_picture.save(f'identicon-{image_hash}.png', image, save=True)
+
+    def get_local_date(self):
+        if self.timezone:
+            return datetime.now(pytz.timezone(self.timezone)).date()
+        else:
+            return datetime.now().date()
 
 
 def generate_key():

@@ -98,4 +98,48 @@
         <a href="{% url 'battles:global_data_export' %}" class="py-2 px-3 rounded bg-pink-700 hover:bg-pink-800">Global Battle
             Data</a>
     </div>
+
+    <div id="timezone-holder" data-timezone="{{ user_local_timezone }}" hidden></div>
+{% endblock %}
+
+{% block js%}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const userSavedTimezone = document.getElementById('timezone-holder').getAttribute('data-timezone');
+        
+        
+            // JavaScript to capture user's timezone and store in UserProfile
+            function setUserTimezone() {
+                const userLocalTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                if (userLocalTimezone !== userSavedTimezone) {
+                    fetch('set_user_timezone/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken,
+                        },
+                        body: JSON.stringify({
+                            'user_local_timezone': userLocalTimezone,
+                        }) 
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data['updated']) {
+                            location.reload();
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });        
+                }
+            };
+        
+            // Call the function to set the user's timezone
+            if (csrftoken) {
+                setUserTimezone();
+            }
+        
+        });
+    </script>
 {% endblock %}

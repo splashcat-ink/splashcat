@@ -18,13 +18,16 @@ def home(request):
     
     if request.user.is_authenticated:
         notifications = Notification.objects.filter(recipient=request.user, is_read=False).order_by('-created_at')
+        timezone = request.user.timezone
     else:
         notifications = None
+        timezone = None
 
     return render(request, 'splashcat/home.html', {
         'recent_battles': recent_battles,
         'user_recent_battles': user_recent_battles,
         'notifications': notifications,
+        'user_local_timezone': timezone,
     })
 
 

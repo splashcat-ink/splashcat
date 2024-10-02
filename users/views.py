@@ -572,3 +572,21 @@ def get_notifications(request):
         'notifications': notifications,
         'unread_notifications': unread_notifications
     })
+
+@login_required
+def set_user_timezone(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user_local_timezone = data.get('user_local_timezone')
+        if user_local_timezone:
+            user = request.user
+            if str(request.user.timezone) != user_local_timezone:
+                user.timezone = user_local_timezone
+                user.save()
+                return JsonResponse({'success': True, 'updated':True})
+            else:
+                return JsonResponse({'success': True, 'updated':False})
+        else:
+            return JsonResponse({'success': False})
+    
+    return JsonResponse({'success': False}, status=400)
