@@ -3,32 +3,36 @@
     {% if user.profile_cover and user.profile_picture %}
         <div class="relative w-full pb-12">
             <img src="{{ user.profile_cover.url }}?width=700"
-                alt="{{ user.display_name }}'s profile cover"
-                class="max-w-[350px] max-h-56 w-full object-cover rounded">
+                 alt="{{ user.display_name }}'s profile cover"
+                 class="max-w-[350px] max-h-56 w-full object-cover rounded">
             <img src="{{ user.profile_picture.url }}?width=256"
-                alt="{{ user.display_name }}'s profile picture"
-                class="aspect-square w-1/5 object-cover rounded-xl shadow-2xl bottom-0 left-3 absolute">
+                 alt="{{ user.display_name }}'s profile picture"
+                 class="aspect-square w-1/5 object-cover rounded-xl shadow-2xl bottom-0 left-3 absolute">
             <div class="flex flex-col absolute bottom-0 left-1/4 w-3/4">
                 <div class="flex justify-between items-center">
                     <div class="text-xl mr-4">
                         {{ user.display_name }}
                         {% if user.display_sponsor_badge %}
                             <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
-                                class="h-6 inline-block [image-rendering:pixelated]">
+                                 class="h-6 inline-block [image-rendering:pixelated]">
                         {% endif %}
                     </div>
-                    {% if request.user.is_authenticated and show_follow == True and user != profile_user %}
-                        <form action="{% if is_following %}{% url 'unfollow_user' user.username %}{% else %}{% url 'follow_user' user.username %}{% endif %}" method="post" class="ml-4">
+                    {% if request.user.is_authenticated and show_follow == True and user != request.user %}
+                        <form action="
+                                {% if is_following %}{% url 'unfollow_user' user.username %}{% else %}{% url 'follow_user' user.username %}{% endif %}"
+                              method="post" class="ml-4">
                             {% csrf_token %}
                             <button type="submit" class="bg-pink-700 rounded pl-2 py-0.25 pr-3 shadow text-white">
                                 {% if is_following %}
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6 inline-block">
-                                        <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM2.046 15.253c-.058.468.172.92.57 1.175A9.953 9.953 0 0 0 8 18c1.982 0 3.83-.578 5.384-1.573.398-.254.628-.707.57-1.175a6.001 6.001 0 0 0-11.908 0ZM12.75 7.75a.75.75 0 0 0 0 1.5h5.5a.75.75 0 0 0 0-1.5h-5.5Z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                         class="w-6 h-6 inline-block">
+                                        <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM2.046 15.253c-.058.468.172.92.57 1.175A9.953 9.953 0 0 0 8 18c1.982 0 3.83-.578 5.384-1.573.398-.254.628-.707.57-1.175a6.001 6.001 0 0 0-11.908 0ZM12.75 7.75a.75.75 0 0 0 0 1.5h5.5a.75.75 0 0 0 0-1.5h-5.5Z"/>
                                     </svg>
                                     <span class="ml-2">Unfollow</span>
                                 {% else %}
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6 inline-block">
-                                        <path d="M10 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM1.615 16.428a1.224 1.224 0 0 1-.569-1.175 6.002 6.002 0 0 1 11.908 0c.058.467-.172.92-.57 1.174A9.953 9.953 0 0 1 7 18a9.953 9.953 0 0 1-5.385-1.572ZM16.25 5.75a.75.75 0 0 0-1.5 0v2h-2a.75.75 0 0 0 0 1.5h2v2a.75.75 0 0 0 1.5 0v-2h2a.75.75 0 0 0 0-1.5h-2v-2Z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                         class="w-6 h-6 inline-block">
+                                        <path d="M10 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM1.615 16.428a1.224 1.224 0 0 1-.569-1.175 6.002 6.002 0 0 1 11.908 0c.058.467-.172.92-.57 1.174A9.953 9.953 0 0 1 7 18a9.953 9.953 0 0 1-5.385-1.572ZM16.25 5.75a.75.75 0 0 0-1.5 0v2h-2a.75.75 0 0 0 0 1.5h2v2a.75.75 0 0 0 1.5 0v-2h2a.75.75 0 0 0 0-1.5h-2v-2Z"/>
                                     </svg>
                                     <span class="ml-2">Follow</span>
                                 {% endif %}
@@ -44,8 +48,8 @@
             <div class="flex items-center w-fit {% if not user.profile_picture %}pl-4{% endif %}">
                 {% if user.profile_picture %}
                     <img src="{{ user.profile_picture.url }}?optimizer=image&height=72&width=72"
-                        alt="{{ user.display_name }}"
-                        class="h-12 w-12 object-cover rounded-lg">
+                         alt="{{ user.display_name }}"
+                         class="h-12 w-12 object-cover rounded-lg">
                 {% endif %}
                 <div class="flex flex-col {% if not user.profile_picture %}items-start{% endif %} w-full">
                     <div class="flex justify-between items-center w-full">
@@ -53,21 +57,25 @@
                             {{ user.display_name }}
                             {% if user.display_sponsor_badge %}
                                 <img src="{% static 'images/splashcat-sponsor-badge.png' %}" alt="Splashcat Sponsor"
-                                    class="h-6 inline-block [image-rendering:pixelated]">
+                                     class="h-6 inline-block [image-rendering:pixelated]">
                             {% endif %}
                         </div>
                         {% if request.user.is_authenticated and show_follow == True and user != profile_user %}
-                            <form action="{% if is_following %}{% url 'unfollow_user' user.username %}{% else %}{% url 'follow_user' user.username %}{% endif %}" method="post" class="ml-4">
+                            <form action="
+                                    {% if is_following %}{% url 'unfollow_user' user.username %}{% else %}{% url 'follow_user' user.username %}{% endif %}"
+                                  method="post" class="ml-4">
                                 {% csrf_token %}
                                 <button type="submit" class="bg-pink-700 rounded pl-2 py-0.25 pr-3 shadow text-white">
                                     {% if is_following %}
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6 inline-block">
-                                            <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM2.046 15.253c-.058.468.172.92.57 1.175A9.953 9.953 0 0 0 8 18c1.982 0 3.83-.578 5.384-1.573.398-.254.628-.707.57-1.175a6.001 6.001 0 0 0-11.908 0ZM12.75 7.75a.75.75 0 0 0 0 1.5h5.5a.75.75 0 0 0 0-1.5h-5.5Z" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                             class="w-6 h-6 inline-block">
+                                            <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM2.046 15.253c-.058.468.172.92.57 1.175A9.953 9.953 0 0 0 8 18c1.982 0 3.83-.578 5.384-1.573.398-.254.628-.707.57-1.175a6.001 6.001 0 0 0-11.908 0ZM12.75 7.75a.75.75 0 0 0 0 1.5h5.5a.75.75 0 0 0 0-1.5h-5.5Z"/>
                                         </svg>
                                         <span class="ml-2">Unfollow</span>
                                     {% else %}
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6 inline-block">
-                                            <path d="M10 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM1.615 16.428a1.224 1.224 0 0 1-.569-1.175 6.002 6.002 0 0 1 11.908 0c.058.467-.172.92-.57 1.174A9.953 9.953 0 0 1 7 18a9.953 9.953 0 0 1-5.385-1.572ZM16.25 5.75a.75.75 0 0 0-1.5 0v2h-2a.75.75 0 0 0 0 1.5h2v2a.75.75 0 0 0 1.5 0v-2h2a.75.75 0 0 0 0-1.5h-2v-2Z" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                             class="w-6 h-6 inline-block">
+                                            <path d="M10 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM1.615 16.428a1.224 1.224 0 0 1-.569-1.175 6.002 6.002 0 0 1 11.908 0c.058.467-.172.92-.57 1.174A9.953 9.953 0 0 1 7 18a9.953 9.953 0 0 1-5.385-1.572ZM16.25 5.75a.75.75 0 0 0-1.5 0v2h-2a.75.75 0 0 0 0 1.5h2v2a.75.75 0 0 0 1.5 0v-2h2a.75.75 0 0 0 0-1.5h-2v-2Z"/>
                                         </svg>
                                         <span class="ml-2">Follow</span>
                                     {% endif %}

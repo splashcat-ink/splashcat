@@ -53,6 +53,7 @@ strawberry-persisted-queries = "^1.0.3"
 qrcode = "^7.4.2"
 uuid = "^1.30"
 better-profanity = "^0.7.0"
+pytz = "^2024.2"
 
 
 [build-system]
