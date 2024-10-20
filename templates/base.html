@@ -41,7 +41,7 @@
 		window.plausible = window.plausible || function () {
 			(window.plausible.q = window.plausible.q || []).push(arguments)
 		}
-        
+
 		window.addEventListener("pagereveal", e => {
 			if (e.viewTransition) {
 				console.log("reveal", e.viewTransition, sessionStorage.getItem("direction"))
@@ -110,6 +110,12 @@
                class="bg-purple-600 hover:bg-purple-700 rounded p-4 my-auto">GitHub</a>
             <a href="https://discord.gg/JPFwvbSWMS"
                class="bg-purple-600 hover:bg-purple-700 rounded p-4 my-auto">Discord</a>
+            <a href="https://bsky.app/profile/did:plc:47pwqwpzcnqchssbt6w4konj"
+               class="bg-purple-600 hover:bg-purple-700 rounded p-4 my-auto">
+                <img src="{% static 'images/bluesky.svg' %}" alt="Bluesky"
+                     class="h-6 w-6 inline" height="530" width="600" loading="lazy">
+                @splashcat.ink
+            </a>
         </div>
     </div>
 </footer>
