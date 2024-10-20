@@ -2755,13 +2755,13 @@ django = ["django (>=5.0.3,<6.0.0)"]
 
 [[package]]
 name = "stripe"
-version = "8.11.0"
+version = "10.12.0"
 description = "Python bindings for the Stripe API"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "stripe-8.11.0-py2.py3-none-any.whl", hash = "sha256:57187676dcc8713080169db4589c676d038c3a72961e04e43e44cf539b1a5a5a"},
-    {file = "stripe-8.11.0.tar.gz", hash = "sha256:11714a38d48ca551a353503c2f97a7df720d0a533d9d321ca245bc1fdff1ce62"},
+    {file = "stripe-10.12.0-py2.py3-none-any.whl", hash = "sha256:0c79c1f3a844533c8d30cc283b43afb622aaa402539fca19167a9004fea3471c"},
+    {file = "stripe-10.12.0.tar.gz", hash = "sha256:5abec44548d3814bc1e070aa1852bcb3fc5cc029e947c0f733156eb1f8c87030"},
 ]
 
 [package.dependencies]
@@ -2999,4 +2999,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "70656bab67c9922aca56a5cd25ffcd4d201abbd91c29c3571f341ca9d8c0924b"
+content-hash = "df2cb2d6b9b8a5992ae1f5abf75043ae91a5369b6c266d6665bcef339880f14c"
