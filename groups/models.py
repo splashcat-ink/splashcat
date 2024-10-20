@@ -1,8 +1,14 @@
 from django.db import models
 from django.urls import reverse
 
+from better_profanity import profanity
+from django.core.exceptions import ValidationError
 
 # Create your models here.
+
+def validate_no_profanity(value):
+        if profanity.contains_profanity(value):
+            raise ValidationError(("This text contains inappropriate language."))
 
 class Group(models.Model):
     class PrivacyLevels(models.TextChoices):
@@ -10,8 +16,8 @@ class Group(models.Model):
         RESTRICTED = 'RESTRICTED', 'Restricted'
         PRIVATE = 'PRIVATE', 'Private'
 
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, default='')
+    name = models.CharField(max_length=255, validators=[validate_no_profanity])
+    description = models.TextField(blank=True, default='', validators=[validate_no_profanity])
     members = models.ManyToManyField('users.User', through='Membership')
     owner = models.ForeignKey('users.User', related_name='groups_owned', on_delete=models.CASCADE)
     pending_invites = models.ManyToManyField('users.User', related_name='pending_group_invites', blank=True)

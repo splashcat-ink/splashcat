@@ -1,0 +1,15 @@
+{
+    "name": "Splashcat",
+    "short_name": "Splashcat",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "icons": [
+        {
+            "src": "/static/images/splashcat-icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

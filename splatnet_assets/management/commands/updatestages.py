@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
         for stage in stage_data:
             if stage['__RowId'][:3] == 'Vss':
-                data = splatoon_3_ink_data[stage['Id']]
+                data = splatoon_3_ink_data.get(stage['Id'])
                 image_id = ''.join([c for c in stage['__RowId'] if not c.isdigit()])
 
                 Stage.objects.update_or_create(
@@ -30,6 +30,10 @@ class Command(BaseCommand):
                             'stage',
                             image_id,
                             data['originalImage']['url'],
+                        ) if data else download_image_from_path(
+                            'stage',
+                            image_id,
+                            f'stageBanner/{image_id}.png',
                         ),
                         'image_banner': download_image_from_path(
                             'stage_banner',
@@ -38,3 +42,4 @@ class Command(BaseCommand):
                         ),
                     }
                 )
+

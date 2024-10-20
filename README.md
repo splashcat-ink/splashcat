@@ -73,6 +73,9 @@ please [report it! ](https://github.com/splashcat-ink/splashcat/issues/new "repo
 If it's a security vulnerability please contact splashcat@rosalina.saige.ink or use GitHub's tools for reporting
 security issues. Do **not** use a public GitHub issue.
 
+## Upload battles to local instance of Splashcat
+To upload battle data to a local debug instance of splashcat follow [this guide](https://github.com/splashcat-ink/splashcat/blob/main/UPLOADING-BATTLES.md)
+
 ## Donating
 
 Sponsoring me will support Splashcat and its server costs. Getting the $5+ monthly tier also gives you some little
