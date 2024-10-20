@@ -74,7 +74,8 @@
     {% endblock %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="h-full flex flex-col">
-    {% if user.is_authenticated %}
+    {% comment %} Notification Loading System {% endcomment %}
+    {% comment %} {% if user.is_authenticated %}
         <script>
             function fetchNotifications() {
                 if (document.visibilityState === 'visible') {
@@ -102,7 +103,7 @@
                 fetchNotifications();
             });
         </script>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
     {% csrf_token %}
     <header>
