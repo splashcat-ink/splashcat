@@ -186,3 +186,12 @@ def leave_group(request, group_id):
         group.members.remove(request.user)
         messages.success(request, f'Left {group.name}.')
     return HttpResponseClientRedirect(reverse('groups:index'))
+
+@require_POST
+def delete_group(request, group_id):
+    group = get_object_or_404(Group, pk=group_id)
+    if group.owner != request.user:
+        return HttpResponseForbidden()
+    group.delete()
+    messages.success(request, 'Group deleted.')
+    return HttpResponseClientRedirect(reverse('groups:index'))

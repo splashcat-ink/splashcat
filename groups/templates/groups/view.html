@@ -16,7 +16,7 @@
         {% endif %}
         {% if is_group_member and group.owner != user %}
             <a hx-post="{% url 'groups:leave_group' group.id %}"
-               hx-confirm="Are you sure you want to leave {{ group.name }}?" class="bg-purple-700 p-2 rounded w-fit">
+               hx-confirm="Are you sure you want to leave {{ group.name }}?" class="bg-purple-700 p-2 rounded w-fit cursor-pointer">
                 Leave Group
             </a>
         {% endif %}
