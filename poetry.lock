@@ -2661,13 +2661,13 @@ doc = ["sphinx"]
 
 [[package]]
 name = "strawberry-graphql"
-version = "0.237.3"
+version = "0.243.1"
 description = "A library for creating GraphQL APIs"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "strawberry_graphql-0.237.3-py3-none-any.whl", hash = "sha256:2dc43a5036995edf614d21c9faca8b6848a09353d167ae05f42a9d0e976e1611"},
-    {file = "strawberry_graphql-0.237.3.tar.gz", hash = "sha256:8e04bb8821b303cb2cbd2c981f211b2d61bd21e3d171a638d93ceb99081194ac"},
+    {file = "strawberry_graphql-0.243.1-py3-none-any.whl", hash = "sha256:7c4ddb97cd424fa23a540816cb169ef760822c9acfb63901e6717042bcda6cfe"},
+    {file = "strawberry_graphql-0.243.1.tar.gz", hash = "sha256:0ef8b0b100cb0ebd25eea1723105166625820b18d075e4f7cae744468b81d23e"},
 ]
 
 [package.dependencies]
@@ -2692,7 +2692,6 @@ pydantic = ["pydantic (>1.6.1)"]
 pyinstrument = ["pyinstrument (>=4.0.0)"]
 quart = ["quart (>=0.19.3)"]
 sanic = ["sanic (>=20.12.2)"]
-starlite = ["starlite (>=1.48.0)"]
 
 [[package]]
 name = "strawberry-graphql-django"
@@ -2977,4 +2976,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "500feec40a931b49756b2340e513e184cbc2cad37240e68eea6cd15efde34081"
+content-hash = "80c48d33c7fd87e9c244991e0cd1babbfc6aa97215985b974653931fb3d41b37"
