@@ -94,7 +94,7 @@ class User(AbstractUser):
     preferred_pronouns = models.CharField(_("preferred pronouns"), max_length=20, blank=True, null=True, validators=[validate_no_profanity])
 
     bio = models.CharField(_("bio"), blank=True, null=True, max_length=200, validators=[validate_no_profanity])
-    timezone = models.CharField(_("timezone"), max_length=50, null=True, blank=True)
+    timezone = models.CharField(_("timezone"), max_length=50, null=True, blank=True, default='UTC')
 
     x_battle_division = TextChoicesField(verbose_name=_("X Battle division"), choices_enum=XBattleDivisions,
                                          default=XBattleDivisions.UNSPECIFIED)
