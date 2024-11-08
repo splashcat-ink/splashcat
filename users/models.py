@@ -5,6 +5,9 @@ from datetime import timedelta
 from enum import Enum
 from io import BytesIO
 import re
+from PIL import Image, ImageOps
+import io
+from uuid import uuid4
 
 import requests
 from django.contrib.auth.models import AbstractUser
@@ -100,6 +103,30 @@ class User(AbstractUser):
     coral_friend_url = models.URLField(_("Nintendo Switch Online app friend URL"), blank=True, null=True,
                                        validators=[URLValidator(
                                            regex=r"^https:\/\/lounge\.nintendo\.com\/friendcode\/\d{4}-\d{4}-\d{4}\/[A-Za-z0-9]{10}$")])
+    
+    def save(self, *args, **kwargs):
+        for field_name in ['profile_picture', 'profile_cover', 'page_background']:
+            image = getattr(self, field_name)
+            if image and hasattr(image, 'name'):
+                try:
+                    with Image.open(image) as img:
+                        img = ImageOps.exif_transpose(img)
+
+                        img_no_exif = Image.new(img.mode, img.size)
+                        img_no_exif.putdata(list(img.getdata()))
+
+                        buffer = io.BytesIO()
+                        
+                        output_format = 'JPEG'
+                        img_no_exif.save(buffer, format=output_format)
+                        buffer.seek(0)
+
+                        new_filename = f"{uuid4()}.{output_format.lower()}"
+                        image.save(new_filename, ContentFile(buffer.read()), save=False)
+                except Exception as e:
+                    print(f"Error processing image for {field_name}: {e}")
+
+        super().save(*args, **kwargs)
 
     @property
     def entitlements(self):
