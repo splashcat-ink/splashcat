@@ -13,7 +13,7 @@ def home(request):
     player_prefetch_queryset = Player.objects \
         .select_related('weapon__name', 'weapon__flat_image', 'weapon__sub__name',
                         'weapon__sub__overlay_image', 'weapon__sub__mask_image', 'weapon__special__name',
-                        'weapon__special__overlay_image', 'weapon__special__mask_image')
+                        'weapon__special__overlay_image', 'weapon__special__mask_image').filter(is_self=True)
     player_prefetch = Prefetch(
         'teams__players',
         queryset=player_prefetch_queryset,
