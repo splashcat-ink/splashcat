@@ -209,7 +209,7 @@ if database_url is None or (len(sys.argv) > 1 and sys.argv[1] == 'collectstatic'
         }
     }
 else:
-    database_connection_details = dj_database_url.parse(database_url, conn_max_age=None, conn_health_checks=False)
+    database_connection_details = dj_database_url.parse(database_url)
 
     if FLY_REGION != FLY_PRIMARY_REGION:
         database_connection_details["PORT"] = 5433
