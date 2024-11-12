@@ -10,20 +10,9 @@ from users.models import User
 
 
 def home(request):
-    player_prefetch_queryset = Player.objects \
-        .select_related('weapon__name', 'weapon__flat_image', 'weapon__sub__name',
-                        'weapon__sub__overlay_image', 'weapon__sub__mask_image', 'weapon__special__name',
-                        'weapon__special__overlay_image', 'weapon__special__mask_image').filter(is_self=True)
-    player_prefetch = Prefetch(
-        'teams__players',
-        queryset=player_prefetch_queryset,
-    )
-
-    recent_battles = Battle.objects.prefetch_related('uploader__github_link', player_prefetch).select_related(
-        'vs_stage__name', 'battlevideo', 'splatfest').order_by('-uploaded_at')[:24]
-    user_recent_battles = request.user.battles.select_related('vs_stage__name', 'battlevideo',
-                                                              'splatfest').prefetch_related(
-        player_prefetch).order_by('-uploaded_at')[:12] if request.user.is_authenticated else None
+    recent_battles = Battle.objects.with_card_prefetch().order_by('-uploaded_at')[:24]
+    user_recent_battles = request.user.battles.with_card_prefetch().order_by('-uploaded_at')[
+                          :12] if request.user.is_authenticated else None
 
     return render(request, 'splashcat/home.html', {
         'recent_battles': recent_battles,

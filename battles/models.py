@@ -84,6 +84,19 @@ class BattleManager(models.Manager):
         return self.select_related('uploader__github_link', 'vs_stage__name', 'vs_stage__image', 'splatfest') \
             .prefetch_related('awards__name', 'battlevideo', 'teams').prefetch_related(player_prefetch)
 
+    def with_card_prefetch(self):
+        player_prefetch_queryset = Player.objects \
+            .select_related('weapon__name', 'weapon__flat_image', 'weapon__sub__name',
+                            'weapon__sub__overlay_image', 'weapon__sub__mask_image', 'weapon__special__name',
+                            'weapon__special__overlay_image', 'weapon__special__mask_image').filter(is_self=True)
+        player_prefetch = Prefetch(
+            'teams__players',
+            queryset=player_prefetch_queryset,
+        )
+
+        return self.prefetch_related('uploader__github_link', player_prefetch).select_related(
+            'vs_stage__name', 'battlevideo', 'splatfest')
+
 
 class Battle(models.Model):
     class VsMode(models.TextChoices):
@@ -300,11 +313,19 @@ class Battle(models.Model):
         except Battle.DoesNotExist:
             return None
 
+    def get_player_next_battle_minimal(self):
+        return Battle.objects.only('id').filter(uploader_id=self.uploader_id,
+                                                played_time__gt=self.played_time).order_by("played_time").first()
+
     def get_player_previous_battle(self):
         try:
             return self.get_previous_by_played_time(uploader_id=self.uploader_id)
         except Battle.DoesNotExist:
             return None
+
+    def get_player_previous_battle_minimal(self):
+        return Battle.objects.only('id').filter(uploader_id=self.uploader_id, played_time__lt=self.played_time).latest(
+            "played_time")
 
     def find_related_battle_video(self):
         return self.uploader.battlevideo_set.filter(

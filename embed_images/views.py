@@ -36,8 +36,7 @@ def index(request):
 
 def user_stats(request, username):
     user = get_object_or_404(User, username__iexact=username)
-    latest_battle = user.battles.with_prefetch().latest('played_time')
-    splashtag = latest_battle.splashtag if latest_battle else None
+    splashtag = user.get_splashtag
 
     win_count = user.battles.filter(judgement='WIN').count()
     lose_count = user.battles.filter(judgement__in=['LOSE', 'DEEMED_LOSE']).count()
@@ -81,13 +80,9 @@ def user_gear(request, username):
 
 def user_splashtag(request, username):
     user = get_object_or_404(User, username__iexact=username)
-    latest_battle = user.get_latest_battle()
-    player = latest_battle.player
-    splashtag = player.splashtag
+    splashtag = user.get_splashtag
 
     return render(request, "embed_images/user_splashtag.html", {
         'profile_user': user,
-        'latest_battle': latest_battle,
-        'player': player,
         'splashtag': splashtag,
     })
