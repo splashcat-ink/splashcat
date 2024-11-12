@@ -214,12 +214,16 @@ else:
     if FLY_REGION != FLY_PRIMARY_REGION:
         database_connection_details["PORT"] = 5433
 
+    if database_connection_details.get("OPTIONS"):
+        database_connection_details["OPTIONS"]["pool"] = True
+    else:
+        database_connection_details["OPTIONS"] = {
+            "pool": True,
+        }
+
     DATABASES = {
         "default": database_connection_details,
     }
-
-    CONN_MAX_AGE = None
-    CONN_HEALTH_CHECKS = False
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
