@@ -353,6 +353,7 @@ if SENTRY_DSN:
         "current_region": os.environ.get("FLY_REGION"),
         "primary_region": os.environ.get("PRIMARY_REGION"),
     })
+    sentry_sdk.set_tag("fly_region", os.environ.get("FLY_REGION"))
 
 # Celery
 
