@@ -32,7 +32,7 @@ django-anymail = { extras = ["postmark"], version = "^10.3" }
 django-storages = "^1.13.2"
 eventlet = "^0.36.1"
 django-unicorn = "^0.60.0"
-psycopg = {extras = ["pool"], version = "^3.2.3"}
+psycopg = {extras = ["binary", "pool"], version = "^3.2.3"}
 django-oidc-provider = "^0.8.0"
 openai = "^1.35.14"
 django-silk = "^5.0.3"
