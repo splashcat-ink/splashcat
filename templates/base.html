@@ -99,10 +99,11 @@
         <div class="text-sm">This website is not affiliated with Nintendo. All product names, logos, and brands are
             property of their respective owners.
         </div>
-        <a href="{% url 'uploaders_information' %}" class="text-blue-500 underline p-2 pl-0">Information on Available
-            Uploaders</a>
-        <a href="{% url 'legal' %}" class="text-blue-500 underline p-2">Legal Stuff</a>
-        <a href="{% url 'about' %}" class="text-blue-500 underline p-2">About Splashcat</a>
+        <div class="flex flex-row flex-wrap gap-2">
+            <a href="{% url 'uploaders_information' %}" class="text-blue-500 underline">Information on Available Uploaders</a>
+            <a href="{% url 'legal' %}" class="text-blue-500 underline">Legal Stuff</a>
+            <a href="{% url 'about' %}" class="text-blue-500 underline">About Splashcat</a>
+        </div>
         <div class="py-4 flex flex-row flex-wrap gap-4">
             <a href="https://github.com/splashcat-ink/splashcat"
                class="my-auto">
