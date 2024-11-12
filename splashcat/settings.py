@@ -330,7 +330,7 @@ if SENTRY_DSN:
         integrations=[
             DjangoIntegration(),
             StrawberryIntegration(
-                async_execution=True
+                # async_execution=True
             ),
         ],
 
