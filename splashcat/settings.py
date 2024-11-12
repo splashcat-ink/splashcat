@@ -329,9 +329,9 @@ if SENTRY_DSN:
         dsn=SENTRY_DSN,
         integrations=[
             DjangoIntegration(),
-            StrawberryIntegration(
-                # async_execution=True
-            ),
+            # StrawberryIntegration(
+            #     async_execution=True
+            # ),
         ],
 
         ignore_errors=[GraphQLError],
