@@ -17,7 +17,10 @@ def groups_index(request):
     # discovery of new groups and links to joined groups
     user: User = request.user
     member_groups = user.get_groups() if user.is_authenticated else None
-    random_public_groups = Group.objects.filter(privacy_level=Group.PrivacyLevels.PUBLIC).order_by('?')[:24]
+    if user.is_authenticated:
+        random_public_groups = Group.objects.filter(privacy_level = Group.PrivacyLevels.PUBLIC).exclude(owner=user).exclude(members=user).order_by('?')[:24]
+    else:
+        random_public_groups = Group.objects.filter(privacy_level=Group.PrivacyLevels.PUBLIC).order_by('?')[:24]
     pending_invites = user.pending_group_invites.all() if user.is_authenticated else None
     return render(request, 'groups/index.html', {
         'member_groups': member_groups,
