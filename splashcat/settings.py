@@ -109,7 +109,8 @@ INSTALLED_APPS = [
     "embed_images.apps.EmbedImagesConfig",
     "indexnow.apps.IndexNowConfig",
     "statink_importer.apps.StatInkImporterConfig",
-    "sponsors.apps.SponsorsConfig"
+    "sponsors.apps.SponsorsConfig",
+    'announcements.apps.AnnouncementsConfig'
 ]
 
 MIDDLEWARE = [
