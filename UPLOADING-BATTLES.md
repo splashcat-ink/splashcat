@@ -1,7 +1,7 @@
 ## How to upload battles (For Development)
-This guide is for uploading battles to splashcat in a local debug instance. The guide for uploading it to the production website is [here](https://splashcat.ink/uploaders-information/)
+This guide is for uploading battles to Splashcat in a local debug instance. The guide for uploading it to the production website is [here](https://splashcat.ink/uploaders-information/)
 
-Ensure that you are running Splashcat in **debug** mode and at address `http:127.0.0.1:8000`
+Ensure that you are running Splashcat in **debug** mode and at address `http://127.0.0.1:8000`
 1.  Enter poetry shell
 ```bash
 cd *splashcat directory*
