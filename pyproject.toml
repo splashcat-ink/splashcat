@@ -19,7 +19,7 @@ jsonschema = "^4.18.3"
 docutils = "^0.21"
 requests = "^2.32.3"
 python-dateutil = "^2.8.2"
-sentry-sdk = "^2.8.0"
+sentry-sdk = "^2.18.0"
 django-crispy-forms = "^2.0"
 crispy-tailwind = "^0.5.0"
 python-dotenv = "^1.0.0"
@@ -32,7 +32,7 @@ django-anymail = { extras = ["postmark"], version = "^10.3" }
 django-storages = "^1.13.2"
 eventlet = "^0.36.1"
 django-unicorn = "^0.60.0"
-psycopg = { extras = ["binary"], version = "^3.1.13" }
+psycopg = {extras = ["binary", "pool"], version = "^3.2.3"}
 django-oidc-provider = "^0.8.0"
 openai = "^1.35.14"
 django-silk = "^5.0.3"
@@ -48,12 +48,13 @@ asgiref = {git = "https://github.com/django/asgiref.git"}
 django-choices-field = "^2.2.2"
 django-cors-headers = "^4.3.1"
 stripe = "^10.12.0"
-strawberry-graphql = "^0.237.3"
+strawberry-graphql = "^0.248.1"
 strawberry-persisted-queries = "^1.0.3"
 qrcode = "^7.4.2"
 uuid = "^1.30"
 better-profanity = "^0.7.0"
 pytz = "^2024.2"
+django-debug-toolbar-template-profiler = "^2.1.0"
 
 
 [build-system]

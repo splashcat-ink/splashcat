@@ -34,7 +34,7 @@
 
     <h1 class="text-3xl font-splatoon1">
         <a href="{% url 'profile' battle.uploader.username %}">{{ battle.uploader.display_name }}</a>'s battle on
-        <time datetime="{{ battle.played_time }}">{{ battle.played_time }}</time>
+        <time datetime="{{ battle.played_time.isoformat }}">{{ battle.played_time }}</time>
 
         <button class="share-button inline-block"
                 data-url="https://splashcat.ink/battles/{{ battle.id }}/?share"
@@ -304,13 +304,13 @@
         <a href="{% url 'battles:redirect_to_user_latest_battle' battle.uploader.username %}" data-direction="forwards"
            class="battle-pagination-button py-2 px-4 rounded-full bg-gray-600">Latest Battle</a>
         <div class="grow"></div>
-        {% with next_battle=battle.get_player_next_battle %}
+        {% with next_battle=battle.get_player_next_battle_minimal %}
             <a href="{{ next_battle.get_absolute_url }}" data-direction="forwards"
                class="battle-pagination-button py-2 px-4 rounded-full {% if next_battle %}bg-gray-600{% else %}bg-gray-600/50 text-gray-400{% endif %}">
                 Next
             </a>
         {% endwith %}
-        {% with previous_battle=battle.get_player_previous_battle %}
+        {% with previous_battle=battle.get_player_previous_battle_minimal %}
             <a href="{{ previous_battle.get_absolute_url }}" data-direction="backwards"
                class="battle-pagination-button py-2 px-4 rounded-full {% if previous_battle %}bg-gray-600{% else %}bg-gray-800 text-gray-400{% endif %}">
                 Previous

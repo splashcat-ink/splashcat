@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_celery_beat',
     'debug_toolbar',
+    'template_profiler_panel',
     'django_htmx',
     'django_unicorn',
     'corsheaders',
@@ -108,7 +109,8 @@ INSTALLED_APPS = [
     "embed_images.apps.EmbedImagesConfig",
     "indexnow.apps.IndexNowConfig",
     "statink_importer.apps.StatInkImporterConfig",
-    "sponsors.apps.SponsorsConfig"
+    "sponsors.apps.SponsorsConfig",
+    'announcements.apps.AnnouncementsConfig'
 ]
 
 MIDDLEWARE = [
@@ -208,17 +210,21 @@ if database_url is None or (len(sys.argv) > 1 and sys.argv[1] == 'collectstatic'
         }
     }
 else:
-    database_connection_details = dj_database_url.parse(database_url, conn_max_age=None, conn_health_checks=False)
+    database_connection_details = dj_database_url.parse(database_url)
 
     if FLY_REGION != FLY_PRIMARY_REGION:
         database_connection_details["PORT"] = 5433
 
+    if database_connection_details.get("OPTIONS"):
+        database_connection_details["OPTIONS"]["pool"] = True
+    else:
+        database_connection_details["OPTIONS"] = {
+            "pool": True,
+        }
+
     DATABASES = {
         "default": database_connection_details,
     }
-
-    CONN_MAX_AGE = None
-    CONN_HEALTH_CHECKS = False
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -329,9 +335,9 @@ if SENTRY_DSN:
         dsn=SENTRY_DSN,
         integrations=[
             DjangoIntegration(),
-            StrawberryIntegration(
-                async_execution=True
-            ),
+            # StrawberryIntegration(
+            #     async_execution=True
+            # ),
         ],
 
         ignore_errors=[GraphQLError],
@@ -353,6 +359,7 @@ if SENTRY_DSN:
         "current_region": os.environ.get("FLY_REGION"),
         "primary_region": os.environ.get("PRIMARY_REGION"),
     })
+    sentry_sdk.set_tag("fly_region", os.environ.get("FLY_REGION"))
 
 # Celery
 
@@ -475,3 +482,21 @@ STRIPE_WEBHOOK_SECRET = None
 stripe.api_key = STRIPE_SECRET_KEY
 
 INDEXNOW_API_KEY = os.environ.get('INDEXNOW_API_KEY', 'indexnow-key')
+
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.history.HistoryPanel',
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.alerts.AlertsPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+    'debug_toolbar.panels.profiling.ProfilingPanel',
+    'template_profiler_panel.panels.template.TemplateProfilerPanel',
+]

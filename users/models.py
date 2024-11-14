@@ -7,6 +7,9 @@ from io import BytesIO
 import re
 import pytz
 from datetime import datetime
+from PIL import Image, ImageOps
+import io
+from uuid import uuid4
 
 import requests
 from django.contrib.auth.models import AbstractUser
@@ -15,6 +18,7 @@ from django.contrib.sites.models import Site
 from django.core.files.base import ContentFile
 from django.core.validators import URLValidator
 from django.db import models
+from django.db.models import Prefetch
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.crypto import get_random_string
@@ -27,7 +31,7 @@ from django.core.exceptions import ValidationError
 
 import django.contrib.auth.models as django_auth_models
 
-from battles.models import Battle
+from battles.models import Battle, Player
 from splatnet_assets.common_model_choices import XBattleDivisions
 from splatnet_assets.fields import ColorField
 
@@ -114,6 +118,30 @@ class User(AbstractUser):
                                        validators=[URLValidator(
                                            regex=r"^https:\/\/lounge\.nintendo\.com\/friendcode\/\d{4}-\d{4}-\d{4}\/[A-Za-z0-9]{10}$")])
 
+    def save(self, *args, **kwargs):
+        for field_name in ['profile_picture', 'profile_cover', 'page_background']:
+            image = getattr(self, field_name)
+            if image and hasattr(image, 'name'):
+                try:
+                    with Image.open(image) as img:
+                        img = ImageOps.exif_transpose(img)
+
+                        img_no_exif = Image.new(img.mode, img.size)
+                        img_no_exif.putdata(list(img.getdata()))
+
+                        buffer = io.BytesIO()
+
+                        output_format = 'JPEG'
+                        img_no_exif.save(buffer, format=output_format)
+                        buffer.seek(0)
+
+                        new_filename = f"{uuid4()}.{output_format.lower()}"
+                        image.save(new_filename, ContentFile(buffer.read()), save=False)
+                except Exception as e:
+                    print(f"Error processing image for {field_name}: {e}")
+
+        super().save(*args, **kwargs)
+
     @property
     def entitlements(self):
         entitlements = set(self._stripe_entitlements)
@@ -193,13 +221,28 @@ class User(AbstractUser):
     @property
     def get_splashtag(self):
         try:
-            return self.battles.with_prefetch().latest('played_time').splashtag
+            player_prefetch_queryset = Player.objects \
+                .select_related('title_adjective__string', 'title_subject__string', 'nameplate_background__image',
+                                'nameplate_badge_1__image', 'nameplate_badge_2__image', 'nameplate_badge_3__image',
+                                'nameplate_badge_1__description', 'nameplate_badge_2__description',
+                                'nameplate_badge_3__description').filter(is_self=True)
+            player_prefetch = Prefetch(
+                'teams__players',
+                queryset=player_prefetch_queryset,
+            )
+            return self.battles.prefetch_related(player_prefetch).latest('played_time').splashtag
         except Battle.DoesNotExist:
             return None
 
     def get_npln_id(self):
         try:
-            return self.battles.with_prefetch().latest('played_time').player.npln_id
+            player_prefetch_queryset = Player.objects \
+                .only('npln_id').filter(is_self=True)
+            player_prefetch = Prefetch(
+                'teams__players',
+                queryset=player_prefetch_queryset,
+            )
+            return self.battles.prefetch_related(player_prefetch).latest('played_time').player.npln_id
         except Battle.DoesNotExist:
             return None
 

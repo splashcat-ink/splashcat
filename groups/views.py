@@ -17,7 +17,10 @@ def groups_index(request):
     # discovery of new groups and links to joined groups
     user: User = request.user
     member_groups = user.get_groups() if user.is_authenticated else None
-    random_public_groups = Group.objects.filter(privacy_level=Group.PrivacyLevels.PUBLIC).order_by('?')[:24]
+    if user.is_authenticated:
+        random_public_groups = Group.objects.filter(privacy_level = Group.PrivacyLevels.PUBLIC).exclude(owner=user).exclude(members=user).order_by('?')[:24]
+    else:
+        random_public_groups = Group.objects.filter(privacy_level=Group.PrivacyLevels.PUBLIC).order_by('?')[:24]
     pending_invites = user.pending_group_invites.all() if user.is_authenticated else None
     return render(request, 'groups/index.html', {
         'member_groups': member_groups,
@@ -29,7 +32,7 @@ def groups_index(request):
 def view_group(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     group_all_members = list(group.members.all()) + [group.owner]
-    group_recent_battles = Battle.objects.with_prefetch().filter(uploader__in=group_all_members).order_by(
+    group_recent_battles = Battle.objects.with_card_prefetch().filter(uploader__in=group_all_members).order_by(
         "-played_time")[:16]
     is_group_member = request.user.is_authenticated and request.user in group_all_members
 

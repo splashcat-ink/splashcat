@@ -29,8 +29,7 @@ from .models import User, GitHubLink, ApiKey, ProfileUrl, Follow, Notification
 
 def profile(request, username: str):
     user = get_object_or_404(User, username__iexact=username)
-    latest_battles = user.battles.with_prefetch().order_by('-played_time') \
-                         .select_related('vs_stage__name')[:18]
+    latest_battles = user.battles.with_card_prefetch().order_by('-played_time')[:18]
     splashtag = latest_battles[0].splashtag if latest_battles else None
 
     win_count = user.battles.filter(judgement='WIN').count()
@@ -90,9 +89,7 @@ def profile(request, username: str):
 
 def profile_opengraph(request, username: str):
     user = get_object_or_404(User, username__iexact=username)
-    latest_battles = user.battles.with_prefetch().order_by('-played_time') \
-                         .select_related('vs_stage__name')[:12]
-    splashtag = latest_battles[0].splashtag if latest_battles else None
+    splashtag = user.get_splashtag
 
     win_count = user.battles.filter(judgement='WIN').count()
     lose_count = user.battles.filter(judgement__in=['LOSE', 'DEEMED_LOSE']).count()
@@ -113,7 +110,6 @@ def profile_opengraph(request, username: str):
                   {
                       'profile_user': user,
                       'splashtag': splashtag,
-                      'latest_battles': latest_battles,
                       'win_count': win_count,
                       'lose_count': lose_count,
                       'win_rate': win_rate,
@@ -206,8 +202,7 @@ def profile_json(request, username: str):
 
 def profile_battle_list(request, username: str):
     user = get_object_or_404(User, username__iexact=username)
-    battles = user.battles.with_prefetch().order_by('-played_time') \
-        .select_related('vs_stage__name')
+    battles = user.battles.with_card_prefetch().order_by('-played_time')
 
     paginator = Paginator(battles, 24)
 

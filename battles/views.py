@@ -270,7 +270,7 @@ def check_if_battle_exists(request, splatnet_id):
 
 @login_required
 def get_latest_battles(request):
-    battles = request.user.battles.with_prefetch().order_by('-id')[:10]
+    battles = request.user.battles.with_card_prefetch().order_by('-id')[:10]
     return render(request, 'battles/htmx/latest_battles.html', {
         'battles': battles,
     })
@@ -306,7 +306,7 @@ def create_battle_group(request):
 
         return redirect('battles:view_battle_group', new_group.id)
 
-    battles = Battle.objects.with_prefetch().filter(uploader=request.user).order_by('-id')[:50]
+    battles = Battle.objects.with_card_prefetch().filter(uploader=request.user).order_by('-id')[:50]
     return render(request, 'battles/groups/create.html', {
         'battles': battles,
     })
@@ -340,7 +340,7 @@ def view_battle_group(request, group_id):
         'win_count': win_count,
         'lose_count': lose_count,
         'win_rate': win_rate,
-        'battles': battle_group.battles.with_prefetch().order_by('-played_time'),
+        'battles': battle_group.battles.with_card_prefetch().order_by('-played_time'),
     })
 
 

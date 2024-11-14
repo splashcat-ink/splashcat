@@ -13,8 +13,10 @@
     <div class="absolute bottom-0 right-0 flex flex-row gap-2">
         {% for badge in splashtag.badges %}
             {% if badge is not None %}
-                <img src="{{ badge.image.url }}" class="h-8 w-8" alt="{{ badge.translated_description }}"
-                     title="{{ badge.translated_description }}">
+                {% with translated_description=badge.translated_description %}
+                <img src="{{ badge.image.url }}" class="h-8 w-8" alt="{{ translated_description }}"
+                     title="{{ translated_description }}">
+                {% endwith %}
             {% else %}
                 <span class="h-8 w-8"></span>
             {% endif %}

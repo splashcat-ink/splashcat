@@ -34,7 +34,7 @@ schema = strawberry.Schema(
     mutation=Mutation,
     extensions=[
         DjangoOptimizerExtension,
-        PersistedQueriesExtension(cache_backend=DjangoPersistedQueryCache()),
+        PersistedQueriesExtension(),
         QueryDepthLimiter(max_depth=10),
         MaxTokensLimiter(max_token_count=1000),
         ParserCache(maxsize=100),
