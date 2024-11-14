@@ -172,26 +172,6 @@
             {% endfor %}
         </div>
 
-        <div class="row-start-1 row-end-2 lg:col-start-1 lg:col-end-4 lg:row-start-4 lg:row-end-5 px-4 text-center text-gray-50 flex flex-col gap-2 justify-end [text-shadow:1px_1px_black]">
-            <span>
-                <span>{{ battle.played_time }}</span>
-                <span>{{ battle.duration|duration }}</span>
-            </span>
-
-            <span>
-                <span>{{ battle.player.paint }}p</span>
-                {% if battle.power %}
-                    Power: {{ battle.power|format_power }}
-                {% endif %}
-                {% if battle.splatfest_clout_contribution %}
-                    <span>Clout: {{ battle.splatfest_clout_contribution }}</span>
-                {% endif %}
-                {% if battle.splatfest_festival_shells %}
-                    <span>Festival Shells: {{ battle.splatfest_festival_shells }}</span>
-                {% endif %}
-            </span>
-        </div>
-
         <div class="row-start-2 row-end-3 lg:col-start-1 lg:col-end-4 lg:row-start-5 lg:row-end-6 bg-gray-800/50 relative bg-[url('../images/tapes-transparent.png')] bg-contain rounded-lg px-4 py-2 mx-4 mb-4 flex flex-col gap-2">
             <div class="flex gap-4">
                 <span class="text-xl md:text-3xl font-splatoon1">

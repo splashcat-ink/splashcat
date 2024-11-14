@@ -6,20 +6,34 @@ from django.shortcuts import render
 
 from announcements.models import Announcement
 from battles.models import Battle
-from users.models import User
+from users.models import User, Notification
 
 
 def home(request):
-    recent_battles = Battle.objects.with_card_prefetch().order_by('-uploaded_at')[:24]
-    user_recent_battles = request.user.battles.with_card_prefetch().order_by('-uploaded_at')[
-                          :12] if request.user.is_authenticated else None
+    recent_battles = Battle.objects.with_prefetch() \
+                         .prefetch_related('uploader__github_link') \
+                         .select_related('vs_stage__name') \
+                         .order_by('-uploaded_at')[:24]
+    
+    user_recent_battles = request.user.battles.with_prefetch().select_related('vs_stage__name') \
+                              .order_by('-uploaded_at')[:12] if request.user.is_authenticated else None
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(recipient=request.user, is_read=False).order_by('-created_at')
+        timezone = request.user.timezone
+    else:
+        notifications = None
+        timezone = None
+    
     announcements = Announcement.objects.filter(active=True).order_by("-created_at")
 
     return render(request, 'splashcat/home.html', {
         'recent_battles': recent_battles,
         'user_recent_battles': user_recent_battles,
+        'notifications': notifications,
+        'user_local_timezone': timezone,
         'announcements': announcements,
     })
+
 
 
 def sponsor(request):

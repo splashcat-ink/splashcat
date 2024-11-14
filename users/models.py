@@ -5,6 +5,8 @@ from datetime import timedelta
 from enum import Enum
 from io import BytesIO
 import re
+import pytz
+from datetime import datetime
 from PIL import Image, ImageOps
 import io
 from uuid import uuid4
@@ -22,6 +24,10 @@ from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from django_choices_field import TextChoicesField
+from django.conf import settings
+
+from better_profanity import profanity
+from django.core.exceptions import ValidationError
 
 import django.contrib.auth.models as django_auth_models
 
@@ -30,6 +36,10 @@ from splatnet_assets.common_model_choices import XBattleDivisions
 from splatnet_assets.fields import ColorField
 
 # Create your models here.
+
+def validate_no_profanity(value):
+        if profanity.contains_profanity(value):
+            raise ValidationError(_("This text contains inappropriate language."))
 
 sponsor_perks = {
     "badge": {
@@ -75,17 +85,20 @@ class User(AbstractUser):
         help_text=_(
             "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
         ),
-        validators=[AbstractUser.username_validator],
+        validators=[AbstractUser.username_validator, validate_no_profanity],  # Added profanity validator
         error_messages={
             "unique": _("A user with that username already exists."),
         },
     )
-    display_name = models.CharField(_("display name"), max_length=30)
+    display_name = models.CharField(_("display name"), max_length=30, validators=[validate_no_profanity])
     first_name = None
     last_name = None
     verified_email = models.BooleanField(_("verified email"), default=False)
     email = models.EmailField(_("email address"), unique=True)
-    preferred_pronouns = models.CharField(_("preferred pronouns"), max_length=20, blank=True, null=True)
+    preferred_pronouns = models.CharField(_("preferred pronouns"), max_length=20, blank=True, null=True, validators=[validate_no_profanity])
+
+    bio = models.CharField(_("bio"), blank=True, null=True, max_length=200, validators=[validate_no_profanity])
+    timezone = models.CharField(_("timezone"), max_length=50, null=True, blank=True, default='UTC')
 
     x_battle_division = TextChoicesField(verbose_name=_("X Battle division"), choices_enum=XBattleDivisions,
                                          default=XBattleDivisions.UNSPECIFIED)
@@ -253,8 +266,13 @@ class User(AbstractUser):
         image = ContentFile(image_data.getvalue())
 
         image_hash = hashlib.sha256(image_data.getvalue()).hexdigest()
-
         self.profile_picture.save(f'identicon-{image_hash}.png', image, save=True)
+
+    def get_local_date(self):
+        if self.timezone:
+            return datetime.now(pytz.timezone(self.timezone)).date()
+        else:
+            return datetime.now().date()
 
 
 def generate_key():
@@ -297,3 +315,48 @@ class CustomAnonymousUser(django_auth_models.AnonymousUser):
 
 
 django_auth_models.AnonymousUser = CustomAnonymousUser
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='following',
+        on_delete=models.CASCADE,
+        verbose_name=_('follower'),
+    )
+
+    followed = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='followers',
+        on_delete=models.CASCADE,
+        verbose_name=_('followed'),
+    )
+    followed_on = models.DateTimeField(auto_now_add=True, verbose_name=_('followed on'))
+
+    class Meta:
+        unique_together = ('follower', 'followed')
+        verbose_name = _('Follower')
+        verbose_name_plural = _('Followers')
+
+    def __str__(self):
+        return f'{self.follower} follows {self.followed}'
+    
+class Notification(models.Model):
+    recipient = models.ForeignKey(
+        User, related_name='notifications', on_delete=models.CASCADE
+    )
+    sender = models.ForeignKey(
+        User, related_name='sent_notifications', on_delete=models.CASCADE
+    )
+    message = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    @property
+    def sender_profile_picture(self):
+        if self.sender.profile_picture:
+            return self.sender.profile_picture.url
+        return None
+
+    def __str__(self):
+        return f'Notification for {self.recipient} from {self.sender}'

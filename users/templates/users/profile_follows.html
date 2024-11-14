@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ profile_user.display_name }} @{{ profile_user.username }} 
+    {% if follow_type == 'followers' %}
+        {{ user.followers.count|pluralize:"follower,followers" }}
+    {% else %}
+        {{ user.following.count|pluralize:"following,following" }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="flex flex-col md:flex-row gap-4 overflow-x-clip">
+        <div class="basis-2/5 xl:basis-1/4 flex flex-col gap-2">
+            {% include 'users/profile_sidebar.html' with profile=profile_user %}
+        </div>
+
+        <div class="flex grow flex-col gap-2">
+            {% if follow_type == 'followers' %}
+                <h1 class="text-3xl font-splatoon1">Followers</h1>
+            {% elif follow_type == 'following' %}
+                <h1 class="text-3xl font-splatoon1">Following</h1>
+            {% endif %}
+
+            {% if follow_list %}
+                <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for follow, is_following in follow_list %}
+                        <li class="py-4">
+                            {% if follow_type == 'followers' %}
+                                {% include "users/includes/user-link.html" with user=follow.follower show_splashtag=True show_follow=True is_following=is_following %}
+                            {% elif follow_type == 'following' %}
+                                {% include "users/includes/user-link.html" with user=follow.followed show_splashtag=True show_follow=True is_following=is_following %}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>
+                    {% if follow_type == 'followers' %}
+                        No one follows {{ profile_user.display_name }}
+                    {% elif follow_type == 'following' %}
+                        {{ profile_user.display_name }} is not following anyone
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

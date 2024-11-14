@@ -128,7 +128,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'splashcat.middleware.PostgresReadOnlyMiddleware',  # redirects to primary region when a read only error occurs
-    'splashcat.middleware.NoIndexMiddleware',  # don't index fly.dev
+    'splashcat.middleware.NoIndexMiddleware',  # don't index fly.dev'
 ]
 
 LOGGING = {
@@ -293,10 +293,11 @@ STORAGES = global_settings.STORAGES | {
     },
 }
 
-if not DEBUG or True:
-    STORAGES |= {"default": {
-        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
-    }
+if not DEBUG:
+    STORAGES |= {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
+        }
     }
 
 AWS_S3_ACCESS_KEY_ID = os.environ.get('B2_ACCESS_KEY_ID')
@@ -373,7 +374,10 @@ CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379')
 ANYMAIL = {
     'POSTMARK_SERVER_TOKEN': os.environ.get('POSTMARK_SERVER_TOKEN'),
 }
-EMAIL_BACKEND = 'anymail.backends.postmark.EmailBackend'
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'anymail.backends.postmark.EmailBackend'
 DEFAULT_FROM_EMAIL = 'Splashcat <grizzco@splashcat.ink>'
 SERVER_EMAIL = 'server@splashcat.ink'
 

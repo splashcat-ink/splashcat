@@ -14,7 +14,7 @@ from django.forms import inlineformset_factory
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
 
 from battles.models import Player, Battle
 from battles.tasks import user_request_data_export
@@ -22,7 +22,7 @@ from splashcat.decorators import github_webhook
 from splatnet_assets.models import Weapon
 from . import tasks
 from .forms import RegisterForm, AccountSettingsForm, ResendVerificationEmailForm
-from .models import User, GitHubLink, ApiKey, ProfileUrl
+from .models import User, GitHubLink, ApiKey, ProfileUrl, Follow, Notification
 
 
 # Create your views here.
@@ -56,6 +56,15 @@ def profile(request, username: str):
 
     total_uploader_disconnects = Player.objects.filter(team__battle__uploader=user, is_self=True,
                                                        disconnect=True).count()
+    
+    following_list = Follow.objects.filter(follower=user).select_related('followed').order_by('-followed_on')
+    followers_list = Follow.objects.filter(followed=user).select_related('follower').order_by('-followed_on')
+    followed_user = user
+
+    if request.user.is_authenticated:
+        is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
+    else:
+        is_following = False
 
     return render(request, 'users/profile.html',
                   {
@@ -71,6 +80,10 @@ def profile(request, username: str):
                       'aggregates': aggregates,
                       'most_used_weapon': most_used_weapon,
                       'total_uploader_disconnects': total_uploader_disconnects,
+                      'following_list': following_list,
+                      'followers_list': followers_list,
+                      'followed_user': followed_user,
+                      'is_following': is_following,
                   })
 
 
@@ -468,3 +481,107 @@ def request_data_export(request):
                          f'Requested data export for @{user.username}! You should receive an email soon.'
                          )
     return redirect('users:settings')
+
+def profile_follows(request, username: str, view_type: str):
+    user = get_object_or_404(User, username__iexact=username)
+
+    if view_type == 'followers':
+        follow_list = Follow.objects.filter(followed=user).select_related('follower').order_by('-followed_on')
+    elif view_type == 'following':
+        follow_list = Follow.objects.filter(follower=user).select_related('followed').order_by('-followed_on')
+    else:
+        return redirect('profile', username=user.username)
+
+    if request.user.is_authenticated:
+        is_following_list = [
+            Follow.objects.filter(follower=request.user, followed=follow.follower if view_type == 'followers' else follow.followed).exists()
+            for follow in follow_list
+        ]
+        is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
+    else:
+        is_following_list = [False] * follow_list.count()
+        is_following = False
+
+    return render(request, 'users/profile_follows.html', {
+        'profile_user': user,
+        'splashtag': user.get_splashtag,
+        'follow_list': zip(follow_list, is_following_list),
+        'follow_type': view_type,
+        'is_following': is_following
+    })
+
+
+@login_required
+def follow_user(request, username):
+    followed_user = get_object_or_404(User, username__iexact=username)
+
+    if request.user == followed_user:
+        messages.error(request, "You cannot follow yourself.")
+    elif Follow.objects.filter(follower=request.user, followed=followed_user).exists():
+        messages.error(request, f"You are already following {followed_user.username}.")
+    else:
+        Follow.objects.create(follower=request.user, followed=followed_user)
+
+        Notification.objects.create(
+            recipient=followed_user,
+            sender=request.user,
+            message=f'followed you.',
+            is_read=False
+        )
+
+        messages.success(request, f"You are now following {followed_user.username}.")
+    
+    return redirect(request.META.get('HTTP_REFERER', 'profile'))
+
+@login_required
+def unfollow_user(request, username):
+    followed_user = get_object_or_404(User, username=username)
+
+    follow_instance = Follow.objects.filter(follower=request.user, followed=followed_user).first()
+    if follow_instance:
+        follow_instance.delete()
+        messages.success(request, f"You have unfollowed {followed_user.username}.")
+    else:
+        messages.error(request, "You are not following this user.")
+
+    return redirect(request.META.get('HTTP_REFERER', 'profile'))
+
+@login_required
+def mark_notifications_as_read(request):
+    if request.method == "GET":
+        unread_notifications = request.user.notifications.filter(is_read=False)
+        unread_notifications.update(is_read=True)
+
+        notifications = request.user.notifications.filter(is_read=False).order_by('-created_at')
+
+        return render(request, 'includes/notification_menu.html', {
+            'notifications': notifications
+        })
+    return JsonResponse({'success': False}, status=400)
+
+@login_required
+def get_notifications(request):
+    unread_notifications = request.user.notifications.filter(is_read=False).exists()
+    notifications = request.user.notifications.filter(is_read=False).order_by('-created_at')
+    return render(request, 'includes/notification_menu.html', {
+        'notifications': notifications,
+        'unread_notifications': unread_notifications
+    })
+
+@login_required
+def set_user_timezone(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user_local_timezone = data.get('user_local_timezone')
+        if user_local_timezone:
+            user = request.user
+            if str(request.user.timezone) != user_local_timezone:
+                user.timezone = user_local_timezone
+                user.save()
+                return JsonResponse({'success': True, 'updated':True})
+            else:
+                return JsonResponse({'success': True, 'updated':False})
+        else:
+            return JsonResponse({'success': False})
+    
+    return JsonResponse({'success': False}, status=400)

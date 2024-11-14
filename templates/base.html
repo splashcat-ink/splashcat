@@ -29,6 +29,12 @@
     <link rel="webmention" href="https://webmention.io/catgirlin.space/webmention"/>
     <link rel="pingback" href="https://webmention.io/catgirlin.space/xmlrpc"/>
 
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Splashcat">
+    <link rel="apple-touch-icon" href="{% static 'images/splashcat-icon.png' %}">
+
     <script src="{% static 'js/index.js' %}" defer></script>
     {% django_htmx_script %}
 
@@ -41,7 +47,7 @@
 		window.plausible = window.plausible || function () {
 			(window.plausible.q = window.plausible.q || []).push(arguments)
 		}
-
+        
 		window.addEventListener("pagereveal", e => {
 			if (e.viewTransition) {
 				console.log("reveal", e.viewTransition, sessionStorage.getItem("direction"))
@@ -68,26 +74,57 @@
     {% endblock %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="h-full flex flex-col">
-{% csrf_token %}
-<header>
-    {% include 'includes/navbar.html' %}
-</header>
+    {% comment %} Notification Loading System {% endcomment %}
+    {% comment %} {% if user.is_authenticated %}
+        <script>
+            function fetchNotifications() {
+                if (document.visibilityState === 'visible') {
+                    htmx.ajax('GET', '/notifications/fetch', '#notifications-container');
+                    console.log("Fetching notifications");
+                }
+            }
+        
+            window.onload = function() {
+                fetchNotifications();
+                setInterval(fetchNotifications, 60000);
+            };
+        
+            document.addEventListener("visibilitychange", function() {
+                if (document.visibilityState === 'visible') {
+                    console.log("Tab is active, fetching notifications");
+                    fetchNotifications();
+                } else {
+                    console.log("Tab is not active, skipping notification fetch");
+                }
+            });
+        
+            document.addEventListener("htmx:load-notifications", function () {
+                console.log("Notification dropdown opened, loading notifications");
+                fetchNotifications();
+            });
+        </script>
+    {% endif %} {% endcomment %}
 
-<div class="container flex-grow"> <!-- Add flex-grow here -->
-    {% if messages %}
-        <div class="flex flex-col gap-2 py-2">
-            {% for message in messages %}
-                <div class="p-2 bg-purple-800 rounded
+    {% csrf_token %}
+    <header>
+        {% include 'includes/navbar.html' %}
+    </header>
+
+    <div class="container flex-grow">
+        {% if messages %}
+            <div class="flex flex-col gap-2 py-2">
+                {% for message in messages %}
+                    <div class="p-2 bg-purple-800 rounded
                             {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
 
-    <main role="main" class="py-3 flex-grow"> <!-- Add flex-grow here -->
-        {% block content %}{% endblock %}
-    </main>
-</div>
-
+        <main role="main" class="py-3 flex-grow">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+  
 <footer class="border-top footer text-muted bg-gray-800/70 py-4">
     <div class="container mx-auto">
         <a href="{% url 'home' %}">
@@ -120,8 +157,29 @@
                      class="h-4 w-4 inline" height="530" width="600" loading="lazy">
                 @splashcat.ink
             </a>
+            <div class="text-lg">Splashcat</div>
+            <div class="text-sm">This website is not affiliated with Nintendo. All product names, logos, and brands are
+                property of their respective owners.
+            </div>
+            <a href="{% url 'uploaders_information' %}" class="text-blue-500 underline p-2 pl-0">Information on Available
+                Uploaders</a>
+            <a href="{% url 'legal' %}" class="text-blue-500 underline p-2">Legal Stuff</a>
+            <a href="{% url 'about' %}" class="text-blue-500 underline p-2">About Splashcat</a>
+            <div class="py-4 flex flex-row flex-wrap gap-4">
+                <a href="https://github.com/splashcat-ink/splashcat"
+                class="my-auto">
+                    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/splashcat-ink/splashcat"
+                        loading="lazy" decoding="async">
+                </a>
+                <a href="https://github.com/splashcat-ink/splashcat"
+                class="bg-purple-600 hover:bg-purple-700 rounded px-4 py-2 my-auto">GitHub</a>
+                <a href="https://discord.gg/JPFwvbSWMS"
+                class="bg-purple-600 hover:bg-purple-700 rounded px-4 py-2 my-auto">Discord</a>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
+
+    {% block js%}
+    {% endblock %}
 </body>
 </html>
