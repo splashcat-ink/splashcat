@@ -1078,14 +1078,14 @@ Django = ">=3.2,<6.0"
 
 [[package]]
 name = "django-unicorn"
-version = "0.60.0"
+version = "0.62.0"
 description = "A magical full-stack framework for Django."
 optional = false
-python-versions = ">=3.8,<4"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "django_unicorn-0.60.0-py3-none-any.whl", hash = "sha256:763eb7a654d9703398044dc697af381e8c6b4bf0e3c3e3806e6714d5ca50a592"},
-    {file = "django_unicorn-0.60.0.tar.gz", hash = "sha256:fe988e32dbf71a47435b456be6b6e146391af365097b8a51bfe56a2648822919"},
+    {file = "django_unicorn-0.62.0-py3-none-any.whl", hash = "sha256:f728b0ad030334cf2602f2d076e464984f683fb031a22afa794a0d2fe1468ecf"},
+    {file = "django_unicorn-0.62.0.tar.gz", hash = "sha256:dedf97e4c59e288537911c995a6d0c08615bd3274bb77b43e8031f4c2d365082"},
 ]
 
 [package.dependencies]
@@ -1097,7 +1097,7 @@ orjson = ">=3.6.0"
 shortuuid = ">=1.0.1"
 
 [package.extras]
-docs = ["Sphinx", "furo", "linkify-it-py", "myst-parser", "rst2pdf", "sphinx-autoapi", "sphinx-autobuild", "sphinx-copybutton", "sphinxext-opengraph", "toml"]
+docs = ["Sphinx", "furo", "linkify-it-py", "myst-parser", "rst2pdf", "sphinx-autoapi", "sphinx-autobuild", "sphinx-copybutton", "sphinx-design", "sphinxext-opengraph", "toml"]
 minify = ["htmlmin (>=0,<1)"]
 
 [[package]]
@@ -3310,4 +3310,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "197352f8578d98fb0a35a928063fafca0f9363421170d27c1c75557c66508313"
+content-hash = "f28a8ef57912fef497f4767bedfffbf5e3fb103f52ec2de3c955384dcc38b644"
