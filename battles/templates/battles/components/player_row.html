@@ -90,7 +90,7 @@
             _="on click get the closest parent <dialog/> then call it.close()">Close
     </button>
 
-    {% if player.npln_id %}
+    {% if player.npln_id and player.get_details_visible %}
         <div class="flex flex-row flex-wrap gap-4">
             {% if user.is_authenticated %}
                 <a href="{% url 'search:players_played_with' player.npln_id %}" class="p-2 bg-purple-700 rounded">

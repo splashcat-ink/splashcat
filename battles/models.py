@@ -484,6 +484,18 @@ class Player(models.Model):
             return ''
         return self.title_adjective.string.string + ' ' + self.title_subject.string.string
 
+    def get_details_visible(self):
+        if self.is_self:
+            return True
+        show_player_names = self.team.battle.uploader.show_player_names
+        if show_player_names == PlayerNameShown.ALWAYS:
+            return True
+        elif show_player_names == PlayerNameShown.PUBLIC_BATTLES and self.team.battle.vs_mode != Battle.VsMode.PRIVATE:
+            return True
+        elif show_player_names == PlayerNameShown.PRIVATE_BATTLES and self.team.battle.vs_mode == Battle.VsMode.PRIVATE:
+            return True
+        return False
+
     def get_displayed_name(self):
         if self.is_self:
             return self.name
