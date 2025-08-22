@@ -14,7 +14,7 @@ from strawberry_django.relay import ListConnectionWithTotalCount
 import splatnet_assets.models
 from battles import models
 from battles.formats.splashcat_battle import SplashcatBattle
-from battles.types import Battle, Player, BattleInput
+from battles.types import StrawberryBattle, StrawberryPlayer, BattleInput
 from battles.utils import get_title_parts_from_string, get_nameplate_badge, get_player_gear_graphql
 from splatnet_assets.fields import Color
 from users.models import User
@@ -22,9 +22,9 @@ from users.models import User
 
 @strawberry.type(name="Query")
 class BattlesQuery:
-    battle: Battle = strawberry_django.node()
-    battles: ListConnectionWithTotalCount[Battle] = strawberry_django.connection()
-    player: Player = strawberry_django.node()
+    battle: StrawberryBattle = strawberry_django.node()
+    battles: ListConnectionWithTotalCount[StrawberryBattle] = strawberry_django.connection()
+    player: StrawberryPlayer = strawberry_django.node()
 
 
 def get_value(value: Union[Any, UNSET]) -> Union[Any, None]:
@@ -37,7 +37,7 @@ def get_value(value: Union[Any, UNSET]) -> Union[Any, None]:
 @strawberry.type(name="Mutation")
 class BattlesMutation:
     @strawberry_django.mutation(extensions=[IsAuthenticated()])
-    def create_battle(self, battle_details: BattleInput, info: Info) -> Battle:
+    def create_battle(self, battle_details: BattleInput, info: Info) -> StrawberryBattle:
         current_user: User = get_current_user(info)
         if models.Battle.objects.filter(splatnet_id=battle_details.splatnet_id, uploader=current_user).exists():
             raise GraphQLError("Battle with the same splatnet_id already exists for the current user.")

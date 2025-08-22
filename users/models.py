@@ -26,7 +26,7 @@ from django_choices_field import TextChoicesField
 import django.contrib.auth.models as django_auth_models
 
 from battles.models import Battle, Player
-from splatnet_assets.common_model_choices import XBattleDivisions
+from splatnet_assets.common_model_choices import XBattleDivisions, PlayerNameShown
 from splatnet_assets.fields import ColorField
 
 # Create your models here.
@@ -104,6 +104,8 @@ class User(AbstractUser):
     coral_friend_url = models.URLField(_("Nintendo Switch Online app friend URL"), blank=True, null=True,
                                        validators=[URLValidator(
                                            regex=r"^https:\/\/lounge\.nintendo\.com\/friendcode\/\d{4}-\d{4}-\d{4}\/[A-Za-z0-9]{10}$")])
+    show_player_names = TextChoicesField(verbose_name=_("show player names"), choices_enum=PlayerNameShown,
+                                         default=PlayerNameShown.ALWAYS)
 
     def save(self, *args, **kwargs):
         for field_name in ['profile_picture', 'profile_cover', 'page_background']:

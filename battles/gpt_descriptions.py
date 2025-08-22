@@ -46,7 +46,7 @@ def team_to_gpt_dict(team):
 def player_to_gpt_dict(player):
     data = {
         'is_self': player.is_self,
-        'name': player.name,
+        'name': player.get_displayed_name(),
         'weapon_name': player.weapon.name.string,
         'disconnect': player.disconnect,
         'kills': player.kills,

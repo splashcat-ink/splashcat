@@ -10,16 +10,16 @@ from strawberry_django.auth.utils import get_current_user
 from strawberry_django.relay import ListConnectionWithTotalCount
 
 from users import models
-from users.types import User
+from users.types import StrawberryUser
 
 
 @strawberry.type(name="Query")
 class UsersQuery:
-    user: User = strawberry_django.node()
-    users: ListConnectionWithTotalCount[User] = strawberry_django.connection()
+    user: StrawberryUser = strawberry_django.node()
+    users: ListConnectionWithTotalCount[StrawberryUser] = strawberry_django.connection()
 
     @strawberry_django.field()
-    def user_by_username(self, info: Info, username: str) -> User | None:
+    def user_by_username(self, info: Info, username: str) -> StrawberryUser | None:
         try:
             user = models.User.objects.get(username=username)
             return user
@@ -27,10 +27,10 @@ class UsersQuery:
             return None
 
     @strawberry_django.field()
-    def current_user(self, info: Info) -> User | None:
+    def current_user(self, info: Info) -> StrawberryUser | None:
         user = get_current_user(info)
         if user.is_authenticated:
-            return cast(User, user)
+            return cast(StrawberryUser, user)
         else:
             return None
 

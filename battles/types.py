@@ -9,7 +9,7 @@ from splatnet_assets.types import TitleAdjective, TitleSubject, NameplateBackgro
 from . import models
 
 if TYPE_CHECKING:
-    from users.types import User
+    from users.types import StrawberryUser
 
 
 @strawberry_django.order(models.Battle)
@@ -32,8 +32,8 @@ class BattleFilter:
 
 
 @strawberry_django.type(models.Battle, filters=BattleFilter, order=BattleOrder)
-class Battle(relay.Node):
-    uploader: Annotated["User", strawberry.lazy("users.types")]
+class StrawberryBattle(relay.Node):
+    uploader: Annotated["StrawberryUser", strawberry.lazy("users.types")]
     uploader_agent_name: auto
     uploader_agent_version: auto
     uploader_agent_extra: auto
@@ -63,7 +63,7 @@ class Battle(relay.Node):
     gpt_description: auto
     gpt_description_generated: auto
     gpt_description_generated_at: auto
-    teams: List["Team"]
+    teams: List["StrawberryTeam"]
 
     @strawberry_django.field()
     def duration(self, root) -> int:
@@ -81,8 +81,8 @@ class Battle(relay.Node):
 
 
 @strawberry_django.type(models.Team)
-class Team(relay.Node):
-    battle: Battle
+class StrawberryTeam(relay.Node):
+    battle: StrawberryBattle
     is_my_team: auto
     color: auto
     fest_streak_win_count: auto
@@ -95,12 +95,12 @@ class Team(relay.Node):
     paint_ratio: auto
     score: auto
     tricolor_role: auto
-    players: List["Player"]
+    players: List["StrawberryPlayer"]
 
 
 @strawberry_django.type(models.Player)
-class Player(relay.Node):
-    team: Team
+class StrawberryPlayer(relay.Node):
+    team: StrawberryTeam
     is_self: auto
     npln_id: auto
     name: auto
@@ -113,9 +113,9 @@ class Player(relay.Node):
     nameplate_badge_2: Optional[NameplateBadge]
     nameplate_badge_3: Optional[NameplateBadge]
     weapon: Weapon
-    head_gear: 'PlayerGear'
-    clothing_gear: 'PlayerGear'
-    shoes_gear: 'PlayerGear'
+    head_gear: 'StrawberryPlayerGear'
+    clothing_gear: 'StrawberryPlayerGear'
+    shoes_gear: 'StrawberryPlayerGear'
     disconnect: auto
     kills: auto
     assists: auto
@@ -134,16 +134,16 @@ class Player(relay.Node):
                         "nameplate_badge_1__image", "nameplate_badge_2__image", "nameplate_badge_3__image",
                         "nameplate_badge_1__description", "nameplate_badge_2__description",
                         "nameplate_badge_3__description"], only=["name", "name_id"])
-    def splashtag(self, root) -> 'Splashtag':
+    def splashtag(self, root) -> 'StrawberrySplashtag':
         splashtag_data = root.splashtag
-        return Splashtag(name=splashtag_data.get('name'), name_id=splashtag_data.get('name_id'),
-                         title_adjective=splashtag_data.get('title_adjective'),
-                         title_subject=splashtag_data.get('title_subject'),
-                         badges=splashtag_data.get('badges'), background=splashtag_data.get('background'))
+        return StrawberrySplashtag(name=splashtag_data.get('name'), name_id=splashtag_data.get('name_id'),
+                                   title_adjective=splashtag_data.get('title_adjective'),
+                                   title_subject=splashtag_data.get('title_subject'),
+                                   badges=splashtag_data.get('badges'), background=splashtag_data.get('background'))
 
 
 @strawberry.type
-class Splashtag:
+class StrawberrySplashtag:
     name: str
     name_id: Optional[str]
     title_adjective: Optional[TitleAdjective]
@@ -153,7 +153,7 @@ class Splashtag:
 
 
 @strawberry_django.type(models.PlayerGear)
-class PlayerGear(relay.Node):
+class StrawberryPlayerGear(relay.Node):
     gear: Gear
     primary_ability: Ability
     secondary_ability_1: Ability

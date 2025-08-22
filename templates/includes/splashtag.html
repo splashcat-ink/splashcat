@@ -4,18 +4,18 @@
     <img src="{{ splashtag.background.image.url }}" class="h-full" alt="" width="{{ splashtag.background.image.width }}"
          height="{{ splashtag.background.image.height }}">
     <div class="absolute top-0 left-0 h-full w-full flex flex-col justify-center items-center">
-        <div class="text-3xl font-splatoon1">{{ splashtag.name }}</div>
+        <div class="text-3xl font-splatoon1">{{ splashtag.displayed_name|default:splashtag.name }}</div>
     </div>
     <div class="text-base absolute top-0.5 left-1 -skew-x-[5deg]">
         {{ splashtag.title_adjective.string.string|strip_ruby }} {{ splashtag.title_subject.string.string|strip_ruby }}
     </div>
-    <div class="text-sm absolute bottom-1 left-1">#{{ splashtag.name_id }}</div>
+    <div class="text-sm absolute bottom-1 left-1">#{{ splashtag.displayed_name_id|default:splashtag.name_id }}</div>
     <div class="absolute bottom-0 right-0 flex flex-row gap-2">
         {% for badge in splashtag.badges %}
             {% if badge is not None %}
                 {% with translated_description=badge.translated_description %}
-                <img src="{{ badge.image.url }}" class="h-8 w-8" alt="{{ translated_description }}"
-                     title="{{ translated_description }}">
+                    <img src="{{ badge.image.url }}" class="h-8 w-8" alt="{{ translated_description }}"
+                         title="{{ translated_description }}">
                 {% endwith %}
             {% else %}
                 <span class="h-8 w-8"></span>

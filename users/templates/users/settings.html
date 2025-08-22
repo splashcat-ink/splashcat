@@ -112,6 +112,15 @@
                 </div>
 
                 <div>
+                    {{ form.show_player_names.errors }}
+                    <label class="text-xl" for="{{ form.show_player_names.id_for_label }}">Show Player Names on
+                        Battles</label>
+                    <p>Disabling this will hide the names of all other players in all of your battles. Your own details
+                        will always be displayed.</p>
+                    {{ form.show_player_names }}
+                </div>
+
+                <div>
                     {{ form.preferred_pronouns.errors }}
                     <label class="text-xl" for="{{ form.preferred_pronouns.id_for_label }}">Preferred Pronouns</label>
                     <p>Used for AI Generated Battle Descriptions and shown on your profile.</p>

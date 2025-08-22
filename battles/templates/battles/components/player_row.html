@@ -15,7 +15,7 @@
          class="inline-block h-10 w-10" alt="">
     <div class="shrink min-w-0 flex flex-col whitespace-nowrap">
         <div class="text-xs text-gray-300 truncate">{{ player.byname|strip_ruby }}</div>
-        <div class="text-lg">{{ player.name }}</div>
+        <div class="text-lg">{{ player.get_displayed_name }}</div>
     </div>
     <div class="grow"></div>
     <div class="flex-none flex flex-row gap-1 px-4 justify-end rounded-full min-w-fit bg-black/50">
@@ -42,7 +42,7 @@
             x{{ player.deaths|default_if_none:"--" }}
         </span>
         <span class="text-lg w-min whitespace-nowrap">
-            {% with maskingId=player.npln_id %}
+            {% with maskingId=player.id %}
                 <svg width="24" class="h-4 w-4 relative top-0" viewBox="0 0 128 128"
                      fill="none"
                      xmlns="http://www.w3.org/2000/svg"

@@ -5,7 +5,7 @@ import strawberry_django
 from strawberry import relay, auto
 
 from splatnet_album import models
-from users.types import User
+from users.types import StrawberryUser
 
 
 @strawberry_django.type(models.AlbumImage)
@@ -16,4 +16,4 @@ class AlbumImage(relay.Node):
     height: auto
     width: auto
     uploaded_at: auto
-    user: Annotated["User", strawberry.lazy("users.types")]
+    user: Annotated["StrawberryUser", strawberry.lazy("users.types")]

@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_choices_field import TextChoicesField
 
-from splatnet_assets.common_model_choices import XBattleDivisions
+from splatnet_assets.common_model_choices import XBattleDivisions, PlayerNameShown
 from splatnet_assets.fields import ColorField
 from splatnet_assets.models import Splatfest
 
@@ -484,11 +484,37 @@ class Player(models.Model):
             return ''
         return self.title_adjective.string.string + ' ' + self.title_subject.string.string
 
+    def get_displayed_name(self):
+        if self.is_self:
+            return self.name
+        show_player_names = self.team.battle.uploader.show_player_names
+        if show_player_names == PlayerNameShown.ALWAYS:
+            return self.name
+        elif show_player_names == PlayerNameShown.PUBLIC_BATTLES and self.team.battle.vs_mode != Battle.VsMode.PRIVATE:
+            return self.name
+        elif show_player_names == PlayerNameShown.PRIVATE_BATTLES and self.team.battle.vs_mode == Battle.VsMode.PRIVATE:
+            return self.name
+        return "Player " + str((self.order + 1) + ((self.team.order - 1) * 4))
+
+    def get_displayed_name_id(self):
+        if self.is_self:
+            return self.name_id
+        show_player_names = self.team.battle.uploader.show_player_names
+        if show_player_names == PlayerNameShown.ALWAYS:
+            return self.name_id
+        elif show_player_names == PlayerNameShown.PUBLIC_BATTLES and self.team.battle.vs_mode != Battle.VsMode.PRIVATE:
+            return self.name_id
+        elif show_player_names == PlayerNameShown.PRIVATE_BATTLES and self.team.battle.vs_mode == Battle.VsMode.PRIVATE:
+            return self.name_id
+        return "0000"
+
     @property
     def splashtag(self):
         return {
             'name': self.name,
+            'displayed_name': self.get_displayed_name(),
             'name_id': self.name_id,
+            'displayed_name_id': self.get_displayed_name_id(),
             'title_adjective': self.title_adjective,
             'title_subject': self.title_subject,
             'badges': [self.nameplate_badge_1, self.nameplate_badge_2, self.nameplate_badge_3],
@@ -532,8 +558,8 @@ class Player(models.Model):
             'is_self': self.is_self,
             'species': self.species,
             'npln_id': self.npln_id,
-            'name': self.name,
-            'name_id': self.name_id,
+            'name': self.get_displayed_name(),
+            'name_id': self.get_displayed_name_id(),
             'title': self.byname,
             'nameplate_background_id': self.nameplate_background.internal_id,
             'nameplate_badge_ids': [

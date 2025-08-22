@@ -21,6 +21,7 @@ class AccountSettingsForm(forms.ModelForm):
             "x_battle_division",
             "preferred_pronouns",
             "coral_friend_url",
+            "show_player_names",
         )
         labels = {
             "saved_favorite_color": _("Favorite Color"),
