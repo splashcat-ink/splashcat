@@ -19,20 +19,20 @@ jsonschema = "^4.18.3"
 docutils = "^0.21"
 requests = "^2.32.3"
 python-dateutil = "^2.8.2"
-sentry-sdk = "^2.18.0"
+sentry-sdk = "^2.35.0"
 django-crispy-forms = "^2.0"
 crispy-tailwind = "^0.5.0"
 python-dotenv = "^1.0.0"
 dj-database-url = "^2.2.0"
 celery = { extras = ["redis"], version = "^5.3.6" }
 django-celery-results = "^2.5.1"
-django-celery-beat = {git = "https://github.com/celery/django-celery-beat.git"}
+django-celery-beat = { git = "https://github.com/celery/django-celery-beat.git" }
 boto3 = "^1.34.74"
 django-anymail = { extras = ["postmark"], version = "^10.3" }
 django-storages = "^1.13.2"
 eventlet = "^0.36.1"
 django-unicorn = "^0.62.0"
-psycopg = {extras = ["binary", "pool"], version = "^3.2.3"}
+psycopg = { extras = ["binary", "pool"], version = "^3.2.3" }
 django-oidc-provider = "^0.8.0"
 openai = "^1.35.14"
 django-silk = "^5.0.3"
@@ -43,12 +43,12 @@ django-markdownify = "^0.9.3"
 beautifulsoup4 = "^4.12.3"
 markdown = "^3.5.2"
 django-filter = "^24.2"
-strawberry-graphql-django = "^0.47.1"
-asgiref = {git = "https://github.com/django/asgiref.git"}
+strawberry-graphql-django = "^0.65.1"
+asgiref = { git = "https://github.com/django/asgiref.git" }
 django-choices-field = "^2.2.2"
 django-cors-headers = "^4.3.1"
 stripe = "^10.12.0"
-strawberry-graphql = "^0.248.1"
+strawberry-graphql = "0.280.0"
 strawberry-persisted-queries = "^1.0.3"
 qrcode = "^7.4.2"
 uuid = "^1.30"
