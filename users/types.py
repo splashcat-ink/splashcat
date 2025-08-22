@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from splatnet_album.types import AlbumImage
 
 
-@strawberry_django.type(models.User)
+@strawberry_django.type(models.User, name="User")
 class StrawberryUser(relay.Node):
     username: auto
     saved_favorite_color: auto

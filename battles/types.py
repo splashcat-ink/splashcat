@@ -31,7 +31,7 @@ class BattleFilter:
     judgement: auto
 
 
-@strawberry_django.type(models.Battle, filters=BattleFilter, order=BattleOrder)
+@strawberry_django.type(models.Battle, filters=BattleFilter, order=BattleOrder, name="Battle")
 class StrawberryBattle(relay.Node):
     uploader: Annotated["StrawberryUser", strawberry.lazy("users.types")]
     uploader_agent_name: auto
@@ -80,7 +80,7 @@ class StrawberryBattle(relay.Node):
         return root.player.weapon
 
 
-@strawberry_django.type(models.Team)
+@strawberry_django.type(models.Team, name="Team")
 class StrawberryTeam(relay.Node):
     battle: StrawberryBattle
     is_my_team: auto
@@ -98,7 +98,7 @@ class StrawberryTeam(relay.Node):
     players: List["StrawberryPlayer"]
 
 
-@strawberry_django.type(models.Player)
+@strawberry_django.type(models.Player, name="Player")
 class StrawberryPlayer(relay.Node):
     team: StrawberryTeam
     is_self: auto
@@ -142,7 +142,7 @@ class StrawberryPlayer(relay.Node):
                                    badges=splashtag_data.get('badges'), background=splashtag_data.get('background'))
 
 
-@strawberry.type
+@strawberry.type(name="Splashtag")
 class StrawberrySplashtag:
     name: str
     name_id: Optional[str]
@@ -152,7 +152,7 @@ class StrawberrySplashtag:
     background: NameplateBackground
 
 
-@strawberry_django.type(models.PlayerGear)
+@strawberry_django.type(models.PlayerGear, name="PlayerGear")
 class StrawberryPlayerGear(relay.Node):
     gear: Gear
     primary_ability: Ability
