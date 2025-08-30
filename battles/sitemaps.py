@@ -8,7 +8,7 @@ class BattlesSitemap(Sitemap):
     priority = 0.3
 
     def items(self):
-        return Battle.objects.exclude(vs_mode=Battle.VsMode.PRIVATE)
+        return Battle.objects.only('id', 'updated_at').exclude(vs_mode=Battle.VsMode.PRIVATE)
 
     @staticmethod
     def lastmod(obj: Battle):
