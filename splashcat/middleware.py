@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import InternalError
 from django.http import HttpRequest, HttpResponse
 from psycopg.errors import ReadOnlySqlTransaction
+from django.contrib.sessions.exceptions import SessionInterrupted
 
 THRESHOLD_COOKIE = "fly-replay-threshold"
 THRESHOLD_TIME = datetime.timedelta(seconds=5)
@@ -69,6 +70,12 @@ class PostgresReadOnlyMiddleware:
                                     headers={
                                         'fly-replay': f'region={settings.FLY_PRIMARY_REGION};state=captured_write',
                                     })
+        elif isinstance(exception, SessionInterrupted):
+            print("SessionInterrupted happened, replaying in primary as a captured write")
+            return HttpResponse(f'Replaying in {settings.FLY_PRIMARY_REGION} because of captured write', status=409,
+                                headers={
+                                    'fly-replay': f'region={settings.FLY_PRIMARY_REGION};state=captured_write',
+                                })
         else:
             return None
 
