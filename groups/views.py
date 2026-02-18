@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
@@ -52,6 +53,7 @@ def view_group(request, group_id):
     })
 
 
+@login_required
 def group_admin(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     if group.owner != request.user:
@@ -72,6 +74,7 @@ def group_admin(request, group_id):
     })
 
 
+@login_required
 def create_group(request):
     if request.method == 'POST':
         form = GroupAdminForm(request.POST, request.FILES)
@@ -89,6 +92,7 @@ def create_group(request):
 
 
 @require_POST
+@login_required
 def request_join_group(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     if request.user in group.members.all():
@@ -102,6 +106,7 @@ def request_join_group(request, group_id):
 
 
 @require_POST
+@login_required
 def answer_join_request(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     if group.owner != request.user:
@@ -126,6 +131,7 @@ def answer_join_request(request, group_id):
 
 
 @require_POST
+@login_required
 def invite_to_group(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     if group.owner != request.user:
@@ -145,6 +151,7 @@ def invite_to_group(request, group_id):
 
 
 @require_POST
+@login_required
 def answer_group_invite(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     user: User = request.user
@@ -164,6 +171,7 @@ def answer_group_invite(request, group_id):
 
 
 @require_POST
+@login_required
 def join_group(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     if request.user in group.members.all():
@@ -179,6 +187,7 @@ def join_group(request, group_id):
 
 
 @require_POST
+@login_required
 def leave_group(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     if request.user not in group.members.all():
