@@ -22,33 +22,31 @@ Required
 Dependencies: [Python](https://www.python.org/downloads/ "Python"), [Poetry](http://python-poetry.org/docs "Poetry") & [Node.js + NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm "NPM")
 
 1. Fork the repository
-2. Clone the repo:
-    ```bash
+2. Clone the repo and change directory:
+    ```sh
     git clone https://github.com/your-username/splashcat.git
+    cd splashcat
     ```
-3. cd into the directory:
-   ```bash
-   cd *file path*
-   ```
+3. Copy `.env.example` to `.env` and add required environment variables  
+    To generate a `SECRET_KEY`:
+    ```sh
+    openssl rand -base64 50 | tr -dc 'a-zA-Z0-9!@#$%^&*(-_=+)' | head -c 50
+    ```
 4. Install dependencies:
-    ```bash
-	poetry install
-	npm install
-	npx update-browserslist-db@latest
-	npm run build
+    ```sh
+    poetry install
+    npm install
+    npx update-browserslist-db@latest
     ```
-5. Run the website:
-   <br>
-   macOS/Linux:
-   ```bash
-   poetry shell
-   ./manage.py runserver
-   ```
-   Windows:
-   ```bash
-   poetry shell
-   python manage.py runserver
-   ```
+5. Build the frontend CSS/JS:
+    ```sh
+    npm run build
+    poetry run python manage.py collectstatic
+    ```
+6. Run the server:
+    ```sh
+    poetry run python manage.py runserver
+    ```
 
 ## Contributing to the codebase
 
