@@ -1,5 +1,5 @@
-<h1 align='center'>
-<img src="https://raw.githubusercontent.com/splashcat-ink/splashcat/refs/heads/main/static/images/judd-pride.png" width="150">
+<h1 align="center">
+<img src="static/images/judd-pride.png" width="150" />
 <br>
 <b>Splashcat</b>
 </h1>
@@ -18,8 +18,10 @@ Thank you for taking the time to contribute to Splashcat! We appreciate your hel
 
 ## Getting Started
 
-Required
-Dependencies: [Python](https://www.python.org/downloads/ "Python"), [Poetry](http://python-poetry.org/docs "Poetry") & [Node.js + NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm "NPM")
+Required dependencies:
+[Python](https://www.python.org/downloads/),
+[Poetry](https://python-poetry.org/docs) &
+[Node.js + npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
 1. Fork the repository
 2. Clone the repo and change directory:
@@ -43,7 +45,7 @@ Dependencies: [Python](https://www.python.org/downloads/ "Python"), [Poetry](htt
     npm run build
     poetry run python manage.py collectstatic
     ```
-6. Run the server:
+6. Run the web server:
     ```sh
     poetry run python manage.py runserver
     ```
@@ -62,12 +64,12 @@ Dependencies: [Python](https://www.python.org/downloads/ "Python"), [Poetry](htt
     ```bash
     git push origin myfeature
     ```
-4. **Submit a pull request**.
+4. **Submit a pull request**
 
 ## Reporting Bugs
 
 If you've found a bug in Splashcat
-please [report it! ](https://github.com/splashcat-ink/splashcat/issues/new "report it! ")
+please [report it!](https://github.com/splashcat-ink/splashcat/issues/new)
 If it's a security vulnerability please contact splashcat@rosalina.saige.ink or use GitHub's tools for reporting
 security issues. Do **not** use a public GitHub issue.
 
@@ -84,5 +86,4 @@ at https://github.com/orgs/splashcat-ink/discussions.
 ## License
 
 Splashcat is licensed under the terms of
-the [AGPL-3.0 license ](https://github.com/splashcat-ink/splashcat/blob/main/LICENSE "AGPL-3.0 license ")
-
+the [AGPL-3.0 license](https://github.com/splashcat-ink/splashcat/blob/main/LICENSE).
