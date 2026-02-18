@@ -48,7 +48,7 @@ try:
 except socket.gaierror:
     pass
 CSRF_TRUSTED_ORIGINS = ['https://splashcat.fly.dev', 'https://splashcat.ink', 'http://splashcat.internal']
-CORS_URLS_REGEX = r"^/graphql$|^/openid/.*"
+CORS_URLS_REGEX = r"^/(graphql$|openid/.*|@[\w.@+-]+\.json$)"
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_HEADERS = (
     *cors_default_headers,
