@@ -4,7 +4,7 @@
 <b>Splashcat</b>
 </h1>
 
-[Splashcat](http://splashcat.ink "Splashcat") is an award-winning service to track Splatoon 3 battles. Built upon
+[Splashcat](https://splashcat.ink) is an award-winning service to track Splatoon 3 battles. Built upon
 Django, htmx, _hyperscript, and Tailwind CSS.
 
 ## How to contribute
