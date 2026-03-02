@@ -1,10 +1,10 @@
-<h1 align='center'>
-<img src="https://raw.githubusercontent.com/splashcat-ink/splashcat/refs/heads/main/static/images/judd-pride.png" width="150">
+<h1 align="center">
+<img src="static/images/judd-pride.png" width="150" />
 <br>
 <b>Splashcat</b>
 </h1>
 
-[Splashcat](http://splashcat.ink "Splashcat") is an award-winning service to track Splatoon 3 battles. Built upon
+[Splashcat](https://splashcat.ink) is an award-winning service to track Splatoon 3 battles. Built upon
 Django, htmx, _hyperscript, and Tailwind CSS.
 
 ## How to contribute
@@ -18,37 +18,37 @@ Thank you for taking the time to contribute to Splashcat! We appreciate your hel
 
 ## Getting Started
 
-Required
-Dependencies: [Python](https://www.python.org/downloads/ "Python"), [Poetry](http://python-poetry.org/docs "Poetry") & [Node.js + NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm "NPM")
+Required dependencies:
+[Python](https://www.python.org/downloads/),
+[Poetry](https://python-poetry.org/docs) &
+[Node.js + npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
 1. Fork the repository
-2. Clone the repo:
-    ```bash
+2. Clone the repo and change directory:
+    ```sh
     git clone https://github.com/your-username/splashcat.git
+    cd splashcat
     ```
-3. cd into the directory:
-   ```bash
-   cd *file path*
-   ```
+3. Copy `.env.example` to `.env` and add required environment variables  
+    To generate a `SECRET_KEY`:
+    ```sh
+    openssl rand -base64 50 | tr -dc 'a-zA-Z0-9!@#$%^&*(-_=+)' | head -c 50
+    ```
 4. Install dependencies:
-    ```bash
-	poetry install
-	npm install
-	npx update-browserslist-db@latest
-	npm run build
+    ```sh
+    poetry install
+    npm install
+    npx update-browserslist-db@latest
     ```
-5. Run the website:
-   <br>
-   macOS/Linux:
-   ```bash
-   poetry shell
-   ./manage.py runserver
-   ```
-   Windows:
-   ```bash
-   poetry shell
-   python manage.py runserver
-   ```
+5. Build the frontend CSS/JS:
+    ```sh
+    npm run build
+    poetry run python manage.py collectstatic
+    ```
+6. Run the web server:
+    ```sh
+    poetry run python manage.py runserver
+    ```
 
 ## Contributing to the codebase
 
@@ -64,12 +64,12 @@ Dependencies: [Python](https://www.python.org/downloads/ "Python"), [Poetry](htt
     ```bash
     git push origin myfeature
     ```
-4. **Submit a pull request**.
+4. **Submit a pull request**
 
 ## Reporting Bugs
 
 If you've found a bug in Splashcat
-please [report it! ](https://github.com/splashcat-ink/splashcat/issues/new "report it! ")
+please [report it!](https://github.com/splashcat-ink/splashcat/issues/new)
 If it's a security vulnerability please contact splashcat@rosalina.saige.ink or use GitHub's tools for reporting
 security issues. Do **not** use a public GitHub issue.
 
@@ -86,5 +86,4 @@ at https://github.com/orgs/splashcat-ink/discussions.
 ## License
 
 Splashcat is licensed under the terms of
-the [AGPL-3.0 license ](https://github.com/splashcat-ink/splashcat/blob/main/LICENSE "AGPL-3.0 license ")
-
+the [AGPL-3.0 license](https://github.com/splashcat-ink/splashcat/blob/main/LICENSE).
